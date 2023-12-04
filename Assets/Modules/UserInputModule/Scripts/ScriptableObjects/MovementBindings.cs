@@ -1,0 +1,34 @@
+using System;
+
+using UnityEditor;
+
+using UnityEngine;
+using UnityEngine.InputSystem;
+
+namespace SDRGames.SpaceTrucker.UserInputModule.ScriptableObjects
+{
+    [Serializable]
+    [CreateAssetMenu(fileName = "PlayerMovementBindings", menuName = "SpaceTrucker/Movement Controls/Movement Bindings")]
+    public class MovementBindings : KeyBindings
+    {
+        [field: SerializeField] public Key AccelerateKey { get; private set; }
+        [field: SerializeField] public Key BrakeKey { get; private set; }
+        [field: SerializeField] public Key SprintKey { get; private set; }
+
+        private void OnEnable()
+        {
+            if(AccelerateKey == Key.None || BrakeKey == Key.None || SprintKey == Key.None)
+            {
+                #if UNITY_EDITOR
+                    EditorApplication.isPlaying = false;
+                #endif
+                throw new Exception($"Одна из кнопок не была назначена в {name}");
+            }
+        }
+
+        public override Key[] GetKeys()
+        {
+            return new Key[] { AccelerateKey, BrakeKey, SprintKey };
+        }
+    }
+}
