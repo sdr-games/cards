@@ -8,7 +8,7 @@ using UnityEngine.InputSystem;
 namespace SDRGames.SpaceTrucker.UserInputModule.ScriptableObjects
 {
     [Serializable]
-    [CreateAssetMenu(fileName = "PlayerMovementBindings", menuName = "SpaceTrucker/Movement Controls/Movement Bindings")]
+    [CreateAssetMenu(fileName = "PlayerMovementBindings", menuName = "SDRGames/Movement Controls/Movement Bindings")]
     public class MovementBindings : KeyBindings
     {
         [field: SerializeField] public Key AccelerateKey { get; private set; }

@@ -8,7 +8,7 @@ using UnityEngine.InputSystem;
 namespace SDRGames.SpaceTrucker.UserInputModule.ScriptableObjects
 {
     [Serializable]
-    [CreateAssetMenu(fileName = "PlayerRotationBindings", menuName = "SpaceTrucker/Movement Controls/Rotation Bindings")]
+    [CreateAssetMenu(fileName = "PlayerRotationBindings", menuName = "SDRGames/Movement Controls/Rotation Bindings")]
     public class RotationBindings : KeyBindings
     {
         [field: SerializeField] public Key RotateLeftKey { get; private set; }
