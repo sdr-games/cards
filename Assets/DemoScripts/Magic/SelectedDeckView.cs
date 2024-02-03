@@ -22,15 +22,16 @@ public class SelectedDeckView : MonoBehaviour, IPointerEnterHandler
         Show();
     }
 
+    public void ShowHands()
+    {
+        _handsView.Initialize(_deck);
+    }
+
     public void OnPointerEnter(PointerEventData eventData)
     {
         if (!enabled)
         {
             return;
-        }
-        if (Mouse.current.leftButton.wasPressedThisFrame)
-        {
-            _handsView.Initialize(_deck);
         }
     }
 

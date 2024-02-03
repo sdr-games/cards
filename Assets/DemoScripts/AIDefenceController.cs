@@ -18,4 +18,15 @@ public class AIDefenceController : DefenceController
         }
         return selectedParts;
     }
+
+    public List<Card> MagicDefence(int maxSelectedCardsCount)
+    {
+        List<Card> cards = new List<Card>();
+        for(int i = 0; i < maxSelectedCardsCount; i++)
+        {
+            int index = Random.Range(0, SelectableCards.Length - 1);
+            cards.Add(SelectableCards[index]);
+        }
+        return cards;
+    }
 }

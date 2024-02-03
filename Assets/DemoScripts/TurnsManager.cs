@@ -24,18 +24,27 @@ public class TurnsManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _currentTurnText;
     [SerializeField] private TextMeshProUGUI _announcementText;
 
+    [SerializeField] private CanvasGroup _endButtonCanvasGroup;
+
     [SerializeField] private List<ObjectSelectController> _defencePartsApplied;
+    [SerializeField] private List<Card> _defenceRunesApplied;
 
     private int _currentTurn;
+
+    public void FinishCombat()
+    {
+        MapManager.Instance.LoadMap(_currentTurn == 0);
+    }
 
     private void Start()
     {
         _defencePartsApplied = new List<ObjectSelectController>();
 
-        _weaponSelectController.AttackApplied += OnPlayerAttackApplied;
+        _weaponSelectController.AttackApplied += OnPlayerMeleeAttackApplied;
         _weaponSelectController.Initialize();
 
         _magicSelectController.Initialize();
+        _magicSelectController.AttackApplied += OnPlayerMagicAttackApplied;
 
         _playerDefenceController.Initialize();
         _playerDefenceController.PlayerDefenceApplied += OnPlayerDefenceApplied;
@@ -90,7 +99,7 @@ public class TurnsManager : MonoBehaviour
     }
 
 
-    private void OnPlayerAttackApplied(object sender, List<MeleeAbility> meleeAbilities)
+    private void OnPlayerMeleeAttackApplied(object sender, List<MeleeAbility> meleeAbilities)
     {
         List<ObjectSelectController> selectedParts = _aiDefenceController.ObjectSelectedParts;
         if(meleeAbilities.Count == 0)
@@ -123,6 +132,26 @@ public class TurnsManager : MonoBehaviour
         _defencePartsApplied = new List<ObjectSelectController>(_aiDefenceController.Defence(meleeAbilities.Count));
         StartCoroutine(EndAttackTurn(new List<MeleeAbility>(meleeAbilities), _aiDefenceController, _playerAnimator, _enemyAnimator, _enemyDamageText));
         _weaponSelectController.Deselect();
+    }
+
+    private void OnPlayerMagicAttackApplied(object sender, List<Card> cards)
+    {
+        Debug.Log("applied!");
+        foreach (var card in cards)
+        {
+            Debug.Log(card.Name);
+        }
+
+        if (cards.Count == 0)
+        {
+            _announcementText.text = "Выберите до трех атакующих умений";
+            return;
+        }
+
+        _announcementText.text = "";
+        _defenceRunesApplied = new List<Card>(_aiDefenceController.MagicDefence(cards.Count));
+        StartCoroutine(EndAttackTurn(new List<Card>(cards), _aiDefenceController, _playerAnimator, _enemyAnimator, _enemyDamageText));
+        _magicSelectController.Deselect();
     }
 
     private void OnPlayerDefenceApplied(object sender, ObjectSelectController[] selectedParts)
@@ -169,11 +198,8 @@ public class TurnsManager : MonoBehaviour
             yield return new WaitForSeconds(attackingAbility.AnimationClip.length);
             damageText.text = "";
 
-            if(defenceController.IsDead)
+            if (CheckFinishConditions(defenceController, damageText))
             {
-                damageText.text = "";
-                _currentTurnText.text = _currentTurn == 0 ? "Победа!" : "Поражение!";
-                defenceController.ClearSelectedParts();
                 yield break;
             }
 
@@ -183,5 +209,53 @@ public class TurnsManager : MonoBehaviour
         damageText.text = "";
         defenceController.ClearSelectedParts();
         SwitchTurn();
+    }
+
+    private IEnumerator EndAttackTurn(List<Card> cards, DefenceController defenceController, Animator attackingAnimator, Animator attackedAnimator, TextMeshProUGUI damageText)
+    {
+        for(int i = 0; i < cards.Count; i++)
+        {
+            Card attackCard = cards[i];
+            attackingAnimator.Play("MagicAttack");
+            yield return new WaitForSeconds(0.2f);
+
+            Card defenceCard = _defenceRunesApplied[i];
+            if(attackCard.Equals(defenceCard))
+            {
+                Debug.Log($"{attackCard.Name} vs {defenceCard.Name}");
+                damageText.text = "Заблокировано";
+                yield return new WaitForSeconds(1.3f);
+                damageText.text = "";
+                continue;
+            }
+
+            int damage = 10;
+            damageText.text = $"-{damage}";
+            defenceController.TakeDamage(damage);
+            yield return new WaitForSeconds(1.3f);
+            damageText.text = "";
+
+            if (CheckFinishConditions(defenceController, damageText))
+            {
+                yield break;
+            }
+        }
+        damageText.text = "";
+        SwitchTurn();
+    }
+
+    private bool CheckFinishConditions(DefenceController defenceController, TextMeshProUGUI damageText)
+    {
+        if (defenceController.IsDead)
+        {
+            damageText.text = "";
+            _currentTurnText.text = _currentTurn == 0 ? "Победа!" : "Поражение!";
+            _endButtonCanvasGroup.alpha = 1;
+            _endButtonCanvasGroup.interactable = true;
+            _endButtonCanvasGroup.blocksRaycasts = true;
+            defenceController.ClearSelectedParts();
+            return true;
+        }
+        return false;
     }
 }

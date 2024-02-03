@@ -10,6 +10,7 @@ using UnityEngine;
 public class DefenceController : MonoBehaviour
 {
     public List<ObjectSelectController> ObjectSelectedParts { get; private set; }
+    public List<Card> SelectedRunes { get; private set; }
 
     [SerializeField] private Points _healthPoints;
     [SerializeField] private Points _armorPoints;
@@ -25,6 +26,7 @@ public class DefenceController : MonoBehaviour
     public bool IsDead => _healthPoints.CurrentValue <= 0;
 
     [field: SerializeField] public ObjectSelectController[] ObjectSelectableParts { get; private set; }
+    [field: SerializeField] public Card[] SelectableCards { get; private set; }
 
     public event EventHandler<ObjectSelectController[]> PlayerDefenceApplied;
 

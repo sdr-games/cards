@@ -39,14 +39,9 @@ public class MeleeAbilitiesPanelView : MonoBehaviour
 
     public void SwitchVisibility()
     {
-        if(!_showed)
-        {
-            _canvasGroup.alpha = 1;
-        }
-        else
-        {
-            _canvasGroup.alpha = 0;
-        }
+        _canvasGroup.alpha = _showed ? 0 : 1;
+        _canvasGroup.interactable = !_showed;
+        _canvasGroup.blocksRaycasts = !_showed;
         _selectedAbilitiesPanelView.SwitchVisibility(_showed);
         _showed = !_showed;
     }

@@ -6,7 +6,13 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Modules/Domain/Scenes/DemoMapScene.unity
+    guid: 1ede390a9ae5b0c46bbc8f7596e759e6
+  - enabled: 1
     path: Assets/Modules/Domain/Scenes/DemoScene.unity
     guid: 818006bc65c97114ba24037daa69549b
+  - enabled: 1
+    path: Assets/Modules/Domain/Scenes/DemoTownScene.unity
+    guid: 9542cc7a3db66ff40a538a3a211ade08
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0
