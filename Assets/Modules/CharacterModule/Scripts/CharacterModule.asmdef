@@ -1,0 +1,17 @@
+{
+    "name": "CharacterModule",
+    "rootNamespace": "SDRGames.Whist.CharacterModule",
+    "references": [
+        "GUID:1cc1c84c1ea29954790c451beed7c1db",
+        "GUID:27311298e0f18394784e31ed5e289152"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
