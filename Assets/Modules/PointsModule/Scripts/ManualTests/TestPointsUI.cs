@@ -1,7 +1,8 @@
 using System;
 
-using SDRGames.Islands.PointsModule.Presenter;
-using SDRGames.Islands.PointsModule.View;
+using SDRGames.Islands.PointsModule.Models;
+using SDRGames.Islands.PointsModule.Presenters;
+using SDRGames.Islands.PointsModule.Views;
 using SDRGames.SpaceTrucker.UserInputModule.Controller;
 
 using TMPro;
@@ -15,8 +16,8 @@ namespace SDRGames.Islands.PointsModule
 {
     public class TestPointsUI : MonoBehaviour
     {
-        [SerializeField] private Model.Points _points;
-        [SerializeField] private PointsView _pointsView;
+        [SerializeField] private Points _points;
+        [SerializeField] private PointsBarView _pointsView;
 
         [Header("TEST SETUP")]
         [SerializeField] private UserInputController _userInputController;
@@ -77,7 +78,7 @@ namespace SDRGames.Islands.PointsModule
                 #endif
             }
 
-            PointsPresenter presenter = new PointsPresenter(_points, _pointsView);
+            PointsBarPresenter presenter = new PointsBarPresenter(_points, _pointsView);
             _userInputController.LeftMouseButtonClickedOnUI += OnIncreaseCurrentPointsButtonClicked;
             _userInputController.LeftMouseButtonClickedOnUI += OnDecreaseCurrentPointsButtonClicked;
         }

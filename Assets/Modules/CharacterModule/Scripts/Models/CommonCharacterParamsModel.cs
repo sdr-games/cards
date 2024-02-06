@@ -1,19 +1,19 @@
 using SDRGames.Islands.DiceModule;
-using SDRGames.Islands.PointsModule.Model;
+using SDRGames.Islands.PointsModule.Models;
 
 namespace SDRGames.Whist.CharacterModule.Models
 {
     public class CommonCharacterParamsModel
     {
-        public string CharacterName { get; private set; }
-        public int Level { get; private set; }
-        public Points HealthPoints { get; private set; }
-        public Points StaminaPoints { get; private set; }
-        public Points BreathPoints { get; private set; }
-        public Points PhysicalArmor { get; private set; }
-        public Points MagicShield { get; private set; }
-        public Dice PhysicalDamage { get; private set; }
-        public float MagicDamageMultiplier { get; private set; }
+        public string CharacterName { get; protected set; }
+        public int Level { get; protected set; }
+        public Points HealthPoints { get; protected set; }
+        public Points StaminaPoints { get; protected set; }
+        public Points BreathPoints { get; protected set; }
+        public Points PhysicalArmor { get; protected set; }
+        public Points MagicShield { get; protected set; }
+        public Dice PhysicalDamage { get; protected set; }
+        public float MagicDamageMultiplier { get; protected set; }
 
         public CommonCharacterParamsModel(string characterName, int level, Points healthPoints, Points staminaPoints, Points breathPoints, Points physicalArmor, Points magicShield, Dice physicalDamage, float magicDamageMultiplier)
         {
