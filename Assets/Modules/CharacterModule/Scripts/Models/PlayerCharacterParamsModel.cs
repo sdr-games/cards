@@ -1,6 +1,6 @@
 using System;
 
-using SDRGames.Islands.DiceModule;
+using SDRGames.Islands.DiceModule.Models;
 using SDRGames.Islands.PointsModule.Models;
 
 namespace SDRGames.Whist.CharacterModule.Models

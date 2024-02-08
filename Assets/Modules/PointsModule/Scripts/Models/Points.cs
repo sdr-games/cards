@@ -8,6 +8,7 @@ namespace SDRGames.Islands.PointsModule.Models
     [Serializable]
     public class Points
     {
+        [field: SerializeField] public string Name { get; private set; }
         [field: SerializeField] public float BaseValue { get; private set; }
         [field: SerializeField] public float Bonus { get; private set;  }
         [field: SerializeField] public RelatedBonus[] RelatedBonuses { get; private set; }
@@ -23,8 +24,9 @@ namespace SDRGames.Islands.PointsModule.Models
         public event EventHandler<CurrentValueChangedEventArgs> CurrentValueChanged;
         public event EventHandler MaxValueChanged;
 
-        public Points(float baseValue, float bonus, RelatedBonus[] relatedBonuses, float regenerationSpeed, float minRegenerationPower, float regenerationPower)
+        public Points(string name, float baseValue, float bonus, RelatedBonus[] relatedBonuses, float regenerationSpeed, float minRegenerationPower, float regenerationPower)
         {
+            Name = name;
             BaseValue = baseValue;
             Bonus = bonus;
             RelatedBonuses = relatedBonuses;

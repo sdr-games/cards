@@ -14,7 +14,7 @@ namespace SDRGames.Islands.PointsModule.Presenters
             _pointsView = pointsView;
 
             _points.CalculateValues();
-            _pointsView.Initialize(points.MaxValue);
+            _pointsView.Initialize(points.Name, points.MaxValue);
 
             _points.CurrentValueChanged += OnPointsCurrentValueChanged;
         }
