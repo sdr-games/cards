@@ -22,11 +22,21 @@ namespace SDRGames.Whist.CharacterModule.Views
         [field: SerializeField] public PointsTextView MagicShieldPointsView { get; private set; }
         [field: SerializeField] public DiceView PhysicalDamageDiceView { get; private set; }
 
-        public void Initialize(string name, string level, string _magicDamageMultiplier)
+        public void Initialize(string name, string level, string magicDamageMultiplier)
         {
             _nameTMP.text = name;
+            SetLevelText(level);
+            SetMagicDamageMultiplierText(magicDamageMultiplier);
+        }
+
+        public void SetLevelText(string level)
+        {
             _levelTMP.text = level;
-            _magicDamageMultiplierTMP.text = _magicDamageMultiplier;
+        }
+
+        public void SetMagicDamageMultiplierText(string magicDamageMultiplier)
+        {
+            _magicDamageMultiplierTMP.text = magicDamageMultiplier;
         }
 
         #region MonoBehaviour methods
