@@ -7,13 +7,14 @@ namespace SDRGames.Islands.PointsModule.Views
 {
     public class PointsTextView : MonoBehaviour
     {
-        [SerializeField] private CanvasGroup _canvasGroup;
+        [SerializeField] private TextMeshProUGUI _pointsNameText;
         [SerializeField] private TextMeshProUGUI _pointsValueText;
 
         private float _maxPointsValue;
 
-        public void Initialize(float maxPointsValue)
+        public void Initialize(string name, float maxPointsValue)
         {
+            _pointsNameText.text = name;
             _maxPointsValue = maxPointsValue;
             SetPointsText(maxPointsValue);
         }
@@ -33,6 +34,14 @@ namespace SDRGames.Islands.PointsModule.Views
         #region MonoBehaviour methods
         private void OnEnable()
         {
+            if (_pointsNameText == null)
+            {
+                Debug.LogError("Points Name TextMeshPro не был назначен");
+                #if UNITY_EDITOR
+                    EditorApplication.isPlaying = false;
+                #endif
+            }
+
             if (_pointsValueText == null)
             {
                 Debug.LogError("Points Value TextMeshPro не был назначен");
