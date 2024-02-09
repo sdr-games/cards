@@ -15,8 +15,8 @@ namespace SDRGames.Whist.CharacterModule.Models
         [field: SerializeField] public Points HealthPoints { get; protected set; }
         [field: SerializeField] public Points StaminaPoints { get; protected set; }
         [field: SerializeField] public Points BreathPoints { get; protected set; }
-        [field: SerializeField] public Points PhysicalArmor { get; protected set; }
-        [field: SerializeField] public Points MagicShield { get; protected set; }
+        [field: SerializeField] public Points Armor { get; protected set; }
+        [field: SerializeField] public Points Barrier { get; protected set; }
         [field: SerializeField] public Dice PhysicalDamage { get; protected set; }
         [field: SerializeField] public float MagicDamageMultiplier { get; protected set; }
 
@@ -27,8 +27,8 @@ namespace SDRGames.Whist.CharacterModule.Models
             HealthPoints = healthPoints;
             StaminaPoints = staminaPoints;
             BreathPoints = breathPoints;
-            PhysicalArmor = physicalArmor;
-            MagicShield = magicShield;
+            Armor = physicalArmor;
+            Barrier = magicShield;
             PhysicalDamage = physicalDamage;
             MagicDamageMultiplier = magicDamageMultiplier;
         }
