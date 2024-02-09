@@ -159,7 +159,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _nameTMP: {fileID: 5088321865135169820}
   _levelTMP: {fileID: 7894899804830122530}
-  _magicDamageMultiplierTMP: {fileID: 5414834184726845492}
+  _magicDamageMultiplierTMP: {fileID: 5756737381077482161}
   <HealthPointsView>k__BackingField: {fileID: 3082498452164578787}
   <StaminaPointsView>k__BackingField: {fileID: 2333767609438328740}
   <BreathPointsView>k__BackingField: {fileID: 3155010236341496074}
@@ -1291,9 +1291,15 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e9b14a4dc582fc04ba9e8c81e831f2b0, type: 3}
---- !u!114 &5414834184726845492 stripped
+--- !u!224 &5510063988686788496 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 1987412951862223314, guid: e9b14a4dc582fc04ba9e8c81e831f2b0,
+    type: 3}
+  m_PrefabInstance: {fileID: 6332935796749448770}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &5756737381077482161 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2073415653939883638, guid: e9b14a4dc582fc04ba9e8c81e831f2b0,
+  m_CorrespondingSourceObject: {fileID: 1731371995247856883, guid: e9b14a4dc582fc04ba9e8c81e831f2b0,
     type: 3}
   m_PrefabInstance: {fileID: 6332935796749448770}
   m_PrefabAsset: {fileID: 0}
@@ -1303,12 +1309,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!224 &5510063988686788496 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 1987412951862223314, guid: e9b14a4dc582fc04ba9e8c81e831f2b0,
-    type: 3}
-  m_PrefabInstance: {fileID: 6332935796749448770}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7909520524673955437
 PrefabInstance:
   m_ObjectHideFlags: 0

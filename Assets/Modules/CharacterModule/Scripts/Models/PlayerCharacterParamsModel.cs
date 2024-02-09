@@ -5,6 +5,7 @@ using SDRGames.Islands.PointsModule.Models;
 
 namespace SDRGames.Whist.CharacterModule.Models
 {
+    [Serializable]
     public class PlayerCharacterParamsModel : CommonCharacterParamsModel
     {
         private readonly string CHARACTER_NAME = "Валиор";
