@@ -4,7 +4,7 @@ using UnityEditor;
 
 using UnityEngine;
 
-namespace SDRGames.Whist.CharacterModule
+namespace SDRGames.Whist.CharacterModule.Views
 {
     public class CombatCommonCharacterParamsView : MonoBehaviour
     {
