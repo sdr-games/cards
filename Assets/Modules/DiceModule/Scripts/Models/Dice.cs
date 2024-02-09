@@ -1,14 +1,16 @@
 using System;
 
+using UnityEngine;
+
 namespace SDRGames.Islands.DiceModule.Models
 {
     [Serializable]
     public class Dice
     {
-        public string Name { get; private set; }
-        public int RollsCount { get; private set; }
-        public int SidesCount { get; private set; }
-        public int Modificator { get; private set; }
+        [field: SerializeField] public string Name { get; private set; }
+        [field: SerializeField] public int RollsCount { get; private set; }
+        [field: SerializeField] public int SidesCount { get; private set; }
+        [field: SerializeField] public int Modificator { get; private set; }
 
         public event EventHandler<DiceChangedEventArgs> DiceChanged;
 

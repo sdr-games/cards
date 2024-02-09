@@ -3,6 +3,8 @@ using SDRGames.Islands.PointsModule.Presenters;
 using SDRGames.Whist.CharacterModule.Models;
 using SDRGames.Whist.CharacterModule.Views;
 
+using UnityEngine;
+
 namespace SDRGames.Whist.CharacterModule.Presenters
 {
     public class PlayerCharacterParamsPresenter
@@ -26,6 +28,13 @@ namespace SDRGames.Whist.CharacterModule.Presenters
 
             _playerCharacterParams.LevelChanged += OnLevelChanged;
             _playerCharacterParams.MagicDamageMultiplierChanged += OnMagicDamageMultiplierChanged;
+        }
+
+        ~PlayerCharacterParamsPresenter()
+        {
+            Debug.Log("Destructor called");
+            _playerCharacterParams.LevelChanged -= OnLevelChanged;
+            _playerCharacterParams.MagicDamageMultiplierChanged -= OnMagicDamageMultiplierChanged;
         }
 
         private void OnLevelChanged(object sender, LevelChangedEventArgs e)

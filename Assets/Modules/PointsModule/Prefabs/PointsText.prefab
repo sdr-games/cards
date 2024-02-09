@@ -295,5 +295,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e33780d590f2c24fa354ad62407460d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _pointsNameText: {fileID: 0}
-  _pointsValueText: {fileID: 5827947591074564125}
+  _pointsNameText: {fileID: 5827947591074564125}
+  _pointsValueText: {fileID: 4092879174684362552}
