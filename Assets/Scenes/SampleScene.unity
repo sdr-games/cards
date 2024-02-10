@@ -174,15 +174,15 @@ MonoBehaviour:
       <RegenerationSpeed>k__BackingField: 0
       <RegenerationPower>k__BackingField: 0
     <Armor>k__BackingField:
-      <Name>k__BackingField: 
-      <BaseValue>k__BackingField: 0
+      <Name>k__BackingField: "\u0411\u0440\u043E\u043D\u044F"
+      <BaseValue>k__BackingField: 5
       <Bonus>k__BackingField: 0
       <RelatedBonuses>k__BackingField: []
       <RegenerationSpeed>k__BackingField: 0
       <RegenerationPower>k__BackingField: 0
     <Barrier>k__BackingField:
-      <Name>k__BackingField: 
-      <BaseValue>k__BackingField: 0
+      <Name>k__BackingField: "\u0411\u0430\u0440\u044C\u0435\u0440"
+      <BaseValue>k__BackingField: 5
       <Bonus>k__BackingField: 0
       <RelatedBonuses>k__BackingField: []
       <RegenerationSpeed>k__BackingField: 0
@@ -194,6 +194,7 @@ MonoBehaviour:
       <Modificator>k__BackingField: 0
     <MagicDamageMultiplier>k__BackingField: 0
   _playerCharacterParamsView: {fileID: 7611957976098362192}
+  _combatPlayerCharacterParamsView: {fileID: 963528919}
 --- !u!4 &107867508
 Transform:
   m_ObjectHideFlags: 0
@@ -425,6 +426,18 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 963528917}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &963528919 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4976170660492624741, guid: d6d7f932a2452ef438219255ed8ce8b1,
+    type: 3}
+  m_PrefabInstance: {fileID: 963528917}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc28baf44a80b5a49906006393c739e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1127987124
 GameObject:
   m_ObjectHideFlags: 0
