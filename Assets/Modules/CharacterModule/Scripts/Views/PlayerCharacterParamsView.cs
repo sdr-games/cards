@@ -13,6 +13,8 @@ namespace SDRGames.Whist.CharacterModule.Views
     {
         [SerializeField] private TextMeshProUGUI _nameTMP;
         [SerializeField] private TextMeshProUGUI _levelTMP;
+        [SerializeField] private TextMeshProUGUI _experienceTMP;
+        [SerializeField] private TextMeshProUGUI _gloryTMP;
         [SerializeField] private TextMeshProUGUI _magicDamageMultiplierTMP;
 
         [field: SerializeField] public PointsTextView HealthPointsView { get; private set; }
@@ -22,11 +24,13 @@ namespace SDRGames.Whist.CharacterModule.Views
         [field: SerializeField] public PointsTextView MagicShieldPointsView { get; private set; }
         [field: SerializeField] public DiceView PhysicalDamageDiceView { get; private set; }
 
-        public void Initialize(string name, string level, string magicDamageMultiplier)
+        public void Initialize(string name, string level, string experience, string glory, string magicDamageMultiplier)
         {
             _nameTMP.text = name;
             SetLevelText(level);
             SetMagicDamageMultiplierText(magicDamageMultiplier);
+            SetExperienceText(experience);
+            SetGloryText(glory);
         }
 
         public void SetLevelText(string level)
@@ -37,6 +41,16 @@ namespace SDRGames.Whist.CharacterModule.Views
         public void SetMagicDamageMultiplierText(string magicDamageMultiplier)
         {
             _magicDamageMultiplierTMP.text = magicDamageMultiplier;
+        }
+
+        public void SetExperienceText(string experience)
+        {
+            _experienceTMP.text = experience;
+        }
+
+        public void SetGloryText(string glory)
+        {
+            _gloryTMP.text = glory;
         }
 
         #region MonoBehaviour methods
@@ -109,6 +123,22 @@ namespace SDRGames.Whist.CharacterModule.Views
             if (_magicDamageMultiplierTMP == null)
             {
                 Debug.LogError("Magic Damage Multiplier TextMeshPro не был назначен");
+                #if UNITY_EDITOR
+                    EditorApplication.isPlaying = false;
+                #endif
+            }
+
+            if (_experienceTMP == null)
+            {
+                Debug.LogError("Experience TextMeshPro не был назначен");
+                #if UNITY_EDITOR
+                    EditorApplication.isPlaying = false;
+                #endif
+            }
+
+            if (_gloryTMP == null)
+            {
+                Debug.LogError("Glory TextMeshPro не был назначен");
                 #if UNITY_EDITOR
                     EditorApplication.isPlaying = false;
                 #endif
