@@ -17,7 +17,13 @@ namespace SDRGames.Whist.CharacterModule.Presenters
             _playerCharacterParams = playerCharacterParams;
             _playerCharacterParamsView = playerCharacterParamsView;
 
-            _playerCharacterParamsView.Initialize(_playerCharacterParams.CharacterName, _playerCharacterParams.Level.ToString(), _playerCharacterParams.MagicDamageMultiplier.ToString());
+            _playerCharacterParamsView.Initialize(
+                _playerCharacterParams.CharacterName, 
+                _playerCharacterParams.Level.ToString(), 
+                _playerCharacterParams.Experience.ToString(),
+                _playerCharacterParams.Glory.ToString(),
+                _playerCharacterParams.MagicDamageMultiplier.ToString()
+            );
 
             new PointsTextPresenter(_playerCharacterParams.HealthPoints, _playerCharacterParamsView.HealthPointsView);
             new PointsTextPresenter(_playerCharacterParams.StaminaPoints, _playerCharacterParamsView.StaminaPointsView);
