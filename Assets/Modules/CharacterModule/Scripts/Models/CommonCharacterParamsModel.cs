@@ -11,6 +11,7 @@ namespace SDRGames.Whist.CharacterModule.Models
     public class CommonCharacterParamsModel
     {
         [field: SerializeField] public string CharacterName { get; protected set; }
+        [field: SerializeField] public Sprite CharacterPortrait { get; protected set; }
         [field: SerializeField] public int Level { get; protected set; }
         [field: SerializeField] public Points HealthPoints { get; protected set; }
         [field: SerializeField] public Points StaminaPoints { get; protected set; }
