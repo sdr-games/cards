@@ -1,4 +1,3 @@
-using System;
 using UnityEditor;
 
 using UnityEngine;
@@ -21,8 +20,6 @@ namespace SDRGames.Whist.GlobalMapModule.Views
         // Finished - player pin is on pin position but click has no effect
         public enum Status { Available, Ready, Done, Finished }
         private Status _status;
-
-        public event EventHandler<PinClickedEventArgs> PinClicked;
 
         public void MarkAsAvailable()
         {
@@ -56,11 +53,6 @@ namespace SDRGames.Whist.GlobalMapModule.Views
             _status = Status.Finished;
         }
 
-        private void PinClick()
-        {
-            PinClicked?.Invoke(this, new PinClickedEventArgs(_status));
-        }
-
         private void OnEnable()
         {
             if (_image == null)
@@ -78,13 +70,6 @@ namespace SDRGames.Whist.GlobalMapModule.Views
                     EditorApplication.isPlaying = false;
                 #endif
             }
-
-            _button.onClick.AddListener(PinClick);
-        }
-
-        private void OnDisable()
-        {
-            _button.onClick.RemoveAllListeners();
         }
     }
 }
