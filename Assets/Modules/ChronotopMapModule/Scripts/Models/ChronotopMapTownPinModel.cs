@@ -2,10 +2,10 @@ using System;
 
 using UnityEngine;
 
-namespace SDRGames.Whist.GlobalMapModule.Models
+namespace SDRGames.Whist.ChronotopMapModule.Models
 {
     [Serializable]
-    public class GlobalMapTownPinModel
+    public class ChronotopMapTownPinModel
     {
         [field: SerializeField] public Sprite Sprite { get; private set; }
         [field: SerializeField] public string Title { get; private set; }

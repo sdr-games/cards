@@ -4,10 +4,10 @@ using SDRGames.Whist.CharacterModule.Models;
 
 using UnityEngine;
 
-namespace SDRGames.Whist.GlobalMapModule.Models
+namespace SDRGames.Whist.ChronotopMapModule.Models
 {
     [Serializable]
-    public class GlobalMapFightPinModel
+    public class ChronotopMapFightPinModel
     {
         [field: SerializeField] public string PrefightText { get; private set; }
         [field: SerializeField] public CommonCharacterParamsModel EnemyCharacterParams { get; private set; }

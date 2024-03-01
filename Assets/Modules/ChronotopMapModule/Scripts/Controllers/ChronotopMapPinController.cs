@@ -1,20 +1,17 @@
 using System;
 
-using SDRGames.Whist.GlobalMapModule.Models;
-using SDRGames.Whist.GlobalMapModule.Views;
-
-using UnityEditor;
+using SDRGames.Whist.ChronotopMapModule.Views;
 
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace SDRGames.Whist.GlobalMapModule.Controllers
+namespace SDRGames.Whist.ChronotopMapModule.Controllers
 {
-    public class GlobalMapPinController : MonoBehaviour
+    public class ChronotopMapPinController : MonoBehaviour
     {
-        [SerializeField] private GlobalMapPinView _globalMapPinView;
+        private ChronotopMapPinView _chronotopMapPinView;
+        private Button _button;
 
-        [SerializeField] private Button _button;
         [SerializeField] private bool _autofinish = false;
 
         // Available - player pin can be moved to pin position
@@ -28,54 +25,41 @@ namespace SDRGames.Whist.GlobalMapModule.Controllers
         public event EventHandler ReadyPinClicked;
         public event EventHandler DonePinClicked;
 
-        public void Initialize(GlobalMapPinView globalMapPinView)
+        public void Initialize(ChronotopMapPinView chronotopMapPinView, Button button)
         {
-            _globalMapPinView = globalMapPinView;
+            _chronotopMapPinView = chronotopMapPinView;
+            _button = button;
+            _button.onClick.AddListener(PinClicked);
         }
 
         public void MarkAsAvailable()
         {
             _status = Status.Available;
-            _globalMapPinView.MarkAsAvailable();
+            _chronotopMapPinView.MarkAsAvailable();
         }
 
         public void MarkAsReady()
         {
-            _status = Status.Done;
-            _globalMapPinView.MarkAsReady();
+            _status = Status.Ready;
+            _chronotopMapPinView.MarkAsReady();
         }
 
         public void MarkAsDone()
         {
+            if (_autofinish)
+            {
+                MarkAsFinished();
+                return;
+            }
+
             _status = Status.Done;
-            _globalMapPinView.MarkAsDone();
+            _chronotopMapPinView.MarkAsDone();
         }
 
         public void MarkAsFinished()
         {
             _status = Status.Finished;
-            _globalMapPinView.MarkAsFinished();
-        }
-
-        private void OnEnable()
-        {
-            if (_globalMapPinView == null)
-            {
-                Debug.LogError("Global Map Pin View не был назначен");
-                #if UNITY_EDITOR
-                    EditorApplication.isPlaying = false;
-                #endif
-            }
-
-            if (_button == null)
-            {
-                Debug.LogError("Button не был назначен");
-                #if UNITY_EDITOR
-                    EditorApplication.isPlaying = false;
-                #endif
-            }
-
-            _button.onClick.AddListener(PinClicked);
+            _chronotopMapPinView.MarkAsFinished();
         }
 
         private void OnDisable()
