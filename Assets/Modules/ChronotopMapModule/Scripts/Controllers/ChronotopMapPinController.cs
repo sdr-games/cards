@@ -1,5 +1,7 @@
 using System;
+using System.Linq;
 
+using SDRGames.Whist.BezierModule.Views;
 using SDRGames.Whist.ChronotopMapModule.Views;
 
 using UnityEngine;
@@ -11,6 +13,7 @@ namespace SDRGames.Whist.ChronotopMapModule.Controllers
     {
         private ChronotopMapPinView _chronotopMapPinView;
         private Button _button;
+        private BezierView _bezierView;
 
         [SerializeField] private bool _autofinish = false;
 
@@ -21,15 +24,16 @@ namespace SDRGames.Whist.ChronotopMapModule.Controllers
         private enum Status { Available, Ready, Done, Finished }
         private Status _status;
 
-        public event EventHandler AvailablePinClicked;
+        public event EventHandler<AvailablePinClickedEventArgs> AvailablePinClicked;
         public event EventHandler ReadyPinClicked;
         public event EventHandler DonePinClicked;
 
-        public void Initialize(ChronotopMapPinView chronotopMapPinView, Button button)
+        public void Initialize(ChronotopMapPinView chronotopMapPinView, Button button, BezierView bezierView)
         {
             _chronotopMapPinView = chronotopMapPinView;
             _button = button;
             _button.onClick.AddListener(PinClicked);
+            _bezierView = bezierView;
         }
 
         public void MarkAsAvailable()
@@ -72,7 +76,7 @@ namespace SDRGames.Whist.ChronotopMapModule.Controllers
             switch (_status)
             {
                 case Status.Available:
-                    AvailablePinClicked?.Invoke(this, EventArgs.Empty);
+                    AvailablePinClicked?.Invoke(this, new AvailablePinClickedEventArgs(_bezierView));
                     break;
                 case Status.Ready:
                     ReadyPinClicked?.Invoke(this, EventArgs.Empty); 
