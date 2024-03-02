@@ -1,3 +1,4 @@
+using SDRGames.Whist.BezierModule.Views;
 using SDRGames.Whist.ChronotopMapModule.Controllers;
 using SDRGames.Whist.ChronotopMapModule.Models;
 using SDRGames.Whist.ChronotopMapModule.Views;
@@ -14,13 +15,16 @@ namespace SDRGames.Whist.ChronotopMapModule.Managers
         [SerializeField] private ChronotopMapFightPinModel _chronotopMapFightPinModel;
         [SerializeField] private ChronotopMapTownPinModel _chronotopMapTownPinModel;
         [SerializeField] private ChronotopMapPinView _chronotopMapPinView;
-        [SerializeField] private ChronotopMapPinController _choronotopMapPinController;
         [SerializeField] private Button _button;
+
+        [SerializeField] private BezierView _bezierView;
+        
+        [field: SerializeField] public ChronotopMapPinController ChronotopMapPinController { get; private set; }
 
         public void Initialize()
         {
             _chronotopMapPinView.Initialize(_button);
-            _choronotopMapPinController.Initialize(_chronotopMapPinView, _button);
+            ChronotopMapPinController.Initialize(_chronotopMapPinView, _button, _bezierView);
         }
 
         private void OnEnable()
@@ -33,7 +37,7 @@ namespace SDRGames.Whist.ChronotopMapModule.Managers
                 #endif
             }
 
-            if (_choronotopMapPinController == null)
+            if (ChronotopMapPinController == null)
             {
                 Debug.LogError("Chronotop Map Pin Controller не был назначен");
                 #if UNITY_EDITOR
