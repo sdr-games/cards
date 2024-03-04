@@ -1,8 +1,8 @@
 using System;
 
-using SDRGames.Islands.PointsModule.Models;
-using SDRGames.Islands.PointsModule.Presenters;
-using SDRGames.Islands.PointsModule.Views;
+using SDRGames.Whist.PointsModule.Models;
+using SDRGames.Whist.PointsModule.Presenters;
+using SDRGames.Whist.PointsModule.Views;
 using SDRGames.SpaceTrucker.UserInputModule.Controller;
 
 using TMPro;
@@ -12,7 +12,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace SDRGames.Islands.PointsModule
+namespace SDRGames.Whist.PointsModule
 {
     public class TestPointsUI : MonoBehaviour
     {

@@ -2,7 +2,7 @@ using System;
 
 using UnityEngine;
 
-namespace SDRGames.Islands.DiceModule.Models
+namespace SDRGames.Whist.DiceModule.Models
 {
     [Serializable]
     public class Dice

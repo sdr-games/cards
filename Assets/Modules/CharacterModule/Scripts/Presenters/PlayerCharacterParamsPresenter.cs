@@ -1,5 +1,5 @@
-using SDRGames.Islands.DiceModule.Presenters;
-using SDRGames.Islands.PointsModule.Presenters;
+using SDRGames.Whist.DiceModule.Presenters;
+using SDRGames.Whist.PointsModule.Presenters;
 using SDRGames.Whist.CharacterModule.Models;
 using SDRGames.Whist.CharacterModule.Views;
 

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SDRGames.Islands.DiceModule.Models
+namespace SDRGames.Whist.DiceModule.Models
 {
     public class DiceChangedEventArgs : EventArgs
     {

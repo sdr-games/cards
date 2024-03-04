@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41b32306663440846b7d74e07fec138e, type: 3}
+  m_Name: Speech
+  m_EditorClassIdentifier: 
+  <DialogueName>k__BackingField: Speech
+  <Answers>k__BackingField:
+  - <LocalizationData>k__BackingField:
+      <SelectedLocalizationTable>k__BackingField: CharacterNames
+      <SelectedLocalizedText>k__BackingField: "Valior\t"
+    <NextDialogue>k__BackingField: {fileID: 0}
+    <Conditions>k__BackingField:
+    - <AnswerConditionType>k__BackingField: 2
+      <Characteristic>k__BackingField: 0
+      <Skill>k__BackingField: -1
+      <RequiredValue>k__BackingField: 0
+      <Quest>k__BackingField: {fileID: 0}
+      <Reversed>k__BackingField: 0
+  <DialogueType>k__BackingField: 1
+  <LocalizationData>k__BackingField:
+    <SelectedLocalizationTable>k__BackingField: CharacterNames
+    <SelectedLocalizedText>k__BackingField: "Valior\t"
+  <Quest>k__BackingField: {fileID: 0}
+  <DialogueQuestAction>k__BackingField: 0
+  <DialogueAction>k__BackingField: 0

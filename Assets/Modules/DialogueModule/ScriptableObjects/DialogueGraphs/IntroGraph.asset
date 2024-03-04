@@ -1,0 +1,99 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a78993f904d7ff443bfe26057a8ddef6, type: 3}
+  m_Name: IntroGraph
+  m_EditorClassIdentifier: 
+  <FileName>k__BackingField: Intro
+  <Groups>k__BackingField: []
+  <StartNodes>k__BackingField:
+  - <ID>k__BackingField: 571b98cf-4d24-4770-8ef8-a0234dfd8b1f
+    <Name>k__BackingField: Start
+    <Answers>k__BackingField:
+    - <LocalizationSaveData>k__BackingField:
+        <SelectedLocalizationTable>k__BackingField: CharacterNames
+        <SelectedEntryKey>k__BackingField: "Valior\t"
+        <LocalizedText>k__BackingField: Valior
+      <NodeID>k__BackingField: 546aac72-ed98-4be7-a0c2-85ecee13fff4
+      <Conditions>k__BackingField:
+      - <AnswerConditionType>k__BackingField: 0
+        <Characteristic>k__BackingField: 0
+        <Skill>k__BackingField: -1
+        <RequiredValue>k__BackingField: 0
+        <Quest>k__BackingField: {fileID: 0}
+        <Reversed>k__BackingField: 0
+    - <LocalizationSaveData>k__BackingField:
+        <SelectedLocalizationTable>k__BackingField: CharacterNames
+        <SelectedEntryKey>k__BackingField: "Valior\t"
+        <LocalizedText>k__BackingField: Valior
+      <NodeID>k__BackingField: 14968b14-afd0-43f1-81fc-6927b720f5ea
+      <Conditions>k__BackingField: []
+    <GroupID>k__BackingField: 
+    <DialogueType>k__BackingField: 0
+    <Position>k__BackingField: {x: 627.2, y: 268.80002}
+  <SpeechNodes>k__BackingField:
+  - <ID>k__BackingField: 546aac72-ed98-4be7-a0c2-85ecee13fff4
+    <Name>k__BackingField: Speech
+    <Answers>k__BackingField:
+    - <LocalizationSaveData>k__BackingField:
+        <SelectedLocalizationTable>k__BackingField: CharacterNames
+        <SelectedEntryKey>k__BackingField: "Valior\t"
+        <LocalizedText>k__BackingField: Valior
+      <NodeID>k__BackingField: 
+      <Conditions>k__BackingField:
+      - <AnswerConditionType>k__BackingField: 2
+        <Characteristic>k__BackingField: 0
+        <Skill>k__BackingField: -1
+        <RequiredValue>k__BackingField: 0
+        <Quest>k__BackingField: {fileID: 0}
+        <Reversed>k__BackingField: 0
+    <GroupID>k__BackingField: 
+    <DialogueType>k__BackingField: 1
+    <Position>k__BackingField: {x: 975.2, y: 209.59999}
+    <LocalizationSaveData>k__BackingField:
+      <SelectedLocalizationTable>k__BackingField: CharacterNames
+      <SelectedEntryKey>k__BackingField: "Valior\t"
+      <LocalizedText>k__BackingField: Valior
+    <SelectedLocalizationTable>k__BackingField: 
+    <SelectedLocalizedText>k__BackingField: 
+    <NodeID>k__BackingField: 
+    <Quest>k__BackingField: {fileID: 0}
+    <DialogueQuestAction>k__BackingField: 1
+    <DialogueAction>k__BackingField: 0
+  - <ID>k__BackingField: 14968b14-afd0-43f1-81fc-6927b720f5ea
+    <Name>k__BackingField: Speech1
+    <Answers>k__BackingField:
+    - <LocalizationSaveData>k__BackingField:
+        <SelectedLocalizationTable>k__BackingField: CharacterNames
+        <SelectedEntryKey>k__BackingField: "Valior\t"
+        <LocalizedText>k__BackingField: Valior
+      <NodeID>k__BackingField: 
+      <Conditions>k__BackingField: []
+    <GroupID>k__BackingField: 
+    <DialogueType>k__BackingField: 1
+    <Position>k__BackingField: {x: 926.4, y: 572}
+    <LocalizationSaveData>k__BackingField:
+      <SelectedLocalizationTable>k__BackingField: CharacterNames
+      <SelectedEntryKey>k__BackingField: "Valior\t"
+      <LocalizedText>k__BackingField: Valior
+    <SelectedLocalizationTable>k__BackingField: 
+    <SelectedLocalizedText>k__BackingField: 
+    <NodeID>k__BackingField: 
+    <Quest>k__BackingField: {fileID: 0}
+    <DialogueQuestAction>k__BackingField: 0
+    <DialogueAction>k__BackingField: 0
+  <OldGroupNames>k__BackingField: []
+  <OldUngroupedNodeNames>k__BackingField:
+  - Start
+  - Speech
+  - Speech1
+  <OldGroupedNodeNames>k__BackingField:
+    list: []

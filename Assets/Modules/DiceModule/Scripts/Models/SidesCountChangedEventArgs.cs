@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SDRGames.Islands.DiceModule
+namespace SDRGames.Whist.DiceModule
 {
     public class SidesCountChangedEventArgs : EventArgs
     {

@@ -5,7 +5,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace SDRGames.Islands.PointsModule.Views
+namespace SDRGames.Whist.PointsModule.Views
 {
     public class PointsBarView : MonoBehaviour
     {
