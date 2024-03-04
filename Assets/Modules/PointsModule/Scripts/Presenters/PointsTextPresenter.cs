@@ -1,7 +1,7 @@
-using SDRGames.Islands.PointsModule.Models;
-using SDRGames.Islands.PointsModule.Views;
+using SDRGames.Whist.PointsModule.Models;
+using SDRGames.Whist.PointsModule.Views;
 
-namespace SDRGames.Islands.PointsModule.Presenters
+namespace SDRGames.Whist.PointsModule.Presenters
 {
     public class PointsTextPresenter
     {

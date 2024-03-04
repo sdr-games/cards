@@ -3,7 +3,7 @@ using System.Collections;
 
 using UnityEngine;
 
-namespace SDRGames.Islands.PointsModule.Models
+namespace SDRGames.Whist.PointsModule.Models
 {
     [Serializable]
     public class Points

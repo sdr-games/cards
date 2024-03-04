@@ -1,4 +1,4 @@
-using SDRGames.Islands.PointsModule.Views;
+using SDRGames.Whist.PointsModule.Views;
 
 using UnityEditor;
 

@@ -3,7 +3,7 @@ using UnityEditor;
 
 using UnityEngine;
 
-namespace SDRGames.Islands.PointsModule.Views
+namespace SDRGames.Whist.PointsModule.Views
 {
     public class PointsTextView : MonoBehaviour
     {

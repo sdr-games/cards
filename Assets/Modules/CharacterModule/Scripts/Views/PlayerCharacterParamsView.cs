@@ -1,5 +1,5 @@
-using SDRGames.Islands.DiceModule.Views;
-using SDRGames.Islands.PointsModule.Views;
+using SDRGames.Whist.DiceModule.Views;
+using SDRGames.Whist.PointsModule.Views;
 
 using TMPro;
 

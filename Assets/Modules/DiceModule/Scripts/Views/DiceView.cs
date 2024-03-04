@@ -4,7 +4,7 @@ using UnityEditor;
 
 using UnityEngine;
 
-namespace SDRGames.Islands.DiceModule.Views
+namespace SDRGames.Whist.DiceModule.Views
 {
     public class DiceView : MonoBehaviour
     {

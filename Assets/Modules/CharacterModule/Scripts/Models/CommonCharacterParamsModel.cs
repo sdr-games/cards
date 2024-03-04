@@ -1,7 +1,7 @@
 using System;
 
-using SDRGames.Islands.DiceModule.Models;
-using SDRGames.Islands.PointsModule.Models;
+using SDRGames.Whist.DiceModule.Models;
+using SDRGames.Whist.PointsModule.Models;
 
 using UnityEngine;
 

@@ -2,7 +2,7 @@ using System;
 
 using UnityEngine;
 
-namespace SDRGames.Islands.PointsModule.Models
+namespace SDRGames.Whist.PointsModule.Models
 {
     public class CurrentValueChangedEventArgs : EventArgs
     {

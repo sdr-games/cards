@@ -2,12 +2,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-using SDRGames.Islands.DiceModule.Models;
-using SDRGames.Islands.DiceModule.Views;
+using SDRGames.Whist.DiceModule.Models;
+using SDRGames.Whist.DiceModule.Views;
 
 using UnityEngine;
 
-namespace SDRGames.Islands.DiceModule.Presenters
+namespace SDRGames.Whist.DiceModule.Presenters
 {
     public class DicePresenter
     {

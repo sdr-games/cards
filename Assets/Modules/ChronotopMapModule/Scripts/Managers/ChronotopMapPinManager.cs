@@ -1,3 +1,4 @@
+using SDRGames.Whist.DialogueSystem.Views;
 using SDRGames.Whist.BezierModule.Views;
 using SDRGames.Whist.ChronotopMapModule.Controllers;
 using SDRGames.Whist.ChronotopMapModule.Models;
@@ -18,6 +19,8 @@ namespace SDRGames.Whist.ChronotopMapModule.Managers
         [SerializeField] private Button _button;
 
         [SerializeField] private BezierView _bezierView;
+
+        [SerializeField] private DDialogue dialogue;
         
         [field: SerializeField] public ChronotopMapPinController ChronotopMapPinController { get; private set; }
 
