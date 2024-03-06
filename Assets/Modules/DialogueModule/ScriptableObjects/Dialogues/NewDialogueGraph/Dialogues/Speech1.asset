@@ -10,25 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 41b32306663440846b7d74e07fec138e, type: 3}
-  m_Name: Speech
+  m_Name: Speech1
   m_EditorClassIdentifier: 
-  <DialogueName>k__BackingField: Speech
+  <Name>k__BackingField: Speech1
   <Answers>k__BackingField:
   - <LocalizationData>k__BackingField:
       <SelectedLocalizationTable>k__BackingField: CharacterNames
       <SelectedLocalizedText>k__BackingField: "Valior\t"
     <NextDialogue>k__BackingField: {fileID: 0}
-    <Conditions>k__BackingField:
-    - <AnswerConditionType>k__BackingField: 2
-      <Characteristic>k__BackingField: 0
-      <Skill>k__BackingField: -1
-      <RequiredValue>k__BackingField: 0
-      <Quest>k__BackingField: {fileID: 0}
-      <Reversed>k__BackingField: 0
+    <Conditions>k__BackingField: []
   <DialogueType>k__BackingField: 1
   <LocalizationData>k__BackingField:
     <SelectedLocalizationTable>k__BackingField: CharacterNames
     <SelectedLocalizedText>k__BackingField: "Valior\t"
-  <Quest>k__BackingField: {fileID: 0}
-  <DialogueQuestAction>k__BackingField: 0
-  <DialogueAction>k__BackingField: 0

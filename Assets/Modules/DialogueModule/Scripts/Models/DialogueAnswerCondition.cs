@@ -6,7 +6,7 @@ namespace SDRGames.Whist.DialogueSystem.Models
     [Serializable]
     public class DialogueAnswerCondition
     {
-        public enum AnswerConditionTypes { CharacteristicCheck, SkillCheck, QuestAccepted, QuestCompleted, QuestFinished, QuestChainAccepted, QuestChainCompleted, QuestChainFinished };
+        public enum AnswerConditionTypes { CharacteristicCheck, SkillCheck};
         public enum Characteristics { Strength, Dexterity, Stamina, Constitution, Intelligence, Tenacity, Spirit, Charisma, Immunity };
         public enum SkillsNames
         {
@@ -27,7 +27,6 @@ namespace SDRGames.Whist.DialogueSystem.Models
         [field: SerializeField] public Characteristics Characteristic { get; set; }
         [field: SerializeField] public SkillsNames Skill { get; set; }
         [field: SerializeField] public int RequiredValue { get; set; }
-        [field: SerializeField] public Quest Quest { get; set; }
         [field: SerializeField] public bool Reversed { get; set; }
 
         public DialogueAnswerCondition()

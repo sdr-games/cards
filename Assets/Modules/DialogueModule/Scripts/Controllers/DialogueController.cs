@@ -33,17 +33,17 @@ namespace SDRGames.Whist.DialogueSystem.Controllers
                     CreateAnswers(SortAnswersByConditions(dialogueSO.Answers), fullscreen);
                 }
 
-                if (dialogueSO.Quest != null)
-                {
-                    if (dialogueSO.DialogueQuestAction == DialogueScriptableObject.DialogueQuestActions.Accept /*&& GameData.IsQuestAvailable(dialogueSO.Quest)*/)
-                    {
-                        dialogueSO.Quest.Start();
-                    }
-                    else if (dialogueSO.DialogueQuestAction == DialogueScriptableObject.DialogueQuestActions.Finish)
-                    {
-                        dialogueSO.Quest.Finish();
-                    }
-                }
+                //if (dialogueSO.Quest != null)
+                //{
+                //    if (dialogueSO.DialogueQuestAction == DialogueScriptableObject.DialogueQuestActions.Accept /*&& GameData.IsQuestAvailable(dialogueSO.Quest)*/)
+                //    {
+                //        dialogueSO.Quest.Start();
+                //    }
+                //    else if (dialogueSO.DialogueQuestAction == DialogueScriptableObject.DialogueQuestActions.Finish)
+                //    {
+                //        dialogueSO.Quest.Finish();
+                //    }
+                //}
             }
             else
             {

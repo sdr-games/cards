@@ -10,6 +10,8 @@ using UnityEngine.Localization.Settings;
 using UnityEngine.Localization.Tables;
 using UnityEngine.UIElements;
 
+using static SDRGames.Whist.DialogueSystem.Models.DialogueAnswerCondition;
+
 namespace SDRGames.Whist.DialogueSystem.Editor
 {
     public static class UtilityElement
@@ -233,6 +235,88 @@ namespace SDRGames.Whist.DialogueSystem.Editor
                 return localizationTextDropdown;
             }
             return null;
+        }
+
+        public static void CreateConditionField(Foldout foldout, AnswerConditionSaveData conditionData)
+        {
+            Foldout conditionFoldout = CreateFoldout($"{conditionData.AnswerConditionType}", true);
+            Box box = new Box();
+
+            DropdownField dropdownField = CreateDropdownField(typeof(AnswerConditionTypes), conditionData.AnswerConditionType.ToString(), null, callback =>
+            {
+                conditionData.AnswerConditionType = Enum.Parse<AnswerConditionTypes>(callback.newValue);
+                conditionFoldout.text = $"{conditionData.AnswerConditionType}";
+                box.Clear();
+                box = CreateConditionCheckField(box, conditionData);
+            });
+
+            Toggle reverseToggle = CreateBoolField(conditionData.Reversed, "Reversed", callback => conditionData.Reversed = callback.newValue);
+
+            box = CreateConditionCheckField(box, conditionData);
+
+            conditionFoldout.Add(dropdownField);
+            conditionFoldout.Add(reverseToggle);
+            conditionFoldout.Add(box);
+            foldout.Add(conditionFoldout);
+        }
+
+        public static Box CreateConditionCheckField(Box box, AnswerConditionSaveData conditionData)
+        {
+            switch (conditionData.AnswerConditionType)
+            {
+                case AnswerConditionTypes.CharacteristicCheck:
+                    conditionData.Skill = SkillsNames.No;
+
+                    DropdownField dropdownField = CreateDropdownField(
+                        typeof(Characteristics),
+                        conditionData.Characteristic.ToString(),
+                        null,
+                        callback =>
+                        {
+                            conditionData.Characteristic = (Characteristics)Enum.Parse(typeof(Characteristics), callback.newValue);
+                        }
+                    );
+                    Label label = new Label()
+                    {
+                        text = "more or equal"
+                    };
+                    label.AddToClassList("ds-node__label");
+                    TextField valueTextField = CreateTextField(
+                        conditionData.RequiredValue.ToString(),
+                        null,
+                        callback => conditionData.RequiredValue = int.Parse(callback.newValue)
+                    );
+                    box.Add(dropdownField);
+                    box.Add(label);
+                    box.Add(valueTextField);
+
+                    break;
+                case AnswerConditionTypes.SkillCheck:
+                    dropdownField = CreateDropdownField(
+                        typeof(SkillsNames),
+                        conditionData.Skill.ToString(),
+                        null,
+                        callback => conditionData.Skill = (SkillsNames)Enum.Parse(typeof(SkillsNames), callback.newValue)
+                    );
+                    label = new Label()
+                    {
+                        text = "more or equal"
+                    };
+                    label.AddToClassList("ds-node__label");
+                    valueTextField = CreateTextField(
+                        conditionData.RequiredValue.ToString(),
+                        null,
+                        callback => conditionData.RequiredValue = int.Parse(callback.newValue)
+                    );
+                    box.Add(dropdownField);
+                    box.Add(label);
+                    box.Add(valueTextField);
+
+                    break;
+                default:
+                    break;
+            }
+            return box;
         }
     }
 }
