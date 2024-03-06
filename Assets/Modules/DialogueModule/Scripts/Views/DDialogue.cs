@@ -11,15 +11,9 @@ namespace SDRGames.Whist.DialogueSystem.Views
     {
         /* Dialogue Scriptable Objects */
         [SerializeField] public DialogueContainerScriptableObject dialogueContainer;
-        [SerializeField] public DialogueGroupScriptableObject dialogueGroup;
         [SerializeField] public DialogueScriptableObject dialogue;
 
-        /* Filters */
-        [SerializeField] private bool groupedDialogues;
-        [SerializeField] private bool startingDialoguesOnly;
-
         /* Indexes */
-        [SerializeField] private int selectedDialogueGroupIndex;
         [SerializeField] private int selectedDialogueIndex;
     }
 }

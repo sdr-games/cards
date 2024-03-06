@@ -10,37 +10,34 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a78993f904d7ff443bfe26057a8ddef6, type: 3}
-  m_Name: IntroGraph
+  m_Name: NewDialogueGraph
   m_EditorClassIdentifier: 
-  <FileName>k__BackingField: Intro
-  <Groups>k__BackingField: []
+  <FileName>k__BackingField: NewDialogueGraph
   <StartNodes>k__BackingField:
-  - <ID>k__BackingField: 571b98cf-4d24-4770-8ef8-a0234dfd8b1f
+  - <ID>k__BackingField: 817d7cda-3dd3-48e6-a6d0-8be3470b76ce
     <Name>k__BackingField: Start
     <Answers>k__BackingField:
     - <LocalizationSaveData>k__BackingField:
         <SelectedLocalizationTable>k__BackingField: CharacterNames
         <SelectedEntryKey>k__BackingField: "Valior\t"
         <LocalizedText>k__BackingField: Valior
-      <NodeID>k__BackingField: 546aac72-ed98-4be7-a0c2-85ecee13fff4
-      <Conditions>k__BackingField:
-      - <AnswerConditionType>k__BackingField: 0
-        <Characteristic>k__BackingField: 0
-        <Skill>k__BackingField: -1
-        <RequiredValue>k__BackingField: 0
-        <Quest>k__BackingField: {fileID: 0}
-        <Reversed>k__BackingField: 0
+      <NodeID>k__BackingField: b35918bb-bd96-4001-ba07-3c43d5acd866
+      <Conditions>k__BackingField: []
+    <NodeType>k__BackingField: 0
+    <Position>k__BackingField: {x: 20.800001, y: 229.6}
+  - <ID>k__BackingField: e6fc6b89-376a-4b6a-975c-f9cb6cf0c9fc
+    <Name>k__BackingField: Start1
+    <Answers>k__BackingField:
     - <LocalizationSaveData>k__BackingField:
         <SelectedLocalizationTable>k__BackingField: CharacterNames
         <SelectedEntryKey>k__BackingField: "Valior\t"
         <LocalizedText>k__BackingField: Valior
-      <NodeID>k__BackingField: 14968b14-afd0-43f1-81fc-6927b720f5ea
+      <NodeID>k__BackingField: 2dc68c04-0d66-4b57-9c37-c3bcc5da49b0
       <Conditions>k__BackingField: []
-    <GroupID>k__BackingField: 
-    <DialogueType>k__BackingField: 0
-    <Position>k__BackingField: {x: 627.2, y: 268.80002}
+    <NodeType>k__BackingField: 0
+    <Position>k__BackingField: {x: 55.2, y: 487.19998}
   <SpeechNodes>k__BackingField:
-  - <ID>k__BackingField: 546aac72-ed98-4be7-a0c2-85ecee13fff4
+  - <ID>k__BackingField: b35918bb-bd96-4001-ba07-3c43d5acd866
     <Name>k__BackingField: Speech
     <Answers>k__BackingField:
     - <LocalizationSaveData>k__BackingField:
@@ -48,16 +45,9 @@ MonoBehaviour:
         <SelectedEntryKey>k__BackingField: "Valior\t"
         <LocalizedText>k__BackingField: Valior
       <NodeID>k__BackingField: 
-      <Conditions>k__BackingField:
-      - <AnswerConditionType>k__BackingField: 2
-        <Characteristic>k__BackingField: 0
-        <Skill>k__BackingField: -1
-        <RequiredValue>k__BackingField: 0
-        <Quest>k__BackingField: {fileID: 0}
-        <Reversed>k__BackingField: 0
-    <GroupID>k__BackingField: 
-    <DialogueType>k__BackingField: 1
-    <Position>k__BackingField: {x: 975.2, y: 209.59999}
+      <Conditions>k__BackingField: []
+    <NodeType>k__BackingField: 1
+    <Position>k__BackingField: {x: 300.80002, y: 162.40001}
     <LocalizationSaveData>k__BackingField:
       <SelectedLocalizationTable>k__BackingField: CharacterNames
       <SelectedEntryKey>k__BackingField: "Valior\t"
@@ -65,10 +55,7 @@ MonoBehaviour:
     <SelectedLocalizationTable>k__BackingField: 
     <SelectedLocalizedText>k__BackingField: 
     <NodeID>k__BackingField: 
-    <Quest>k__BackingField: {fileID: 0}
-    <DialogueQuestAction>k__BackingField: 1
-    <DialogueAction>k__BackingField: 0
-  - <ID>k__BackingField: 14968b14-afd0-43f1-81fc-6927b720f5ea
+  - <ID>k__BackingField: 2dc68c04-0d66-4b57-9c37-c3bcc5da49b0
     <Name>k__BackingField: Speech1
     <Answers>k__BackingField:
     - <LocalizationSaveData>k__BackingField:
@@ -77,9 +64,8 @@ MonoBehaviour:
         <LocalizedText>k__BackingField: Valior
       <NodeID>k__BackingField: 
       <Conditions>k__BackingField: []
-    <GroupID>k__BackingField: 
-    <DialogueType>k__BackingField: 1
-    <Position>k__BackingField: {x: 926.4, y: 572}
+    <NodeType>k__BackingField: 1
+    <Position>k__BackingField: {x: 394.40002, y: 456}
     <LocalizationSaveData>k__BackingField:
       <SelectedLocalizationTable>k__BackingField: CharacterNames
       <SelectedEntryKey>k__BackingField: "Valior\t"
@@ -87,13 +73,8 @@ MonoBehaviour:
     <SelectedLocalizationTable>k__BackingField: 
     <SelectedLocalizedText>k__BackingField: 
     <NodeID>k__BackingField: 
-    <Quest>k__BackingField: {fileID: 0}
-    <DialogueQuestAction>k__BackingField: 0
-    <DialogueAction>k__BackingField: 0
-  <OldGroupNames>k__BackingField: []
-  <OldUngroupedNodeNames>k__BackingField:
+  <OldNodeNames>k__BackingField:
   - Start
+  - Start1
   - Speech
   - Speech1
-  <OldGroupedNodeNames>k__BackingField:
-    list: []

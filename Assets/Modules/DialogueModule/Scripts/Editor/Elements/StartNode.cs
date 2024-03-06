@@ -9,34 +9,25 @@ namespace SDRGames.Whist.DialogueSystem.Editor
 {
     public class StartNode : BaseNode
     {
-        public override void Initialize(string nodeName, GraphView dsGraphView, Vector2 position)
+        public override void Initialize(string nodeName, Vector2 position)
         {
-            base.Initialize(nodeName, dsGraphView, position);
-
-            DialogueType = DialogueTypes.Start;
-            Answers = new List<AnswerSaveData>();
-
-            AnswerSaveData answerData = new AnswerSaveData()
-            {
-                LocalizationSaveData = new LocalizationSaveData("", "Answer", "Answer"),
-                Conditions = new List<AnswerConditionSaveData>()
-            };
-            Answers.Add(answerData);
+            base.Initialize(nodeName, position);
+            SaveData.SetNodeType(NodeTypes.Start);
         }
 
         public override void Draw()
         {
             /* MAIN CONTAINER */
-
+            string defaultText = "Answer";
             Button addAnswerButton = UtilityElement.CreateButton("Add answer", () =>
             {
                 AnswerSaveData answerData = new AnswerSaveData()
                 {
-                    LocalizationSaveData = new LocalizationSaveData("", "Answer", "Answer"),
+                    LocalizationSaveData = new LocalizationSaveData("", defaultText, defaultText),
                     Conditions = new List<AnswerConditionSaveData>()
                 };
-                Answers.Add(answerData);
-                CreateAnswerPort(answerData, Answers);
+                SaveData.AddAnswer(answerData);
+                CreateAnswerPort(answerData);
             });
 
             addAnswerButton.AddToClassList("ds-node__button");
@@ -44,13 +35,19 @@ namespace SDRGames.Whist.DialogueSystem.Editor
 
             /* OUTPUT CONTAINER */
 
-            foreach (AnswerSaveData answer in Answers)
+            foreach (AnswerSaveData answer in SaveData.Answers)
             {
-                CreateAnswerPort(answer, Answers);
+                CreateAnswerPort(answer);
             }
             RefreshExpandedState();
 
             base.Draw();
+        }
+
+        public override void SaveToGraph(GraphSaveDataScriptableObject graphData)
+        {
+            SaveData.SetPosition(GetPosition().position);
+            graphData.StartNodes.Add(SaveData);
         }
     }
 }

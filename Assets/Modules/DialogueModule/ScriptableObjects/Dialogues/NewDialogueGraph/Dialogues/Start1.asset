@@ -9,20 +9,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 41b32306663440846b7d74e07fec138e, type: 3}
-  m_Name: Speech1
+  m_Script: {fileID: 11500000, guid: 9f262818b55b0f4418296bad0176bdab, type: 3}
+  m_Name: Start1
   m_EditorClassIdentifier: 
-  <DialogueName>k__BackingField: Speech1
+  <Name>k__BackingField: Start1
   <Answers>k__BackingField:
   - <LocalizationData>k__BackingField:
       <SelectedLocalizationTable>k__BackingField: CharacterNames
       <SelectedLocalizedText>k__BackingField: "Valior\t"
-    <NextDialogue>k__BackingField: {fileID: 0}
+    <NextDialogue>k__BackingField: {fileID: 11400000, guid: 29e09d6ab4f6d75418aa5cff13e865a1,
+      type: 2}
     <Conditions>k__BackingField: []
-  <DialogueType>k__BackingField: 1
-  <LocalizationData>k__BackingField:
-    <SelectedLocalizationTable>k__BackingField: CharacterNames
-    <SelectedLocalizedText>k__BackingField: "Valior\t"
-  <Quest>k__BackingField: {fileID: 0}
-  <DialogueQuestAction>k__BackingField: 0
-  <DialogueAction>k__BackingField: 0
+  <DialogueType>k__BackingField: 0

@@ -4,7 +4,6 @@ using SDRGames.Whist.DialogueSystem.Helpers;
 
 using UnityEditor;
 using UnityEditor.UIElements;
-
 using UnityEngine.UIElements;
 
 namespace SDRGames.Whist.DialogueSystem.Editor
@@ -23,6 +22,21 @@ namespace SDRGames.Whist.DialogueSystem.Editor
         public static void Open()
         {
             GetWindow<DialogueEditorWindow>("Dialogue System Graph");
+        }
+
+        public static void UpdateFileName(string newFileName)
+        {
+            _fileNameTextField.value = newFileName;
+        }
+
+        public void EnableSaving()
+        {
+            _saveButton?.SetEnabled(true);
+        }
+
+        public void DisableSaving()
+        {
+            _saveButton.SetEnabled(false);
         }
 
         private void OnEnable()
@@ -79,20 +93,28 @@ namespace SDRGames.Whist.DialogueSystem.Editor
         {
             if (string.IsNullOrEmpty(_fileNameTextField.value))
             {
-                EditorUtility.DisplayDialog("Invalid file name.", "Please ensure the file name you've typed in is valid.", "Roger!");
-                return;
+                _fileNameTextField.value = "NewDialogueGraph";
             }
 
+            var path = EditorUtility.SaveFilePanel("Save dialogue graph", "", $"{_fileNameTextField.value}.asset", "asset");
+            
+            if (string.IsNullOrEmpty(path))
+            {
+                EditorUtility.DisplayDialog("Empty path", "You must select a path first", "OK");
+                return;
+            }
+            _fileNameTextField.value = Path.GetFileNameWithoutExtension(path);
             UtilityIO.Initialize(_graphView, _fileNameTextField.value);
-            UtilityIO.Save();
+            UtilityIO.Save(path);
         }
 
         private void Load()
         {
-            string filepath = EditorUtility.OpenFilePanel("Dialogue Graphs", "Assets/Resources/ScriptableObjectsAssets", "asset");
+            string filepath = EditorUtility.OpenFilePanel("Dialogue Graphs", "Assets/Modules/DialogueModule/ScriptableObjects/DialogueGraphs", "asset");
 
             if (string.IsNullOrEmpty(filepath))
             {
+                EditorUtility.DisplayDialog("Empty path", "You must select a path first", "OK");
                 return;
             }
 
@@ -117,21 +139,6 @@ namespace SDRGames.Whist.DialogueSystem.Editor
         {
             _graphView.ToggleMiniMap();
             _miniMapButton.ToggleInClassList("ds-toolbar__button__selected");
-        }
-
-        public static void UpdateFileName(string newFileName)
-        {
-            _fileNameTextField.value = newFileName;
-        }
-
-        public void EnableSaving()
-        {
-            _saveButton.SetEnabled(true);
-        }
-
-        public void DisableSaving()
-        {
-            _saveButton.SetEnabled(false);
         }
     }
 }

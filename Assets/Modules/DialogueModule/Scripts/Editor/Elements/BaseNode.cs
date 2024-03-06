@@ -15,16 +15,16 @@ using static SDRGames.Whist.DialogueSystem.ScriptableObjects.DialogueScriptableO
 
 namespace SDRGames.Whist.DialogueSystem.Editor
 {
-    public class BaseNode : Node
+    public abstract class BaseNode : Node
     {
-        public string ID { get; set; }
-        public string DialogueName { get; set; }
-        public DialogueTypes DialogueType { get; set; }
-        public Group Group { get; set; }
-        public List<AnswerSaveData> Answers { get; set; }
+        private Color _defaultBackgroundColor;
 
-        protected GraphView graphView;
-        private Color defaultBackgroundColor;
+        public BaseNodeSaveData SaveData { get; protected set; }
+
+        public event EventHandler<NodeNameChangedEventArgs> NodeNameTextFieldChanged;
+        public event EventHandler AnswerPortRemoved;
+        public event EventHandler PortDisconnected;
+
 
         public override void BuildContextualMenu(ContextualMenuPopulateEvent contextualMenuEvent)
         {
@@ -34,15 +34,23 @@ namespace SDRGames.Whist.DialogueSystem.Editor
             base.BuildContextualMenu(contextualMenuEvent);
         }
 
-        public virtual void Initialize(string nodeName, GraphView dsGraphView, Vector2 position)
+        public virtual void Initialize(string nodeName, Vector2 position)
         {
-            ID = Guid.NewGuid().ToString();
-            DialogueName = nodeName;
+            List<AnswerSaveData> answers = new List<AnswerSaveData>();
+
+            AnswerSaveData answerData = new AnswerSaveData()
+            {
+                LocalizationSaveData = new LocalizationSaveData("", "Answer", "Answer"),
+                Conditions = new List<AnswerConditionSaveData>()
+            };
+            answers.Add(answerData);
 
             SetPosition(new Rect(position, Vector2.zero));
 
-            graphView = dsGraphView;
-            defaultBackgroundColor = new Color(29f / 255f, 29f / 255f, 30f / 255f);
+            SaveData = new BaseNodeSaveData(nodeName, answers, GetPosition().position);
+            SaveData.GenerateID();
+
+            _defaultBackgroundColor = new Color(29f / 255f, 29f / 255f, 30f / 255f);
 
             mainContainer.AddToClassList("ds-node__main-container");
             extensionContainer.AddToClassList("ds-node__extension-container");
@@ -51,56 +59,82 @@ namespace SDRGames.Whist.DialogueSystem.Editor
         public virtual void Draw()
         {
             /* TITLE CONTAINER */
-
-            TextField dialogueNameTextField = UtilityElement.CreateTextField(DialogueName, null, callback =>
+            TextField nodeNameTextField = UtilityElement.CreateTextField(SaveData.Name, null, callback =>
             {
                 TextField target = (TextField)callback.target;
+                string oldName = SaveData.Name;
                 target.value = callback.newValue.RemoveWhitespaces().RemoveSpecialCharacters();
 
                 if (string.IsNullOrEmpty(target.value))
                 {
-                    if (!string.IsNullOrEmpty(DialogueName))
+                    if (!string.IsNullOrEmpty(SaveData.Name))
                     {
-                        ++graphView.NameErrorsAmount;
-                    }
-                }
-                else
-                {
-                    if (string.IsNullOrEmpty(DialogueName))
-                    {
-                        --graphView.NameErrorsAmount;
+                        NodeNameTextFieldChanged?.Invoke(this, new NodeNameChangedEventArgs(oldName, null));
+                        return;
                     }
                 }
 
-                if (Group == null)
-                {
-                    graphView.RemoveUngroupedNode(this);
-                    DialogueName = target.value;
-                    graphView.AddUngroupedNode(this);
-                    return;
-                }
-
-                Group currentGroup = Group;
-                graphView.RemoveGroupedNode(this, Group);
-                DialogueName = target.value;
-                graphView.AddGroupedNode(this, currentGroup);
+                //SaveData.SetName(target.value);
+                SaveData.Name = target.value;
+                NodeNameTextFieldChanged?.Invoke(this, new NodeNameChangedEventArgs(oldName, this));
             });
 
-            dialogueNameTextField.AddClasses(
+            nodeNameTextField.AddClasses(
                 "ds-node__text-field",
                 "ds-node__text-field__hidden",
                 "ds-node__filename-text-field"
             );
 
-            titleContainer.Insert(0, dialogueNameTextField);
+            titleContainer.Insert(0, nodeNameTextField);
         }
 
-        protected Port CreateAnswerPort(object userData, List<AnswerSaveData> answers)
+        public void SetErrorStyle(Color color)
+        {
+            mainContainer.style.backgroundColor = color;
+        }
+
+        public void ResetStyle()
+        {
+            mainContainer.style.backgroundColor = _defaultBackgroundColor;
+        }
+
+        public abstract void SaveToGraph(GraphSaveDataScriptableObject graphData);
+
+        public virtual DialogueScriptableObject SaveToSO(string folderPath)
+        {
+            DialogueScriptableObject dialogueSO;
+
+            dialogueSO = UtilityIO.CreateAsset<DialogueScriptableObject>($"{folderPath}/Dialogues", SaveData.Name);
+
+            dialogueSO.Initialize(
+                SaveData.Name,
+                UtilityIO.ConvertNodeAnswersToDialogueAnswers(SaveData.Answers),
+                SaveData.NodeType
+            );
+
+            UtilityIO.SaveAsset(dialogueSO);
+            return dialogueSO;
+        }
+
+        public virtual void LoadData(BaseNodeSaveData nodeData, List<AnswerSaveData> answers)
+        {
+            SaveData = nodeData;
+            SaveData.SetAnswers(answers);
+        }
+
+        public void DisconnectAllPorts()
+        {
+            DisconnectInputPorts();
+            DisconnectOutputPorts();
+        }
+
+        protected Port CreateAnswerPort(object userData)
         {
             Port answerPort = this.CreatePort();
             answerPort.ClearClassList();
             answerPort.AddToClassList("ds-node__answer-port");
             answerPort.userData = userData;
+
             AnswerSaveData answerData = (AnswerSaveData)userData;
             if (answerData.Conditions == null)
             {
@@ -114,18 +148,14 @@ namespace SDRGames.Whist.DialogueSystem.Editor
 
             Button deleteAnswerButton = UtilityElement.CreateButton("X", () =>
             {
-                if (answers.Count == 1)
+                if (SaveData.Answers.Count == 1)
                 {
                     return;
                 }
-                if (answerPort.connected)
-                {
-                    graphView.DeleteElements(answerPort.connections);
-                }
-                answers.Remove(answerData);
+                SaveData.RemoveAnswer(answerData);
 
                 outputContainer.Remove(answerFoldout);
-                graphView.RemoveElement(answerPort);
+                AnswerPortRemoved?.Invoke(answerPort, EventArgs.Empty);
             });
             deleteAnswerButton.AddToClassList("ds-node__button");
             answerPort.Add(deleteAnswerButton);
@@ -138,16 +168,16 @@ namespace SDRGames.Whist.DialogueSystem.Editor
             {
                 AnswerConditionSaveData conditionData = new AnswerConditionSaveData()
                 {
-                    AnswerConditionType = AnswerConditionTypes.QuestAccepted
+                    AnswerConditionType = AnswerConditionTypes.CharacteristicCheck
                 };
                 answerData.Conditions.Add(conditionData);
-                CreateConditionField(conditionsFoldout, conditionData);
+                UtilityElement.CreateConditionField(conditionsFoldout, conditionData);
             });
             conditionsFoldout.Add(addConditionButton);
 
             foreach (AnswerConditionSaveData conditionData in answerData.Conditions)
             {
-                CreateConditionField(conditionsFoldout, conditionData);
+                UtilityElement.CreateConditionField(conditionsFoldout, conditionData);
             }
 
             answerFoldout.Add(answerPort);
@@ -156,111 +186,6 @@ namespace SDRGames.Whist.DialogueSystem.Editor
             outputContainer.Add(answerFoldout);
 
             return answerPort;
-        }
-
-        private void CreateConditionField(Foldout foldout, AnswerConditionSaveData conditionData)
-        {
-            Foldout conditionFoldout = UtilityElement.CreateFoldout($"{conditionData.AnswerConditionType}", true);
-            Box box = new Box();
-
-            DropdownField dropdownField = UtilityElement.CreateDropdownField(typeof(AnswerConditionTypes), conditionData.AnswerConditionType.ToString(), null, callback =>
-            {
-                conditionData.AnswerConditionType = Enum.Parse<AnswerConditionTypes>(callback.newValue);
-                conditionFoldout.text = $"{conditionData.AnswerConditionType}";
-                box.Clear();
-                box = CreateConditionCheckField(box, conditionData);
-            });
-
-            Toggle reverseToggle = UtilityElement.CreateBoolField(conditionData.Reversed, "Reversed", callback => conditionData.Reversed = callback.newValue);
-
-            box = CreateConditionCheckField(box, conditionData);
-
-            conditionFoldout.Add(dropdownField);
-            conditionFoldout.Add(reverseToggle);
-            conditionFoldout.Add(box);
-            foldout.Add(conditionFoldout);
-        }
-
-        private Box CreateConditionCheckField(Box box, AnswerConditionSaveData conditionData)
-        {
-            switch (conditionData.AnswerConditionType)
-            {
-                case AnswerConditionTypes.CharacteristicCheck:
-                    conditionData.Skill = SkillsNames.No;
-                    conditionData.Quest = null;
-
-                    DropdownField dropdownField = UtilityElement.CreateDropdownField(
-                        typeof(Characteristics),
-                        conditionData.Characteristic.ToString(),
-                        null,
-                        callback =>
-                        {
-                            conditionData.Characteristic = (Characteristics)Enum.Parse(typeof(Characteristics), callback.newValue);
-                        }
-                    );
-                    Label label = new Label()
-                    {
-                        text = "more or equal"
-                    };
-                    label.AddToClassList("ds-node__label");
-                    TextField valueTextField = UtilityElement.CreateTextField(
-                        conditionData.RequiredValue.ToString(),
-                        null,
-                        callback => conditionData.RequiredValue = int.Parse(callback.newValue)
-                    );
-                    box.Add(dropdownField);
-                    box.Add(label);
-                    box.Add(valueTextField);
-
-                    break;
-                case AnswerConditionTypes.SkillCheck:
-                    conditionData.Quest = null;
-
-                    dropdownField = UtilityElement.CreateDropdownField(
-                        typeof(SkillsNames),
-                        conditionData.Skill.ToString(),
-                        null,
-                        callback => conditionData.Skill = (SkillsNames)Enum.Parse(typeof(SkillsNames), callback.newValue)
-                    );
-                    label = new Label()
-                    {
-                        text = "more or equal"
-                    };
-                    label.AddToClassList("ds-node__label");
-                    valueTextField = UtilityElement.CreateTextField(
-                        conditionData.RequiredValue.ToString(),
-                        null,
-                        callback => conditionData.RequiredValue = int.Parse(callback.newValue)
-                    );
-                    box.Add(dropdownField);
-                    box.Add(label);
-                    box.Add(valueTextField);
-
-                    break;
-                case AnswerConditionTypes.QuestAccepted:
-                case AnswerConditionTypes.QuestCompleted:
-                case AnswerConditionTypes.QuestFinished:
-                    conditionData.Skill = SkillsNames.No;
-
-                    ObjectField objectField = UtilityElement.CreateObjectField(
-                        typeof(Quest),
-                        conditionData.Quest,
-                        null,
-                        callback => conditionData.Quest = (Quest)callback.newValue
-                    );
-                    box.Add(objectField);
-
-                    break;
-                default:
-                    break;
-            }
-            return box;
-        }
-
-        public void DisconnectAllPorts()
-        {
-            DisconnectInputPorts();
-            DisconnectOutputPorts();
         }
 
         private void DisconnectInputPorts()
@@ -283,62 +208,9 @@ namespace SDRGames.Whist.DialogueSystem.Editor
                     {
                         continue;
                     }
-                    graphView.DeleteElements(((Port)port).connections);
+                    PortDisconnected?.Invoke(port, EventArgs.Empty);
                 }
             }
-        }
-
-        public void SetErrorStyle(Color color)
-        {
-            mainContainer.style.backgroundColor = color;
-        }
-
-        public void ResetStyle()
-        {
-            mainContainer.style.backgroundColor = defaultBackgroundColor;
-        }
-
-        public virtual void SaveToGraph(GraphSaveDataScriptableObject graphData)
-        {
-            BaseNodeSaveData nodeData = new BaseNodeSaveData()
-            {
-                ID = ID,
-                Name = DialogueName,
-                GroupID = Group?.ID,
-                DialogueType = DialogueType,
-                Position = GetPosition().position,
-                Answers = Answers
-            };
-
-            if (Group != null)
-            {
-                Group.Nodes.Add(nodeData);
-            }
-
-            graphData.StartNodes.Add(nodeData);
-        }
-
-        public virtual DialogueScriptableObject SaveToSO(string folderPath)
-        {
-            DialogueScriptableObject dialogue;
-
-            if (Group != null)
-            {
-                dialogue = UtilityIO.CreateAsset<DialogueScriptableObject>($"{folderPath}/Groups/{Group.title}/Dialogues", DialogueName);
-            }
-            else
-            {
-                dialogue = UtilityIO.CreateAsset<DialogueScriptableObject>($"{folderPath}/Global/Dialogues", DialogueName);
-            }
-
-            dialogue.Initialize(
-                DialogueName,
-                UtilityIO.ConvertNodeAnswersToDialogueAnswers(Answers),
-                DialogueType
-            );
-
-            UtilityIO.SaveAsset(dialogue);
-            return dialogue;
         }
     }
 }

@@ -35,12 +35,12 @@ namespace SDRGames.Whist.DialogueSystem.Controllers
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            GetComponent<TextMeshProUGUI>().color = MessageColors.GetColor("AnswerHighlighted");
+            //GetComponent<TextMeshProUGUI>().color = MessageColors.GetColor("AnswerHighlighted");
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            GetComponent<TextMeshProUGUI>().color = MessageColors.GetColor("Answer");
+            //GetComponent<TextMeshProUGUI>().color = MessageColors.GetColor("Answer");
         }
     }
 }

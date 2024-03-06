@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 using SDRGames.Whist.DialogueSystem.Helpers;
 using SDRGames.Whist.DialogueSystem.Models;
@@ -22,13 +23,9 @@ namespace SDRGames.Whist.DialogueSystem.Editor
         private static string _containerFolderPath;
 
         private static List<BaseNode> _nodes;
-        private static List<SpeechNode> _answerNodes;
-        private static List<Group> _groups;
 
-        private static Dictionary<string, DialogueGroupScriptableObject> _createdDialogueGroups;
         private static Dictionary<string, DialogueScriptableObject> _createdDialogues;
 
-        private static Dictionary<string, Group> _loadedGroups;
         private static Dictionary<string, BaseNode> _loadedNodes;
 
         public static void Initialize(GraphView dsGraphView, string graphName)
@@ -39,89 +36,45 @@ namespace SDRGames.Whist.DialogueSystem.Editor
             _containerFolderPath = $"Assets/Modules/DialogueModule/ScriptableObjects/Dialogues/{graphName}";
 
             _nodes = new List<BaseNode>();
-            _groups = new List<Group>();
 
-            _createdDialogueGroups = new Dictionary<string, DialogueGroupScriptableObject>();
             _createdDialogues = new Dictionary<string, DialogueScriptableObject>();
 
-            _loadedGroups = new Dictionary<string, Group>();
             _loadedNodes = new Dictionary<string, BaseNode>();
         }
 
-        public static void Save()
+        public static void Save(string path)
         {
             CreateDefaultFolders();
 
             GetElementsFromGraphView();
-            GraphSaveDataScriptableObject graphData = CreateAsset<GraphSaveDataScriptableObject>("Assets/Modules/DialogueModule/ScriptableObjects/DialogueGraphs", $"{_graphFileName}Graph");
+            GraphSaveDataScriptableObject graphData = CreateAsset<GraphSaveDataScriptableObject>(path);
             graphData.Initialize(_graphFileName);
 
             DialogueContainerScriptableObject dialogueContainer = CreateAsset<DialogueContainerScriptableObject>(_containerFolderPath, _graphFileName);
             dialogueContainer.Initialize(_graphFileName);
 
-            SaveGroups(graphData, dialogueContainer);
             SaveNodes(graphData, dialogueContainer);
 
             SaveAsset(graphData);
             SaveAsset(dialogueContainer);
         }
 
-        private static void SaveGroups(GraphSaveDataScriptableObject graphData, DialogueContainerScriptableObject dialogueContainer)
-        {
-            List<string> groupNames = new List<string>();
-
-            foreach (Group group in _groups)
-            {
-                group.SaveToGraph(graphData);
-                var dialogueGroup = group.SaveToSO(_containerFolderPath);
-                dialogueContainer.DialogueGroups.Add(dialogueGroup, dialogueGroup.GroupedDialogues);
-                _createdDialogueGroups.Add(group.ID, dialogueGroup);
-
-                groupNames.Add(group.title);
-            }
-
-            UpdateOldGroups(groupNames, graphData);
-        }
-
-        private static void UpdateOldGroups(List<string> currentGroupNames, GraphSaveDataScriptableObject graphData)
-        {
-            if (graphData.OldGroupNames != null && graphData.OldGroupNames.Count != 0)
-            {
-                List<string> groupsToRemove = graphData.OldGroupNames.Except(currentGroupNames).ToList();
-                foreach (string groupToRemove in groupsToRemove)
-                {
-                    RemoveFolder($"{_containerFolderPath}/Groups/{groupToRemove}");
-                }
-            }
-
-            graphData.OldGroupNames = new List<string>(currentGroupNames);
-        }
-
         private static void SaveNodes(GraphSaveDataScriptableObject graphData, DialogueContainerScriptableObject dialogueContainer)
         {
-            SerializableDictionary<string, List<string>> groupedNodeNames = new SerializableDictionary<string, List<string>>();
-            List<string> ungroupedNodeNames = new List<string>();
+            List<string> nodeNames = new List<string>();
 
             foreach (BaseNode node in _nodes)
             {
                 node.SaveToGraph(graphData);
                 DialogueScriptableObject dialogue = node.SaveToSO(_containerFolderPath);
-                _createdDialogues.Add(node.ID, dialogue);
+                _createdDialogues.Add(node.SaveData.ID, dialogue);
 
-                if (node.Group != null)
-                {
-                    groupedNodeNames.AddItem(node.Group.title, node.DialogueName);
-                    dialogueContainer.DialogueGroups.AddItem(_createdDialogueGroups[node.Group.ID], dialogue);
-                    continue;
-                }
-                dialogueContainer.UngroupedDialogues.Add(dialogue);
-                ungroupedNodeNames.Add(node.DialogueName);
+                dialogueContainer.Dialogues.Add(dialogue);
+                nodeNames.Add(node.SaveData.Name);
             }
 
             UpdateDialoguesChoicesConnections();
-
-            UpdateOldGroupedNodes(groupedNodeNames, graphData);
-            UpdateOldUngroupedNodes(ungroupedNodeNames, graphData);
+            UpdateOldNodes(nodeNames, graphData);
         }
 
         public static List<DialogueAnswerData> ConvertNodeAnswersToDialogueAnswers(List<AnswerSaveData> nodeAnswers)
@@ -153,7 +106,6 @@ namespace SDRGames.Whist.DialogueSystem.Editor
                     Characteristic = nodeAnswerCondition.Characteristic,
                     Skill = nodeAnswerCondition.Skill,
                     RequiredValue = nodeAnswerCondition.RequiredValue,
-                    Quest = nodeAnswerCondition.Quest,
                     AnswerConditionType = nodeAnswerCondition.AnswerConditionType,
                     Reversed = nodeAnswerCondition.Reversed,
                 };
@@ -168,11 +120,11 @@ namespace SDRGames.Whist.DialogueSystem.Editor
         {
             foreach (BaseNode node in _nodes)
             {
-                DialogueScriptableObject dialogue = _createdDialogues[node.ID];
+                DialogueScriptableObject dialogue = _createdDialogues[node.SaveData.ID];
 
-                for (int choiceIndex = 0; choiceIndex < node.Answers.Count; ++choiceIndex)
+                for (int choiceIndex = 0; choiceIndex < node.SaveData.Answers.Count; ++choiceIndex)
                 {
-                    AnswerSaveData nodeChoice = node.Answers[choiceIndex];
+                    AnswerSaveData nodeChoice = node.SaveData.Answers[choiceIndex];
                     if (string.IsNullOrEmpty(nodeChoice.NodeID))
                     {
                         continue;
@@ -184,41 +136,18 @@ namespace SDRGames.Whist.DialogueSystem.Editor
             }
         }
 
-        private static void UpdateOldGroupedNodes(SerializableDictionary<string, List<string>> currentGroupedNodeNames, GraphSaveDataScriptableObject graphData)
+        private static void UpdateOldNodes(List<string> currentUngroupedNodeNames, GraphSaveDataScriptableObject graphData)
         {
-            if (graphData.OldGroupedNodeNames != null && graphData.OldGroupedNodeNames.Count != 0)
+            if (graphData.OldNodeNames != null && graphData.OldNodeNames.Count != 0)
             {
-                foreach (KeyValuePair<string, List<string>> oldGroupedNode in graphData.OldGroupedNodeNames)
-                {
-                    List<string> nodesToRemove = new List<string>();
-
-                    if (currentGroupedNodeNames.ContainsKey(oldGroupedNode.Key))
-                    {
-                        nodesToRemove = oldGroupedNode.Value.Except(currentGroupedNodeNames[oldGroupedNode.Key]).ToList();
-                    }
-
-                    foreach (string nodeToRemove in nodesToRemove)
-                    {
-                        RemoveAsset($"{_containerFolderPath}/Groups/{oldGroupedNode.Key}/Dialogues", nodeToRemove);
-                    }
-                }
-            }
-
-            graphData.OldGroupedNodeNames = new SerializableDictionary<string, List<string>>(currentGroupedNodeNames);
-        }
-
-        private static void UpdateOldUngroupedNodes(List<string> currentUngroupedNodeNames, GraphSaveDataScriptableObject graphData)
-        {
-            if (graphData.OldUngroupedNodeNames != null && graphData.OldUngroupedNodeNames.Count != 0)
-            {
-                List<string> nodesToRemove = graphData.OldUngroupedNodeNames.Except(currentUngroupedNodeNames).ToList();
+                List<string> nodesToRemove = graphData.OldNodeNames.Except(currentUngroupedNodeNames).ToList();
                 foreach (string nodeToRemove in nodesToRemove)
                 {
-                    RemoveAsset($"{_containerFolderPath}/Global/Dialogues", nodeToRemove);
+                    RemoveAsset($"{_containerFolderPath}/Dialogues", nodeToRemove);
                 }
             }
 
-            graphData.OldUngroupedNodeNames = new List<string>(currentUngroupedNodeNames);
+            graphData.OldNodeNames = new List<string>(currentUngroupedNodeNames);
         }
 
         public static void Load(string filepath)
@@ -240,20 +169,9 @@ namespace SDRGames.Whist.DialogueSystem.Editor
 
             DialogueEditorWindow.UpdateFileName(graphData.FileName);
 
-            LoadGroups(graphData.Groups);
             LoadNodes(graphData.StartNodes);
             LoadNodes(graphData.SpeechNodes);
             LoadNodesConnections();
-        }
-
-        private static void LoadGroups(List<GroupSaveData> groups)
-        {
-            foreach (GroupSaveData groupData in groups)
-            {
-                Group group = _graphView.CreateGroup(groupData.Name, groupData.Position);
-                group.ID = groupData.ID;
-                _loadedGroups.Add(group.ID, group);
-            }
         }
 
         private static void LoadNodes(List<BaseNodeSaveData> nodes)
@@ -262,28 +180,13 @@ namespace SDRGames.Whist.DialogueSystem.Editor
             {
                 List<AnswerSaveData> answers = CloneNodeAnswers(nodeData.Answers);
 
-                StartNode node = _graphView.CreateNode(nodeData.Name, nodeData.DialogueType, nodeData.Position, false) as StartNode;
-
-                node.ID = nodeData.ID;
-                node.Answers = answers;
-                node.DialogueType = nodeData.DialogueType;
-
+                StartNode node = _graphView.CreateNode(nodeData.Name, nodeData.NodeType, nodeData.Position, false) as StartNode;
+                node.LoadData(nodeData, answers);
                 node.Draw();
 
                 _graphView.AddElement(node);
 
-                _loadedNodes.Add(node.ID, node);
-
-                if (string.IsNullOrEmpty(nodeData.GroupID))
-                {
-                    continue;
-                }
-
-                Group group = _loadedGroups[nodeData.GroupID];
-
-                node.Group = group;
-
-                group.AddElement(node);
+                _loadedNodes.Add(node.SaveData.ID, node);
             }
         }
 
@@ -293,29 +196,12 @@ namespace SDRGames.Whist.DialogueSystem.Editor
             {
                 List<AnswerSaveData> answers = CloneNodeAnswers(nodeData.Answers);
 
-                SpeechNode node = _graphView.CreateNode(nodeData.Name, nodeData.DialogueType, nodeData.Position, false) as SpeechNode;
-
-                node.ID = nodeData.ID;
-                node.DialogueType = nodeData.DialogueType;
-                node.Answers = answers;
-                node.LocalizationSaveData = nodeData.LocalizationSaveData;
-                node.Quest = nodeData.Quest;
-                node.DialogueQuestAction = nodeData.DialogueQuestAction;
-                node.DialogueAction = nodeData.DialogueAction;
-
+                SpeechNode node = _graphView.CreateNode(nodeData.Name, nodeData.NodeType, nodeData.Position, false) as SpeechNode;
+                node.LoadData(nodeData, answers);
                 node.Draw();
 
                 _graphView.AddElement(node);
-                _loadedNodes.Add(node.ID, node);
-
-                if (string.IsNullOrEmpty(nodeData.GroupID))
-                {
-                    continue;
-                }
-
-                Group group = _loadedGroups[nodeData.GroupID];
-                node.Group = group;
-                group.AddElement(node);
+                _loadedNodes.Add(node.SaveData.ID, node);
             }
         }
 
@@ -358,33 +244,16 @@ namespace SDRGames.Whist.DialogueSystem.Editor
             CreateFolder("Assets/Modules/DialogueModule/ScriptableObjects", "Dialogues");
 
             CreateFolder("Assets/Modules/DialogueModule/ScriptableObjects/Dialogues", _graphFileName);
-            CreateFolder(_containerFolderPath, "Global");
-            CreateFolder(_containerFolderPath, "Groups");
-            CreateFolder($"{_containerFolderPath}/Global", "Dialogues");
+            CreateFolder(_containerFolderPath, "Dialogues");
         }
 
         private static void GetElementsFromGraphView()
         {
-            Type groupType = typeof(Group);
-
             _graphView.graphElements.ForEach(graphElement =>
             {
                 if (graphElement is BaseNode node)
                 {
                     _nodes.Add(node);
-                    return;
-                }
-
-                if (graphElement is SpeechNode answerNode)
-                {
-                    _answerNodes.Add(answerNode);
-                    return;
-                }
-
-                if (graphElement.GetType() == groupType)
-                {
-                    Group group = (Group)graphElement;
-                    _groups.Add(group);
                     return;
                 }
             });
@@ -406,27 +275,34 @@ namespace SDRGames.Whist.DialogueSystem.Editor
             FileUtil.DeleteFileOrDirectory($"{path}/");
         }
 
-        public static T CreateAsset<T>(string path, string assetName) where T : ScriptableObject
+        public static T CreateAsset<T>(string path, string assetName = "") where T : ScriptableObject
         {
-            string fullPath = $"{path}/{assetName}.asset";
+            string fullPath = $"{path}";
+            if (!string.IsNullOrEmpty(assetName))
+            {
+                fullPath += $"/{assetName}.asset";
+            }
+            fullPath = Regex.Replace(fullPath, @"^.*?Assets", "Assets");
 
             T asset = LoadAsset<T>(path, assetName);
 
-            if (asset == null)
+            if(asset != null)
             {
-                asset = ScriptableObject.CreateInstance<T>();
-
-                AssetDatabase.CreateAsset(asset, fullPath);
+                RemoveAsset(path, assetName);
             }
 
+            asset = ScriptableObject.CreateInstance<T>();
+            AssetDatabase.CreateAsset(asset, fullPath);
             return asset;
         }
 
-        public static T LoadAsset<T>(string path, string assetName) where T : ScriptableObject
+        public static T LoadAsset<T>(string path, string assetName = "") where T : ScriptableObject
         {
-            string fullPath = $"{path}/{assetName}.asset";
-            var a = AssetDatabase.LoadAssetAtPath<T>(fullPath);
-
+            string fullPath = $"{path}";
+            if (!string.IsNullOrEmpty(assetName))
+            {
+                fullPath += $"/{assetName}.asset";
+            }
             return AssetDatabase.LoadAssetAtPath<T>(fullPath);
         }
 

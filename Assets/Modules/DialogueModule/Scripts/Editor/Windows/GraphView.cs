@@ -16,58 +16,122 @@ namespace SDRGames.Whist.DialogueSystem.Editor
     public class GraphView : UnityEditor.Experimental.GraphView.GraphView
     {
         private DialogueEditorWindow _editorWindow;
-
         private MiniMap _miniMap;
-
-        private SerializableDictionary<string, NodeErrorData> _ungroupedNodes;
-        private SerializableDictionary<string, GroupErrorData> _groups;
-        private SerializableDictionary<UnityEditor.Experimental.GraphView.Group, SerializableDictionary<string, NodeErrorData>> _groupedNodes;
-
+        private SerializableDictionary<string, NodeErrorData> _nodes;
         private int _nameErrorsAmount;
 
         public int NameErrorsAmount
         {
-            get
-            {
-                return _nameErrorsAmount;
-            }
-
+            get => _nameErrorsAmount;
             set
             {
                 _nameErrorsAmount = value;
 
+                if(_nameErrorsAmount < 0)
+                {
+                    _nameErrorsAmount = 0;
+                }
+
                 if (_nameErrorsAmount == 0)
                 {
                     _editorWindow.EnableSaving();
+                    return;
                 }
-
-                if (_nameErrorsAmount == 1)
-                {
-                    _editorWindow.DisableSaving();
-                }
+                _editorWindow.DisableSaving();
             }
         }
 
-        public GraphView(DialogueEditorWindow dsEditorWindow)
+        public GraphView(DialogueEditorWindow editorWindow)
         {
-            _editorWindow = dsEditorWindow;
+            _editorWindow = editorWindow;
 
-            _ungroupedNodes = new SerializableDictionary<string, NodeErrorData>();
-            _groups = new SerializableDictionary<string, GroupErrorData>();
-            _groupedNodes = new SerializableDictionary<UnityEditor.Experimental.GraphView.Group, SerializableDictionary<string, NodeErrorData>>();
+            _nodes = new SerializableDictionary<string, NodeErrorData>();
 
             AddManipulators();
             AddGridBackground();
             AddMiniMap();
 
             OnElementsDeleted();
-            OnGroupElementsAdded();
-            OnGroupElementsRemoved();
-            OnGroupRenamed();
             OnGraphViewChanged();
 
             AddStyles();
             AddMiniMapStyles();
+        }
+
+        public BaseNode CreateNode(string nodeName, NodeTypes dialogueType, Vector2 position, bool shouldDraw = true)
+        {
+            Type nodeType = Type.GetType($"{GetType().Namespace}.{dialogueType}Node");
+            BaseNode node = (BaseNode)Activator.CreateInstance(nodeType);
+            node.Initialize($"{nodeName}", position);
+            node.NodeNameTextFieldChanged += OnNodeNameTextFieldChanged;
+            node.AnswerPortRemoved += (object sender, EventArgs e) => 
+            {
+                Port answerPort = (Port)sender;
+                if (answerPort.connected)
+                {
+                    DeleteElements(answerPort.connections);
+                }
+                RemoveElement(answerPort);
+            };
+            node.PortDisconnected += (object sender, EventArgs e) => DeleteElements(((Port)sender).connections);
+            AddNode(node);
+
+            if (shouldDraw)
+            {
+                node.Draw();
+            }
+
+            return node;
+        }
+
+        public void AddNode(BaseNode node)
+        {
+            string nodeName = node.SaveData.Name.ToLower();
+
+            if (!_nodes.ContainsKey(nodeName))
+            {
+                NodeErrorData nodeErrorData = new NodeErrorData();
+                nodeErrorData.Nodes.Add(node);
+                _nodes.Add(nodeName, nodeErrorData);
+            }
+            else
+            {
+                _nodes[nodeName].Nodes.Add(node);
+            }
+            CheckNodeNameErrors(_nodes[nodeName]);
+        }
+
+        public Vector2 GetLocalMousePosition(Vector2 mousePosition, bool isSearchWindow = false)
+        {
+            Vector2 worldMousePosition = mousePosition;
+
+            if (isSearchWindow)
+            {
+                worldMousePosition = _editorWindow.rootVisualElement.ChangeCoordinatesTo(_editorWindow.rootVisualElement.parent, mousePosition - _editorWindow.position.position);
+            }
+            Vector2 localMousePosition = contentViewContainer.WorldToLocal(worldMousePosition);
+            return localMousePosition;
+        }
+
+        public override List<Port> GetCompatiblePorts(Port startPort, NodeAdapter nodeAdapter)
+        {
+            return ports.ToList()!.Where(endPort =>
+                          endPort.direction != startPort.direction &&
+                          endPort.node != startPort.node &&
+                          endPort.portType == startPort.portType)
+              .ToList();
+        }
+
+        public void ClearGraph()
+        {
+            graphElements.ForEach(graphElement => RemoveElement(graphElement));
+            _nodes.Clear();
+            NameErrorsAmount = 0;
+        }
+
+        public void ToggleMiniMap()
+        {
+            _miniMap.visible = !_miniMap.visible;
         }
 
         private void AddManipulators()
@@ -78,13 +142,11 @@ namespace SDRGames.Whist.DialogueSystem.Editor
             this.AddManipulator(new SelectionDragger());
             this.AddManipulator(new RectangleSelector());
 
-            this.AddManipulator(CreateNodeContextualMenu("Add Start Node", DialogueTypes.Start));
-            this.AddManipulator(CreateNodeContextualMenu("Add Speech Node", DialogueTypes.Speech));
-
-            this.AddManipulator(CreateGroupContextualMenu());
+            this.AddManipulator(CreateNodeContextualMenu("Add Start Node", NodeTypes.Start));
+            this.AddManipulator(CreateNodeContextualMenu("Add Speech Node", NodeTypes.Speech));
         }
 
-        private IManipulator CreateNodeContextualMenu(string actionTitle, DialogueTypes dialogueType)
+        private IManipulator CreateNodeContextualMenu(string actionTitle, NodeTypes dialogueType)
         {
             return new ContextualMenuManipulator(
                 menuEvent => menuEvent.menu.AppendAction(
@@ -100,69 +162,10 @@ namespace SDRGames.Whist.DialogueSystem.Editor
             );
         }
 
-        private IManipulator CreateGroupContextualMenu()
-        {
-            return new ContextualMenuManipulator(
-                menuEvent => menuEvent.menu.AppendAction(
-                    "Add Group",
-                    actionEvent => CreateGroup(
-                        "Group",
-                        GetLocalMousePosition(actionEvent.eventInfo.localMousePosition)
-                    )
-                )
-            );
-        }
-
-        public Group CreateGroup(string title, Vector2 position)
-        {
-            Group group = new Group(title, position);
-
-            AddGroup(group);
-            AddElement(group);
-
-            foreach (GraphElement selectedElement in selection)
-            {
-                if (selectedElement is BaseNode)
-                {
-                    group.AddElement(selectedElement as BaseNode);
-                }
-            }
-
-            return group;
-        }
-
-        public BaseNode CreateNode(string nodeName, DialogueTypes dialogueType, Vector2 position, bool shouldDraw = true)
-        {
-            Type nodeType = Type.GetType($"SDRGames.Islands.DialogueSystem.Editor.{dialogueType}Node");
-            BaseNode node = (BaseNode)Activator.CreateInstance(nodeType);
-            node.Initialize(nodeName, this, position);
-            AddUngroupedNode(node);
-            if (selection.Count > 0)
-            {
-                foreach (GraphElement selectedElement in selection)
-                {
-                    if (selectedElement is Group)
-                    {
-                        Group group = selectedElement as Group;
-                        group.AddElement(node);
-                    }
-                }
-            }
-            if (shouldDraw)
-            {
-                node.Draw();
-            }
-            return node;
-        }
-
         private void OnElementsDeleted()
         {
             deleteSelection = (operationName, askUser) =>
             {
-                Type groupType = typeof(Group);
-                Type edgeType = typeof(Edge);
-
-                List<Group> groupsToDelete = new List<Group>();
                 List<BaseNode> nodesToDelete = new List<BaseNode>();
                 List<Edge> edgesToDelete = new List<Edge>();
 
@@ -170,121 +173,30 @@ namespace SDRGames.Whist.DialogueSystem.Editor
                 {
                     if (selectedElement is BaseNode node)
                     {
-                        nodesToDelete.Add(node);
                         continue;
                     }
 
-                    if (selectedElement.GetType() == edgeType)
+                    if (selectedElement is SpeechNode speechNode)
                     {
-                        Edge edge = (Edge)selectedElement;
+                        nodesToDelete.Add(speechNode);
+                        continue;
+                    }
+
+                    if (selectedElement is Edge edge)
+                    {
                         edgesToDelete.Add(edge);
                         continue;
                     }
-
-                    if (selectedElement.GetType() != groupType)
-                    {
-                        continue;
-                    }
-
-                    Group group = (Group)selectedElement;
-                    groupsToDelete.Add(group);
                 }
 
-                foreach (Group groupToDelete in groupsToDelete)
-                {
-                    List<BaseNode> groupNodes = new List<BaseNode>();
-                    foreach (GraphElement groupElement in groupToDelete.containedElements)
-                    {
-                        if (!(groupElement is BaseNode))
-                        {
-                            continue;
-                        }
-
-                        BaseNode groupNode = (BaseNode)groupElement;
-                        groupNodes.Add(groupNode);
-                    }
-                    groupToDelete.RemoveElements(groupNodes);
-                    RemoveGroup(groupToDelete);
-                    RemoveElement(groupToDelete);
-                }
                 DeleteElements(edgesToDelete);
 
                 foreach (BaseNode nodeToDelete in nodesToDelete)
                 {
-                    if (nodeToDelete.Group != null)
-                    {
-                        nodeToDelete.Group.RemoveElement(nodeToDelete);
-                    }
-                    RemoveUngroupedNode(nodeToDelete);
                     nodeToDelete.DisconnectAllPorts();
+                    RemoveNode(nodeToDelete);
                     RemoveElement(nodeToDelete);
                 }
-            };
-        }
-
-        private void OnGroupElementsAdded()
-        {
-            elementsAddedToGroup = (group, elements) =>
-            {
-                foreach (GraphElement element in elements)
-                {
-                    if (!(element is BaseNode))
-                    {
-                        continue;
-                    }
-
-                    Group dsGroup = (Group)group;
-                    BaseNode node = (BaseNode)element;
-
-                    RemoveUngroupedNode(node);
-                    AddGroupedNode(node, dsGroup);
-                }
-            };
-        }
-
-        private void OnGroupElementsRemoved()
-        {
-            elementsRemovedFromGroup = (group, elements) =>
-            {
-                foreach (GraphElement element in elements)
-                {
-                    if (!(element is BaseNode))
-                    {
-                        continue;
-                    }
-
-                    Group dsGroup = (Group)group;
-                    BaseNode node = (BaseNode)element;
-
-                    RemoveGroupedNode(node, dsGroup);
-                    AddUngroupedNode(node);
-                }
-            };
-        }
-
-        private void OnGroupRenamed()
-        {
-            groupTitleChanged = (group, newTitle) =>
-            {
-                Group dsGroup = (Group)group;
-                dsGroup.title = newTitle.RemoveWhitespaces().RemoveSpecialCharacters();
-                if (string.IsNullOrEmpty(dsGroup.title))
-                {
-                    if (!string.IsNullOrEmpty(dsGroup.OldTitle))
-                    {
-                        ++NameErrorsAmount;
-                    }
-                }
-                else
-                {
-                    if (string.IsNullOrEmpty(dsGroup.OldTitle))
-                    {
-                        --NameErrorsAmount;
-                    }
-                }
-                RemoveGroup(dsGroup);
-                dsGroup.OldTitle = dsGroup.title;
-                AddGroup(dsGroup);
             };
         }
 
@@ -298,16 +210,15 @@ namespace SDRGames.Whist.DialogueSystem.Editor
                     {
                         BaseNode nextNode = (BaseNode)edge.input.node;
                         AnswerSaveData choiceData = (AnswerSaveData)edge.output.userData;
-                        choiceData.NodeID = nextNode.ID;
+                        choiceData.NodeID = nextNode.SaveData.ID;
                     }
                 }
 
                 if (changes.elementsToRemove != null)
                 {
-                    Type edgeType = typeof(Edge);
                     foreach (GraphElement element in changes.elementsToRemove)
                     {
-                        if (element.GetType() != edgeType)
+                        if (element.GetType() != typeof(Edge))
                         {
                             continue;
                         }
@@ -316,168 +227,28 @@ namespace SDRGames.Whist.DialogueSystem.Editor
                         choiceData.NodeID = "";
                     }
                 }
-
                 return changes;
             };
         }
 
-        public void AddUngroupedNode(BaseNode node)
+        public void RemoveNode(BaseNode node, string nodeName = "")
         {
-            string nodeName = node.DialogueName.ToLower();
-
-            if (!_ungroupedNodes.ContainsKey(nodeName))
+            if(string.IsNullOrEmpty(nodeName))
             {
-                NodeErrorData nodeErrorData = new NodeErrorData();
-                nodeErrorData.Nodes.Add(node);
-                _ungroupedNodes.Add(nodeName, nodeErrorData);
-                return;
+                nodeName = node.SaveData.Name.ToLower();
             }
+            List<BaseNode> nodesList = _nodes[nodeName].Nodes;
 
-            List<BaseNode> ungroupedNodesList = _ungroupedNodes[nodeName].Nodes;
-            ungroupedNodesList.Add(node);
-            Color errorColor = _ungroupedNodes[nodeName].Color;
-            node.SetErrorStyle(errorColor);
-
-            if (ungroupedNodesList.Count == 2)
-            {
-                ++NameErrorsAmount;
-                ungroupedNodesList[0].SetErrorStyle(errorColor);
-            }
-        }
-
-        public void RemoveUngroupedNode(BaseNode node)
-        {
-            string nodeName = node.DialogueName.ToLower();
-
-            List<BaseNode> ungroupedNodesList = _ungroupedNodes[nodeName].Nodes;
-
-            ungroupedNodesList.Remove(node);
-
+            nodesList.Remove(node);
             node.ResetStyle();
 
-            if (ungroupedNodesList.Count == 1)
+            if (nodesList.Count == 0)
             {
-                --NameErrorsAmount;
-
-                ungroupedNodesList[0].ResetStyle();
-
+                _nodes.Remove(nodeName);
                 return;
             }
 
-            if (ungroupedNodesList.Count == 0)
-            {
-                _ungroupedNodes.Remove(nodeName);
-            }
-        }
-
-        private void AddGroup(Group group)
-        {
-            string groupName = group.title.ToLower();
-
-            if (!_groups.ContainsKey(groupName))
-            {
-                GroupErrorData groupErrorData = new GroupErrorData();
-                groupErrorData.Groups.Add(group);
-                _groups.Add(groupName, groupErrorData);
-                return;
-            }
-
-            List<Group> groupsList = _groups[groupName].Groups;
-            groupsList.Add(group);
-            Color errorColor = _groups[groupName].Color;
-            group.SetErrorStyle(errorColor);
-            if (groupsList.Count == 2)
-            {
-                ++NameErrorsAmount;
-                groupsList[0].SetErrorStyle(errorColor);
-            }
-        }
-
-        private void RemoveGroup(Group group)
-        {
-            string oldGroupName = group.OldTitle.ToLower();
-
-            List<Group> groupsList = _groups[oldGroupName].Groups;
-
-            groupsList.Remove(group);
-
-            group.ResetStyle();
-
-            if (groupsList.Count == 1)
-            {
-                --NameErrorsAmount;
-
-                groupsList[0].ResetStyle();
-
-                return;
-            }
-
-            if (groupsList.Count == 0)
-            {
-                _groups.Remove(oldGroupName);
-            }
-        }
-
-        public void AddGroupedNode(BaseNode node, Group group)
-        {
-            string nodeName = node.DialogueName.ToLower();
-            node.Group = group;
-
-            if (!_groupedNodes.ContainsKey(group))
-            {
-                _groupedNodes.Add(group, new SerializableDictionary<string, NodeErrorData>());
-            }
-
-            if (!_groupedNodes[group].ContainsKey(nodeName))
-            {
-                NodeErrorData nodeErrorData = new NodeErrorData();
-                nodeErrorData.Nodes.Add(node);
-                _groupedNodes[group].Add(nodeName, nodeErrorData);
-                return;
-            }
-
-            List<BaseNode> groupedNodesList = _groupedNodes[group][nodeName].Nodes;
-            groupedNodesList.Add(node);
-            Color errorColor = _groupedNodes[group][nodeName].Color;
-            node.SetErrorStyle(errorColor);
-
-            if (groupedNodesList.Count == 2)
-            {
-                ++NameErrorsAmount;
-                groupedNodesList[0].SetErrorStyle(errorColor);
-            }
-        }
-
-        public void RemoveGroupedNode(BaseNode node, Group group)
-        {
-            string nodeName = node.DialogueName.ToLower();
-
-            node.Group = null;
-
-            List<BaseNode> groupedNodesList = _groupedNodes[group][nodeName].Nodes;
-
-            groupedNodesList.Remove(node);
-
-            node.ResetStyle();
-
-            if (groupedNodesList.Count == 1)
-            {
-                --NameErrorsAmount;
-
-                groupedNodesList[0].ResetStyle();
-
-                return;
-            }
-
-            if (groupedNodesList.Count == 0)
-            {
-                _groupedNodes[group].Remove(nodeName);
-
-                if (_groupedNodes[group].Count == 0)
-                {
-                    _groupedNodes.Remove(group);
-                }
-            }
+            CheckNodeNameErrors(_nodes[nodeName]);
         }
 
         private void AddGridBackground()
@@ -527,41 +298,33 @@ namespace SDRGames.Whist.DialogueSystem.Editor
             );
         }
 
-        public Vector2 GetLocalMousePosition(Vector2 mousePosition, bool isSearchWindow = false)
+        private void OnNodeNameTextFieldChanged(object sender, NodeNameChangedEventArgs args)
         {
-            Vector2 worldMousePosition = mousePosition;
-
-            if (isSearchWindow)
+            if (args.NewNode == null)
             {
-                worldMousePosition = _editorWindow.rootVisualElement.ChangeCoordinatesTo(_editorWindow.rootVisualElement.parent, mousePosition - _editorWindow.position.position);
+                return;
             }
-            Vector2 localMousePosition = contentViewContainer.WorldToLocal(worldMousePosition);
-            return localMousePosition;
+            string nodeName = args.OldNodeName.ToLower();
+            RemoveNode(args.NewNode, nodeName);
+            AddNode(args.NewNode);
         }
 
-        public override List<Port> GetCompatiblePorts(Port startPort, NodeAdapter nodeAdapter)
+        private void CheckNodeNameErrors(NodeErrorData nodeErrorData)
         {
-            return ports.ToList()!.Where(endPort =>
-                          endPort.direction != startPort.direction &&
-                          endPort.node != startPort.node &&
-                          endPort.portType == startPort.portType)
-              .ToList();
-        }
+            List<BaseNode> errorsNodesList = nodeErrorData.Nodes;
+            if (errorsNodesList.Count < 2)
+            {
+                errorsNodesList[0].ResetStyle();
+                --NameErrorsAmount;
+                return;
+            }
 
-        public void ClearGraph()
-        {
-            graphElements.ForEach(graphElement => RemoveElement(graphElement));
-
-            _groups.Clear();
-            _groupedNodes.Clear();
-            _ungroupedNodes.Clear();
-
-            NameErrorsAmount = 0;
-        }
-
-        public void ToggleMiniMap()
-        {
-            _miniMap.visible = !_miniMap.visible;
+            Color errorColor = nodeErrorData.Color;
+            foreach (BaseNode node in errorsNodesList)
+            {
+                ++NameErrorsAmount;
+                node.SetErrorStyle(errorColor);
+            }
         }
     }
 }
