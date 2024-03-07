@@ -4,6 +4,7 @@ using System.Linq;
 
 using SDRGames.Whist.DialogueSystem.Helpers;
 
+using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 
 using UnityEngine;
@@ -61,6 +62,52 @@ namespace SDRGames.Whist.DialogueSystem.Editor
         public BaseNode CreateNode(string nodeName, NodeTypes dialogueType, Vector2 position, bool shouldDraw = true)
         {
             Type nodeType = Type.GetType($"{GetType().Namespace}.{dialogueType}Node");
+
+            if (nodeType == typeof(StartNode))
+            {
+                foreach(NodeErrorData nodeData in _nodes.Values)
+                {
+                    if(nodeData.Nodes.Select(item => item.GetType() == nodeType) != null)
+                    {
+                        EditorUtility.DisplayDialog(
+                            "Start node exists!",
+                            "There is only one Start node should exists on graph. Speech node was created instead now.",
+                            "OK"
+                        );
+                        nodeType = Type.GetType($"{GetType().Namespace}.{NodeTypes.Speech}Node");
+                        nodeName = "Speech";
+                    }
+                }
+            }
+
+            if (nodeType == typeof(SpeechNode))
+            {
+                if(_nodes.Values.Count == 0)
+                {
+                    EditorUtility.DisplayDialog(
+                        "Start node not exists!",
+                        "Start node must be created first, it was created now.",
+                        "OK"
+                    );
+                    nodeType = Type.GetType($"{GetType().Namespace}.{NodeTypes.Start}Node");
+                    nodeName = "Start";
+                }
+
+                foreach (NodeErrorData nodeData in _nodes.Values)
+                {
+                    if (nodeData.Nodes.Select(item => item.GetType() == typeof(StartNode)) == null)
+                    {
+                        EditorUtility.DisplayDialog(
+                            "Start node not exists!",
+                            "Start node must be created first, it was created now.",
+                            "OK"
+                        );
+                        nodeType = Type.GetType($"{GetType().Namespace}.{NodeTypes.Start}Node");
+                        nodeName = "Start";
+                    }
+                }
+            }
+
             BaseNode node = (BaseNode)Activator.CreateInstance(nodeType);
             node.Initialize($"{nodeName}", position);
             node.NodeNameTextFieldChanged += OnNodeNameTextFieldChanged;
@@ -146,15 +193,15 @@ namespace SDRGames.Whist.DialogueSystem.Editor
             this.AddManipulator(CreateNodeContextualMenu("Add Speech Node", NodeTypes.Speech));
         }
 
-        private IManipulator CreateNodeContextualMenu(string actionTitle, NodeTypes dialogueType)
+        private IManipulator CreateNodeContextualMenu(string actionTitle, NodeTypes nodeType)
         {
             return new ContextualMenuManipulator(
                 menuEvent => menuEvent.menu.AppendAction(
                     actionTitle,
                     actionEvent => AddElement(
                         CreateNode(
-                            dialogueType.ToString(),
-                            dialogueType,
+                            nodeType.ToString(),
+                            nodeType,
                             GetLocalMousePosition(actionEvent.eventInfo.localMousePosition)
                         )
                     )
@@ -171,7 +218,7 @@ namespace SDRGames.Whist.DialogueSystem.Editor
 
                 foreach (GraphElement selectedElement in selection)
                 {
-                    if (selectedElement is BaseNode node)
+                    if (selectedElement.GetType() == typeof(BaseNode))
                     {
                         continue;
                     }
