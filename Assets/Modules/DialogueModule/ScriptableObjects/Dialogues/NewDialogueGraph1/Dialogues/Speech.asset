@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 41b32306663440846b7d74e07fec138e, type: 3}
-  m_Name: Speech1
+  m_Name: Speech
   m_EditorClassIdentifier: 
-  <Name>k__BackingField: Speech1
+  <Name>k__BackingField: Speech
   <Answers>k__BackingField:
   - <LocalizationData>k__BackingField:
       <SelectedLocalizationTable>k__BackingField: CharacterNames
@@ -20,6 +20,9 @@ MonoBehaviour:
     <NextDialogue>k__BackingField: {fileID: 0}
     <Conditions>k__BackingField: []
   <DialogueType>k__BackingField: 1
-  <LocalizationData>k__BackingField:
+  <CharacterNameLocalization>k__BackingField:
+    <SelectedLocalizationTable>k__BackingField: CharacterNames
+    <SelectedLocalizedText>k__BackingField: Teofrast
+  <TextLocalization>k__BackingField:
     <SelectedLocalizationTable>k__BackingField: CharacterNames
     <SelectedLocalizedText>k__BackingField: "Valior\t"

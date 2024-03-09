@@ -8,6 +8,7 @@ using UnityEditor;
 
 using UnityEngine;
 using UnityEngine.UI;
+using SDRGames.Whist.DialogueSystem.Managers;
 
 namespace SDRGames.Whist.ChronotopMapModule.Managers
 {
@@ -20,7 +21,7 @@ namespace SDRGames.Whist.ChronotopMapModule.Managers
 
         [SerializeField] private BezierView _bezierView;
 
-        [SerializeField] private DDialogue dialogue;
+        [SerializeField] private DialogueManager dialogue;
         
         [field: SerializeField] public ChronotopMapPinController ChronotopMapPinController { get; private set; }
 

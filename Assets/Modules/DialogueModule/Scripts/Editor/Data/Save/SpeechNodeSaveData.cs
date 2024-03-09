@@ -1,28 +1,20 @@
 using System;
-using System.Collections.Generic;
 
 using UnityEngine;
-
-using static SDRGames.Whist.DialogueSystem.ScriptableObjects.DialogueScriptableObject;
-using static SDRGames.Whist.DialogueSystem.ScriptableObjects.DialogueSpeechScriptableObject;
 
 namespace SDRGames.Whist.DialogueSystem.Editor
 {
     [Serializable]
     public class SpeechNodeSaveData : BaseNodeSaveData
     {
-        [field: SerializeField] public LocalizationSaveData LocalizationSaveData { get; private set; }
-        [field: SerializeField] public string SelectedLocalizationTable { get; private set; }
-        [field: SerializeField] public string SelectedLocalizedText { get; private set; }
-        [field: SerializeField] public string NodeID { get; private set; }
-        //[field: SerializeField] public Quest Quest { get; set; }
-        //[field: SerializeField] public DialogueQuestActions DialogueQuestAction { get; set; }
-        //[field: SerializeField] public DialogueActions DialogueAction { get; set; }
+        [field: SerializeField] public LocalizationSaveData CharacterNameLocalization { get; private set; }
+        [field: SerializeField] public LocalizationSaveData TextLocalization { get; private set; }
 
-        public SpeechNodeSaveData(BaseNodeSaveData baseNodeSaveData, LocalizationSaveData localizationSaveData) : base(baseNodeSaveData.Name, baseNodeSaveData.Answers, baseNodeSaveData.Position)
+        public SpeechNodeSaveData(BaseNodeSaveData baseNodeSaveData, LocalizationSaveData characterNameLocalization, LocalizationSaveData textLocalization) : base(baseNodeSaveData.Name, baseNodeSaveData.Answers, baseNodeSaveData.Position)
         {
             SetID(baseNodeSaveData.ID);
-            LocalizationSaveData = localizationSaveData;
+            CharacterNameLocalization = characterNameLocalization;
+            TextLocalization = textLocalization;
         }
 
         public void SetID(string id)
@@ -35,9 +27,14 @@ namespace SDRGames.Whist.DialogueSystem.Editor
             Name = name;
         }
 
-        public void SetLocalizationSaveData(LocalizationSaveData localizationSaveData)
+        public void SetCharacterNameLocalization(LocalizationSaveData characterNameLocalization)
         {
-            LocalizationSaveData = localizationSaveData;
+            CharacterNameLocalization = characterNameLocalization;
+        }
+
+        public void SetTextLocalization(LocalizationSaveData textLocalization)
+        {
+            TextLocalization = textLocalization;
         }
     }
 }

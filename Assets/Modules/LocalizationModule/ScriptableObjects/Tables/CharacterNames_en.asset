@@ -22,6 +22,10 @@ MonoBehaviour:
     m_Localized: Valior
     m_Metadata:
       m_Items: []
+  - m_Id: 1308420111228928
+    m_Localized: Teofrast
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

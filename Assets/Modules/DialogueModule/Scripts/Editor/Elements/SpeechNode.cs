@@ -16,16 +16,12 @@ namespace SDRGames.Whist.DialogueSystem.Editor
     {
         public new SpeechNodeSaveData SaveData { get; private set; }
 
-        //public LocalizationSaveData LocalizationSaveData { get; set; }
-        //public Quest Quest { get; set; }
-        //public DialogueQuestActions DialogueQuestAction { get; set; }
-        //public DialogueActions DialogueAction { get; set; }
-
         public override void Initialize(string nodeName, Vector2 position)
         {
             base.Initialize(nodeName, position);
-            LocalizationSaveData localizationSaveData = new LocalizationSaveData("", "", "");
-            SaveData = new SpeechNodeSaveData(base.SaveData, localizationSaveData);
+            LocalizationSaveData characterNameLocalization = new LocalizationSaveData("CharacterNames", "Valior", "Valior");
+            LocalizationSaveData textLocalization = new LocalizationSaveData("", "", "");
+            SaveData = new SpeechNodeSaveData(base.SaveData, characterNameLocalization, textLocalization);
             SaveData.SetNodeType(NodeTypes.Speech);
         }
 
@@ -68,42 +64,18 @@ namespace SDRGames.Whist.DialogueSystem.Editor
             VisualElement customDataContainer = new VisualElement();
             customDataContainer.AddToClassList("ds-node__custom-data-container");
 
+            Foldout characterNameFoldout = UtilityElement.CreateFoldout("Character Name", true);
+
+            Box characterNameLocalizationBox = UtilityElement.CreateLocalizationBox(SaveData.CharacterNameLocalization);
+            characterNameFoldout.Add(characterNameLocalizationBox);
+
             Foldout textFoldout = UtilityElement.CreateFoldout("Speech Text", true);
 
-            Box localizationBox = UtilityElement.CreateLocalizationBox(SaveData.LocalizationSaveData);
+            Box localizationBox = UtilityElement.CreateLocalizationBox(SaveData.TextLocalization);
             textFoldout.Add(localizationBox);
 
-            //Foldout questFoldout = UtilityElement.CreateFoldout("Quest", true);
-
-            //DropdownField questActionDropdown = UtilityElement.CreateDropdownField(
-            //    typeof(DialogueQuestActions),
-            //    DialogueQuestAction.ToString(),
-            //    null,
-            //    callback => DialogueQuestAction = Enum.Parse<DialogueQuestActions>(callback.newValue)
-            //);
-
-            //ObjectField questObjectField = UtilityElement.CreateObjectField(
-            //    typeof(Quest),
-            //    Quest,
-            //    null,
-            //    callback => Quest = callback.newValue as Quest);
-
-            //questFoldout.Add(questActionDropdown);
-            //questFoldout.Add(questObjectField);
-
-            //Foldout actionFoldout = UtilityElement.CreateFoldout("Action", true);
-
-            //DropdownField actionDropdown = UtilityElement.CreateDropdownField(
-            //    typeof(DialogueActions),
-            //    DialogueAction.ToString(),
-            //    null,
-            //    callback => DialogueAction = Enum.Parse<DialogueActions>(callback.newValue));
-
-            //actionFoldout.Add(actionDropdown);
-
+            customDataContainer.Add(characterNameFoldout);
             customDataContainer.Add(textFoldout);
-            //customDataContainer.Add(questFoldout);
-            //customDataContainer.Add(actionFoldout);
 
             extensionContainer.Add(customDataContainer);
 
@@ -124,7 +96,8 @@ namespace SDRGames.Whist.DialogueSystem.Editor
 
             dialogueSO.Initialize(
                 SaveData.Name,
-                new DialogueLocalizationData(SaveData.LocalizationSaveData.SelectedLocalizationTable, SaveData.LocalizationSaveData.SelectedEntryKey),
+                new DialogueLocalizationData(SaveData.CharacterNameLocalization.SelectedLocalizationTable, SaveData.CharacterNameLocalization.SelectedEntryKey),
+                new DialogueLocalizationData(SaveData.TextLocalization.SelectedLocalizationTable, SaveData.TextLocalization.SelectedEntryKey),
                 UtilityIO.ConvertNodeAnswersToDialogueAnswers(SaveData.Answers),
                 SaveData.NodeType
             );
@@ -136,7 +109,7 @@ namespace SDRGames.Whist.DialogueSystem.Editor
         public void LoadData(SpeechNodeSaveData nodeData, List<AnswerSaveData> answers)
         {
             base.LoadData(nodeData, answers);
-            SaveData.SetLocalizationSaveData(nodeData.LocalizationSaveData);
+            SaveData.SetCharacterNameLocalization(nodeData.CharacterNameLocalization);
             SaveData.SetID(nodeData.ID);
         }
     }

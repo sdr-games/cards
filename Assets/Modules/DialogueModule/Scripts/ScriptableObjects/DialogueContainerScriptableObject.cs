@@ -8,6 +8,7 @@ namespace SDRGames.Whist.DialogueSystem.ScriptableObjects
     {
         [field: SerializeField] public string FileName { get; set; }
         [field: SerializeField] public List<DialogueScriptableObject> Dialogues { get; set; }
+        public DialogueSpeechScriptableObject FirstSpeech => GetFirstSpeech();
 
         public void Initialize(string fileName)
         {
@@ -26,6 +27,12 @@ namespace SDRGames.Whist.DialogueSystem.ScriptableObjects
             }
 
             return dialogueNames;
+        }
+
+        private DialogueSpeechScriptableObject GetFirstSpeech()
+        {
+            DialogueScriptableObject start = Dialogues.Find(item => item.GetType() == typeof(DialogueScriptableObject));
+            return start.Answers[0].NextDialogue as DialogueSpeechScriptableObject;
         }
     }
 }

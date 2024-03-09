@@ -27,7 +27,7 @@ namespace SDRGames.Whist.DialogueSystem.Controllers
             {
                 GameObject dialogueText = (GameObject)Instantiate(Resources.Load("Prefabs/UI/Dialogue/DialogueText", typeof(GameObject)), dialogueTextScrollViewContent);
                 //StartCoroutine(ShowUIElementWithFading(dialogueText));
-                dialogueText.GetComponent<TextMeshProUGUI>().text = dialogueSO.LocalizationData.SelectedLocalizedText;
+                dialogueText.GetComponent<TextMeshProUGUI>().text = dialogueSO.TextLocalization.SelectedLocalizedText;
                 if (dialogueSO.Answers != null && dialogueSO.Answers.Count > 0)
                 {
                     CreateAnswers(SortAnswersByConditions(dialogueSO.Answers), fullscreen);

@@ -8,20 +8,14 @@ namespace SDRGames.Whist.DialogueSystem.ScriptableObjects
 {
     public class DialogueSpeechScriptableObject : DialogueScriptableObject
     {
-        //public enum DialogueActions { No, Trade, Craft };
+        [field: SerializeField] public DialogueLocalizationData CharacterNameLocalization { get; private set; }
+        [field: SerializeField] public DialogueLocalizationData TextLocalization { get; set; }
 
-        [field: SerializeField] public DialogueLocalizationData LocalizationData { get; set; }
-        //[field: SerializeField] public Quest Quest { get; set; }
-        //[field: SerializeField] public DialogueQuestActions DialogueQuestAction { get; set; }
-        //[field: SerializeField] public DialogueActions DialogueAction { get; set; }
-
-        public void Initialize(string dialogueName, DialogueLocalizationData localizationData, List<DialogueAnswerData> answers, NodeTypes dialogueType)
+        public void Initialize(string dialogueName, DialogueLocalizationData characterNameLocalization, DialogueLocalizationData textLocalization, List<DialogueAnswerData> answers, NodeTypes dialogueType)
         {
             base.Initialize(dialogueName, answers, dialogueType);
-            LocalizationData = localizationData;
-            //Quest = quest;
-            //DialogueQuestAction = dialogueQuestAction;
-            //DialogueAction = dialogueAction;
+            CharacterNameLocalization = characterNameLocalization;
+            TextLocalization = textLocalization;
         }
     }
 }
