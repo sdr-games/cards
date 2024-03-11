@@ -72,11 +72,11 @@ namespace SDRGames.Whist.DialogueSystem.Controllers
                     GameObject answerButton = (GameObject)Instantiate(Resources.Load("Prefabs/UI/Dialogue/Answer", typeof(GameObject)), dialogueAnswersScrollViewContent);
                     if (fullscreen)
                     {
-                        text = answer.LocalizationData.SelectedLocalizedText;
+                        //text = answer.LocalizationData.SelectedLocalizedText;
                     }
                     else
                     {
-                        text = $"{i + 1}. {answer.LocalizationData.SelectedLocalizedText}";
+                        //text = $"{i + 1}. {answer.LocalizationData.SelectedLocalizedText}";
                     }
                     answerButton.GetComponent<DialogueAnswerController>().Initialize(answer.NextDialogue, this, text);
                     i++;

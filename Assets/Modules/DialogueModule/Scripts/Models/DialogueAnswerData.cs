@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 
+using SDRGames.Whist.DialogueSystem.Editor;
 using SDRGames.Whist.DialogueSystem.ScriptableObjects;
 
 using UnityEngine;
@@ -10,9 +11,22 @@ namespace SDRGames.Whist.DialogueSystem.Models
     [Serializable]
     public class DialogueAnswerData
     {
-        [field: SerializeField] public DialogueLocalizationData LocalizationData { get; set; }
-        [field: SerializeField] public DialogueScriptableObject NextDialogue { get; set; }
-        [field: SerializeField] public List<DialogueAnswerCondition> Conditions { get; set; }
+        [field: SerializeField] public DialogueLocalizationData CharacterNameLocalization { get; private set; }
+        [field: SerializeField] public DialogueLocalizationData TextLocalization { get; private set; }
+        [field: SerializeField] public DialogueScriptableObject NextDialogue { get; private set; }
+        [field: SerializeField] public List<DialogueAnswerCondition> Conditions { get; private set; }
+
+        public DialogueAnswerData(DialogueLocalizationData characterNameLocalization, DialogueLocalizationData textLocalization, List<DialogueAnswerCondition> conditions)
+        {
+            CharacterNameLocalization = characterNameLocalization;
+            TextLocalization = textLocalization;
+            Conditions = conditions;
+        }
+
+        public void SetNextDialogue(DialogueScriptableObject nextDialogue)
+        {
+            NextDialogue = nextDialogue;
+        }
 
         public bool CheckConditions()
         {

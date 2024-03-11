@@ -2,6 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
+using SDRGames.Whist.DialogueSystem.Editor.Models;
+using SDRGames.Whist.DialogueSystem.Editor.Presenters;
+using SDRGames.Whist.DialogueSystem.Editor.Views;
 using SDRGames.Whist.DialogueSystem.Helpers;
 
 using UnityEditor;
@@ -10,16 +13,17 @@ using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-using static SDRGames.Whist.DialogueSystem.ScriptableObjects.DialogueScriptableObject;
-
-namespace SDRGames.Whist.DialogueSystem.Editor
+namespace SDRGames.Whist.DialogueSystem.Editor.Managers
 {
-    public class GraphView : UnityEditor.Experimental.GraphView.GraphView
+    public class GraphManager : GraphView
     {
+        public enum NodeTypes { Start = 0, Speech = 1, Answer = 2 };
+
         private DialogueEditorWindow _editorWindow;
         private MiniMap _miniMap;
         private SerializableDictionary<string, NodeErrorData> _nodes;
         private int _nameErrorsAmount;
+        private bool _startNodeExists;
 
         public int NameErrorsAmount
         {
@@ -42,7 +46,7 @@ namespace SDRGames.Whist.DialogueSystem.Editor
             }
         }
 
-        public GraphView(DialogueEditorWindow editorWindow)
+        public GraphManager(DialogueEditorWindow editorWindow)
         {
             _editorWindow = editorWindow;
 
@@ -59,82 +63,53 @@ namespace SDRGames.Whist.DialogueSystem.Editor
             AddMiniMapStyles();
         }
 
-        public BaseNode CreateNode(string nodeName, NodeTypes dialogueType, Vector2 position, bool shouldDraw = true)
+        public GraphElement CreateNode<T>(string nodeName, Vector2 position, bool shouldDraw = true) where T : BaseNodePresenter, new()
         {
-            Type nodeType = Type.GetType($"{GetType().Namespace}.{dialogueType}Node");
-
-            if (nodeType == typeof(StartNode))
+            if(typeof(T) != typeof(StartNodePresenter) && !_startNodeExists)
             {
-                foreach(NodeErrorData nodeData in _nodes.Values)
-                {
-                    if(nodeData.Nodes.Select(item => item.GetType() == nodeType) != null)
-                    {
-                        EditorUtility.DisplayDialog(
-                            "Start node exists!",
-                            "There is only one Start node should exists on graph. Speech node was created instead now.",
-                            "OK"
-                        );
-                        nodeType = Type.GetType($"{GetType().Namespace}.{NodeTypes.Speech}Node");
-                        nodeName = "Speech";
-                    }
-                }
+                EditorUtility.DisplayDialog(
+                    "Start node missing",
+                    "Start node is missing, it was created now instead",
+                    "OK"
+                );
+                GraphElement startNode = CreateNode<StartNodePresenter>("Start", position, shouldDraw);
+                _startNodeExists = true;
+                return startNode;
             }
-
-            if (nodeType == typeof(SpeechNode))
+            else if(typeof(T) == typeof(StartNodePresenter))
             {
-                if(_nodes.Values.Count == 0)
+                if (_startNodeExists)
                 {
                     EditorUtility.DisplayDialog(
-                        "Start node not exists!",
-                        "Start node must be created first, it was created now.",
+                        "Start node already exists",
+                        "Start node is already exists, speech node was created now instead",
                         "OK"
                     );
-                    nodeType = Type.GetType($"{GetType().Namespace}.{NodeTypes.Start}Node");
-                    nodeName = "Start";
+                    return CreateNode<SpeechNodePresenter>("Speech", position, shouldDraw);
                 }
-
-                foreach (NodeErrorData nodeData in _nodes.Values)
-                {
-                    if (nodeData.Nodes.Select(item => item.GetType() == typeof(StartNode)) == null)
-                    {
-                        EditorUtility.DisplayDialog(
-                            "Start node not exists!",
-                            "Start node must be created first, it was created now.",
-                            "OK"
-                        );
-                        nodeType = Type.GetType($"{GetType().Namespace}.{NodeTypes.Start}Node");
-                        nodeName = "Start";
-                    }
-                }
+                _startNodeExists = true;
             }
 
-            BaseNode node = (BaseNode)Activator.CreateInstance(nodeType);
-            node.Initialize($"{nodeName}", position);
-            node.NodeNameTextFieldChanged += OnNodeNameTextFieldChanged;
-            node.AnswerPortRemoved += (object sender, EventArgs e) => 
-            {
-                Port answerPort = (Port)sender;
-                if (answerPort.connected)
-                {
-                    DeleteElements(answerPort.connections);
-                }
-                RemoveElement(answerPort);
-            };
-            node.PortDisconnected += (object sender, EventArgs e) => DeleteElements(((Port)sender).connections);
-            AddNode(node);
+            T presenter = new T();
+            presenter.Initialize($"{nodeName}", position);
+
+            BaseNodeView baseNodeView = presenter.GetNodeView();
+            baseNodeView.NodeNameTextFieldChanged += OnNodeNameTextFieldChanged;
+            baseNodeView.AnswerPortRemoved += OnAnswerPortRemoved;
+            baseNodeView.PortDisconnected += (object sender, EventArgs e) => DeleteElements(((Port)sender).connections);
+
+            AddNode($"{nodeName.ToLower()}", baseNodeView);
 
             if (shouldDraw)
             {
-                node.Draw();
+                baseNodeView.Draw();
             }
 
-            return node;
+            return baseNodeView;
         }
 
-        public void AddNode(BaseNode node)
+        public void AddNode(string nodeName, BaseNodeView node)
         {
-            string nodeName = node.SaveData.Name.ToLower();
-
             if (!_nodes.ContainsKey(nodeName))
             {
                 NodeErrorData nodeErrorData = new NodeErrorData();
@@ -173,6 +148,7 @@ namespace SDRGames.Whist.DialogueSystem.Editor
         {
             graphElements.ForEach(graphElement => RemoveElement(graphElement));
             _nodes.Clear();
+            _startNodeExists = false;
             NameErrorsAmount = 0;
         }
 
@@ -189,19 +165,19 @@ namespace SDRGames.Whist.DialogueSystem.Editor
             this.AddManipulator(new SelectionDragger());
             this.AddManipulator(new RectangleSelector());
 
-            this.AddManipulator(CreateNodeContextualMenu("Add Start Node", NodeTypes.Start));
-            this.AddManipulator(CreateNodeContextualMenu("Add Speech Node", NodeTypes.Speech));
+            this.AddManipulator(CreateNodeContextualMenu<StartNodePresenter>($"{NodeTypes.Start}"));
+            this.AddManipulator(CreateNodeContextualMenu<SpeechNodePresenter>($"{NodeTypes.Speech}"));
+            this.AddManipulator(CreateNodeContextualMenu<AnswerNodePresenter>($"{NodeTypes.Answer}"));
         }
 
-        private IManipulator CreateNodeContextualMenu(string actionTitle, NodeTypes nodeType)
+        private IManipulator CreateNodeContextualMenu<T>(string nodeName) where T : BaseNodePresenter, new()
         {
             return new ContextualMenuManipulator(
                 menuEvent => menuEvent.menu.AppendAction(
-                    actionTitle,
+                    $"Add {nodeName} Node",
                     actionEvent => AddElement(
-                        CreateNode(
-                            nodeType.ToString(),
-                            nodeType,
+                        CreateNode<T>(
+                            nodeName,
                             GetLocalMousePosition(actionEvent.eventInfo.localMousePosition)
                         )
                     )
@@ -213,19 +189,13 @@ namespace SDRGames.Whist.DialogueSystem.Editor
         {
             deleteSelection = (operationName, askUser) =>
             {
-                List<BaseNode> nodesToDelete = new List<BaseNode>();
+                List<BaseNodeView> nodesToDelete = new List<BaseNodeView>();
                 List<Edge> edgesToDelete = new List<Edge>();
 
                 foreach (GraphElement selectedElement in selection)
                 {
-                    if (selectedElement.GetType() == typeof(BaseNode))
+                    if (selectedElement.GetType() == typeof(StartNodeView))
                     {
-                        continue;
-                    }
-
-                    if (selectedElement is SpeechNode speechNode)
-                    {
-                        nodesToDelete.Add(speechNode);
                         continue;
                     }
 
@@ -234,11 +204,13 @@ namespace SDRGames.Whist.DialogueSystem.Editor
                         edgesToDelete.Add(edge);
                         continue;
                     }
+
+                    nodesToDelete.Add((BaseNodeView)selectedElement);
                 }
 
                 DeleteElements(edgesToDelete);
 
-                foreach (BaseNode nodeToDelete in nodesToDelete)
+                foreach (BaseNodeView nodeToDelete in nodesToDelete)
                 {
                     nodeToDelete.DisconnectAllPorts();
                     RemoveNode(nodeToDelete);
@@ -255,9 +227,19 @@ namespace SDRGames.Whist.DialogueSystem.Editor
                 {
                     foreach (Edge edge in changes.edgesToCreate)
                     {
-                        BaseNode nextNode = (BaseNode)edge.input.node;
-                        AnswerSaveData choiceData = (AnswerSaveData)edge.output.userData;
-                        choiceData.NodeID = nextNode.SaveData.ID;
+                        //if(edge.input.node is SpeechNodeView speechNode)
+                        //{
+                        //    SpeechData speechNodeSaveData = speechNode.SaveData;
+                        //    ((AnswerNodeView)edge.output.node).SaveData.AddNextSpeech(speechNodeSaveData);
+                        //    continue;
+                        //}
+
+                        //if(edge.input.node is AnswerNodeView answerNode)
+                        //{
+                        //    AnswerData answerNodeSaveData = answerNode.SaveData;
+                        //    ((SpeechNodeView)edge.output.node).SaveData.AddAnswer(answerNodeSaveData);
+                        //    continue;
+                        //}
                     }
                 }
 
@@ -270,26 +252,26 @@ namespace SDRGames.Whist.DialogueSystem.Editor
                             continue;
                         }
                         Edge edge = (Edge)element;
-                        AnswerSaveData choiceData = (AnswerSaveData)edge.output.userData;
-                        choiceData.NodeID = "";
+                        //AnswerSaveData choiceData = (AnswerSaveData)edge.output.userData;
+                        //choiceData.NodeID = "";
                     }
                 }
                 return changes;
             };
         }
 
-        public void RemoveNode(BaseNode node, string nodeName = "")
+        public void RemoveNode(BaseNodeView node, string nodeName = "")
         {
             if(string.IsNullOrEmpty(nodeName))
             {
-                nodeName = node.SaveData.Name.ToLower();
+                nodeName = node.NodeName.ToLower();
             }
-            List<BaseNode> nodesList = _nodes[nodeName].Nodes;
+            List<BaseNodeView> nodes = _nodes[nodeName].Nodes;
 
-            nodesList.Remove(node);
+            nodes.Remove(node);
             node.ResetStyle();
 
-            if (nodesList.Count == 0)
+            if (nodes.Count == 0)
             {
                 _nodes.Remove(nodeName);
                 return;
@@ -351,14 +333,23 @@ namespace SDRGames.Whist.DialogueSystem.Editor
             {
                 return;
             }
-            string nodeName = args.OldNodeName.ToLower();
-            RemoveNode(args.NewNode, nodeName);
-            AddNode(args.NewNode);
+            RemoveNode(args.NewNode, args.OldNodeName.ToLower());
+            AddNode(args.NewNode.NodeName.ToLower(), args.NewNode);
+        }
+
+        private void OnAnswerPortRemoved(object sender, EventArgs e)
+        {
+            Port answerPort = (Port)sender;
+            if (answerPort.connected)
+            {
+                DeleteElements(answerPort.connections);
+            }
+            RemoveElement(answerPort);
         }
 
         private void CheckNodeNameErrors(NodeErrorData nodeErrorData)
         {
-            List<BaseNode> errorsNodesList = nodeErrorData.Nodes;
+            List<BaseNodeView> errorsNodesList = nodeErrorData.Nodes;
             if (errorsNodesList.Count < 2)
             {
                 errorsNodesList[0].ResetStyle();
@@ -367,7 +358,7 @@ namespace SDRGames.Whist.DialogueSystem.Editor
             }
 
             Color errorColor = nodeErrorData.Color;
-            foreach (BaseNode node in errorsNodesList)
+            foreach (BaseNodeView node in errorsNodesList)
             {
                 ++NameErrorsAmount;
                 node.SetErrorStyle(errorColor);

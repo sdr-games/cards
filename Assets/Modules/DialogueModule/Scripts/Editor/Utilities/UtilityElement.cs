@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
+using SDRGames.Whist.DialogueSystem.Editor.Views;
+
 using UnityEditor.Experimental.GraphView;
 using UnityEditor.Localization;
 using UnityEditor.UIElements;
@@ -37,9 +39,9 @@ namespace SDRGames.Whist.DialogueSystem.Editor
             return foldout;
         }
 
-        public static Port CreatePort(this BaseNode node, string portName = "", Orientation orientation = Orientation.Horizontal, Direction direction = Direction.Output, Port.Capacity capacity = Port.Capacity.Single)
+        public static Port CreatePort(this BaseNodeView node, Type nodeType, string portName = "", Orientation orientation = Orientation.Horizontal, Direction direction = Direction.Output, Port.Capacity capacity = Port.Capacity.Single)
         {
-            Port port = node.InstantiatePort(orientation, direction, capacity, typeof(SpeechNode));
+            Port port = node.InstantiatePort(orientation, direction, capacity, nodeType);
             port.portName = portName;
             return port;
         }

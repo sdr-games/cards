@@ -4,6 +4,10 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 
+using SDRGames.Whist.DialogueSystem.Editor.Managers;
+using SDRGames.Whist.DialogueSystem.Editor.Models;
+using SDRGames.Whist.DialogueSystem.Editor.Presenters;
+using SDRGames.Whist.DialogueSystem.Editor.Views;
 using SDRGames.Whist.DialogueSystem.Helpers;
 using SDRGames.Whist.DialogueSystem.Models;
 using SDRGames.Whist.DialogueSystem.ScriptableObjects;
@@ -17,29 +21,29 @@ namespace SDRGames.Whist.DialogueSystem.Editor
 {
     public static class UtilityIO
     {
-        private static GraphView _graphView;
+        private static GraphManager _graphView;
 
         private static string _graphFileName;
         private static string _containerFolderPath;
 
-        private static List<BaseNode> _nodes;
+        private static List<BaseNodeView> _nodes;
 
         private static Dictionary<string, DialogueScriptableObject> _createdDialogues;
 
-        private static Dictionary<string, BaseNode> _loadedNodes;
+        private static Dictionary<string, BaseNodeView> _loadedNodes;
 
-        public static void Initialize(GraphView dsGraphView, string graphName)
+        public static void Initialize(GraphManager dsGraphView, string graphName)
         {
             _graphView = dsGraphView;
 
             _graphFileName = graphName;
             _containerFolderPath = $"Assets/Modules/DialogueModule/ScriptableObjects/Dialogues/{graphName}";
 
-            _nodes = new List<BaseNode>();
+            _nodes = new List<BaseNodeView>();
 
             _createdDialogues = new Dictionary<string, DialogueScriptableObject>();
 
-            _loadedNodes = new Dictionary<string, BaseNode>();
+            _loadedNodes = new Dictionary<string, BaseNodeView>();
         }
 
         public static void Save(string path)
@@ -63,31 +67,33 @@ namespace SDRGames.Whist.DialogueSystem.Editor
         {
             List<string> nodeNames = new List<string>();
 
-            foreach (BaseNode node in _nodes)
+            foreach (BaseNodeView node in _nodes)
             {
                 node.SaveToGraph(graphData);
                 DialogueScriptableObject dialogue = node.SaveToSO(_containerFolderPath);
-                _createdDialogues.Add(node.SaveData.ID, dialogue);
+                //_createdDialogues.Add(node.SaveData.ID, dialogue);
+                _createdDialogues.Add("", dialogue);
 
                 dialogueContainer.Dialogues.Add(dialogue);
-                nodeNames.Add(node.SaveData.Name);
+                //nodeNames.Add(node.SaveData.Name);
+                nodeNames.Add("");
             }
 
             UpdateDialoguesChoicesConnections();
             UpdateOldNodes(nodeNames, graphData);
         }
 
-        public static List<DialogueAnswerData> ConvertNodeAnswersToDialogueAnswers(List<AnswerSaveData> nodeAnswers)
+        public static List<DialogueAnswerData> ConvertNodeAnswersToDialogueAnswers(List<AnswerData> nodeAnswers)
         {
             List<DialogueAnswerData> dialogueAnswers = new List<DialogueAnswerData>();
 
-            foreach (AnswerSaveData nodeAnswer in nodeAnswers)
+            foreach (AnswerData nodeAnswer in nodeAnswers)
             {
-                DialogueAnswerData answerData = new DialogueAnswerData()
-                {
-                    LocalizationData = new DialogueLocalizationData(nodeAnswer.LocalizationSaveData.SelectedLocalizationTable, nodeAnswer.LocalizationSaveData.SelectedEntryKey),
-                    Conditions = ConvertNodeAnswersConditionsToDialogueAnswersConditions(nodeAnswer.Conditions),
-                };
+                DialogueAnswerData answerData = new DialogueAnswerData(
+                    new DialogueLocalizationData(nodeAnswer.CharacterNameLocalization.SelectedLocalizationTable, nodeAnswer.CharacterNameLocalization.SelectedEntryKey),
+                    new DialogueLocalizationData(nodeAnswer.TextLocalization.SelectedLocalizationTable, nodeAnswer.TextLocalization.SelectedEntryKey),
+                    ConvertNodeAnswersConditionsToDialogueAnswersConditions(nodeAnswer.Conditions)
+                );
 
                 dialogueAnswers.Add(answerData);
             }
@@ -118,21 +124,33 @@ namespace SDRGames.Whist.DialogueSystem.Editor
 
         private static void UpdateDialoguesChoicesConnections()
         {
-            foreach (BaseNode node in _nodes)
+            foreach (BaseNodeView node in _nodes)
             {
-                DialogueScriptableObject dialogue = _createdDialogues[node.SaveData.ID];
+                //DialogueScriptableObject dialogue = _createdDialogues[node.SaveData.ID];
+                DialogueScriptableObject dialogue = _createdDialogues[""];
 
-                for (int choiceIndex = 0; choiceIndex < node.SaveData.Answers.Count; ++choiceIndex)
+                foreach(Port port in node.OutputPorts)
                 {
-                    AnswerSaveData nodeChoice = node.SaveData.Answers[choiceIndex];
-                    if (string.IsNullOrEmpty(nodeChoice.NodeID))
+                    int i = 0;
+                    foreach(Edge edge in port.connections)
                     {
-                        continue;
+                        //string inputNodeID = ((BaseNodeView)edge.input.node).SaveData.ID;
+                        //dialogue.Answers[i].SetNextDialogue(_createdDialogues[inputNodeID]);
+                        //i++;
                     }
-
-                    dialogue.Answers[choiceIndex].NextDialogue = _createdDialogues[nodeChoice.NodeID];
-                    SaveAsset(dialogue);
                 }
+
+                //for (int choiceIndex = 0; choiceIndex < node.OutputPorts.Count; ++choiceIndex)
+                //{
+                //    //AnswerSaveData nodeChoice = node.SaveData.OutputPorts[choiceIndex];
+                //    //if (string.IsNullOrEmpty(nodeChoice.NodeID))
+                //    //{
+                //    //    continue;
+                //    //}
+
+                //    //dialogue.Answers[choiceIndex].NextDialogue = _createdDialogues[nodeChoice.NodeID];
+                //}
+                SaveAsset(dialogue);
             }
         }
 
@@ -174,40 +192,41 @@ namespace SDRGames.Whist.DialogueSystem.Editor
             LoadNodesConnections();
         }
 
-        private static void LoadNodes(List<BaseNodeSaveData> nodes)
+        private static void LoadNodes(List<BaseData> nodes)
         {
-            foreach (BaseNodeSaveData nodeData in nodes)
+            foreach (BaseData nodeData in nodes)
             {
-                List<AnswerSaveData> answers = CloneNodeAnswers(nodeData.Answers);
+                //List<AnswerSaveData> answers = CloneNodeAnswers(nodeData.Answers);
 
-                StartNode node = _graphView.CreateNode(nodeData.Name, nodeData.NodeType, nodeData.Position, false) as StartNode;
-                node.LoadData(nodeData, answers);
+                StartNodeView node = _graphView.CreateNode<StartNodePresenter>(nodeData.Name, nodeData.Position, false) as StartNodeView;
+                node.LoadData(nodeData);
                 node.Draw();
 
                 _graphView.AddElement(node);
 
-                _loadedNodes.Add(node.SaveData.ID, node);
+                //_loadedNodes.Add(node.SaveData.ID, node);
+                _loadedNodes.Add("", node);
             }
         }
 
-        private static void LoadNodes(List<SpeechNodeSaveData> nodes)
+        private static void LoadNodes(List<SpeechData> nodes)
         {
-            foreach (SpeechNodeSaveData nodeData in nodes)
+            foreach (SpeechData nodeData in nodes)
             {
-                List<AnswerSaveData> answers = CloneNodeAnswers(nodeData.Answers);
+                //List<AnswerSaveData> answers = CloneNodeAnswers(nodeData.Answers);
 
-                SpeechNode node = _graphView.CreateNode(nodeData.Name, nodeData.NodeType, nodeData.Position, false) as SpeechNode;
-                node.LoadData(nodeData, answers);
+                SpeechNodeView node = _graphView.CreateNode<SpeechNodePresenter>(nodeData.Name, nodeData.Position, false) as SpeechNodeView;
+                node.LoadData(nodeData);
                 node.Draw();
 
                 _graphView.AddElement(node);
-                _loadedNodes.Add(node.SaveData.ID, node);
+                //_loadedNodes.Add(node.SaveData.ID, node);
             }
         }
 
         private static void LoadNodesConnections()
         {
-            foreach (KeyValuePair<string, BaseNode> loadedNode in _loadedNodes)
+            foreach (KeyValuePair<string, BaseNodeView> loadedNode in _loadedNodes)
             {
                 var foldouts = loadedNode.Value.outputContainer.Children();
                 foreach (var foldout in foldouts)
@@ -223,7 +242,7 @@ namespace SDRGames.Whist.DialogueSystem.Editor
                                 continue;
                             }
 
-                            BaseNode nextNode = _loadedNodes[choiceData.NodeID];
+                            BaseNodeView nextNode = _loadedNodes[choiceData.NodeID];
 
                             Port nextNodeInputPort = (Port)nextNode.inputContainer.Children().First();
 
@@ -251,7 +270,7 @@ namespace SDRGames.Whist.DialogueSystem.Editor
         {
             _graphView.graphElements.ForEach(graphElement =>
             {
-                if (graphElement is BaseNode node)
+                if (graphElement is BaseNodeView node)
                 {
                     _nodes.Add(node);
                     return;

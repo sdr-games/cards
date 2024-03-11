@@ -1,5 +1,6 @@
 using System.IO;
 
+using SDRGames.Whist.DialogueSystem.Editor.Managers;
 using SDRGames.Whist.DialogueSystem.Helpers;
 
 using UnityEditor;
@@ -10,7 +11,7 @@ namespace SDRGames.Whist.DialogueSystem.Editor
 {
     public class DialogueEditorWindow : EditorWindow
     {
-        private GraphView _graphView;
+        private GraphManager _graphView;
 
         private readonly string _defaultFileName = "";
 
@@ -49,7 +50,7 @@ namespace SDRGames.Whist.DialogueSystem.Editor
 
         private void AddGraphView()
         {
-            _graphView = new GraphView(this);
+            _graphView = new GraphManager(this);
             _graphView.StretchToParentSize();
 
             rootVisualElement.Add(_graphView);

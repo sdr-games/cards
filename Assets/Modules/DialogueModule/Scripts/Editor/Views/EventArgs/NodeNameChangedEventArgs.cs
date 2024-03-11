@@ -1,11 +1,11 @@
-﻿namespace SDRGames.Whist.DialogueSystem.Editor
+﻿namespace SDRGames.Whist.DialogueSystem.Editor.Views
 {
     public class NodeNameChangedEventArgs
     {
         public string OldNodeName { get; private set; }
-        public BaseNode NewNode { get; private set; }
+        public BaseNodeView NewNode { get; private set; }
 
-        public NodeNameChangedEventArgs(string oldNodeName, BaseNode newNode)
+        public NodeNameChangedEventArgs(string oldNodeName, BaseNodeView newNode)
         {
             OldNodeName = oldNodeName;
             NewNode = newNode;

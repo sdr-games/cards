@@ -4,6 +4,8 @@ using SDRGames.Whist.DialogueSystem.Models;
 
 using UnityEngine;
 
+using static SDRGames.Whist.DialogueSystem.Editor.Managers.GraphManager;
+
 namespace SDRGames.Whist.DialogueSystem.ScriptableObjects
 {
     public class DialogueSpeechScriptableObject : DialogueScriptableObject

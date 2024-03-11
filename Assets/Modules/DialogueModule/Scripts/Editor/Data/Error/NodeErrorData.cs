@@ -1,14 +1,16 @@
 using System.Collections.Generic;
 
+using SDRGames.Whist.DialogueSystem.Editor.Views;
+
 namespace SDRGames.Whist.DialogueSystem.Editor
 {
     public class NodeErrorData : BaseErrorData
     {
-        public List<BaseNode> Nodes { get; set; }
+        public List<BaseNodeView> Nodes { get; set; }
 
         public NodeErrorData() : base()
         {
-            Nodes = new List<BaseNode>();
+            Nodes = new List<BaseNodeView>();
         }
     }
 }
