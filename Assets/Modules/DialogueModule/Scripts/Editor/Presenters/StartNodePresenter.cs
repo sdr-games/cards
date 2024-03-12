@@ -25,7 +25,7 @@ namespace SDRGames.Whist.DialogueSystem.Editor.Presenters
             Data = new BaseData(name, position);
             Data.SetNodeType(NodeTypes.Start);
             
-            NodeView.Initialize(name, position);
+            NodeView.Initialize(Data.ID, Data.NodeName, position);
         }
 
         public override BaseNodeView GetNodeView()
@@ -40,7 +40,7 @@ namespace SDRGames.Whist.DialogueSystem.Editor.Presenters
 
         protected override void OnNodeNameTextFieldChanged(object sender, NodeNameChangedEventArgs e)
         {
-            Data.SetName(e.NewNode.NodeName);
+            Data.SetNodeName(e.NewNode.NodeName);
         }
     }
 }

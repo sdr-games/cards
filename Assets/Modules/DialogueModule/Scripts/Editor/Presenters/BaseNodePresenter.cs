@@ -1,7 +1,6 @@
-using System;
-
 using SDRGames.Whist.DialogueSystem.Editor.Models;
 using SDRGames.Whist.DialogueSystem.Editor.Views;
+using SDRGames.Whist.DialogueSystem.ScriptableObjects;
 
 using UnityEngine;
 
@@ -17,11 +16,5 @@ namespace SDRGames.Whist.DialogueSystem.Editor.Presenters
         public abstract void Initialize(string name, Vector2 position);
 
         protected abstract void OnNodeNameTextFieldChanged(object sender, NodeNameChangedEventArgs e);
-
-        public virtual void SaveToGraph(GraphSaveDataScriptableObject graphData)
-        {
-            GetData().SetPosition(GetNodeView().GetPosition().position);
-            //graphData.StartNodes.Add(SaveData);
-        }
     }
 }

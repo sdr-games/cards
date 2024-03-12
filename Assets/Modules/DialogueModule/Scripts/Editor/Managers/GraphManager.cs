@@ -20,8 +20,10 @@ namespace SDRGames.Whist.DialogueSystem.Editor.Managers
         public enum NodeTypes { Start = 0, Speech = 1, Answer = 2 };
 
         private DialogueEditorWindow _editorWindow;
+        private NodesSearchWindow _searchWindow;
         private MiniMap _miniMap;
         private SerializableDictionary<string, NodeErrorData> _nodes;
+        private SerializableDictionary<BaseNodeView, BaseNodePresenter> _nodesPresenters;
         private int _nameErrorsAmount;
         private bool _startNodeExists;
 
@@ -51,16 +53,25 @@ namespace SDRGames.Whist.DialogueSystem.Editor.Managers
             _editorWindow = editorWindow;
 
             _nodes = new SerializableDictionary<string, NodeErrorData>();
+            _nodesPresenters = new SerializableDictionary<BaseNodeView, BaseNodePresenter>();
 
             AddManipulators();
             AddGridBackground();
             AddMiniMap();
+            AddSearchWindow();
 
             OnElementsDeleted();
             OnGraphViewChanged();
 
             AddStyles();
             AddMiniMapStyles();
+
+            this.StretchToParentSize();
+        }
+
+        public void CreateStartNode()
+        {
+            AddElement(CreateNode<StartNodePresenter>("Start", Vector2.zero));
         }
 
         public GraphElement CreateNode<T>(string nodeName, Vector2 position, bool shouldDraw = true) where T : BaseNodePresenter, new()
@@ -99,6 +110,7 @@ namespace SDRGames.Whist.DialogueSystem.Editor.Managers
             baseNodeView.PortDisconnected += (object sender, EventArgs e) => DeleteElements(((Port)sender).connections);
 
             AddNode($"{nodeName.ToLower()}", baseNodeView);
+            _nodesPresenters.Add(baseNodeView, presenter);
 
             if (shouldDraw)
             {
@@ -150,6 +162,7 @@ namespace SDRGames.Whist.DialogueSystem.Editor.Managers
             _nodes.Clear();
             _startNodeExists = false;
             NameErrorsAmount = 0;
+            CreateStartNode();
         }
 
         public void ToggleMiniMap()
@@ -196,6 +209,11 @@ namespace SDRGames.Whist.DialogueSystem.Editor.Managers
                 {
                     if (selectedElement.GetType() == typeof(StartNodeView))
                     {
+                        EditorUtility.DisplayDialog(
+                            "Start node deletion prevent",
+                            "Start node cannot be deleted",
+                            "OK"
+                        );
                         continue;
                     }
 
@@ -227,19 +245,25 @@ namespace SDRGames.Whist.DialogueSystem.Editor.Managers
                 {
                     foreach (Edge edge in changes.edgesToCreate)
                     {
-                        //if(edge.input.node is SpeechNodeView speechNode)
-                        //{
-                        //    SpeechData speechNodeSaveData = speechNode.SaveData;
-                        //    ((AnswerNodeView)edge.output.node).SaveData.AddNextSpeech(speechNodeSaveData);
-                        //    continue;
-                        //}
+                        if(edge.output.node is StartNodeView startNodeView)
+                        {
+                            startNodeView.CreateRelationShip((SpeechNodeView)edge.input.node);
+                            continue;
+                        }
 
-                        //if(edge.input.node is AnswerNodeView answerNode)
-                        //{
-                        //    AnswerData answerNodeSaveData = answerNode.SaveData;
-                        //    ((SpeechNodeView)edge.output.node).SaveData.AddAnswer(answerNodeSaveData);
-                        //    continue;
-                        //}
+                        if (edge.input.node is SpeechNodeView inputSpeechNode)
+                        {
+                            SpeechNodePresenter inputPresenter = (SpeechNodePresenter)_nodesPresenters[inputSpeechNode];
+                            BaseNodePresenter outputPresenter = _nodesPresenters[(BaseNodeView)edge.output.node];
+                            inputPresenter.CreateInputRelationship(outputPresenter);
+                            continue;
+                        }
+
+                        if (edge.output.node is SpeechNodeView outputSpeechNode)
+                        {
+                            //outputSpeechNode.CreateRelationship( (BaseNodeView)edge.input.node, outputSpeechNode);
+                            continue;
+                        }
                     }
                 }
 
@@ -252,15 +276,31 @@ namespace SDRGames.Whist.DialogueSystem.Editor.Managers
                             continue;
                         }
                         Edge edge = (Edge)element;
-                        //AnswerSaveData choiceData = (AnswerSaveData)edge.output.userData;
-                        //choiceData.NodeID = "";
+
+                        if (edge.output.node is StartNodeView startNodeView)
+                        {
+                            startNodeView.DeleteRelationShip((SpeechNodeView)edge.input.node);
+                            continue;
+                        }
+
+                        if (edge.input.node is SpeechNodeView inputSpeechNode)
+                        {
+                            //inputSpeechNode.RemoveRelationship(inputSpeechNode);
+                            continue;
+                        }
+
+                        if (edge.output.node is SpeechNodeView outputSpeechNode)
+                        {
+                            //outputSpeechNode.RemoveRelationship((BaseNodeView)edge.input.node);
+                            continue;
+                        }
                     }
                 }
                 return changes;
             };
         }
 
-        public void RemoveNode(BaseNodeView node, string nodeName = "")
+        private void RemoveNode(BaseNodeView node, string nodeName = "")
         {
             if(string.IsNullOrEmpty(nodeName))
             {
@@ -318,13 +358,19 @@ namespace SDRGames.Whist.DialogueSystem.Editor.Managers
             _miniMap.style.borderLeftColor = borderColor;
         }
 
+        private void AddSearchWindow()
+        {
+            if(_searchWindow == null)
+            {
+                _searchWindow = ScriptableObject.CreateInstance<NodesSearchWindow>();
+                _searchWindow.Initialize(this);
+            }
+            nodeCreationRequest = context => SearchWindow.Open(new SearchWindowContext(context.screenMousePosition), _searchWindow);
+        }
+
         private Vector2 GetViewportCenter()
         {
-            return new Vector2
-            (
-                contentViewContainer.worldBound.x / 2,
-                contentViewContainer.worldBound.y / 2
-            );
+            return contentViewContainer.worldBound.center;
         }
 
         private void OnNodeNameTextFieldChanged(object sender, NodeNameChangedEventArgs args)

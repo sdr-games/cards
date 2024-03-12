@@ -1,3 +1,20 @@
+/* BORDERS */
+
+.node:selected > #selection-border 
+{
+	border-color: var(--ds-colors-node-border);
+}
+
+.node:hover > #selection-border 
+{
+	border-color: var(--ds-colors-node-border);
+}
+
+.node:selected:hover > #selection-border 
+{
+	border-color: var(--ds-colors-node-border);
+}
+
 /* CONTAINERS */
 
 .ds-node__extension-container
@@ -20,7 +37,7 @@
 
 /* OUTPUTS */
 
-.ds-node__answer-port {
+.ds-node__answer-output-port {
 	height: auto;
 	--port-color: var(--ds-colors-answer-port-color);
 	--disabled-port-color: var(--ds-colors-disabled-answer-port-color);
@@ -30,12 +47,60 @@
 	transform-origin: 0 0;
 }
 
-.ds-node__answer-port > .ds-node__button {
+.ds-node__answer-input-port {
+	--port-color: var(--ds-colors-answer-port-color);
+	--disabled-port-color: var(--ds-colors-disabled-answer-port-color);
+	align-items: center;
+	flex-direction: row;
+	padding: var(--ds-metrics-window-pixels-4);
+	transform-origin: 0 0;
+}
+
+.ds-node__answer-output-port > .ds-node__button,
+.ds-node__answer-input-port > .ds-node__button {
 	margin-right: 15px;
 }
 
-.ds-node__answer-port > #connector {
+.ds-node__answer-output-port > #connector,
+.ds-node__answer-input-port > #connector {
 	border-color: var(--ds-colors-answer-port-color);
+	width: var(--ds-metrics-window-pixels-11);
+	height: var(--ds-metrics-window-pixels-11);
+	border-radius: var(--ds-metrics-window-pixels-11);
+	align-items: center;
+	justify-content: center;
+	margin-left: var(--ds-metrics-window-pixels-4);
+	margin-right: var(--ds-metrics-window-pixels-4);
+	border-width: var(--ds-metrics-window-pixels-1);
+}
+
+.ds-node__speech-output-port {
+	height: 100%;
+	--port-color: var(--ds-colors-speech-port-color);
+	--disabled-port-color: var(--ds-colors-disabled-speech-port-color);
+	align-items: center;
+	flex-direction: row-reverse;
+	padding: var(--ds-metrics-window-pixels-4);
+	transform-origin: 0 0;
+}
+
+.ds-node__speech-input-port {
+	--port-color: var(--ds-colors-speech-port-color);
+	--disabled-port-color: var(--ds-colors-disabled-speech-port-color);
+	align-items: center;
+	flex-direction: row;
+	padding: var(--ds-metrics-window-pixels-4);
+	transform-origin: 0 0;
+}
+
+.ds-node__speech-output-port > .ds-node__button,
+.ds-node__speech-input-port > .ds-node__button {
+	margin-right: 15px;
+}
+
+.ds-node__speech-output-port > #connector,
+.ds-node__speech-input-port > #connector {
+	border-color: var(--ds-colors-speech-port-color);
 	width: var(--ds-metrics-window-pixels-11);
 	height: var(--ds-metrics-window-pixels-11);
 	border-radius: var(--ds-metrics-window-pixels-11);

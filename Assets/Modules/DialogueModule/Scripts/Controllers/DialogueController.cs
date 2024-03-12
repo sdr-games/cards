@@ -27,11 +27,11 @@ namespace SDRGames.Whist.DialogueSystem.Controllers
             {
                 GameObject dialogueText = (GameObject)Instantiate(Resources.Load("Prefabs/UI/Dialogue/DialogueText", typeof(GameObject)), dialogueTextScrollViewContent);
                 //StartCoroutine(ShowUIElementWithFading(dialogueText));
-                dialogueText.GetComponent<TextMeshProUGUI>().text = dialogueSO.TextLocalization.SelectedLocalizedText;
-                if (dialogueSO.Answers != null && dialogueSO.Answers.Count > 0)
-                {
-                    CreateAnswers(SortAnswersByConditions(dialogueSO.Answers), fullscreen);
-                }
+                dialogueText.GetComponent<TextMeshProUGUI>().text = dialogueSO.TextLocalization.LocalizedText;
+                //if (dialogueSO.Answers != null && dialogueSO.Answers.Count > 0)
+                //{
+                //    CreateAnswers(SortAnswersByConditions(dialogueSO.Answers), fullscreen);
+                //}
 
                 //if (dialogueSO.Quest != null)
                 //{

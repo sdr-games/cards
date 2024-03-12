@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using SDRGames.Whist.DialogueSystem.Editor.Views;
+using SDRGames.Whist.DialogueSystem.Models;
 
 using UnityEditor.Experimental.GraphView;
 using UnityEditor.Localization;
@@ -39,9 +40,9 @@ namespace SDRGames.Whist.DialogueSystem.Editor
             return foldout;
         }
 
-        public static Port CreatePort(this BaseNodeView node, Type nodeType, string portName = "", Orientation orientation = Orientation.Horizontal, Direction direction = Direction.Output, Port.Capacity capacity = Port.Capacity.Single)
+        public static PortView CreatePort(this BaseNodeView node, Type nodeType, string portName = "", Orientation orientation = Orientation.Horizontal, Direction direction = Direction.Output, Port.Capacity capacity = Port.Capacity.Single)
         {
-            Port port = node.InstantiatePort(orientation, direction, capacity, nodeType);
+            PortView port = (PortView)node.InstantiatePort(orientation, direction, capacity, nodeType);
             port.portName = portName;
             return port;
         }
@@ -140,7 +141,7 @@ namespace SDRGames.Whist.DialogueSystem.Editor
             return dropdownField;
         }
 
-        public static Box CreateLocalizationBox(LocalizationSaveData localizationSaveData, string uss_class = "")
+        public static Box CreateLocalizationBox(LocalizationData localizationSaveData, string uss_class = "")
         {
             List<string> stringTablesNames = new List<string>();
             Box box = new Box();
@@ -189,7 +190,7 @@ namespace SDRGames.Whist.DialogueSystem.Editor
             return box;
         }
 
-        private static void OnLocalizationDropdownChange(LocalizationSaveData localizationSaveData, Box box, string uss_class = "")
+        private static void OnLocalizationDropdownChange(LocalizationData localizationSaveData, Box box, string uss_class = "")
         {
             box.Clear();
             DropdownField localizationTextDropdown = CreateLocalizationEntriesDropdown(localizationSaveData, box, uss_class);
@@ -203,7 +204,7 @@ namespace SDRGames.Whist.DialogueSystem.Editor
             }
         }
 
-        public static DropdownField CreateLocalizationEntriesDropdown(LocalizationSaveData localizationSaveData, Box box, string uss_class)
+        public static DropdownField CreateLocalizationEntriesDropdown(LocalizationData localizationSaveData, Box box, string uss_class)
         {
             Dictionary<string, string> localizationEntries = new Dictionary<string, string>();
             var currentLocale = LocalizationSettings.ProjectLocale.Formatter.ToString();

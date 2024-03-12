@@ -3,6 +3,10 @@ using System.Collections.Generic;
 
 using SDRGames.Whist.DialogueSystem.Editor.Models;
 using SDRGames.Whist.DialogueSystem.Editor.Views;
+using SDRGames.Whist.DialogueSystem.Models;
+using SDRGames.Whist.DialogueSystem.ScriptableObjects;
+
+using UnityEditor.Experimental.GraphView;
 
 using UnityEngine;
 
@@ -10,39 +14,79 @@ namespace SDRGames.Whist.DialogueSystem.Editor.Presenters
 {
     public class SpeechNodePresenter : BaseNodePresenter
     {
-        public SpeechData Data { get; private set; }
-        public SpeechNodeView NodeView { get; private set; }
+        private SpeechData _data;
+        private SpeechNodeView _nodeView;
 
         public SpeechNodePresenter() 
         {
-            NodeView = (SpeechNodeView)Activator.CreateInstance(typeof(SpeechNodeView));
-            NodeView.NodeNameTextFieldChanged += OnNodeNameTextFieldChanged;
+            _nodeView = (SpeechNodeView)Activator.CreateInstance(typeof(SpeechNodeView));
+            _nodeView.NodeNameTextFieldChanged += OnNodeNameTextFieldChanged;
         }
 
         public override void Initialize(string name, Vector2 position)
         {
-            LocalizationSaveData characterNameLocalization = new LocalizationSaveData("CharacterNames", "Valior", "Valior");
-            LocalizationSaveData textLocalization = new LocalizationSaveData("", "", "");
-            List<AnswerData> answerNodes = new List<AnswerData>();
+            LocalizationData characterNameLocalization = new LocalizationData("CharacterNames", "Valior", "Valior");
+            LocalizationData textLocalization = new LocalizationData("", "", "");
+            List<string> connections = new List<string>();
 
-            Data = new SpeechData(name, position, characterNameLocalization, textLocalization, answerNodes);
+            _data = new SpeechData(name, position, characterNameLocalization, textLocalization, connections);
 
-            NodeView.Initialize(Data.Name, position, Data.CharacterNameLocalization, Data.TextLocalization);
+            _nodeView.Initialize(_data.ID, _data.NodeName, position, _data.CharacterNameLocalization, _data.TextLocalization);
+            _nodeView.SavedToGraph += OnSavedToGraph;
+            _nodeView.SavedToSO += OnSavedToSO;
+        }
+
+        public void CreateInputRelationship(BaseNodePresenter outputNodePresenter)
+        {
+            //_data.AddAnswer(outputNodePresenter.GetData());
+
+            //if (!_relationships.ContainsKey(inputNodeView))
+            //{
+            //    _relationships.Add(inputNodeView, outputNodeView);
+            //    RelationshipAdded?.Invoke(this, new RelationshipAddedEventArgs(inputNodeView, outputNodeView));
+            //}
+        }
+
+        public void RemoveRelationship(BaseNodeView inputNodeView)
+        {
+            //if (_relationships.ContainsKey(inputNodeView))
+            //{
+            //    _relationships.Remove(inputNodeView);
+            //}
         }
 
         public override BaseNodeView GetNodeView()
         {
-            return NodeView;
+            return _nodeView;
         }
 
         public override BaseData GetData()
         {
-            return Data;
+            return _data;
         }
 
         protected override void OnNodeNameTextFieldChanged(object sender, NodeNameChangedEventArgs e)
         {
-            Data.SetName(e.NewNode.NodeName);
+            _data.SetNodeName(e.NewNode.NodeName);
+        }
+
+        protected void OnSavedToGraph(object sender, SavedToGraphEventArgs e)
+        {
+            List<string> connectionsIDs = new List<string>();
+            foreach(PortView port in _nodeView.OutputPorts)
+            {
+                foreach(Edge edge in port.connections)
+                {
+                    connectionsIDs.Add(((BaseNodeView)edge.input.node).ID);
+                }
+            }
+            _data.SetConnections(connectionsIDs);
+            _data.SaveToGraph(e.GraphData, e.Position);
+        }
+
+        protected void OnSavedToSO(object sender, SavedToSOEventArgs<DialogueSpeechScriptableObject> e)
+        {
+            _data.SaveToSO(e.DialogueSO);
         }
     }
 }

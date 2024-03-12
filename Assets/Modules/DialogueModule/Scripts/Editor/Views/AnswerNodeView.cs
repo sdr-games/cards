@@ -1,26 +1,33 @@
+using System;
+
+using SDRGames.Whist.DialogueSystem.Models;
+using SDRGames.Whist.DialogueSystem.ScriptableObjects;
+
 using UnityEditor.Experimental.GraphView;
 
 using UnityEngine;
 using UnityEngine.UIElements;
 
+using static SDRGames.Whist.DialogueSystem.Editor.Managers.GraphManager;
+
 namespace SDRGames.Whist.DialogueSystem.Editor.Views
 {
     public class AnswerNodeView : BaseNodeView
     {
-        private LocalizationSaveData _characterNameLocalization;
-        private LocalizationSaveData _textLocalization;
+        private LocalizationData _characterNameLocalization;
+        private LocalizationData _textLocalization;
 
-        public void Initialize(string nodeName, Vector2 position, LocalizationSaveData characterNameLocalization, LocalizationSaveData textLocalization)
+        public new event EventHandler<SavedToSOEventArgs<DialogueAnswerScriptableObject>> SavedToSO;
+
+        public void Initialize(string id, string nodeName, Vector2 position, LocalizationData characterNameLocalization, LocalizationData textLocalization)
         {
-            base.Initialize(nodeName, position);
+            base.Initialize(id, nodeName, position);
 
             _characterNameLocalization = characterNameLocalization;
             _textLocalization = textLocalization;
 
-            CreateAnswerPort(typeof(AnswerNodeView), true);
-
-            Port inputPort = this.CreatePort(typeof(SpeechNodeView), "Speech Connection", Orientation.Horizontal, Direction.Input, Port.Capacity.Multi);
-            InputPorts.Add(inputPort);
+            CreateInputPort(typeof(SpeechNodeView), NodeTypes.Speech);
+            CreateAnswerPort(typeof(AnswerNodeView), NodeTypes.Answer, true);
         }
 
         public override void Draw()
@@ -66,5 +73,15 @@ namespace SDRGames.Whist.DialogueSystem.Editor.Views
         //    //SaveData.SetPosition(GetPosition().position);
         //    //graphData.AnswerNodes.Add(SaveData);
         //}
+
+        public override DialogueScriptableObject SaveToSO(string folderPath)
+        {
+            DialogueAnswerScriptableObject dialogueSO;
+
+            dialogueSO = UtilityIO.CreateAsset<DialogueAnswerScriptableObject>($"{folderPath}/Dialogues", NodeName);
+
+            SavedToSO?.Invoke(this, new SavedToSOEventArgs<DialogueAnswerScriptableObject>(dialogueSO));
+            return dialogueSO;
+        }
     }
 }

@@ -1,0 +1,53 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a78993f904d7ff443bfe26057a8ddef6, type: 3}
+  m_Name: NewDialogueGraph2
+  m_EditorClassIdentifier: 
+  <FileName>k__BackingField: 
+  <StartNode>k__BackingField:
+    <ID>k__BackingField: 
+    <NodeName>k__BackingField: 
+    <NodeType>k__BackingField: 0
+    <Position>k__BackingField: {x: 0, y: 0}
+  <AnswerNodes>k__BackingField:
+  - <ID>k__BackingField: 72b169b1-c947-4581-ad42-3548caf3fa52
+    <NodeName>k__BackingField: Answer
+    <NodeType>k__BackingField: 2
+    <Position>k__BackingField: {x: 505.6, y: 138.40001}
+    <CharacterNameLocalization>k__BackingField:
+      <SelectedLocalizationTable>k__BackingField: CharacterNames
+      <SelectedEntryKey>k__BackingField: "Valior\t"
+      <LocalizedText>k__BackingField: Valior
+    <TextLocalization>k__BackingField:
+      <SelectedLocalizationTable>k__BackingField: CharacterNames
+      <SelectedEntryKey>k__BackingField: "Valior\t"
+      <LocalizedText>k__BackingField: Valior
+    <Conditions>k__BackingField: []
+  <SpeechNodes>k__BackingField:
+  - <ID>k__BackingField: 430f56ef-c2b7-43af-81ac-2ef21c08466f
+    <NodeName>k__BackingField: Speech
+    <NodeType>k__BackingField: 1
+    <Position>k__BackingField: {x: 243.2, y: 226.40001}
+    <CharacterNameLocalization>k__BackingField:
+      <SelectedLocalizationTable>k__BackingField: CharacterNames
+      <SelectedEntryKey>k__BackingField: "Valior\t"
+      <LocalizedText>k__BackingField: Valior
+    <TextLocalization>k__BackingField:
+      <SelectedLocalizationTable>k__BackingField: CharacterNames
+      <SelectedEntryKey>k__BackingField: "Valior\t"
+      <LocalizedText>k__BackingField: Valior
+    <Connections>k__BackingField:
+    - 72b169b1-c947-4581-ad42-3548caf3fa52
+  <OldNodeNames>k__BackingField:
+  - Start
+  - Speech
+  - Answer

@@ -1,14 +1,11 @@
-using System.Collections.Generic;
-
 using SDRGames.Whist.DialogueSystem.Models;
-
 using UnityEngine;
 
 using static SDRGames.Whist.DialogueSystem.Editor.Managers.GraphManager;
 
 namespace SDRGames.Whist.DialogueSystem.ScriptableObjects
 {
-    public class DialogueSpeechScriptableObject : DialogueScriptableObject
+    public class DialogueAnswerScriptableObject : DialogueScriptableObject
     {
         [field: SerializeField] public LocalizationData CharacterNameLocalization { get; private set; }
         [field: SerializeField] public LocalizationData TextLocalization { get; private set; }

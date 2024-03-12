@@ -1,17 +1,25 @@
+using System.Collections.Generic;
+
 using UnityEditor.Experimental.GraphView;
 
 using UnityEngine;
 using UnityEngine.UIElements;
 
+using static SDRGames.Whist.DialogueSystem.Editor.Managers.GraphManager;
+
 namespace SDRGames.Whist.DialogueSystem.Editor.Views
 {
     public class StartNodeView : BaseNodeView
     {
-        public override void Initialize(string nodeName, Vector2 position)
-        {
-            base.Initialize(nodeName, position);
+        private List<SpeechNodeView> _relationships;
 
-            CreateAnswerPort(typeof(AnswerNodeView));
+        public override void Initialize(string id, string nodeName, Vector2 position)
+        {
+            base.Initialize(id, nodeName, position);
+
+            _relationships = new List<SpeechNodeView>();
+
+            CreateAnswerPort(typeof(AnswerNodeView), NodeTypes.Answer);
         }
 
         public override void Draw()
@@ -19,7 +27,7 @@ namespace SDRGames.Whist.DialogueSystem.Editor.Views
             /* MAIN CONTAINER */
             Button addAnswerButton = UtilityElement.CreateButton("Add answer", () =>
             {
-                CreateAnswerPort(typeof(SpeechNodeView));
+                CreateAnswerPort(typeof(AnswerNodeView), NodeTypes.Answer);
             });
             addAnswerButton.AddToClassList("ds-node__button");
             mainContainer.Insert(1, addAnswerButton);
@@ -35,10 +43,20 @@ namespace SDRGames.Whist.DialogueSystem.Editor.Views
             base.Draw();
         }
 
-        public override void SaveToGraph(GraphSaveDataScriptableObject graphData)
+        public void CreateRelationShip(SpeechNodeView speechNodeView)
         {
-            //SaveData.SetPosition(GetPosition().position);
-            //graphData.StartNodes.Add(SaveData);
+            if(!_relationships.Contains(speechNodeView))
+            {
+                _relationships.Add(speechNodeView);
+            }
+        }
+
+        public void DeleteRelationShip(SpeechNodeView speechNodeView)
+        {
+            if (_relationships.Contains(speechNodeView))
+            {
+                _relationships.Remove(speechNodeView);
+            }
         }
     }
 }

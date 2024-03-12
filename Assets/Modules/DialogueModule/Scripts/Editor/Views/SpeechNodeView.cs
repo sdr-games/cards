@@ -1,6 +1,7 @@
+using System;
 using System.Collections.Generic;
 
-using SDRGames.Whist.DialogueSystem.Editor.Models;
+using SDRGames.Whist.DialogueSystem.Helpers;
 using SDRGames.Whist.DialogueSystem.Models;
 using SDRGames.Whist.DialogueSystem.ScriptableObjects;
 
@@ -9,26 +10,30 @@ using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-using static SDRGames.Whist.DialogueSystem.ScriptableObjects.DialogueScriptableObject;
+using static SDRGames.Whist.DialogueSystem.Editor.Managers.GraphManager;
 
 namespace SDRGames.Whist.DialogueSystem.Editor.Views
 {
     public class SpeechNodeView : BaseNodeView
     {
-        private LocalizationSaveData _characterNameLocalization;
-        private LocalizationSaveData _textLocalization;
+        private LocalizationData _characterNameLocalization;
+        private LocalizationData _textLocalization;
+        private Dictionary<BaseNodeView, BaseNodeView> _relationships;
 
-        public void Initialize(string nodeName, Vector2 position, LocalizationSaveData characterNameLocalization, LocalizationSaveData textLocalization)
+        public new event EventHandler<SavedToSOEventArgs<DialogueSpeechScriptableObject>> SavedToSO;
+        public event EventHandler<RelationshipAddedEventArgs> RelationshipAdded;
+        public event EventHandler<RelationshipRemovedEventArgs> RelationshipRemoved;
+
+        public void Initialize(string id, string nodeName, Vector2 position, LocalizationData characterNameLocalization, LocalizationData textLocalization)
         {
-            base.Initialize(nodeName, position);
+            base.Initialize(id, nodeName, position);
 
             _characterNameLocalization = characterNameLocalization;
             _textLocalization = textLocalization;
+            _relationships = new Dictionary<BaseNodeView, BaseNodeView>();
 
-            CreateAnswerPort(typeof(SpeechNodeView));
-
-            Port inputPort = this.CreatePort(typeof(AnswerNodeView), "Answer Connection", Orientation.Horizontal, Direction.Input, Port.Capacity.Multi);
-            InputPorts.Add(inputPort);
+            CreateInputPort(typeof(AnswerNodeView), NodeTypes.Answer);
+            CreateAnswerPort(typeof(SpeechNodeView), NodeTypes.Speech);
         }
 
         public override void Draw()
@@ -43,7 +48,7 @@ namespace SDRGames.Whist.DialogueSystem.Editor.Views
 
             Button addAnswerButton = UtilityElement.CreateButton("Add answer", () =>
             {
-                CreateAnswerPort(typeof(SpeechNodeView));
+                CreateAnswerPort(typeof(SpeechNodeView), NodeTypes.Speech);
             });
             addAnswerButton.AddToClassList("ds-node__button");
 
@@ -84,6 +89,16 @@ namespace SDRGames.Whist.DialogueSystem.Editor.Views
         //    SaveData.SetPosition(GetPosition().position);
         //    graphData.SpeechNodes.Add(SaveData);
         //}
+
+        public override DialogueScriptableObject SaveToSO(string folderPath)
+        {
+            DialogueSpeechScriptableObject dialogueSO;
+
+            dialogueSO = UtilityIO.CreateAsset<DialogueSpeechScriptableObject>($"{folderPath}/Dialogues", NodeName);
+
+            SavedToSO?.Invoke(this, new SavedToSOEventArgs<DialogueSpeechScriptableObject>(dialogueSO));
+            return dialogueSO;
+        }
 
         //public override DialogueScriptableObject SaveToSO(string folderPath)
         //{

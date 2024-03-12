@@ -31,8 +31,9 @@ namespace SDRGames.Whist.DialogueSystem.ScriptableObjects
 
         private DialogueSpeechScriptableObject GetFirstSpeech()
         {
-            DialogueScriptableObject start = Dialogues.Find(item => item.GetType() == typeof(DialogueScriptableObject));
-            return start.Answers[0].NextDialogue as DialogueSpeechScriptableObject;
+            //DialogueScriptableObject start = Dialogues.Find(item => item.GetType() == typeof(DialogueScriptableObject));
+            //return start.Answers[0].NextDialogue as DialogueSpeechScriptableObject;
+            return null;
         }
     }
 }

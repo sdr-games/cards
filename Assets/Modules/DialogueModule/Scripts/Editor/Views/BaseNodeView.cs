@@ -10,22 +10,25 @@ using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements;
 
+using static SDRGames.Whist.DialogueSystem.Editor.Managers.GraphManager;
+
 namespace SDRGames.Whist.DialogueSystem.Editor.Views
 {
     public class BaseNodeView : Node
     {
         private Color _defaultBackgroundColor;
 
+        public string ID { get; protected set; }
         public string NodeName { get; protected set; }
         public List<Port> InputPorts { get; protected set; }
         public List<Port> OutputPorts { get; protected set; }
-
-        //public BaseData SaveData { get; protected set; }
 
         public event EventHandler<NodeNameChangedEventArgs> NodeNameTextFieldChanged;
         public event EventHandler AnswerPortRemoved;
         public event EventHandler PortDisconnected;
 
+        public event EventHandler<SavedToGraphEventArgs> SavedToGraph;
+        public event EventHandler SavedToSO;
 
         public override void BuildContextualMenu(ContextualMenuPopulateEvent contextualMenuEvent)
         {
@@ -35,10 +38,16 @@ namespace SDRGames.Whist.DialogueSystem.Editor.Views
             base.BuildContextualMenu(contextualMenuEvent);
         }
 
-        public virtual void Initialize(string nodeName, Vector2 position)
+        public override Port InstantiatePort(Orientation orientation, Direction direction, Port.Capacity capacity, Type type)
+        {
+            return PortView.Create<Edge>(orientation, direction, capacity, type);
+        }
+
+        public virtual void Initialize(string id, string nodeName, Vector2 position)
         {
             SetPosition(new Rect(position, Vector2.zero));
 
+            ID = id;
             NodeName = nodeName;
 
             InputPorts = new List<Port>();
@@ -85,22 +94,15 @@ namespace SDRGames.Whist.DialogueSystem.Editor.Views
             mainContainer.style.backgroundColor = _defaultBackgroundColor;
         }
 
-        public virtual void SaveToGraph(GraphSaveDataScriptableObject graphData) { }
+        public virtual void SaveToGraph(GraphSaveDataScriptableObject graphData) 
+        {
+            SavedToGraph?.Invoke(this, new SavedToGraphEventArgs(graphData, GetPosition().position));
+        }
 
         public virtual DialogueScriptableObject SaveToSO(string folderPath)
         {
-            DialogueScriptableObject dialogueSO;
-
-            dialogueSO = UtilityIO.CreateAsset<DialogueScriptableObject>($"{folderPath}/Dialogues", "");
-
-            //dialogueSO.Initialize(
-            //    SaveData.Name,
-            //    null,
-            //    SaveData.NodeType
-            //);
-
-            UtilityIO.SaveAsset(dialogueSO);
-            return dialogueSO;
+            SavedToSO?.Invoke(this, EventArgs.Empty);
+            return null;
         }
 
         public void LoadData(BaseData nodeData)
@@ -114,23 +116,21 @@ namespace SDRGames.Whist.DialogueSystem.Editor.Views
             DisconnectOutputPorts();
         }
 
-        protected Port CreateAnswerPort(Type type, bool singlePort = false)
+        protected Port CreateInputPort(Type type, NodeTypes nodeType)
+        {
+            Port inputPort = this.CreatePort(type, $"{nodeType} Connection", Orientation.Horizontal, Direction.Input, Port.Capacity.Multi);
+            inputPort.ClearClassList();
+            inputPort.AddToClassList($"ds-node__{nodeType.ToString().ToLower()}-input-port");
+            InputPorts.Add(inputPort);
+
+            return inputPort;
+        }
+
+        protected Port CreateAnswerPort(Type type, NodeTypes nodeType, bool singlePort = false)
         {
             Port answerPort = this.CreatePort(type, "Output");
             answerPort.ClearClassList();
-            answerPort.AddToClassList("ds-node__answer-port");
-            //answerPort.userData = userData;
-
-            //AnswerSaveData answerData = (AnswerSaveData)userData;
-            //if (answerData.Conditions == null)
-            //{
-            //    answerData.Conditions = new List<AnswerConditionSaveData>();
-            //}
-
-            //Foldout answerFoldout = UtilityElement.CreateFoldout("Answer");
-
-            //Box localizationBox = UtilityElement.CreateLocalizationBox(answerData.LocalizationSaveData, "ds-node__string-dropdown");
-            //answerPort.Add(localizationBox);
+            answerPort.AddToClassList($"ds-node__{nodeType.ToString().ToLower()}-output-port");
 
             if (!singlePort)
             {
@@ -146,29 +146,6 @@ namespace SDRGames.Whist.DialogueSystem.Editor.Views
                 deleteAnswerButton.AddToClassList("ds-node__button");
                 answerPort.Add(deleteAnswerButton);
             }
-
-
-            //Foldout conditionsFoldout = UtilityElement.CreateFoldout("Conditions", true);
-            //conditionsFoldout.AddClasses("ds-node__foldout-right");
-
-            //Button addConditionButton = UtilityElement.CreateButton("Add condition", () =>
-            //{
-            //    AnswerConditionSaveData conditionData = new AnswerConditionSaveData()
-            //    {
-            //        AnswerConditionType = AnswerConditionTypes.CharacteristicCheck
-            //    };
-            //    answerData.Conditions.Add(conditionData);
-            //    UtilityElement.CreateConditionField(conditionsFoldout, conditionData);
-            //});
-            //conditionsFoldout.Add(addConditionButton);
-
-            //foreach (AnswerConditionSaveData conditionData in answerData.Conditions)
-            //{
-            //    UtilityElement.CreateConditionField(conditionsFoldout, conditionData);
-            //}
-
-            //answerFoldout.Add(answerPort);
-            //answerFoldout.Add(conditionsFoldout);
 
             OutputPorts.Add(answerPort);
             outputContainer.Add(answerPort);

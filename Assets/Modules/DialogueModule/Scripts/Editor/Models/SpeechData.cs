@@ -1,6 +1,9 @@
 using System;
 using System.Collections.Generic;
 
+using SDRGames.Whist.DialogueSystem.Models;
+using SDRGames.Whist.DialogueSystem.ScriptableObjects;
+
 using UnityEngine;
 
 namespace SDRGames.Whist.DialogueSystem.Editor.Models
@@ -8,16 +11,16 @@ namespace SDRGames.Whist.DialogueSystem.Editor.Models
     [Serializable]
     public class SpeechData : BaseData
     {
-        [field: SerializeField] public LocalizationSaveData CharacterNameLocalization { get; private set; }
-        [field: SerializeField] public LocalizationSaveData TextLocalization { get; private set; }
-        [field: SerializeField] public List<AnswerData> Answers { get; private set; }
+        [field: SerializeField] public LocalizationData CharacterNameLocalization { get; private set; }
+        [field: SerializeField] public LocalizationData TextLocalization { get; private set; }
+        [field: SerializeField] public List<string> Connections { get; private set; }
 
-        public SpeechData(string name, Vector2 position, LocalizationSaveData characterNameLocalization, LocalizationSaveData textLocalization, List<AnswerData> answers) : base(name, position)
+        public SpeechData(string name, Vector2 position, LocalizationData characterNameLocalization, LocalizationData textLocalization, List<string> answers) : base(name, position)
         {
             NodeType = Managers.GraphManager.NodeTypes.Speech;
             CharacterNameLocalization = characterNameLocalization;
             TextLocalization = textLocalization;
-            Answers = answers;
+            Connections = answers;
         }
 
         public void SetID(string id)
@@ -25,40 +28,58 @@ namespace SDRGames.Whist.DialogueSystem.Editor.Models
             ID = id;
         }
 
-        public override void SetName(string name)
+        public override void SetNodeName(string name)
         {
-            Name = name;
+            NodeName = name;
         }
 
-        public void SetCharacterNameLocalization(LocalizationSaveData characterNameLocalization)
+        public void SetCharacterNameLocalization(LocalizationData characterNameLocalization)
         {
             CharacterNameLocalization = characterNameLocalization;
         }
 
-        public void SetTextLocalization(LocalizationSaveData textLocalization)
+        public void SetTextLocalization(LocalizationData textLocalization)
         {
             TextLocalization = textLocalization;
         }
 
-        public void SetAnswers(List<AnswerData> answers)
+        public void SetConnections(List<string> connections)
         {
-            Answers = answers;
+            Connections = connections;
         }
 
-        public void AddAnswer(AnswerData answer)
+        public void AddConnection(string connection)
         {
-            if (!Answers.Contains(answer))
+            if (!Connections.Contains(connection))
             {
-                Answers.Add(answer);
+                Connections.Add(connection);
             }
         }
 
-        public void RemoveAnswer(AnswerData answer)
+        public void RemoveConnection(string connection)
         {
-            if (Answers.Contains(answer))
+            if (Connections.Contains(connection))
             {
-                Answers.Remove(answer);
+                Connections.Remove(connection);
             }
+        }
+
+        public override void SaveToGraph(GraphSaveDataScriptableObject graphData, Vector2 position)
+        {
+            SetPosition(position);
+            graphData.SpeechNodes.Add(this);
+        }
+
+        public DialogueSpeechScriptableObject SaveToSO(DialogueSpeechScriptableObject dialogueSO)
+        {
+            dialogueSO.Initialize(
+                NodeName,
+                NodeType,
+                CharacterNameLocalization,
+                TextLocalization
+            );
+            UtilityIO.SaveAsset(dialogueSO);
+            return dialogueSO;
         }
     }
 }
