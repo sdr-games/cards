@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-using SDRGames.Whist.DialogueSystem.Editor.Models;
+using SDRGames.Whist.DialogueSystem.Editor.Views;
 
 using UnityEngine;
 
@@ -9,23 +9,22 @@ namespace SDRGames.Whist.DialogueSystem.Editor
     public class GraphSaveDataScriptableObject : ScriptableObject
     {
         [field: SerializeField] public string FileName { get; private set; }
-        [field: SerializeField] public BaseData StartNode { get; private set; }
-        [field: SerializeField] public List<AnswerData> AnswerNodes { get; private set; }
-        [field: SerializeField] public List<SpeechData> SpeechNodes { get; private set; }
+        [field: SerializeField] public StartNodeView StartNode { get; private set; }
+        [field: SerializeField] public List<AnswerNodeView> AnswerNodes { get; private set; }
+        [field: SerializeField] public List<SpeechNodeView> SpeechNodes { get; private set; }
         [field: SerializeField] public List<string> OldNodeNames { get; private set; }
 
         public void Initialize(string fileName)
         {
             FileName = fileName;
 
-            StartNode = new BaseData("Start", Vector2.zero);
-            AnswerNodes = new List<AnswerData>();
-            SpeechNodes = new List<SpeechData>();
+            AnswerNodes = new List<AnswerNodeView>();
+            SpeechNodes = new List<SpeechNodeView>();
         }
 
-        public void SetStartNode(BaseData baseData)
+        public void SetStartNode(StartNodeView startNode)
         {
-            StartNode = baseData;
+            StartNode = startNode;
         }
 
         public void SetOldNodeNames(List<string> oldNodeNames)

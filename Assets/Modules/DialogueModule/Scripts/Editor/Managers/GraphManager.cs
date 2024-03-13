@@ -247,7 +247,6 @@ namespace SDRGames.Whist.DialogueSystem.Editor.Managers
                     {
                         if(edge.output.node is StartNodeView startNodeView)
                         {
-                            startNodeView.CreateRelationShip((SpeechNodeView)edge.input.node);
                             continue;
                         }
 
@@ -279,7 +278,6 @@ namespace SDRGames.Whist.DialogueSystem.Editor.Managers
 
                         if (edge.output.node is StartNodeView startNodeView)
                         {
-                            startNodeView.DeleteRelationShip((SpeechNodeView)edge.input.node);
                             continue;
                         }
 

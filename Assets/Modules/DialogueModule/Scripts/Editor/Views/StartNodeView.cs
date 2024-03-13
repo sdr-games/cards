@@ -1,9 +1,10 @@
-using System.Collections.Generic;
+using System;
+
+using SDRGames.Whist.DialogueSystem.ScriptableObjects;
 
 using UnityEditor.Experimental.GraphView;
 
 using UnityEngine;
-using UnityEngine.UIElements;
 
 using static SDRGames.Whist.DialogueSystem.Editor.Managers.GraphManager;
 
@@ -11,26 +12,24 @@ namespace SDRGames.Whist.DialogueSystem.Editor.Views
 {
     public class StartNodeView : BaseNodeView
     {
-        private List<SpeechNodeView> _relationships;
+        public new event EventHandler<SavedToSOEventArgs<DialogueStartScriptableObject>> SavedToSO;
 
         public override void Initialize(string id, string nodeName, Vector2 position)
         {
             base.Initialize(id, nodeName, position);
 
-            _relationships = new List<SpeechNodeView>();
-
-            CreateAnswerPort(typeof(AnswerNodeView), NodeTypes.Answer);
+            CreateOutputPort(typeof(AnswerNodeView), NodeTypes.Answer, true);
         }
 
         public override void Draw()
         {
             /* MAIN CONTAINER */
-            Button addAnswerButton = UtilityElement.CreateButton("Add answer", () =>
-            {
-                CreateAnswerPort(typeof(AnswerNodeView), NodeTypes.Answer);
-            });
-            addAnswerButton.AddToClassList("ds-node__button");
-            mainContainer.Insert(1, addAnswerButton);
+            //Button addAnswerButton = UtilityElement.CreateButton("Add answer", () =>
+            //{
+            //    CreateAnswerPort(typeof(AnswerNodeView), NodeTypes.Answer);
+            //});
+            //addAnswerButton.AddToClassList("ds-node__button");
+            //mainContainer.Insert(1, addAnswerButton);
 
             /* OUTPUT CONTAINER */
 
@@ -43,20 +42,20 @@ namespace SDRGames.Whist.DialogueSystem.Editor.Views
             base.Draw();
         }
 
-        public void CreateRelationShip(SpeechNodeView speechNodeView)
+        public override DialogueScriptableObject SaveToSO(string folderPath)
         {
-            if(!_relationships.Contains(speechNodeView))
-            {
-                _relationships.Add(speechNodeView);
-            }
+            DialogueStartScriptableObject dialogueSO;
+
+            dialogueSO = UtilityIO.CreateAsset<DialogueStartScriptableObject>($"{folderPath}/Dialogues", NodeName);
+
+            SavedToSO?.Invoke(this, new SavedToSOEventArgs<DialogueStartScriptableObject>(dialogueSO));
+            return dialogueSO;
         }
 
-        public void DeleteRelationShip(SpeechNodeView speechNodeView)
+        public override void SaveToGraph(GraphSaveDataScriptableObject graphData)
         {
-            if (_relationships.Contains(speechNodeView))
-            {
-                _relationships.Remove(speechNodeView);
-            }
+            base.SaveToGraph(graphData);
+            graphData.SetStartNode(this);
         }
     }
 }

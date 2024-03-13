@@ -16,13 +16,11 @@ namespace SDRGames.Whist.DialogueSystem.Editor.Views
 {
     public class SpeechNodeView : BaseNodeView
     {
-        private LocalizationData _characterNameLocalization;
-        private LocalizationData _textLocalization;
-        private Dictionary<BaseNodeView, BaseNodeView> _relationships;
+        [SerializeField] private LocalizationData _characterNameLocalization;
+        [SerializeField] private LocalizationData _textLocalization;
+        [SerializeField] private List<string> _connections;
 
         public new event EventHandler<SavedToSOEventArgs<DialogueSpeechScriptableObject>> SavedToSO;
-        public event EventHandler<RelationshipAddedEventArgs> RelationshipAdded;
-        public event EventHandler<RelationshipRemovedEventArgs> RelationshipRemoved;
 
         public void Initialize(string id, string nodeName, Vector2 position, LocalizationData characterNameLocalization, LocalizationData textLocalization)
         {
@@ -30,10 +28,9 @@ namespace SDRGames.Whist.DialogueSystem.Editor.Views
 
             _characterNameLocalization = characterNameLocalization;
             _textLocalization = textLocalization;
-            _relationships = new Dictionary<BaseNodeView, BaseNodeView>();
 
             CreateInputPort(typeof(AnswerNodeView), NodeTypes.Answer);
-            CreateAnswerPort(typeof(SpeechNodeView), NodeTypes.Speech);
+            CreateOutputPort(typeof(SpeechNodeView), NodeTypes.Speech);
         }
 
         public override void Draw()
@@ -48,7 +45,7 @@ namespace SDRGames.Whist.DialogueSystem.Editor.Views
 
             Button addAnswerButton = UtilityElement.CreateButton("Add answer", () =>
             {
-                CreateAnswerPort(typeof(SpeechNodeView), NodeTypes.Speech);
+                CreateOutputPort(typeof(SpeechNodeView), NodeTypes.Speech);
             });
             addAnswerButton.AddToClassList("ds-node__button");
 
@@ -84,11 +81,23 @@ namespace SDRGames.Whist.DialogueSystem.Editor.Views
             RefreshExpandedState();
         }
 
-        //public override void SaveToGraph(GraphSaveDataScriptableObject graphData)
-        //{
-        //    SaveData.SetPosition(GetPosition().position);
-        //    graphData.SpeechNodes.Add(SaveData);
-        //}
+        public override void SaveToGraph(GraphSaveDataScriptableObject graphData)
+        {
+            base.SaveToGraph(graphData);
+            foreach (PortView port in OutputPorts)
+            {
+                foreach (Edge edge in port.connections)
+                {
+                    string id = ((BaseNodeView)edge.input.node).ID;
+                    if (_connections.Contains(id))
+                    {
+                        continue;
+                    }
+                    _connections.Add(id);
+                }
+            }
+            graphData.SpeechNodes.Add(this);
+        }
 
         public override DialogueScriptableObject SaveToSO(string folderPath)
         {
@@ -99,24 +108,6 @@ namespace SDRGames.Whist.DialogueSystem.Editor.Views
             SavedToSO?.Invoke(this, new SavedToSOEventArgs<DialogueSpeechScriptableObject>(dialogueSO));
             return dialogueSO;
         }
-
-        //public override DialogueScriptableObject SaveToSO(string folderPath)
-        //{
-        //    DialogueSpeechScriptableObject dialogueSO;
-
-        //    dialogueSO = UtilityIO.CreateAsset<DialogueSpeechScriptableObject>($"{folderPath}/Dialogues", SaveData.Name);
-
-        //    dialogueSO.Initialize(
-        //        SaveData.Name,
-        //        new DialogueLocalizationData(SaveData.CharacterNameLocalization.SelectedLocalizationTable, SaveData.CharacterNameLocalization.SelectedEntryKey),
-        //        new DialogueLocalizationData(SaveData.TextLocalization.SelectedLocalizationTable, SaveData.TextLocalization.SelectedEntryKey),
-        //        UtilityIO.ConvertNodeAnswersToDialogueAnswers(SaveData.Answers),
-        //        SaveData.NodeType
-        //    );
-
-        //    UtilityIO.SaveAsset(dialogueSO);
-        //    return dialogueSO;
-        //}
 
         //public void LoadData(SpeechData nodeData, List<AnswerSaveData> answers)
         //{

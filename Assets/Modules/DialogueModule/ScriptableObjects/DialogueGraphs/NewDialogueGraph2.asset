@@ -14,15 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <FileName>k__BackingField: 
   <StartNode>k__BackingField:
-    <ID>k__BackingField: 
-    <NodeName>k__BackingField: 
+    <ID>k__BackingField: 8f6a1e2c-884c-458d-a47a-ff33eede70d0
+    <NodeName>k__BackingField: Start
     <NodeType>k__BackingField: 0
     <Position>k__BackingField: {x: 0, y: 0}
   <AnswerNodes>k__BackingField:
-  - <ID>k__BackingField: 72b169b1-c947-4581-ad42-3548caf3fa52
+  - <ID>k__BackingField: ab7ddc08-81b6-49ed-907c-813d378fac58
     <NodeName>k__BackingField: Answer
     <NodeType>k__BackingField: 2
-    <Position>k__BackingField: {x: 505.6, y: 138.40001}
+    <Position>k__BackingField: {x: 429.6, y: 148.8}
     <CharacterNameLocalization>k__BackingField:
       <SelectedLocalizationTable>k__BackingField: CharacterNames
       <SelectedEntryKey>k__BackingField: "Valior\t"
@@ -33,10 +33,10 @@ MonoBehaviour:
       <LocalizedText>k__BackingField: Valior
     <Conditions>k__BackingField: []
   <SpeechNodes>k__BackingField:
-  - <ID>k__BackingField: 430f56ef-c2b7-43af-81ac-2ef21c08466f
+  - <ID>k__BackingField: be42d2ba-5e93-4c71-aab7-f6d8252b9c54
     <NodeName>k__BackingField: Speech
     <NodeType>k__BackingField: 1
-    <Position>k__BackingField: {x: 243.2, y: 226.40001}
+    <Position>k__BackingField: {x: 177.59999, y: 232}
     <CharacterNameLocalization>k__BackingField:
       <SelectedLocalizationTable>k__BackingField: CharacterNames
       <SelectedEntryKey>k__BackingField: "Valior\t"
@@ -46,7 +46,7 @@ MonoBehaviour:
       <SelectedEntryKey>k__BackingField: "Valior\t"
       <LocalizedText>k__BackingField: Valior
     <Connections>k__BackingField:
-    - 72b169b1-c947-4581-ad42-3548caf3fa52
+    - ab7ddc08-81b6-49ed-907c-813d378fac58
   <OldNodeNames>k__BackingField:
   - Start
   - Speech

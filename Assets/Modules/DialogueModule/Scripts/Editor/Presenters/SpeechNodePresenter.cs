@@ -27,12 +27,10 @@ namespace SDRGames.Whist.DialogueSystem.Editor.Presenters
         {
             LocalizationData characterNameLocalization = new LocalizationData("CharacterNames", "Valior", "Valior");
             LocalizationData textLocalization = new LocalizationData("", "", "");
-            List<string> connections = new List<string>();
 
-            _data = new SpeechData(name, position, characterNameLocalization, textLocalization, connections);
+            _data = new SpeechData(name, position, characterNameLocalization, textLocalization);
 
             _nodeView.Initialize(_data.ID, _data.NodeName, position, _data.CharacterNameLocalization, _data.TextLocalization);
-            _nodeView.SavedToGraph += OnSavedToGraph;
             _nodeView.SavedToSO += OnSavedToSO;
         }
 
@@ -68,20 +66,6 @@ namespace SDRGames.Whist.DialogueSystem.Editor.Presenters
         protected override void OnNodeNameTextFieldChanged(object sender, NodeNameChangedEventArgs e)
         {
             _data.SetNodeName(e.NewNode.NodeName);
-        }
-
-        protected void OnSavedToGraph(object sender, SavedToGraphEventArgs e)
-        {
-            List<string> connectionsIDs = new List<string>();
-            foreach(PortView port in _nodeView.OutputPorts)
-            {
-                foreach(Edge edge in port.connections)
-                {
-                    connectionsIDs.Add(((BaseNodeView)edge.input.node).ID);
-                }
-            }
-            _data.SetConnections(connectionsIDs);
-            _data.SaveToGraph(e.GraphData, e.Position);
         }
 
         protected void OnSavedToSO(object sender, SavedToSOEventArgs<DialogueSpeechScriptableObject> e)

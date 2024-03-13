@@ -18,17 +18,17 @@ namespace SDRGames.Whist.DialogueSystem.Editor.Views
     {
         private Color _defaultBackgroundColor;
 
-        public string ID { get; protected set; }
-        public string NodeName { get; protected set; }
-        public List<Port> InputPorts { get; protected set; }
-        public List<Port> OutputPorts { get; protected set; }
+        [field: SerializeField] public string ID { get; protected set; }
+        [field: SerializeField] public string NodeName { get; protected set; }
+        [field: SerializeField] public List<Port> InputPorts { get; protected set; }
+        [field: SerializeField] public List<Port> OutputPorts { get; protected set; }
+        [field: SerializeField] public Vector2 Position { get; protected set; }
 
         public event EventHandler<NodeNameChangedEventArgs> NodeNameTextFieldChanged;
         public event EventHandler AnswerPortRemoved;
         public event EventHandler PortDisconnected;
 
-        public event EventHandler<SavedToGraphEventArgs> SavedToGraph;
-        public event EventHandler SavedToSO;
+        public event EventHandler<SavedToSOEventArgs<DialogueScriptableObject>> SavedToSO;
 
         public override void BuildContextualMenu(ContextualMenuPopulateEvent contextualMenuEvent)
         {
@@ -96,13 +96,17 @@ namespace SDRGames.Whist.DialogueSystem.Editor.Views
 
         public virtual void SaveToGraph(GraphSaveDataScriptableObject graphData) 
         {
-            SavedToGraph?.Invoke(this, new SavedToGraphEventArgs(graphData, GetPosition().position));
+            Position = GetPosition().position;
         }
 
         public virtual DialogueScriptableObject SaveToSO(string folderPath)
         {
-            SavedToSO?.Invoke(this, EventArgs.Empty);
-            return null;
+            DialogueScriptableObject dialogueSO;
+
+            dialogueSO = UtilityIO.CreateAsset<DialogueScriptableObject>($"{folderPath}/Dialogues", NodeName);
+
+            SavedToSO?.Invoke(this, new SavedToSOEventArgs<DialogueScriptableObject>(dialogueSO));
+            return dialogueSO;
         }
 
         public void LoadData(BaseData nodeData)
@@ -126,7 +130,7 @@ namespace SDRGames.Whist.DialogueSystem.Editor.Views
             return inputPort;
         }
 
-        protected Port CreateAnswerPort(Type type, NodeTypes nodeType, bool singlePort = false)
+        protected Port CreateOutputPort(Type type, NodeTypes nodeType, bool singlePort = false)
         {
             Port answerPort = this.CreatePort(type, "Output");
             answerPort.ClearClassList();

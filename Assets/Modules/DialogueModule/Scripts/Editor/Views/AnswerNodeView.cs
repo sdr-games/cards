@@ -14,8 +14,8 @@ namespace SDRGames.Whist.DialogueSystem.Editor.Views
 {
     public class AnswerNodeView : BaseNodeView
     {
-        private LocalizationData _characterNameLocalization;
-        private LocalizationData _textLocalization;
+        [SerializeField] private LocalizationData _characterNameLocalization;
+        [SerializeField] private LocalizationData _textLocalization;
 
         public new event EventHandler<SavedToSOEventArgs<DialogueAnswerScriptableObject>> SavedToSO;
 
@@ -27,7 +27,7 @@ namespace SDRGames.Whist.DialogueSystem.Editor.Views
             _textLocalization = textLocalization;
 
             CreateInputPort(typeof(SpeechNodeView), NodeTypes.Speech);
-            CreateAnswerPort(typeof(AnswerNodeView), NodeTypes.Answer, true);
+            CreateOutputPort(typeof(AnswerNodeView), NodeTypes.Answer, true);
         }
 
         public override void Draw()
@@ -68,11 +68,11 @@ namespace SDRGames.Whist.DialogueSystem.Editor.Views
             RefreshExpandedState();
         }
 
-        //public override void SaveToGraph(GraphSaveDataScriptableObject graphData)
-        //{
-        //    //SaveData.SetPosition(GetPosition().position);
-        //    //graphData.AnswerNodes.Add(SaveData);
-        //}
+        public override void SaveToGraph(GraphSaveDataScriptableObject graphData)
+        {
+            base.SaveToGraph(graphData);
+            graphData.AnswerNodes.Add(this);
+        }
 
         public override DialogueScriptableObject SaveToSO(string folderPath)
         {

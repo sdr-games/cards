@@ -125,16 +125,23 @@ namespace SDRGames.Whist.DialogueSystem.Editor
         {
             foreach (BaseNodeView node in _nodes)
             {
-                DialogueScriptableObject dialogue = createdDialogues[node.ID];
-
                 foreach (Port port in node.OutputPorts)
                 {
-                    int i = 0;
-                    foreach(Edge edge in port.connections)
+                    foreach (Edge edge in port.connections)
                     {
-                        //string inputNodeID = ((BaseNodeView)edge.input.node).SaveData.ID;
-                        //dialogue.Answers[i].SetNextDialogue(_createdDialogues[inputNodeID]);
-                        //i++;
+                        string inputNodeID = ((BaseNodeView)edge.input.node).ID;
+                        if (createdDialogues[node.ID] is DialogueStartScriptableObject dialogueStart)
+                        {
+                            dialogueStart.SetNextSpech(createdDialogues[inputNodeID] as DialogueSpeechScriptableObject);
+                        } 
+                        else if (createdDialogues[node.ID] is DialogueSpeechScriptableObject dialogueSpeech)
+                        {
+                            dialogueSpeech.Answers.Add(createdDialogues[inputNodeID] as DialogueAnswerScriptableObject);
+                        }
+                        else if (createdDialogues[node.ID] is DialogueAnswerScriptableObject dialogueAnswer)
+                        {
+                            dialogueAnswer.SetNextSpech(createdDialogues[inputNodeID] as DialogueSpeechScriptableObject);
+                        }
                     }
                 }
 
@@ -191,48 +198,52 @@ namespace SDRGames.Whist.DialogueSystem.Editor
             LoadNodesConnections();
         }
 
-        private static void LoadNode(BaseData nodeData)
+        private static void LoadNode(StartNodeView node)
         {
 
             //List<AnswerSaveData> answers = CloneNodeAnswers(nodeData.Answers);
 
-            StartNodeView node = _graphView.CreateNode<StartNodePresenter>(nodeData.NodeName, nodeData.Position, false) as StartNodeView;
-            node.LoadData(nodeData);
+            //StartNodeView node = _graphView.CreateNode<StartNodePresenter>(nodeData.NodeName, nodeData.Position, false) as StartNodeView;
+            _graphView.AddElement(node);
+            //node.LoadData(nodeData);
             node.Draw();
 
-            _graphView.AddElement(node);
+            //_graphView.AddElement(node);
 
-            //_loadedNodes.Add(node.SaveData.ID, node);
-            _loadedNodes.Add("", node);
+            _loadedNodes.Add(node.ID, node);
         }
 
-        private static void LoadNodes(List<SpeechData> nodes)
+        private static void LoadNodes(List<SpeechNodeView> nodes)
         {
-            foreach (SpeechData nodeData in nodes)
+            foreach (SpeechNodeView node in nodes)
             {
                 //List<AnswerSaveData> answers = CloneNodeAnswers(nodeData.Answers);
 
-                SpeechNodeView node = _graphView.CreateNode<SpeechNodePresenter>(nodeData.NodeName, nodeData.Position, false) as SpeechNodeView;
-                node.LoadData(nodeData);
-                node.Draw();
+                //SpeechNodeView node = _graphView.CreateNode<SpeechNodePresenter>(nodeData.NodeName, nodeData.Position, false) as SpeechNodeView;
+                //node.LoadData(nodeData);
 
                 _graphView.AddElement(node);
+                node.Draw();
+
                 //_loadedNodes.Add(node.SaveData.ID, node);
+                _loadedNodes.Add(node.ID, node);
             }
         }
 
-        private static void LoadNodes(List<AnswerData> nodes)
+        private static void LoadNodes(List<AnswerNodeView> nodes)
         {
-            foreach (AnswerData nodeData in nodes)
+            foreach (AnswerNodeView node in nodes)
             {
                 //List<AnswerSaveData> answers = CloneNodeAnswers(nodeData.Answers);
 
-                AnswerNodeView node = _graphView.CreateNode<AnswerNodePresenter>(nodeData.NodeName, nodeData.Position, false) as AnswerNodeView;
-                node.LoadData(nodeData);
-                node.Draw();
+                //AnswerNodeView node = _graphView.CreateNode<AnswerNodePresenter>(nodeData.NodeName, nodeData.Position, false) as AnswerNodeView;
+                //node.LoadData(nodeData);
 
                 _graphView.AddElement(node);
+                node.Draw();
+
                 //_loadedNodes.Add(node.SaveData.ID, node);
+                _loadedNodes.Add(node.ID, node);
             }
         }
 

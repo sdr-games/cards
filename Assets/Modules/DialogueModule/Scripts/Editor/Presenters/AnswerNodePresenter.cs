@@ -30,7 +30,6 @@ namespace SDRGames.Whist.DialogueSystem.Editor.Presenters
             Data = new AnswerData(name, position, characterNameLocalization, textLocalization, conditions);
 
             NodeView.Initialize(Data.ID, Data.NodeName, position, Data.CharacterNameLocalization, Data.TextLocalization);
-            NodeView.SavedToGraph += OnSavedToGraph;
             NodeView.SavedToSO += OnSavedToSO;
         }
 
@@ -47,11 +46,6 @@ namespace SDRGames.Whist.DialogueSystem.Editor.Presenters
         protected override void OnNodeNameTextFieldChanged(object sender, NodeNameChangedEventArgs e)
         {
             Data.SetNodeName(e.NewNode.NodeName);
-        }
-
-        protected void OnSavedToGraph(object sender, SavedToGraphEventArgs e)
-        {
-            Data.SaveToGraph(e.GraphData, e.Position);
         }
 
         protected void OnSavedToSO(object sender, SavedToSOEventArgs<DialogueAnswerScriptableObject> e)

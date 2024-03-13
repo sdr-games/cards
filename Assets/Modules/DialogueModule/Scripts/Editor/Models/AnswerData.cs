@@ -14,7 +14,6 @@ namespace SDRGames.Whist.DialogueSystem.Editor.Models
         [field: SerializeField] public LocalizationData CharacterNameLocalization { get; private set; }
         [field: SerializeField] public LocalizationData TextLocalization { get; private set; }
         [field: SerializeField] public List<AnswerConditionSaveData> Conditions { get; private set; }
-        //[field: SerializeField] public List<SpeechData> NextSpeeches { get; private set; }
 
         public AnswerData(string name, Vector2 position, LocalizationData characterNameLocalization, LocalizationData textLocalization, List<AnswerConditionSaveData> conditions) : base(name, position)
         {
@@ -42,33 +41,6 @@ namespace SDRGames.Whist.DialogueSystem.Editor.Models
         public void SetTextLocalization(LocalizationData textLocalization)
         {
             TextLocalization = textLocalization;
-        }
-
-        //public void SetNextSpeeches(List<SpeechData> nextSpeeches)
-        //{
-        //    NextSpeeches = nextSpeeches;
-        //}
-
-        //public void AddNextSpeech(SpeechData nextSpeech)
-        //{
-        //    if (!NextSpeeches.Contains(nextSpeech))
-        //    {
-        //        NextSpeeches.Add(nextSpeech);
-        //    }
-        //}
-
-        //public void RemoveNextSpeech(SpeechData nextSpeech)
-        //{
-        //    if (NextSpeeches.Contains(nextSpeech))
-        //    {
-        //        NextSpeeches.Remove(nextSpeech);
-        //    }
-        //}
-
-        public override void SaveToGraph(GraphSaveDataScriptableObject graphData, Vector2 position)
-        {
-            SetPosition(position);
-            graphData.AnswerNodes.Add(this);
         }
 
         public DialogueAnswerScriptableObject SaveToSO(DialogueAnswerScriptableObject dialogueSO)
