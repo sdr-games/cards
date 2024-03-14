@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7cf99a9455ee2a4eb6998de8180e63e, type: 3}
   m_Name: NewDialogueGraph1
   m_EditorClassIdentifier: 
-  <FileName>k__BackingField: 
+  <FileName>k__BackingField: NewDialogueGraph1
   <Dialogues>k__BackingField:
   - {fileID: 11400000, guid: 137c8986937e6db43a3cc2ca7922ceae, type: 2}
   - {fileID: 11400000, guid: 6660738c8ddcd0946a0aba3a9bded03b, type: 2}
+  - {fileID: 11400000, guid: 2eda468f9939c7a46a1cf52c80d6bc2b, type: 2}

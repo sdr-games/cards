@@ -34,25 +34,6 @@ namespace SDRGames.Whist.DialogueSystem.Editor.Presenters
             _nodeView.SavedToSO += OnSavedToSO;
         }
 
-        public void CreateInputRelationship(BaseNodePresenter outputNodePresenter)
-        {
-            //_data.AddAnswer(outputNodePresenter.GetData());
-
-            //if (!_relationships.ContainsKey(inputNodeView))
-            //{
-            //    _relationships.Add(inputNodeView, outputNodeView);
-            //    RelationshipAdded?.Invoke(this, new RelationshipAddedEventArgs(inputNodeView, outputNodeView));
-            //}
-        }
-
-        public void RemoveRelationship(BaseNodeView inputNodeView)
-        {
-            //if (_relationships.ContainsKey(inputNodeView))
-            //{
-            //    _relationships.Remove(inputNodeView);
-            //}
-        }
-
         public override BaseNodeView GetNodeView()
         {
             return _nodeView;

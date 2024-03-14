@@ -49,6 +49,7 @@ namespace SDRGames.Whist.DialogueSystem.Editor
         public static void Save(string path)
         {
             CreateDefaultFolders();
+            ClearFolder($"{_containerFolderPath}/Dialogues");
 
             GetElementsFromGraphView();
             GraphSaveDataScriptableObject graphData = CreateAsset<GraphSaveDataScriptableObject>(path);
@@ -317,6 +318,17 @@ namespace SDRGames.Whist.DialogueSystem.Editor
             FileUtil.DeleteFileOrDirectory($"{path}/");
         }
 
+        private static void ClearFolder(string dialoguesFolder)
+        {
+            if (Directory.Exists(dialoguesFolder))
+            {
+                foreach (string filename in Directory.GetFiles(dialoguesFolder))
+                {
+                    RemoveAsset(filename);
+                }
+            }
+        }
+
         public static T CreateAsset<T>(string path, string assetName = "") where T : ScriptableObject
         {
             string fullPath = $"{path}";
@@ -359,6 +371,11 @@ namespace SDRGames.Whist.DialogueSystem.Editor
         public static void RemoveAsset(string path, string assetName)
         {
             AssetDatabase.DeleteAsset($"{path}/{assetName}.asset");
+        }
+
+        public static void RemoveAsset(string asset)
+        {
+            AssetDatabase.DeleteAsset($"{asset}");
         }
 
         private static List<AnswerSaveData> CloneNodeAnswers(List<AnswerSaveData> nodeAnswers)

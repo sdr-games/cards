@@ -13,19 +13,13 @@ MonoBehaviour:
   m_Name: Speech
   m_EditorClassIdentifier: 
   <Name>k__BackingField: Speech
-  <Answers>k__BackingField:
-  - <CharacterNameLocalization>k__BackingField:
-      <SelectedLocalizationTable>k__BackingField: CharacterNames
-      <SelectedLocalizedText>k__BackingField: "Valior\t"
-    <TextLocalization>k__BackingField:
-      <SelectedLocalizationTable>k__BackingField: CharacterNames
-      <SelectedLocalizedText>k__BackingField: "Valior\t"
-    <NextDialogue>k__BackingField: {fileID: 0}
-    <Conditions>k__BackingField: []
   <DialogueType>k__BackingField: 1
   <CharacterNameLocalization>k__BackingField:
     <SelectedLocalizationTable>k__BackingField: CharacterNames
-    <SelectedLocalizedText>k__BackingField: "Valior\t"
+    <SelectedEntryKey>k__BackingField: "Valior\t"
+    <LocalizedText>k__BackingField: Valior
   <TextLocalization>k__BackingField:
     <SelectedLocalizationTable>k__BackingField: CharacterNames
-    <SelectedLocalizedText>k__BackingField: "Valior\t"
+    <SelectedEntryKey>k__BackingField: "Valior\t"
+    <LocalizedText>k__BackingField: Valior
+  <Answers>k__BackingField: []

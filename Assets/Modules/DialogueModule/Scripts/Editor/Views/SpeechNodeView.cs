@@ -1,10 +1,14 @@
 using System;
 using System.Collections.Generic;
+using System.Reflection;
+
+using NUnit.Framework.Internal;
 
 using SDRGames.Whist.DialogueSystem.Helpers;
 using SDRGames.Whist.DialogueSystem.Models;
 using SDRGames.Whist.DialogueSystem.ScriptableObjects;
 
+using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 
 using UnityEngine;
@@ -14,6 +18,7 @@ using static SDRGames.Whist.DialogueSystem.Editor.Managers.GraphManager;
 
 namespace SDRGames.Whist.DialogueSystem.Editor.Views
 {
+    [Serializable]
     public class SpeechNodeView : BaseNodeView
     {
         [SerializeField] private LocalizationData _characterNameLocalization;
@@ -28,6 +33,7 @@ namespace SDRGames.Whist.DialogueSystem.Editor.Views
 
             _characterNameLocalization = characterNameLocalization;
             _textLocalization = textLocalization;
+            _connections = new List<string>();
 
             CreateInputPort(typeof(AnswerNodeView), NodeTypes.Answer);
             CreateOutputPort(typeof(SpeechNodeView), NodeTypes.Speech);
@@ -96,7 +102,7 @@ namespace SDRGames.Whist.DialogueSystem.Editor.Views
                     _connections.Add(id);
                 }
             }
-            graphData.SpeechNodes.Add(this);
+            graphData.AddSpeechNode(this);
         }
 
         public override DialogueScriptableObject SaveToSO(string folderPath)
@@ -107,6 +113,22 @@ namespace SDRGames.Whist.DialogueSystem.Editor.Views
 
             SavedToSO?.Invoke(this, new SavedToSOEventArgs<DialogueSpeechScriptableObject>(dialogueSO));
             return dialogueSO;
+        }
+
+        public void AddConnection(string nodeID)
+        {
+            if(!_connections.Contains(nodeID))
+            {
+                _connections.Add(nodeID);
+            }
+        }
+
+        public void RemoveConnection(string nodeID)
+        {
+            if (_connections.Contains(nodeID))
+            {
+                _connections.Remove(nodeID);
+            }
         }
 
         //public void LoadData(SpeechData nodeData, List<AnswerSaveData> answers)

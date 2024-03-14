@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-
 using SDRGames.Whist.DialogueSystem.Models;
 using SDRGames.Whist.DialogueSystem.ScriptableObjects;
 
@@ -8,7 +5,6 @@ using UnityEngine;
 
 namespace SDRGames.Whist.DialogueSystem.Editor.Models
 {
-    [Serializable]
     public class SpeechData : BaseData
     {
         [field: SerializeField] public LocalizationData CharacterNameLocalization { get; private set; }

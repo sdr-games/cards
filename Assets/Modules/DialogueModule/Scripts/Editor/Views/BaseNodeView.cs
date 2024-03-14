@@ -14,6 +14,7 @@ using static SDRGames.Whist.DialogueSystem.Editor.Managers.GraphManager;
 
 namespace SDRGames.Whist.DialogueSystem.Editor.Views
 {
+    [Serializable]
     public class BaseNodeView : Node
     {
         private Color _defaultBackgroundColor;

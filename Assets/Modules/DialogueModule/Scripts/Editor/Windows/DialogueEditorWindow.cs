@@ -99,13 +99,13 @@ namespace SDRGames.Whist.DialogueSystem.Editor
             }
 
             var path = EditorUtility.SaveFilePanel("Save dialogue graph", "", $"{_fileNameTextField.value}.asset", "asset");
-            path = $"Assets\\{Path.GetRelativePath("Assets", path)}";
 
             if (string.IsNullOrEmpty(path))
             {
                 EditorUtility.DisplayDialog("Empty path", "You must select a path first", "OK");
                 return;
             }
+            path = $"Assets\\{Path.GetRelativePath("Assets", path)}";
             _fileNameTextField.value = Path.GetFileNameWithoutExtension(path);
             UtilityIO.Initialize(_graphView, _fileNameTextField.value);
             UtilityIO.Save(path);

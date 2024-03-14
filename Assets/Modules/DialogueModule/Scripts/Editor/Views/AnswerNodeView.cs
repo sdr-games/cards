@@ -12,10 +12,12 @@ using static SDRGames.Whist.DialogueSystem.Editor.Managers.GraphManager;
 
 namespace SDRGames.Whist.DialogueSystem.Editor.Views
 {
+    [Serializable]
     public class AnswerNodeView : BaseNodeView
     {
         [SerializeField] private LocalizationData _characterNameLocalization;
         [SerializeField] private LocalizationData _textLocalization;
+        [SerializeField] private string _nextSpeechNodeID;
 
         public new event EventHandler<SavedToSOEventArgs<DialogueAnswerScriptableObject>> SavedToSO;
 
@@ -71,7 +73,7 @@ namespace SDRGames.Whist.DialogueSystem.Editor.Views
         public override void SaveToGraph(GraphSaveDataScriptableObject graphData)
         {
             base.SaveToGraph(graphData);
-            graphData.AnswerNodes.Add(this);
+            graphData.AddAnswerNode(this);
         }
 
         public override DialogueScriptableObject SaveToSO(string folderPath)
@@ -82,6 +84,16 @@ namespace SDRGames.Whist.DialogueSystem.Editor.Views
 
             SavedToSO?.Invoke(this, new SavedToSOEventArgs<DialogueAnswerScriptableObject>(dialogueSO));
             return dialogueSO;
+        }
+
+        public void SetNextSpeechNodeID(string speechNodeViewID)
+        {
+            _nextSpeechNodeID = speechNodeViewID;
+        }
+
+        public void UnsetNextSpeechNodeID()
+        {
+            _nextSpeechNodeID = "";
         }
     }
 }

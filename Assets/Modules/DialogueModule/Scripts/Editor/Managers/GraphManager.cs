@@ -222,7 +222,6 @@ namespace SDRGames.Whist.DialogueSystem.Editor.Managers
                         edgesToDelete.Add(edge);
                         continue;
                     }
-
                     nodesToDelete.Add((BaseNodeView)selectedElement);
                 }
 
@@ -245,22 +244,24 @@ namespace SDRGames.Whist.DialogueSystem.Editor.Managers
                 {
                     foreach (Edge edge in changes.edgesToCreate)
                     {
-                        if(edge.output.node is StartNodeView startNodeView)
+                        if(edge.output.node is StartNodeView startNode)
                         {
+                            string inputID = ((BaseNodeView)edge.input.node).ID;
+                            startNode.SetNextSpeechNodeID(inputID);
                             continue;
                         }
 
-                        if (edge.input.node is SpeechNodeView inputSpeechNode)
+                        if (edge.output.node is AnswerNodeView answerNode)
                         {
-                            SpeechNodePresenter inputPresenter = (SpeechNodePresenter)_nodesPresenters[inputSpeechNode];
-                            BaseNodePresenter outputPresenter = _nodesPresenters[(BaseNodeView)edge.output.node];
-                            inputPresenter.CreateInputRelationship(outputPresenter);
+                            string inputID = ((BaseNodeView)edge.input.node).ID;
+                            answerNode.SetNextSpeechNodeID(inputID);
                             continue;
                         }
 
-                        if (edge.output.node is SpeechNodeView outputSpeechNode)
+                        if (edge.output.node is SpeechNodeView speechNode)
                         {
-                            //outputSpeechNode.CreateRelationship( (BaseNodeView)edge.input.node, outputSpeechNode);
+                            string inputID = ((BaseNodeView)edge.input.node).ID;
+                            speechNode.AddConnection(inputID);
                             continue;
                         }
                     }
@@ -276,20 +277,22 @@ namespace SDRGames.Whist.DialogueSystem.Editor.Managers
                         }
                         Edge edge = (Edge)element;
 
-                        if (edge.output.node is StartNodeView startNodeView)
+                        if (edge.output.node is StartNodeView startNode)
                         {
+                            startNode.UnsetNextSpeechNodeID();
                             continue;
                         }
 
-                        if (edge.input.node is SpeechNodeView inputSpeechNode)
+                        if (edge.output.node is AnswerNodeView answerNode)
                         {
-                            //inputSpeechNode.RemoveRelationship(inputSpeechNode);
+                            answerNode.UnsetNextSpeechNodeID();
                             continue;
                         }
 
-                        if (edge.output.node is SpeechNodeView outputSpeechNode)
+                        if (edge.output.node is SpeechNodeView speechNode)
                         {
-                            //outputSpeechNode.RemoveRelationship((BaseNodeView)edge.input.node);
+                            string inputID = ((BaseNodeView)edge.input.node).ID;
+                            speechNode.RemoveConnection(inputID);
                             continue;
                         }
                     }
@@ -314,7 +317,6 @@ namespace SDRGames.Whist.DialogueSystem.Editor.Managers
                 _nodes.Remove(nodeName);
                 return;
             }
-
             CheckNodeNameErrors(_nodes[nodeName]);
         }
 
@@ -364,11 +366,6 @@ namespace SDRGames.Whist.DialogueSystem.Editor.Managers
                 _searchWindow.Initialize(this);
             }
             nodeCreationRequest = context => SearchWindow.Open(new SearchWindowContext(context.screenMousePosition), _searchWindow);
-        }
-
-        private Vector2 GetViewportCenter()
-        {
-            return contentViewContainer.worldBound.center;
         }
 
         private void OnNodeNameTextFieldChanged(object sender, NodeNameChangedEventArgs args)

@@ -10,8 +10,11 @@ using static SDRGames.Whist.DialogueSystem.Editor.Managers.GraphManager;
 
 namespace SDRGames.Whist.DialogueSystem.Editor.Views
 {
+    [Serializable]
     public class StartNodeView : BaseNodeView
     {
+        [SerializeField] private string _nextSpeechNodeID;
+
         public new event EventHandler<SavedToSOEventArgs<DialogueStartScriptableObject>> SavedToSO;
 
         public override void Initialize(string id, string nodeName, Vector2 position)
@@ -56,6 +59,16 @@ namespace SDRGames.Whist.DialogueSystem.Editor.Views
         {
             base.SaveToGraph(graphData);
             graphData.SetStartNode(this);
+        }
+
+        public void SetNextSpeechNodeID(string speechNodeViewID)
+        {
+            _nextSpeechNodeID = speechNodeViewID;
+        }
+
+        public void UnsetNextSpeechNodeID()
+        {
+            _nextSpeechNodeID = "";
         }
     }
 }

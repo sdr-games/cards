@@ -12,7 +12,39 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a78993f904d7ff443bfe26057a8ddef6, type: 3}
   m_Name: NewDialogueGraph
   m_EditorClassIdentifier: 
-  <FileName>k__BackingField: 
-  <StartNodes>k__BackingField: []
-  <SpeechNodes>k__BackingField: []
-  <OldNodeNames>k__BackingField: []
+  _fileName: 
+  _startNode:
+    <ID>k__BackingField: aa5a9544-62b0-41d8-9563-11afc34ffc85
+    <NodeName>k__BackingField: Start
+    <Position>k__BackingField: {x: 0, y: 0}
+    _nextSpeechNodeID: 
+  _answerNodes:
+  - <ID>k__BackingField: 5338eed8-e929-4461-a236-f57867bcfc35
+    <NodeName>k__BackingField: Answer
+    <Position>k__BackingField: {x: 438.40002, y: 133.6}
+    _characterNameLocalization:
+      <SelectedLocalizationTable>k__BackingField: CharacterNames
+      <SelectedEntryKey>k__BackingField: "Valior\t"
+      <LocalizedText>k__BackingField: Valior
+    _textLocalization:
+      <SelectedLocalizationTable>k__BackingField: CharacterNames
+      <SelectedEntryKey>k__BackingField: "Valior\t"
+      <LocalizedText>k__BackingField: Valior
+    _nextSpeechNodeID: 
+  _speechNodes:
+  - <ID>k__BackingField: 4876c3cb-f8d9-4358-bd61-3bb127ddf88d
+    <NodeName>k__BackingField: Speech
+    <Position>k__BackingField: {x: 176.8, y: 228.8}
+    _characterNameLocalization:
+      <SelectedLocalizationTable>k__BackingField: CharacterNames
+      <SelectedEntryKey>k__BackingField: "Valior\t"
+      <LocalizedText>k__BackingField: Valior
+    _textLocalization:
+      <SelectedLocalizationTable>k__BackingField: CharacterNames
+      <SelectedEntryKey>k__BackingField: "Valior\t"
+      <LocalizedText>k__BackingField: Valior
+    _connections: []
+  _oldNodeNames:
+  - Start
+  - Speech
+  - Answer
