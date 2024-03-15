@@ -27,11 +27,11 @@ namespace SDRGames.Whist.DialogueSystem.Controllers
             {
                 GameObject dialogueText = (GameObject)Instantiate(Resources.Load("Prefabs/UI/Dialogue/DialogueText", typeof(GameObject)), dialogueTextScrollViewContent);
                 //StartCoroutine(ShowUIElementWithFading(dialogueText));
-                dialogueText.GetComponent<TextMeshProUGUI>().text = dialogueSO.LocalizationData.SelectedLocalizedText;
-                if (dialogueSO.Answers != null && dialogueSO.Answers.Count > 0)
-                {
-                    CreateAnswers(SortAnswersByConditions(dialogueSO.Answers), fullscreen);
-                }
+                dialogueText.GetComponent<TextMeshProUGUI>().text = dialogueSO.TextLocalization.LocalizedText;
+                //if (dialogueSO.Answers != null && dialogueSO.Answers.Count > 0)
+                //{
+                //    CreateAnswers(SortAnswersByConditions(dialogueSO.Answers), fullscreen);
+                //}
 
                 //if (dialogueSO.Quest != null)
                 //{
@@ -72,11 +72,11 @@ namespace SDRGames.Whist.DialogueSystem.Controllers
                     GameObject answerButton = (GameObject)Instantiate(Resources.Load("Prefabs/UI/Dialogue/Answer", typeof(GameObject)), dialogueAnswersScrollViewContent);
                     if (fullscreen)
                     {
-                        text = answer.LocalizationData.SelectedLocalizedText;
+                        //text = answer.LocalizationData.SelectedLocalizedText;
                     }
                     else
                     {
-                        text = $"{i + 1}. {answer.LocalizationData.SelectedLocalizedText}";
+                        //text = $"{i + 1}. {answer.LocalizationData.SelectedLocalizedText}";
                     }
                     answerButton.GetComponent<DialogueAnswerController>().Initialize(answer.NextDialogue, this, text);
                     i++;

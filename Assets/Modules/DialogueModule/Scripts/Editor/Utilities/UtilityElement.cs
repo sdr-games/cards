@@ -2,6 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
+using SDRGames.Whist.DialogueSystem.Editor.Views;
+using SDRGames.Whist.DialogueSystem.Models;
+
 using UnityEditor.Experimental.GraphView;
 using UnityEditor.Localization;
 using UnityEditor.UIElements;
@@ -22,7 +25,6 @@ namespace SDRGames.Whist.DialogueSystem.Editor
             {
                 text = text
             };
-
             return button;
         }
 
@@ -33,13 +35,12 @@ namespace SDRGames.Whist.DialogueSystem.Editor
                 text = title,
                 value = !collapsed
             };
-
             return foldout;
         }
 
-        public static Port CreatePort(this BaseNode node, string portName = "", Orientation orientation = Orientation.Horizontal, Direction direction = Direction.Output, Port.Capacity capacity = Port.Capacity.Single)
+        public static PortView CreatePort(this BaseNodeView node, Type nodeType, string portName = "", Orientation orientation = Orientation.Horizontal, Direction direction = Direction.Output, Port.Capacity capacity = Port.Capacity.Single)
         {
-            Port port = node.InstantiatePort(orientation, direction, capacity, typeof(SpeechNode));
+            PortView port = (PortView)node.InstantiatePort(orientation, direction, capacity, nodeType);
             port.portName = portName;
             return port;
         }
@@ -58,34 +59,14 @@ namespace SDRGames.Whist.DialogueSystem.Editor
             {
                 textField.RegisterValueChangedCallback(onValueChanged);
             }
-
             return textField;
         }
 
         public static TextField CreateTextArea(string value = null, string label = null, EventCallback<ChangeEvent<string>> onValueChanged = null, bool isReadOnly = false)
         {
             TextField textArea = CreateTextField(value, label, onValueChanged, isReadOnly);
-
             textArea.multiline = true;
-
             return textArea;
-        }
-
-        public static ObjectField CreateObjectField(Type objectType, UnityEngine.Object value = null, string label = null, EventCallback<ChangeEvent<UnityEngine.Object>> onValueChanged = null)
-        {
-            ObjectField objectField = new ObjectField()
-            {
-                value = value,
-                label = label,
-                objectType = objectType,
-            };
-
-            if (onValueChanged != null)
-            {
-                objectField.RegisterCallback(onValueChanged);
-            }
-
-            return objectField;
         }
 
         public static Toggle CreateBoolField(bool value = false, string label = null, EventCallback<ChangeEvent<bool>> onValueChanged = null)
@@ -100,7 +81,6 @@ namespace SDRGames.Whist.DialogueSystem.Editor
             {
                 toggle.RegisterValueChangedCallback(onValueChanged);
             }
-
             return toggle;
         }
 
@@ -117,7 +97,6 @@ namespace SDRGames.Whist.DialogueSystem.Editor
             {
                 dropdownField.RegisterValueChangedCallback(onValueChanged);
             }
-
             return dropdownField;
         }
 
@@ -134,11 +113,10 @@ namespace SDRGames.Whist.DialogueSystem.Editor
             {
                 dropdownField.RegisterValueChangedCallback(onValueChanged);
             }
-
             return dropdownField;
         }
 
-        public static Box CreateLocalizationBox(LocalizationSaveData localizationSaveData, string uss_class = "")
+        public static Box CreateLocalizationBox(LocalizationData localizationSaveData, string uss_class = "")
         {
             List<string> stringTablesNames = new List<string>();
             Box box = new Box();
@@ -154,7 +132,7 @@ namespace SDRGames.Whist.DialogueSystem.Editor
             {
                 if (string.IsNullOrEmpty(localizationSaveData.SelectedLocalizationTable))
                 {
-                    localizationSaveData.SelectedLocalizationTable = stringTablesNames[0];
+                    localizationSaveData.SetLocalizationTable(stringTablesNames[0]);
                 }
                 Box subBox = new Box();
 
@@ -165,7 +143,7 @@ namespace SDRGames.Whist.DialogueSystem.Editor
                     null,
                     callback =>
                     {
-                        localizationSaveData.SelectedLocalizationTable = callback.newValue;
+                        localizationSaveData.SetLocalizationTable(callback.newValue);
                         OnLocalizationDropdownChange(localizationSaveData, subBox, uss_class);
                     }
                 );
@@ -185,56 +163,6 @@ namespace SDRGames.Whist.DialogueSystem.Editor
                 box.Add(subBox);
             }
             return box;
-        }
-
-        private static void OnLocalizationDropdownChange(LocalizationSaveData localizationSaveData, Box box, string uss_class = "")
-        {
-            box.Clear();
-            DropdownField localizationTextDropdown = CreateLocalizationEntriesDropdown(localizationSaveData, box, uss_class);
-            Foldout localizationTextFoldout = CreateFoldout("Localized text", true);
-            TextField localizationText = CreateTextArea(localizationSaveData.LocalizedText, isReadOnly: true);
-            localizationTextFoldout.Add(localizationText);
-            if (localizationTextDropdown != null)
-            {
-                box.Add(localizationTextDropdown);
-                box.Add(localizationTextFoldout);
-            }
-        }
-
-        public static DropdownField CreateLocalizationEntriesDropdown(LocalizationSaveData localizationSaveData, Box box, string uss_class)
-        {
-            Dictionary<string, string> localizationEntries = new Dictionary<string, string>();
-            var currentLocale = LocalizationSettings.ProjectLocale.Formatter.ToString();
-            var collection = LocalizationEditorSettings.GetStringTableCollection(localizationSaveData.SelectedLocalizationTable);
-            var table = collection.GetTable(currentLocale) as StringTable;
-
-            foreach (var entry in table.Values)
-            {
-                localizationEntries.Add(entry.SharedEntry.Key, entry.Value);
-            }
-            if (localizationEntries.Count > 0)
-            {
-                if(string.IsNullOrEmpty(localizationSaveData.SelectedEntryKey) || !localizationEntries.ContainsKey(localizationSaveData.SelectedEntryKey))
-                {
-                    localizationSaveData.SelectedEntryKey = localizationEntries.Keys.First();
-                }
-                localizationSaveData.LocalizedText = localizationEntries[localizationSaveData.SelectedEntryKey];
-                DropdownField localizationTextDropdown = CreateDropdownField
-                (
-                    localizationEntries.Keys.ToList(),
-                    localizationSaveData.SelectedEntryKey,
-                    null,
-                    callback =>
-                    {
-                        localizationSaveData.SelectedEntryKey = callback.newValue;
-                        localizationSaveData.LocalizedText = localizationEntries[localizationSaveData.SelectedEntryKey];
-                        OnLocalizationDropdownChange(localizationSaveData, box, uss_class);
-                    }
-                );
-                localizationTextDropdown.AddClasses(uss_class);
-                return localizationTextDropdown;
-            }
-            return null;
         }
 
         public static void CreateConditionField(Foldout foldout, AnswerConditionSaveData conditionData)
@@ -317,6 +245,55 @@ namespace SDRGames.Whist.DialogueSystem.Editor
                     break;
             }
             return box;
+        }
+
+        private static void OnLocalizationDropdownChange(LocalizationData localizationSaveData, Box box, string uss_class = "")
+        {
+            box.Clear();
+            DropdownField localizationTextDropdown = CreateLocalizationEntriesDropdown(localizationSaveData, box, uss_class);
+            Foldout localizationTextFoldout = CreateFoldout("Localized text", true);
+            TextField localizationText = CreateTextArea(localizationSaveData.LocalizedText, isReadOnly: true);
+            localizationTextFoldout.Add(localizationText);
+            if (localizationTextDropdown != null)
+            {
+                box.Add(localizationTextDropdown);
+                box.Add(localizationTextFoldout);
+            }
+        }
+        private static DropdownField CreateLocalizationEntriesDropdown(LocalizationData localizationSaveData, Box box, string uss_class)
+        {
+            Dictionary<string, string> localizationEntries = new Dictionary<string, string>();
+            var currentLocale = LocalizationSettings.ProjectLocale.Formatter.ToString();
+            var collection = LocalizationEditorSettings.GetStringTableCollection(localizationSaveData.SelectedLocalizationTable);
+            var table = collection.GetTable(currentLocale) as StringTable;
+
+            foreach (var entry in table.Values)
+            {
+                localizationEntries.Add(entry.SharedEntry.Key, entry.Value);
+            }
+            if (localizationEntries.Count > 0)
+            {
+                if (string.IsNullOrEmpty(localizationSaveData.SelectedEntryKey) || !localizationEntries.ContainsKey(localizationSaveData.SelectedEntryKey))
+                {
+                    localizationSaveData.SetEntryKey(localizationEntries.Keys.First());
+                }
+                localizationSaveData.SetText(localizationEntries[localizationSaveData.SelectedEntryKey]);
+                DropdownField localizationTextDropdown = CreateDropdownField
+                (
+                    localizationEntries.Keys.ToList(),
+                    localizationSaveData.SelectedEntryKey,
+                    null,
+                    callback =>
+                    {
+                        localizationSaveData.SetEntryKey(callback.newValue);
+                        localizationSaveData.SetText(localizationEntries[localizationSaveData.SelectedEntryKey]);
+                        OnLocalizationDropdownChange(localizationSaveData, box, uss_class);
+                    }
+                );
+                localizationTextDropdown.AddClasses(uss_class);
+                return localizationTextDropdown;
+            }
+            return null;
         }
     }
 }
