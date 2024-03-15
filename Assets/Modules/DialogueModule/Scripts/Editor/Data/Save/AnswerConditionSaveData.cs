@@ -2,23 +2,21 @@ using System;
 
 using UnityEngine;
 
-using static SDRGames.Whist.DialogueSystem.Models.DialogueAnswerCondition;
-
 namespace SDRGames.Whist.DialogueSystem.Editor
 {
     [Serializable]
     public class AnswerConditionSaveData
     {
-        [field: SerializeField] public AnswerConditionTypes AnswerConditionType { get; set; }
-        [field: SerializeField] public Characteristics Characteristic { get; set; }
-        [field: SerializeField] public SkillsNames Skill { get; set; }
-        [field: SerializeField] public int RequiredValue { get; set; }
-        //[field: SerializeField] public Quest Quest { get; set; }
-        [field: SerializeField] public bool Reversed { get; set; }
+        //[field: SerializeField] public AnswerConditionTypes AnswerConditionType { get; set; }
+        //[field: SerializeField] public Characteristics Characteristic { get; set; }
+        //[field: SerializeField] public SkillsNames Skill { get; set; }
+        //[field: SerializeField] public int RequiredValue { get; set; }
+        ////[field: SerializeField] public Quest Quest { get; set; }
+        //[field: SerializeField] public bool Reversed { get; set; }
 
-        public AnswerConditionSaveData()
-        {
-            Skill = SkillsNames.No;
-        }
+        //public AnswerConditionSaveData()
+        //{
+        //    Skill = SkillsNames.No;
+        //}
     }
 }

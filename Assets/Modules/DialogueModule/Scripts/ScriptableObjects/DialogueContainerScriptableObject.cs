@@ -13,27 +13,23 @@ namespace SDRGames.Whist.DialogueSystem.ScriptableObjects
         public void Initialize(string fileName)
         {
             FileName = fileName;
-
             Dialogues = new List<DialogueScriptableObject>();
         }
 
         public List<string> GetDialogueNames()
         {
             List<string> dialogueNames = new List<string>();
-
             foreach (DialogueScriptableObject dialogue in Dialogues)
             {
                 dialogueNames.Add(dialogue.Name);
             }
-
             return dialogueNames;
         }
 
         private DialogueSpeechScriptableObject GetFirstSpeech()
         {
-            //DialogueScriptableObject start = Dialogues.Find(item => item.GetType() == typeof(DialogueScriptableObject));
-            //return start.Answers[0].NextDialogue as DialogueSpeechScriptableObject;
-            return null;
+            DialogueStartScriptableObject start = Dialogues.Find(item => item.GetType() == typeof(DialogueStartScriptableObject)) as DialogueStartScriptableObject;
+            return start.NextSpeech;
         }
     }
 }
