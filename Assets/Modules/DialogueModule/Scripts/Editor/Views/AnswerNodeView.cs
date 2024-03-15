@@ -12,32 +12,20 @@ namespace SDRGames.Whist.DialogueSystem.Editor.Views
 {
     public class AnswerNodeView : BaseNodeView
     {
-        [field: SerializeField] public LocalizationData CharacterNameLocalization { get; private set; }
-        [field: SerializeField] public LocalizationData TextLocalization { get; private set; }
-        [field: SerializeField] public string NextSpeechNodeID { get; private set; }
+        private LocalizationData _characterNameLocalization;
+        private LocalizationData _textLocalization;
 
         public new event EventHandler<SavedToSOEventArgs<DialogueAnswerScriptableObject>> SavedToSO;
-        public event EventHandler AnswerPortRemoved;
 
         public void Initialize(string id, string nodeName, Vector2 position, LocalizationData characterNameLocalization, LocalizationData textLocalization)
         {
             base.Initialize(id, nodeName, position);
 
-            CharacterNameLocalization = characterNameLocalization;
-            TextLocalization = textLocalization;
+            _characterNameLocalization = characterNameLocalization;
+            _textLocalization = textLocalization;
 
             CreateInputPort();
             CreateOutputPort();
-        }
-
-        public void SetNextSpeechNodeID(string speechNodeViewID)
-        {
-            NextSpeechNodeID = speechNodeViewID;
-        }
-
-        public void UnsetNextSpeechNodeID()
-        {
-            NextSpeechNodeID = "";
         }
 
         public override void Draw()
@@ -62,17 +50,16 @@ namespace SDRGames.Whist.DialogueSystem.Editor.Views
 
             Foldout characterNameFoldout = UtilityElement.CreateFoldout("Character Name", true);
 
-            Box characterNameLocalizationBox = UtilityElement.CreateLocalizationBox(CharacterNameLocalization);
+            Box characterNameLocalizationBox = UtilityElement.CreateLocalizationBox(_characterNameLocalization);
             characterNameFoldout.Add(characterNameLocalizationBox);
 
             Foldout textFoldout = UtilityElement.CreateFoldout("Answer Text", true);
 
-            Box localizationBox = UtilityElement.CreateLocalizationBox(TextLocalization);
+            Box localizationBox = UtilityElement.CreateLocalizationBox(_textLocalization);
             textFoldout.Add(localizationBox);
 
             customDataContainer.Add(characterNameFoldout);
             customDataContainer.Add(textFoldout);
-
             extensionContainer.Add(customDataContainer);
 
             RefreshExpandedState();
@@ -123,7 +110,6 @@ namespace SDRGames.Whist.DialogueSystem.Editor.Views
             //answerPort.Add(deleteAnswerButton);
 
             OutputPorts.Add(port);
-            outputContainer.Add(port);
 
             return port;
         }

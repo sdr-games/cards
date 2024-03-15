@@ -10,26 +10,12 @@ namespace SDRGames.Whist.DialogueSystem.Editor.Views
 {
     public class StartNodeView : BaseNodeView
     {
-        [field: SerializeField] public string NextSpeechNodeID { get; private set; }
-
         public new event EventHandler<SavedToSOEventArgs<DialogueStartScriptableObject>> SavedToSO;
-        public event EventHandler AnswerPortRemoved;
 
         public override void Initialize(string id, string nodeName, Vector2 position)
         {
             base.Initialize(id, nodeName, position);
-
             CreateOutputPort();
-        }
-
-        public void SetNextSpeechNodeID(string speechNodeViewID)
-        {
-            NextSpeechNodeID = speechNodeViewID;
-        }
-
-        public void UnsetNextSpeechNodeID()
-        {
-            NextSpeechNodeID = "";
         }
 
         public override void Draw()
@@ -69,12 +55,6 @@ namespace SDRGames.Whist.DialogueSystem.Editor.Views
             graphData.SetStartNode(this);
         }
 
-        public override void LoadData(BaseNodeView node)
-        {
-            base.LoadData(node);
-            NextSpeechNodeID = ((StartNodeView)node).NextSpeechNodeID;
-        }
-
         public override Port CreateOutputPort()
         {
             Port port = this.CreatePort(typeof(AnswerNodeView), "Answer Connection");
@@ -82,7 +62,6 @@ namespace SDRGames.Whist.DialogueSystem.Editor.Views
             port.AddToClassList($"ds-node__answer-output-port");
 
             OutputPorts.Add(port);
-            outputContainer.Add(port);
 
             return port;
         }

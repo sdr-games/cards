@@ -5,11 +5,8 @@ using System.Linq;
 using System.Text.RegularExpressions;
 
 using SDRGames.Whist.DialogueSystem.Editor.Managers;
-using SDRGames.Whist.DialogueSystem.Editor.Models;
 using SDRGames.Whist.DialogueSystem.Editor.Presenters;
 using SDRGames.Whist.DialogueSystem.Editor.Views;
-using SDRGames.Whist.DialogueSystem.Helpers;
-using SDRGames.Whist.DialogueSystem.Models;
 using SDRGames.Whist.DialogueSystem.ScriptableObjects;
 
 using UnityEditor;
@@ -28,8 +25,6 @@ namespace SDRGames.Whist.DialogueSystem.Editor
 
         private static List<BaseNodeView> _nodes;
 
-        private static Dictionary<string, DialogueScriptableObject> _createdDialogues;
-
         private static Dictionary<string, BaseNodeView> _loadedNodes;
 
         public static void Initialize(GraphManager dsGraphView, string graphName)
@@ -40,8 +35,6 @@ namespace SDRGames.Whist.DialogueSystem.Editor
             _containerFolderPath = $"Assets/Modules/DialogueModule/ScriptableObjects/Dialogues/{graphName}";
 
             _nodes = new List<BaseNodeView>();
-
-            _createdDialogues = new Dictionary<string, DialogueScriptableObject>();
 
             _loadedNodes = new Dictionary<string, BaseNodeView>();
         }
@@ -62,6 +55,60 @@ namespace SDRGames.Whist.DialogueSystem.Editor
 
             SaveAsset(graphData);
             SaveAsset(dialogueContainer);
+        }
+
+        public static T CreateAsset<T>(string path, string assetName = "") where T : ScriptableObject
+        {
+            string fullPath = $"{path}";
+            if (!string.IsNullOrEmpty(assetName))
+            {
+                fullPath += $"/{assetName}.asset";
+            }
+            fullPath = Regex.Replace(fullPath, @"^.*?Assets", "Assets");
+
+            T asset = LoadAsset<T>(path, assetName);
+
+            if (asset != null)
+            {
+                RemoveAsset(path, assetName);
+            }
+
+            asset = ScriptableObject.CreateInstance<T>();
+            AssetDatabase.CreateAsset(asset, fullPath);
+            return asset;
+        }
+
+        public static void SaveAsset(UnityEngine.Object asset)
+        {
+            EditorUtility.SetDirty(asset);
+
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh();
+        }
+
+        public static void Load(string filepath)
+        {
+            filepath = Path.GetDirectoryName(filepath).Replace(Environment.CurrentDirectory + "\\", "");
+            GraphSaveDataScriptableObject graphData = LoadAsset<GraphSaveDataScriptableObject>(filepath, _graphFileName);
+
+            if (graphData == null)
+            {
+                EditorUtility.DisplayDialog(
+                    "Could not find the file!",
+                    "The file at the following path could not be found:\n\n" +
+                    $"\"{filepath}\\{_graphFileName}\".\n\n" +
+                    "Make sure you choose the right file and it's placed at the folder path mentioned above.",
+                    "Thanks!"
+                );
+                return;
+            }
+            DialogueEditorWindow.UpdateFileName(graphData.FileName);
+
+            _graphView.ClearGraph(true);
+            LoadNode(graphData.StartNode);
+            LoadNodes(graphData.AnswerNodes);
+            LoadNodes(graphData.SpeechNodes);
+            LoadNodesConnections();
         }
 
         private static void SaveNodes(GraphSaveDataScriptableObject graphData, DialogueContainerScriptableObject dialogueContainer)
@@ -106,31 +153,6 @@ namespace SDRGames.Whist.DialogueSystem.Editor
                     }
                 }
             }
-        }
-
-        public static void Load(string filepath)
-        {
-            filepath = Path.GetDirectoryName(filepath).Replace(Environment.CurrentDirectory + "\\", "");
-            GraphSaveDataScriptableObject graphData = LoadAsset<GraphSaveDataScriptableObject>(filepath, _graphFileName);
-
-            if (graphData == null)
-            {
-                EditorUtility.DisplayDialog(
-                    "Could not find the file!",
-                    "The file at the following path could not be found:\n\n" +
-                    $"\"{filepath}\\{_graphFileName}\".\n\n" +
-                    "Make sure you choose the right file and it's placed at the folder path mentioned above.",
-                    "Thanks!"
-                );
-                return;
-            }
-            DialogueEditorWindow.UpdateFileName(graphData.FileName);
-
-            _graphView.ClearGraph(true);
-            LoadNode(graphData.StartNode);
-            LoadNodes(graphData.AnswerNodes);
-            LoadNodes(graphData.SpeechNodes);
-            LoadNodesConnections();
         }
 
         private static void LoadNode(StartNodeView node)
@@ -197,19 +219,13 @@ namespace SDRGames.Whist.DialogueSystem.Editor
             });
         }
 
-        public static void CreateFolder(string parentFolderPath, string newFolderName)
+        private static void CreateFolder(string parentFolderPath, string newFolderName)
         {
             if (AssetDatabase.IsValidFolder($"{parentFolderPath}/{newFolderName}"))
             {
                 return;
             }
             AssetDatabase.CreateFolder(parentFolderPath, newFolderName);
-        }
-
-        public static void RemoveFolder(string path)
-        {
-            FileUtil.DeleteFileOrDirectory($"{path}.meta");
-            FileUtil.DeleteFileOrDirectory($"{path}/");
         }
 
         private static void ClearFolder(string dialoguesFolder)
@@ -223,28 +239,7 @@ namespace SDRGames.Whist.DialogueSystem.Editor
             }
         }
 
-        public static T CreateAsset<T>(string path, string assetName = "") where T : ScriptableObject
-        {
-            string fullPath = $"{path}";
-            if (!string.IsNullOrEmpty(assetName))
-            {
-                fullPath += $"/{assetName}.asset";
-            }
-            fullPath = Regex.Replace(fullPath, @"^.*?Assets", "Assets");
-
-            T asset = LoadAsset<T>(path, assetName);
-
-            if(asset != null)
-            {
-                RemoveAsset(path, assetName);
-            }
-
-            asset = ScriptableObject.CreateInstance<T>();
-            AssetDatabase.CreateAsset(asset, fullPath);
-            return asset;
-        }
-
-        public static T LoadAsset<T>(string path, string assetName = "") where T : ScriptableObject
+        private static T LoadAsset<T>(string path, string assetName = "") where T : ScriptableObject
         {
             string fullPath = $"{path}";
             if (!string.IsNullOrEmpty(assetName))
@@ -254,20 +249,12 @@ namespace SDRGames.Whist.DialogueSystem.Editor
             return AssetDatabase.LoadAssetAtPath<T>(fullPath);
         }
 
-        public static void SaveAsset(UnityEngine.Object asset)
-        {
-            EditorUtility.SetDirty(asset);
-
-            AssetDatabase.SaveAssets();
-            AssetDatabase.Refresh();
-        }
-
-        public static void RemoveAsset(string path, string assetName)
+        private static void RemoveAsset(string path, string assetName)
         {
             AssetDatabase.DeleteAsset($"{path}/{assetName}.asset");
         }
 
-        public static void RemoveAsset(string asset)
+        private static void RemoveAsset(string asset)
         {
             AssetDatabase.DeleteAsset($"{asset}");
         }

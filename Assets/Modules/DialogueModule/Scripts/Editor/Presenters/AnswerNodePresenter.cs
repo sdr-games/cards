@@ -12,45 +12,40 @@ namespace SDRGames.Whist.DialogueSystem.Editor.Presenters
 {
     public class AnswerNodePresenter : BaseNodePresenter
     {
-        public AnswerData Data { get; private set; }
-        public AnswerNodeView NodeView { get; private set; }
+        private AnswerData _data;
+        private AnswerNodeView _nodeView;
 
         public AnswerNodePresenter() 
         {
-            NodeView = (AnswerNodeView)Activator.CreateInstance(typeof(AnswerNodeView));
-            NodeView.NodeNameTextFieldChanged += OnNodeNameTextFieldChanged;
+            _nodeView = (AnswerNodeView)Activator.CreateInstance(typeof(AnswerNodeView));
+            _nodeView.NodeNameTextFieldChanged += OnNodeNameTextFieldChanged;
         }
 
         public override void Initialize(string name, Vector2 position)
         {
-            LocalizationData characterNameLocalization = new LocalizationData("CharacterNames", "Valior", "Valior");
+            LocalizationData characterNameLocalization = new LocalizationData("", "", "");
             LocalizationData textLocalization = new LocalizationData("", "", "");
             List<AnswerConditionSaveData> conditions = new List<AnswerConditionSaveData>();
 
-            Data = new AnswerData(name, position, characterNameLocalization, textLocalization, conditions);
+            _data = new AnswerData(name, position, characterNameLocalization, textLocalization, conditions);
 
-            NodeView.Initialize(Data.ID, Data.NodeName, position, Data.CharacterNameLocalization, Data.TextLocalization);
-            NodeView.SavedToSO += OnSavedToSO;
+            _nodeView.Initialize(_data.ID, _data.NodeName, position, _data.CharacterNameLocalization, _data.TextLocalization);
+            _nodeView.SavedToSO += OnSavedToSO;
         }
 
         public override BaseNodeView GetNodeView()
         {
-            return NodeView;
-        }
-
-        public override BaseData GetData()
-        {
-            return Data;
+            return _nodeView;
         }
 
         protected override void OnNodeNameTextFieldChanged(object sender, NodeNameChangedEventArgs e)
         {
-            Data.SetNodeName(e.NewNode.NodeName);
+            _data.SetNodeName(e.NewNode.NodeName);
         }
 
         protected void OnSavedToSO(object sender, SavedToSOEventArgs<DialogueAnswerScriptableObject> e)
         {
-            Data.SaveToSO(e.DialogueSO);
+            _data.SaveToSO(e.DialogueSO);
         }
     }
 }

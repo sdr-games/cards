@@ -1,12 +1,9 @@
 using System;
-using System.Collections.Generic;
 
 using SDRGames.Whist.DialogueSystem.Editor.Models;
 using SDRGames.Whist.DialogueSystem.Editor.Views;
 using SDRGames.Whist.DialogueSystem.Models;
 using SDRGames.Whist.DialogueSystem.ScriptableObjects;
-
-using UnityEditor.Experimental.GraphView;
 
 using UnityEngine;
 
@@ -25,7 +22,7 @@ namespace SDRGames.Whist.DialogueSystem.Editor.Presenters
 
         public override void Initialize(string name, Vector2 position)
         {
-            LocalizationData characterNameLocalization = new LocalizationData("CharacterNames", "Valior", "Valior");
+            LocalizationData characterNameLocalization = new LocalizationData("", "", "");
             LocalizationData textLocalization = new LocalizationData("", "", "");
 
             _data = new SpeechData(name, position, characterNameLocalization, textLocalization);
@@ -37,11 +34,6 @@ namespace SDRGames.Whist.DialogueSystem.Editor.Presenters
         public override BaseNodeView GetNodeView()
         {
             return _nodeView;
-        }
-
-        public override BaseData GetData()
-        {
-            return _data;
         }
 
         protected override void OnNodeNameTextFieldChanged(object sender, NodeNameChangedEventArgs e)

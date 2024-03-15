@@ -26,7 +26,6 @@ namespace SDRGames.Whist.DialogueSystem.Editor.Views
         [field: SerializeField] public Vector2 Position { get; protected set; }
 
         public event EventHandler<NodeNameChangedEventArgs> NodeNameTextFieldChanged;
-        public event EventHandler AnswerPortRemoved;
         public event EventHandler PortDisconnected;
 
         public event EventHandler<SavedToSOEventArgs<DialogueScriptableObject>> SavedToSO;

@@ -12,7 +12,6 @@ namespace SDRGames.Whist.DialogueSystem.Editor
             {
                 element.AddToClassList(className);
             }
-
             return element;
         }
 
@@ -21,10 +20,8 @@ namespace SDRGames.Whist.DialogueSystem.Editor
             foreach (string styleSheetName in styleSheetNames)
             {
                 StyleSheet styleSheet = (StyleSheet)EditorGUIUtility.Load(styleSheetName);
-
                 element.styleSheets.Add(styleSheet);
             }
-
             return element;
         }
     }

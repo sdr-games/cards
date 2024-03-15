@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace SDRGames.Whist.DialogueSystem.Editor
+namespace SDRGames.Whist.DialogueSystem.Editor.Models
 {
     public class BaseErrorData
     {

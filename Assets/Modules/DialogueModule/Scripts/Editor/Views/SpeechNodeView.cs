@@ -13,20 +13,17 @@ namespace SDRGames.Whist.DialogueSystem.Editor.Views
 {
     public class SpeechNodeView : BaseNodeView
     {
-        [field: SerializeField] public LocalizationData CharacterNameLocalization { get; private set; }
-        [field: SerializeField] public LocalizationData TextLocalization { get; private set; }
-        [field: SerializeField] public List<string> Connections { get; private set; }
+        private LocalizationData _characterNameLocalization;
+        private LocalizationData _textLocalization;
 
         public new event EventHandler<SavedToSOEventArgs<DialogueSpeechScriptableObject>> SavedToSO;
-        public event EventHandler AnswerPortRemoved;
 
         public void Initialize(string id, string nodeName, Vector2 position, LocalizationData characterNameLocalization, LocalizationData textLocalization)
         {
             base.Initialize(id, nodeName, position);
 
-            CharacterNameLocalization = characterNameLocalization;
-            TextLocalization = textLocalization;
-            Connections = new List<string>();
+            _characterNameLocalization = characterNameLocalization;
+            _textLocalization = textLocalization;
 
             CreateInputPort();
             CreateOutputPort();
@@ -64,12 +61,12 @@ namespace SDRGames.Whist.DialogueSystem.Editor.Views
 
             Foldout characterNameFoldout = UtilityElement.CreateFoldout("Character Name", true);
 
-            Box characterNameLocalizationBox = UtilityElement.CreateLocalizationBox(CharacterNameLocalization);
+            Box characterNameLocalizationBox = UtilityElement.CreateLocalizationBox(_characterNameLocalization);
             characterNameFoldout.Add(characterNameLocalizationBox);
 
             Foldout textFoldout = UtilityElement.CreateFoldout("Speech Text", true);
 
-            Box localizationBox = UtilityElement.CreateLocalizationBox(TextLocalization);
+            Box localizationBox = UtilityElement.CreateLocalizationBox(_textLocalization);
             textFoldout.Add(localizationBox);
 
             customDataContainer.Add(characterNameFoldout);
@@ -83,18 +80,6 @@ namespace SDRGames.Whist.DialogueSystem.Editor.Views
         public override void SaveToGraph(GraphSaveDataScriptableObject graphData)
         {
             base.SaveToGraph(graphData);
-            foreach (PortView port in OutputPorts)
-            {
-                foreach (Edge edge in port.connections)
-                {
-                    string id = ((BaseNodeView)edge.input.node).ID;
-                    if (Connections.Contains(id))
-                    {
-                        continue;
-                    }
-                    Connections.Add(id);
-                }
-            }
             graphData.AddSpeechNode(this);
         }
 
@@ -108,25 +93,9 @@ namespace SDRGames.Whist.DialogueSystem.Editor.Views
             return dialogueSO;
         }
 
-        public void AddConnection(string nodeID)
-        {
-            if(!Connections.Contains(nodeID))
-            {
-                Connections.Add(nodeID);
-            }
-        }
-
-        public void RemoveConnection(string nodeID)
-        {
-            if (Connections.Contains(nodeID))
-            {
-                Connections.Remove(nodeID);
-            }
-        }
-
         public override Port CreateInputPort()
         {
-            Port port = this.CreatePort(typeof(AnswerNodeView), $"Answer Connection", Orientation.Horizontal, Direction.Input, Port.Capacity.Multi);
+            Port port = this.CreatePort(typeof(AnswerNodeView), $"Answer Connection", Orientation.Horizontal, Direction.Input);
             port.ClearClassList();
             port.AddToClassList($"ds-node__answer-input-port");
             InputPorts.Add(port);

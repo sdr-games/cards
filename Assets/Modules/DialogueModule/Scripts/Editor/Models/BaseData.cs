@@ -17,13 +17,8 @@ namespace SDRGames.Whist.DialogueSystem.Editor.Models
 
         public BaseData(string nodeName, Vector2 position)
         {
-            GenerateID();
-            NodeName = nodeName;
-        }
-
-        public void GenerateID()
-        {
             ID = Guid.NewGuid().ToString();
+            NodeName = nodeName;
         }
 
         public virtual void SetNodeName(string nodeName)

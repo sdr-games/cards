@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 
 using SDRGames.Whist.DialogueSystem.Editor.Models;
 using SDRGames.Whist.DialogueSystem.Editor.Views;
@@ -34,11 +33,6 @@ namespace SDRGames.Whist.DialogueSystem.Editor.Presenters
         public override BaseNodeView GetNodeView()
         {
             return _nodeView;
-        }
-
-        public override BaseData GetData()
-        {
-            return _data;
         }
 
         protected override void OnNodeNameTextFieldChanged(object sender, NodeNameChangedEventArgs e)

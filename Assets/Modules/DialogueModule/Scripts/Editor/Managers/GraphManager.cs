@@ -61,7 +61,7 @@ namespace SDRGames.Whist.DialogueSystem.Editor.Managers
             AddSearchWindow();
 
             OnElementsDeleted();
-            OnGraphViewChanged();
+            //OnGraphViewChanged();
 
             AddStyles();
             AddMiniMapStyles();
@@ -106,7 +106,6 @@ namespace SDRGames.Whist.DialogueSystem.Editor.Managers
 
             BaseNodeView baseNodeView = presenter.GetNodeView();
             baseNodeView.NodeNameTextFieldChanged += OnNodeNameTextFieldChanged;
-            baseNodeView.AnswerPortRemoved += OnAnswerPortRemoved;
             baseNodeView.PortDisconnected += (object sender, EventArgs e) => DeleteElements(((Port)sender).connections);
 
             AddNode($"{nodeName.ToLower()}", baseNodeView);
@@ -120,21 +119,6 @@ namespace SDRGames.Whist.DialogueSystem.Editor.Managers
             return baseNodeView;
         }
 
-        public void AddNode(string nodeName, BaseNodeView node)
-        {
-            if (!_nodes.ContainsKey(nodeName))
-            {
-                NodeErrorData nodeErrorData = new NodeErrorData();
-                nodeErrorData.Nodes.Add(node);
-                _nodes.Add(nodeName, nodeErrorData);
-            }
-            else
-            {
-                _nodes[nodeName].Nodes.Add(node);
-            }
-            CheckNodeNameErrors(_nodes[nodeName]);
-        }
-
         public Vector2 GetLocalMousePosition(Vector2 mousePosition, bool isSearchWindow = false)
         {
             Vector2 worldMousePosition = mousePosition;
@@ -145,15 +129,6 @@ namespace SDRGames.Whist.DialogueSystem.Editor.Managers
             }
             Vector2 localMousePosition = contentViewContainer.WorldToLocal(worldMousePosition);
             return localMousePosition;
-        }
-
-        public override List<Port> GetCompatiblePorts(Port startPort, NodeAdapter nodeAdapter)
-        {
-            return ports.ToList()!.Where(endPort =>
-                          endPort.direction != startPort.direction &&
-                          endPort.node != startPort.node &&
-                          endPort.portType == startPort.portType)
-              .ToList();
         }
 
         public void ClearGraph(bool fullClear = false)
@@ -171,6 +146,30 @@ namespace SDRGames.Whist.DialogueSystem.Editor.Managers
         public void ToggleMiniMap()
         {
             _miniMap.visible = !_miniMap.visible;
+        }
+
+        public override List<Port> GetCompatiblePorts(Port startPort, NodeAdapter nodeAdapter)
+        {
+            return ports.ToList()!.Where(endPort =>
+                          endPort.direction != startPort.direction &&
+                          endPort.node != startPort.node &&
+                          endPort.portType == startPort.portType)
+              .ToList();
+        }
+
+        private void AddNode(string nodeName, BaseNodeView node)
+        {
+            if (!_nodes.ContainsKey(nodeName))
+            {
+                NodeErrorData nodeErrorData = new NodeErrorData();
+                nodeErrorData.Nodes.Add(node);
+                _nodes.Add(nodeName, nodeErrorData);
+            }
+            else
+            {
+                _nodes[nodeName].Nodes.Add(node);
+            }
+            CheckNodeNameErrors(_nodes[nodeName]);
         }
 
         private void AddManipulators()
@@ -247,26 +246,26 @@ namespace SDRGames.Whist.DialogueSystem.Editor.Managers
                 {
                     foreach (Edge edge in changes.edgesToCreate)
                     {
-                        if(edge.output.node is StartNodeView startNode)
-                        {
-                            string inputID = ((BaseNodeView)edge.input.node).ID;
-                            startNode.SetNextSpeechNodeID(inputID);
-                            continue;
-                        }
+                        //if (edge.output.node is StartNodeView startNode)
+                        //{
+                        //    string inputID = ((BaseNodeView)edge.input.node).ID;
+                        //    startNode.SetNextSpeechNodeID(inputID);
+                        //    continue;
+                        //}
 
-                        if (edge.output.node is AnswerNodeView answerNode)
-                        {
-                            string inputID = ((BaseNodeView)edge.input.node).ID;
-                            answerNode.SetNextSpeechNodeID(inputID);
-                            continue;
-                        }
+                        //if (edge.output.node is AnswerNodeView answerNode)
+                        //{
+                        //    string inputID = ((BaseNodeView)edge.input.node).ID;
+                        //    answerNode.SetNextSpeechNodeID(inputID);
+                        //    continue;
+                        //}
 
-                        if (edge.output.node is SpeechNodeView speechNode)
-                        {
-                            string inputID = ((BaseNodeView)edge.input.node).ID;
-                            speechNode.AddConnection(inputID);
-                            continue;
-                        }
+                        //if (edge.output.node is SpeechNodeView speechNode)
+                        //{
+                        //    string inputID = ((BaseNodeView)edge.input.node).ID;
+                        //    speechNode.AddConnection(inputID);
+                        //    continue;
+                        //}
                     }
                 }
 
@@ -274,30 +273,30 @@ namespace SDRGames.Whist.DialogueSystem.Editor.Managers
                 {
                     foreach (GraphElement element in changes.elementsToRemove)
                     {
-                        if (element.GetType() != typeof(Edge))
-                        {
-                            continue;
-                        }
-                        Edge edge = (Edge)element;
+                        //if (element.GetType() != typeof(Edge))
+                        //{
+                        //    continue;
+                        //}
+                        //Edge edge = (Edge)element;
 
-                        if (edge.output.node is StartNodeView startNode)
-                        {
-                            startNode.UnsetNextSpeechNodeID();
-                            continue;
-                        }
+                        //if (edge.output.node is StartNodeView startNode)
+                        //{
+                        //    startNode.UnsetNextSpeechNodeID();
+                        //    continue;
+                        //}
 
-                        if (edge.output.node is AnswerNodeView answerNode)
-                        {
-                            answerNode.UnsetNextSpeechNodeID();
-                            continue;
-                        }
+                        //if (edge.output.node is AnswerNodeView answerNode)
+                        //{
+                        //    answerNode.UnsetNextSpeechNodeID();
+                        //    continue;
+                        //}
 
-                        if (edge.output.node is SpeechNodeView speechNode)
-                        {
-                            string inputID = ((BaseNodeView)edge.input.node).ID;
-                            speechNode.RemoveConnection(inputID);
-                            continue;
-                        }
+                        //if (edge.output.node is SpeechNodeView speechNode)
+                        //{
+                        //    string inputID = ((BaseNodeView)edge.input.node).ID;
+                        //    speechNode.RemoveConnection(inputID);
+                        //    continue;
+                        //}
                     }
                 }
                 return changes;
@@ -381,15 +380,15 @@ namespace SDRGames.Whist.DialogueSystem.Editor.Managers
             AddNode(args.NewNode.NodeName.ToLower(), args.NewNode);
         }
 
-        private void OnAnswerPortRemoved(object sender, EventArgs e)
-        {
-            Port answerPort = (Port)sender;
-            if (answerPort.connected)
-            {
-                DeleteElements(answerPort.connections);
-            }
-            RemoveElement(answerPort);
-        }
+        //private void OnAnswerPortRemoved(object sender, EventArgs e)
+        //{
+        //    Port answerPort = (Port)sender;
+        //    if (answerPort.connected)
+        //    {
+        //        DeleteElements(answerPort.connections);
+        //    }
+        //    RemoveElement(answerPort);
+        //}
 
         private void CheckNodeNameErrors(NodeErrorData nodeErrorData)
         {

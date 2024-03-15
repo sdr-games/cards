@@ -17,24 +17,9 @@ namespace SDRGames.Whist.DialogueSystem.Editor.Models
             TextLocalization = textLocalization;
         }
 
-        public void SetID(string id)
-        {
-            ID = id;
-        }
-
         public override void SetNodeName(string name)
         {
             NodeName = name;
-        }
-
-        public void SetCharacterNameLocalization(LocalizationData characterNameLocalization)
-        {
-            CharacterNameLocalization = characterNameLocalization;
-        }
-
-        public void SetTextLocalization(LocalizationData textLocalization)
-        {
-            TextLocalization = textLocalization;
         }
 
         public DialogueSpeechScriptableObject SaveToSO(DialogueSpeechScriptableObject dialogueSO)
