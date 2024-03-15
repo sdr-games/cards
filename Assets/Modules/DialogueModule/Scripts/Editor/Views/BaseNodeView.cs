@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
-using SDRGames.Whist.DialogueSystem.Editor.Models;
 using SDRGames.Whist.DialogueSystem.Helpers;
 using SDRGames.Whist.DialogueSystem.ScriptableObjects;
 
@@ -110,9 +110,13 @@ namespace SDRGames.Whist.DialogueSystem.Editor.Views
             return dialogueSO;
         }
 
-        public void LoadData(BaseData nodeData)
+        public virtual void LoadData(BaseNodeView node)
         {
-            //SaveData = nodeData;
+            ID = node.ID;
+            NodeName = node.NodeName;
+            InputPorts = node.InputPorts;
+            OutputPorts = node.OutputPorts;
+            Position = node.Position;
         }
 
         public void DisconnectAllPorts()
@@ -121,41 +125,14 @@ namespace SDRGames.Whist.DialogueSystem.Editor.Views
             DisconnectOutputPorts();
         }
 
-        protected Port CreateInputPort(Type type, NodeTypes nodeType)
+        public virtual Port CreateInputPort()
         {
-            Port inputPort = this.CreatePort(type, $"{nodeType} Connection", Orientation.Horizontal, Direction.Input, Port.Capacity.Multi);
-            inputPort.ClearClassList();
-            inputPort.AddToClassList($"ds-node__{nodeType.ToString().ToLower()}-input-port");
-            InputPorts.Add(inputPort);
-
-            return inputPort;
+            return null;
         }
 
-        protected Port CreateOutputPort(Type type, NodeTypes nodeType, bool singlePort = false)
+        public virtual Port CreateOutputPort()
         {
-            Port answerPort = this.CreatePort(type, "Output");
-            answerPort.ClearClassList();
-            answerPort.AddToClassList($"ds-node__{nodeType.ToString().ToLower()}-output-port");
-
-            if (!singlePort)
-            {
-                Button deleteAnswerButton = UtilityElement.CreateButton("X", () =>
-                {
-                    if (OutputPorts.Count == 1)
-                    {
-                        return;
-                    }
-                    outputContainer.Remove(answerPort);
-                    AnswerPortRemoved?.Invoke(answerPort, EventArgs.Empty);
-                });
-                deleteAnswerButton.AddToClassList("ds-node__button");
-                answerPort.Add(deleteAnswerButton);
-            }
-
-            OutputPorts.Add(answerPort);
-            outputContainer.Add(answerPort);
-
-            return answerPort;
+            return null;
         }
 
         private void DisconnectInputPorts()

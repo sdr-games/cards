@@ -156,13 +156,16 @@ namespace SDRGames.Whist.DialogueSystem.Editor.Managers
               .ToList();
         }
 
-        public void ClearGraph()
+        public void ClearGraph(bool fullClear = false)
         {
             graphElements.ForEach(graphElement => RemoveElement(graphElement));
             _nodes.Clear();
             _startNodeExists = false;
             NameErrorsAmount = 0;
-            CreateStartNode();
+            if(!fullClear)
+            {
+                CreateStartNode();
+            }
         }
 
         public void ToggleMiniMap()

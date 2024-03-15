@@ -1,42 +1,35 @@
 using System;
 using System.Collections.Generic;
-using System.Reflection;
 
-using NUnit.Framework.Internal;
-
-using SDRGames.Whist.DialogueSystem.Helpers;
 using SDRGames.Whist.DialogueSystem.Models;
 using SDRGames.Whist.DialogueSystem.ScriptableObjects;
 
-using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 
 using UnityEngine;
 using UnityEngine.UIElements;
 
-using static SDRGames.Whist.DialogueSystem.Editor.Managers.GraphManager;
-
 namespace SDRGames.Whist.DialogueSystem.Editor.Views
 {
-    [Serializable]
     public class SpeechNodeView : BaseNodeView
     {
-        [SerializeField] private LocalizationData _characterNameLocalization;
-        [SerializeField] private LocalizationData _textLocalization;
-        [SerializeField] private List<string> _connections;
+        [field: SerializeField] public LocalizationData CharacterNameLocalization { get; private set; }
+        [field: SerializeField] public LocalizationData TextLocalization { get; private set; }
+        [field: SerializeField] public List<string> Connections { get; private set; }
 
         public new event EventHandler<SavedToSOEventArgs<DialogueSpeechScriptableObject>> SavedToSO;
+        public event EventHandler AnswerPortRemoved;
 
         public void Initialize(string id, string nodeName, Vector2 position, LocalizationData characterNameLocalization, LocalizationData textLocalization)
         {
             base.Initialize(id, nodeName, position);
 
-            _characterNameLocalization = characterNameLocalization;
-            _textLocalization = textLocalization;
-            _connections = new List<string>();
+            CharacterNameLocalization = characterNameLocalization;
+            TextLocalization = textLocalization;
+            Connections = new List<string>();
 
-            CreateInputPort(typeof(AnswerNodeView), NodeTypes.Answer);
-            CreateOutputPort(typeof(SpeechNodeView), NodeTypes.Speech);
+            CreateInputPort();
+            CreateOutputPort();
         }
 
         public override void Draw()
@@ -49,13 +42,13 @@ namespace SDRGames.Whist.DialogueSystem.Editor.Views
 
             /* MAIN CONTAINER */
 
-            Button addAnswerButton = UtilityElement.CreateButton("Add answer", () =>
-            {
-                CreateOutputPort(typeof(SpeechNodeView), NodeTypes.Speech);
-            });
-            addAnswerButton.AddToClassList("ds-node__button");
+            //Button addAnswerButton = UtilityElement.CreateButton("Add answer", () =>
+            //{
+            //    CreateOutputPort();
+            //});
+            //addAnswerButton.AddToClassList("ds-node__button");
 
-            mainContainer.Insert(1, addAnswerButton);
+            //mainContainer.Insert(1, addAnswerButton);
 
             /* OUTPUT CONTAINER */
 
@@ -71,12 +64,12 @@ namespace SDRGames.Whist.DialogueSystem.Editor.Views
 
             Foldout characterNameFoldout = UtilityElement.CreateFoldout("Character Name", true);
 
-            Box characterNameLocalizationBox = UtilityElement.CreateLocalizationBox(_characterNameLocalization);
+            Box characterNameLocalizationBox = UtilityElement.CreateLocalizationBox(CharacterNameLocalization);
             characterNameFoldout.Add(characterNameLocalizationBox);
 
             Foldout textFoldout = UtilityElement.CreateFoldout("Speech Text", true);
 
-            Box localizationBox = UtilityElement.CreateLocalizationBox(_textLocalization);
+            Box localizationBox = UtilityElement.CreateLocalizationBox(TextLocalization);
             textFoldout.Add(localizationBox);
 
             customDataContainer.Add(characterNameFoldout);
@@ -95,11 +88,11 @@ namespace SDRGames.Whist.DialogueSystem.Editor.Views
                 foreach (Edge edge in port.connections)
                 {
                     string id = ((BaseNodeView)edge.input.node).ID;
-                    if (_connections.Contains(id))
+                    if (Connections.Contains(id))
                     {
                         continue;
                     }
-                    _connections.Add(id);
+                    Connections.Add(id);
                 }
             }
             graphData.AddSpeechNode(this);
@@ -117,25 +110,52 @@ namespace SDRGames.Whist.DialogueSystem.Editor.Views
 
         public void AddConnection(string nodeID)
         {
-            if(!_connections.Contains(nodeID))
+            if(!Connections.Contains(nodeID))
             {
-                _connections.Add(nodeID);
+                Connections.Add(nodeID);
             }
         }
 
         public void RemoveConnection(string nodeID)
         {
-            if (_connections.Contains(nodeID))
+            if (Connections.Contains(nodeID))
             {
-                _connections.Remove(nodeID);
+                Connections.Remove(nodeID);
             }
         }
 
-        //public void LoadData(SpeechData nodeData, List<AnswerSaveData> answers)
-        //{
-        //    base.LoadData(nodeData);
-        //    SaveData.SetCharacterNameLocalization(nodeData.CharacterNameLocalization);
-        //    SaveData.SetID(nodeData.ID);
-        //}
+        public override Port CreateInputPort()
+        {
+            Port port = this.CreatePort(typeof(AnswerNodeView), $"Answer Connection", Orientation.Horizontal, Direction.Input, Port.Capacity.Multi);
+            port.ClearClassList();
+            port.AddToClassList($"ds-node__answer-input-port");
+            InputPorts.Add(port);
+
+            return port;
+        }
+
+        public override Port CreateOutputPort()
+        {
+            Port port = this.CreatePort(typeof(SpeechNodeView), "Speech Connection");
+            port.ClearClassList();
+            port.AddToClassList($"ds-node__speech-output-port");
+
+            //Button deleteAnswerButton = UtilityElement.CreateButton("X", () =>
+            //{
+            //    if (OutputPorts.Count == 1)
+            //    {
+            //        return;
+            //    }
+            //    outputContainer.Remove(answerPort);
+            //    AnswerPortRemoved?.Invoke(answerPort, EventArgs.Empty);
+            //});
+            //deleteAnswerButton.AddToClassList("ds-node__button");
+            //answerPort.Add(deleteAnswerButton);
+
+            OutputPorts.Add(port);
+            outputContainer.Add(port);
+
+            return port;
+        }
     }
 }

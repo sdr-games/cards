@@ -80,46 +80,6 @@ namespace SDRGames.Whist.DialogueSystem.Editor
             }
 
             UpdateDialoguesChoicesConnections(createdDialogues);
-            UpdateOldNodes(nodeNames, graphData);
-        }
-
-        public static List<DialogueAnswerData> ConvertNodeAnswersToDialogueAnswers(List<AnswerData> nodeAnswers)
-        {
-            List<DialogueAnswerData> dialogueAnswers = new List<DialogueAnswerData>();
-
-            foreach (AnswerData nodeAnswer in nodeAnswers)
-            {
-                DialogueAnswerData answerData = new DialogueAnswerData(
-                    new DialogueLocalizationData(nodeAnswer.CharacterNameLocalization.SelectedLocalizationTable, nodeAnswer.CharacterNameLocalization.SelectedEntryKey),
-                    new DialogueLocalizationData(nodeAnswer.TextLocalization.SelectedLocalizationTable, nodeAnswer.TextLocalization.SelectedEntryKey),
-                    ConvertNodeAnswersConditionsToDialogueAnswersConditions(nodeAnswer.Conditions)
-                );
-
-                dialogueAnswers.Add(answerData);
-            }
-
-            return dialogueAnswers;
-        }
-
-        private static List<DialogueAnswerCondition> ConvertNodeAnswersConditionsToDialogueAnswersConditions(List<AnswerConditionSaveData> nodeAnswerConditions)
-        {
-            List<DialogueAnswerCondition> dialogueAnswerConditions = new List<DialogueAnswerCondition>();
-
-            foreach (AnswerConditionSaveData nodeAnswerCondition in nodeAnswerConditions)
-            {
-                DialogueAnswerCondition conditionData = new DialogueAnswerCondition()
-                {
-                    Characteristic = nodeAnswerCondition.Characteristic,
-                    Skill = nodeAnswerCondition.Skill,
-                    RequiredValue = nodeAnswerCondition.RequiredValue,
-                    AnswerConditionType = nodeAnswerCondition.AnswerConditionType,
-                    Reversed = nodeAnswerCondition.Reversed,
-                };
-
-                dialogueAnswerConditions.Add(conditionData);
-            }
-
-            return dialogueAnswerConditions;
         }
 
         private static void UpdateDialoguesChoicesConnections(Dictionary<string, DialogueScriptableObject> createdDialogues)
@@ -145,33 +105,7 @@ namespace SDRGames.Whist.DialogueSystem.Editor
                         }
                     }
                 }
-
-                //for (int choiceIndex = 0; choiceIndex < node.OutputPorts.Count; ++choiceIndex)
-                //{
-                //    //AnswerSaveData nodeChoice = node.SaveData.OutputPorts[choiceIndex];
-                //    //if (string.IsNullOrEmpty(nodeChoice.NodeID))
-                //    //{
-                //    //    continue;
-                //    //}
-
-                //    //dialogue.Answers[choiceIndex].NextDialogue = _createdDialogues[nodeChoice.NodeID];
-                //}
-                //SaveAsset(dialogue);
             }
-        }
-
-        private static void UpdateOldNodes(List<string> currentUngroupedNodeNames, GraphSaveDataScriptableObject graphData)
-        {
-            if (graphData.OldNodeNames != null && graphData.OldNodeNames.Count != 0)
-            {
-                List<string> nodesToRemove = graphData.OldNodeNames.Except(currentUngroupedNodeNames).ToList();
-                foreach (string nodeToRemove in nodesToRemove)
-                {
-                    RemoveAsset($"{_containerFolderPath}/Dialogues", nodeToRemove);
-                }
-            }
-
-            graphData.SetOldNodeNames(new List<string>(currentUngroupedNodeNames));
         }
 
         public static void Load(string filepath)
@@ -190,9 +124,9 @@ namespace SDRGames.Whist.DialogueSystem.Editor
                 );
                 return;
             }
-
             DialogueEditorWindow.UpdateFileName(graphData.FileName);
 
+            _graphView.ClearGraph(true);
             LoadNode(graphData.StartNode);
             LoadNodes(graphData.AnswerNodes);
             LoadNodes(graphData.SpeechNodes);
@@ -201,16 +135,9 @@ namespace SDRGames.Whist.DialogueSystem.Editor
 
         private static void LoadNode(StartNodeView node)
         {
-
-            //List<AnswerSaveData> answers = CloneNodeAnswers(nodeData.Answers);
-
-            //StartNodeView node = _graphView.CreateNode<StartNodePresenter>(nodeData.NodeName, nodeData.Position, false) as StartNodeView;
+            StartNodeView newNode = _graphView.CreateNode<StartNodePresenter>(node.NodeName, node.Position) as StartNodeView;
+            newNode.LoadData(node);
             _graphView.AddElement(node);
-            //node.LoadData(nodeData);
-            node.Draw();
-
-            //_graphView.AddElement(node);
-
             _loadedNodes.Add(node.ID, node);
         }
 
@@ -218,15 +145,7 @@ namespace SDRGames.Whist.DialogueSystem.Editor
         {
             foreach (SpeechNodeView node in nodes)
             {
-                //List<AnswerSaveData> answers = CloneNodeAnswers(nodeData.Answers);
-
-                //SpeechNodeView node = _graphView.CreateNode<SpeechNodePresenter>(nodeData.NodeName, nodeData.Position, false) as SpeechNodeView;
-                //node.LoadData(nodeData);
-
                 _graphView.AddElement(node);
-                node.Draw();
-
-                //_loadedNodes.Add(node.SaveData.ID, node);
                 _loadedNodes.Add(node.ID, node);
             }
         }
@@ -235,15 +154,7 @@ namespace SDRGames.Whist.DialogueSystem.Editor
         {
             foreach (AnswerNodeView node in nodes)
             {
-                //List<AnswerSaveData> answers = CloneNodeAnswers(nodeData.Answers);
-
-                //AnswerNodeView node = _graphView.CreateNode<AnswerNodePresenter>(nodeData.NodeName, nodeData.Position, false) as AnswerNodeView;
-                //node.LoadData(nodeData);
-
                 _graphView.AddElement(node);
-                node.Draw();
-
-                //_loadedNodes.Add(node.SaveData.ID, node);
                 _loadedNodes.Add(node.ID, node);
             }
         }
@@ -252,30 +163,14 @@ namespace SDRGames.Whist.DialogueSystem.Editor
         {
             foreach (KeyValuePair<string, BaseNodeView> loadedNode in _loadedNodes)
             {
-                var foldouts = loadedNode.Value.outputContainer.Children();
-                foreach (var foldout in foldouts)
+                BaseNodeView node = loadedNode.Value;
+                foreach(Port port in node.OutputPorts)
                 {
-                    foreach (var choicePort in foldout.Children())
+                    List<Edge> connections = port.connections.ToList();
+                    foreach(Edge edge in connections)
                     {
-                        if (choicePort.GetType() == typeof(Port))
-                        {
-                            AnswerSaveData choiceData = (AnswerSaveData)choicePort.userData;
-
-                            if (string.IsNullOrEmpty(choiceData.NodeID))
-                            {
-                                continue;
-                            }
-
-                            BaseNodeView nextNode = _loadedNodes[choiceData.NodeID];
-
-                            Port nextNodeInputPort = (Port)nextNode.inputContainer.Children().First();
-
-                            Edge edge = ((Port)choicePort).ConnectTo(nextNodeInputPort);
-
-                            _graphView.AddElement(edge);
-
-                            loadedNode.Value.RefreshPorts();
-                        }
+                        _graphView.AddElement(edge);
+                        node.RefreshPorts();
                     }
                 }
             }
@@ -308,7 +203,6 @@ namespace SDRGames.Whist.DialogueSystem.Editor
             {
                 return;
             }
-
             AssetDatabase.CreateFolder(parentFolderPath, newFolderName);
         }
 
@@ -376,25 +270,6 @@ namespace SDRGames.Whist.DialogueSystem.Editor
         public static void RemoveAsset(string asset)
         {
             AssetDatabase.DeleteAsset($"{asset}");
-        }
-
-        private static List<AnswerSaveData> CloneNodeAnswers(List<AnswerSaveData> nodeAnswers)
-        {
-            List<AnswerSaveData> answers = new List<AnswerSaveData>();
-
-            foreach (AnswerSaveData nodeAnswer in nodeAnswers)
-            {
-                AnswerSaveData answerData = new AnswerSaveData()
-                {
-                    LocalizationSaveData = nodeAnswer.LocalizationSaveData,
-                    NodeID = nodeAnswer.NodeID,
-                    Conditions = nodeAnswer.Conditions,
-                };
-
-                answers.Add(answerData);
-            }
-
-            return answers;
         }
     }
 }
