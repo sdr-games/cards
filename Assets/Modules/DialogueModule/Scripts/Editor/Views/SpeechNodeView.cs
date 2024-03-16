@@ -5,6 +5,7 @@ using SDRGames.Whist.DialogueSystem.Models;
 using SDRGames.Whist.DialogueSystem.ScriptableObjects;
 
 using UnityEditor.Experimental.GraphView;
+using UnityEditor.UIElements;
 
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -13,16 +14,17 @@ namespace SDRGames.Whist.DialogueSystem.Editor.Views
 {
     public class SpeechNodeView : BaseNodeView
     {
-        private LocalizationData _characterNameLocalization;
+        private DialogueCharacterScriptableObject _character;
         private LocalizationData _textLocalization;
 
         public new event EventHandler<SavedToSOEventArgs<DialogueSpeechScriptableObject>> SavedToSO;
+        public event EventHandler<CharacterUpdatedEventArgs> CharacterUpdated;
 
-        public void Initialize(string id, string nodeName, Vector2 position, LocalizationData characterNameLocalization, LocalizationData textLocalization)
+        public void Initialize(string id, string nodeName, Vector2 position, DialogueCharacterScriptableObject character, LocalizationData textLocalization)
         {
             base.Initialize(id, nodeName, position);
 
-            _characterNameLocalization = characterNameLocalization;
+            _character = character;
             _textLocalization = textLocalization;
 
             CreateInputPort();
@@ -59,17 +61,21 @@ namespace SDRGames.Whist.DialogueSystem.Editor.Views
             VisualElement customDataContainer = new VisualElement();
             customDataContainer.AddToClassList("ds-node__custom-data-container");
 
-            Foldout characterNameFoldout = UtilityElement.CreateFoldout("Character Name", true);
+            Foldout characterFoldout = UtilityElement.CreateFoldout("Character Name");
 
-            Box characterNameLocalizationBox = UtilityElement.CreateLocalizationBox(_characterNameLocalization);
-            characterNameFoldout.Add(characterNameLocalizationBox);
+            ObjectField characterObjectField = UtilityElement.CreateObjectField(typeof(DialogueCharacterScriptableObject), _character, "Character", callback =>
+            {
+                _character = callback.newValue as DialogueCharacterScriptableObject;
+                CharacterUpdated?.Invoke(this, new CharacterUpdatedEventArgs(_character));
+            });
+            characterFoldout.Add(characterObjectField);
 
-            Foldout textFoldout = UtilityElement.CreateFoldout("Speech Text", true);
+            Foldout textFoldout = UtilityElement.CreateFoldout("Speech Text");
 
             Box localizationBox = UtilityElement.CreateLocalizationBox(_textLocalization);
             textFoldout.Add(localizationBox);
 
-            customDataContainer.Add(characterNameFoldout);
+            customDataContainer.Add(characterFoldout);
             customDataContainer.Add(textFoldout);
 
             extensionContainer.Add(customDataContainer);

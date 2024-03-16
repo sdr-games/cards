@@ -10,14 +10,14 @@ namespace SDRGames.Whist.DialogueSystem.ScriptableObjects
 {
     public class DialogueSpeechScriptableObject : DialogueScriptableObject
     {
-        [field: SerializeField] public LocalizationData CharacterNameLocalization { get; private set; }
+        [field: SerializeField] public DialogueCharacterScriptableObject Character { get; private set; }
         [field: SerializeField] public LocalizationData TextLocalization { get; private set; }
         [field: SerializeField] public List<DialogueAnswerScriptableObject> Answers { get; private set; }
 
-        public void Initialize(string dialogueName, NodeTypes dialogueType, LocalizationData characterNameLocalization, LocalizationData textLocalization)
+        public void Initialize(string dialogueName, NodeTypes dialogueType, DialogueCharacterScriptableObject character, LocalizationData textLocalization)
         {
             base.Initialize(dialogueName, dialogueType);
-            CharacterNameLocalization = characterNameLocalization;
+            Character = character;
             TextLocalization = textLocalization;
             Answers = new List<DialogueAnswerScriptableObject>();
         }

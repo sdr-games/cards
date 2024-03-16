@@ -22,15 +22,15 @@ namespace SDRGames.Whist.DialogueSystem.Controllers
 
         public void OnPointerClick(PointerEventData eventData)
         {
-            if (nextDialogue != null)
-            {
-                dialogueController.ClearDialogueWindow();
-                dialogueController.CreateDialogueText((DialogueSpeechScriptableObject)nextDialogue);
-            }
-            else
-            {
-                dialogueController.CloseDialogueWindow();
-            }
+            //if (nextDialogue != null)
+            //{
+            //    dialogueController.ClearDialogueWindow();
+            //    dialogueController.CreateDialogueText((DialogueSpeechScriptableObject)nextDialogue);
+            //}
+            //else
+            //{
+            //    dialogueController.CloseDialogueWindow();
+            //}
         }
 
         public void OnPointerEnter(PointerEventData eventData)

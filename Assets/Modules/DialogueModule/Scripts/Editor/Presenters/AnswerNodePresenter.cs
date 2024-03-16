@@ -23,14 +23,13 @@ namespace SDRGames.Whist.DialogueSystem.Editor.Presenters
 
         public override void Initialize(string name, Vector2 position)
         {
-            LocalizationData characterNameLocalization = new LocalizationData("", "", "");
             LocalizationData textLocalization = new LocalizationData("", "", "");
-            List<AnswerConditionSaveData> conditions = new List<AnswerConditionSaveData>();
 
-            _data = new AnswerData(name, position, characterNameLocalization, textLocalization, conditions);
+            _data = new AnswerData(name, position, textLocalization);
 
-            _nodeView.Initialize(_data.ID, _data.NodeName, position, _data.CharacterNameLocalization, _data.TextLocalization);
+            _nodeView.Initialize(_data.ID, _data.NodeName, position, _data.Character, _data.TextLocalization);
             _nodeView.SavedToSO += OnSavedToSO;
+            _nodeView.CharacterUpdated += OnCharacterUpdated;
         }
 
         public override BaseNodeView GetNodeView()
@@ -46,6 +45,11 @@ namespace SDRGames.Whist.DialogueSystem.Editor.Presenters
         protected void OnSavedToSO(object sender, SavedToSOEventArgs<DialogueAnswerScriptableObject> e)
         {
             _data.SaveToSO(e.DialogueSO);
+        }
+
+        private void OnCharacterUpdated(object sender, CharacterUpdatedEventArgs e)
+        {
+            _data.SetCharacter(e.Character);
         }
     }
 }

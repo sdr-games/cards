@@ -13,8 +13,6 @@ using UnityEngine.Localization.Settings;
 using UnityEngine.Localization.Tables;
 using UnityEngine.UIElements;
 
-using static SDRGames.Whist.DialogueSystem.Models.DialogueAnswerCondition;
-
 namespace SDRGames.Whist.DialogueSystem.Editor
 {
     public static class UtilityElement
@@ -150,114 +148,126 @@ namespace SDRGames.Whist.DialogueSystem.Editor
                 localizationTableDropdown.AddClasses(uss_class);
 
                 DropdownField localizationTextDropdown = CreateLocalizationEntriesDropdown(localizationSaveData, subBox, uss_class);
-                Foldout localizationTextFoldout = CreateFoldout("Localized text", true);
                 TextField localizationText = CreateTextArea(localizationSaveData.LocalizedText, isReadOnly: true);
 
-                localizationTextFoldout.Add(localizationText);
                 box.Add(localizationTableDropdown);
                 if (localizationTextDropdown != null)
                 {
                     subBox.Add(localizationTextDropdown);
-                    subBox.Add(localizationTextFoldout);
+                    subBox.Add(localizationText);
                 }
                 box.Add(subBox);
             }
             return box;
         }
 
-        public static void CreateConditionField(Foldout foldout, AnswerConditionSaveData conditionData)
+        public static ObjectField CreateObjectField(Type objectType, UnityEngine.Object value = null, string label = null, EventCallback<ChangeEvent<UnityEngine.Object>> onValueChanged = null)
         {
-            Foldout conditionFoldout = CreateFoldout($"{conditionData.AnswerConditionType}", true);
-            Box box = new Box();
-
-            DropdownField dropdownField = CreateDropdownField(typeof(AnswerConditionTypes), conditionData.AnswerConditionType.ToString(), null, callback =>
+            ObjectField objectField = new ObjectField()
             {
-                conditionData.AnswerConditionType = Enum.Parse<AnswerConditionTypes>(callback.newValue);
-                conditionFoldout.text = $"{conditionData.AnswerConditionType}";
-                box.Clear();
-                box = CreateConditionCheckField(box, conditionData);
-            });
+                value = value,
+                label = label,
+                objectType = objectType,
+            };
 
-            Toggle reverseToggle = CreateBoolField(conditionData.Reversed, "Reversed", callback => conditionData.Reversed = callback.newValue);
-
-            box = CreateConditionCheckField(box, conditionData);
-
-            conditionFoldout.Add(dropdownField);
-            conditionFoldout.Add(reverseToggle);
-            conditionFoldout.Add(box);
-            foldout.Add(conditionFoldout);
-        }
-
-        public static Box CreateConditionCheckField(Box box, AnswerConditionSaveData conditionData)
-        {
-            switch (conditionData.AnswerConditionType)
+            if (onValueChanged != null)
             {
-                case AnswerConditionTypes.CharacteristicCheck:
-                    conditionData.Skill = SkillsNames.No;
-
-                    DropdownField dropdownField = CreateDropdownField(
-                        typeof(Characteristics),
-                        conditionData.Characteristic.ToString(),
-                        null,
-                        callback =>
-                        {
-                            conditionData.Characteristic = (Characteristics)Enum.Parse(typeof(Characteristics), callback.newValue);
-                        }
-                    );
-                    Label label = new Label()
-                    {
-                        text = "more or equal"
-                    };
-                    label.AddToClassList("ds-node__label");
-                    TextField valueTextField = CreateTextField(
-                        conditionData.RequiredValue.ToString(),
-                        null,
-                        callback => conditionData.RequiredValue = int.Parse(callback.newValue)
-                    );
-                    box.Add(dropdownField);
-                    box.Add(label);
-                    box.Add(valueTextField);
-
-                    break;
-                case AnswerConditionTypes.SkillCheck:
-                    dropdownField = CreateDropdownField(
-                        typeof(SkillsNames),
-                        conditionData.Skill.ToString(),
-                        null,
-                        callback => conditionData.Skill = (SkillsNames)Enum.Parse(typeof(SkillsNames), callback.newValue)
-                    );
-                    label = new Label()
-                    {
-                        text = "more or equal"
-                    };
-                    label.AddToClassList("ds-node__label");
-                    valueTextField = CreateTextField(
-                        conditionData.RequiredValue.ToString(),
-                        null,
-                        callback => conditionData.RequiredValue = int.Parse(callback.newValue)
-                    );
-                    box.Add(dropdownField);
-                    box.Add(label);
-                    box.Add(valueTextField);
-
-                    break;
-                default:
-                    break;
+                objectField.RegisterCallback(onValueChanged);
             }
-            return box;
+            return objectField;
         }
+
+        //public static void CreateConditionField(Foldout foldout, AnswerConditionSaveData conditionData)
+        //{
+        //    Foldout conditionFoldout = CreateFoldout($"{conditionData.AnswerConditionType}", true);
+        //    Box box = new Box();
+
+        //    DropdownField dropdownField = CreateDropdownField(typeof(AnswerConditionTypes), conditionData.AnswerConditionType.ToString(), null, callback =>
+        //    {
+        //        conditionData.AnswerConditionType = Enum.Parse<AnswerConditionTypes>(callback.newValue);
+        //        conditionFoldout.text = $"{conditionData.AnswerConditionType}";
+        //        box.Clear();
+        //        box = CreateConditionCheckField(box, conditionData);
+        //    });
+
+        //    Toggle reverseToggle = CreateBoolField(conditionData.Reversed, "Reversed", callback => conditionData.Reversed = callback.newValue);
+
+        //    box = CreateConditionCheckField(box, conditionData);
+
+        //    conditionFoldout.Add(dropdownField);
+        //    conditionFoldout.Add(reverseToggle);
+        //    conditionFoldout.Add(box);
+        //    foldout.Add(conditionFoldout);
+        //}
+
+        //public static Box CreateConditionCheckField(Box box, AnswerConditionSaveData conditionData)
+        //{
+        //    switch (conditionData.AnswerConditionType)
+        //    {
+        //        case AnswerConditionTypes.CharacteristicCheck:
+        //            conditionData.Skill = SkillsNames.No;
+
+        //            DropdownField dropdownField = CreateDropdownField(
+        //                typeof(Characteristics),
+        //                conditionData.Characteristic.ToString(),
+        //                null,
+        //                callback =>
+        //                {
+        //                    conditionData.Characteristic = (Characteristics)Enum.Parse(typeof(Characteristics), callback.newValue);
+        //                }
+        //            );
+        //            Label label = new Label()
+        //            {
+        //                text = "more or equal"
+        //            };
+        //            label.AddToClassList("ds-node__label");
+        //            TextField valueTextField = CreateTextField(
+        //                conditionData.RequiredValue.ToString(),
+        //                null,
+        //                callback => conditionData.RequiredValue = int.Parse(callback.newValue)
+        //            );
+        //            box.Add(dropdownField);
+        //            box.Add(label);
+        //            box.Add(valueTextField);
+
+        //            break;
+        //        case AnswerConditionTypes.SkillCheck:
+        //            dropdownField = CreateDropdownField(
+        //                typeof(SkillsNames),
+        //                conditionData.Skill.ToString(),
+        //                null,
+        //                callback => conditionData.Skill = (SkillsNames)Enum.Parse(typeof(SkillsNames), callback.newValue)
+        //            );
+        //            label = new Label()
+        //            {
+        //                text = "more or equal"
+        //            };
+        //            label.AddToClassList("ds-node__label");
+        //            valueTextField = CreateTextField(
+        //                conditionData.RequiredValue.ToString(),
+        //                null,
+        //                callback => conditionData.RequiredValue = int.Parse(callback.newValue)
+        //            );
+        //            box.Add(dropdownField);
+        //            box.Add(label);
+        //            box.Add(valueTextField);
+
+        //            break;
+        //        default:
+        //            break;
+        //    }
+        //    return box;
+        //}
 
         private static void OnLocalizationDropdownChange(LocalizationData localizationSaveData, Box box, string uss_class = "")
         {
             box.Clear();
             DropdownField localizationTextDropdown = CreateLocalizationEntriesDropdown(localizationSaveData, box, uss_class);
-            Foldout localizationTextFoldout = CreateFoldout("Localized text", true);
             TextField localizationText = CreateTextArea(localizationSaveData.LocalizedText, isReadOnly: true);
-            localizationTextFoldout.Add(localizationText);
             if (localizationTextDropdown != null)
             {
                 box.Add(localizationTextDropdown);
-                box.Add(localizationTextFoldout);
+                box.Add(localizationText);
             }
         }
         private static DropdownField CreateLocalizationEntriesDropdown(LocalizationData localizationSaveData, Box box, string uss_class)
