@@ -14,10 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Name>k__BackingField: Speech
   <DialogueType>k__BackingField: 1
-  <CharacterNameLocalization>k__BackingField:
-    <SelectedLocalizationTable>k__BackingField: CharacterNames
-    <SelectedEntryKey>k__BackingField: "Valior\t"
-    <LocalizedText>k__BackingField: Valior
+  <Character>k__BackingField: {fileID: 11400000, guid: 5a8cdc6a48ff87b4db248e7162c3a8a0,
+    type: 2}
   <TextLocalization>k__BackingField:
     <SelectedLocalizationTable>k__BackingField: CharacterNames
     <SelectedEntryKey>k__BackingField: "Valior\t"

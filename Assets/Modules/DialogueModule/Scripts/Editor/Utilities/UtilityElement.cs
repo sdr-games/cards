@@ -7,6 +7,7 @@ using SDRGames.Whist.DialogueSystem.Models;
 
 using UnityEditor.Experimental.GraphView;
 using UnityEditor.Localization;
+using UnityEditor.UIElements;
 
 using UnityEngine.Localization.Settings;
 using UnityEngine.Localization.Tables;
@@ -147,19 +148,33 @@ namespace SDRGames.Whist.DialogueSystem.Editor
                 localizationTableDropdown.AddClasses(uss_class);
 
                 DropdownField localizationTextDropdown = CreateLocalizationEntriesDropdown(localizationSaveData, subBox, uss_class);
-                Foldout localizationTextFoldout = CreateFoldout("Localized text", true);
                 TextField localizationText = CreateTextArea(localizationSaveData.LocalizedText, isReadOnly: true);
 
-                localizationTextFoldout.Add(localizationText);
                 box.Add(localizationTableDropdown);
                 if (localizationTextDropdown != null)
                 {
                     subBox.Add(localizationTextDropdown);
-                    subBox.Add(localizationTextFoldout);
+                    subBox.Add(localizationText);
                 }
                 box.Add(subBox);
             }
             return box;
+        }
+
+        public static ObjectField CreateObjectField(Type objectType, UnityEngine.Object value = null, string label = null, EventCallback<ChangeEvent<UnityEngine.Object>> onValueChanged = null)
+        {
+            ObjectField objectField = new ObjectField()
+            {
+                value = value,
+                label = label,
+                objectType = objectType,
+            };
+
+            if (onValueChanged != null)
+            {
+                objectField.RegisterCallback(onValueChanged);
+            }
+            return objectField;
         }
 
         //public static void CreateConditionField(Foldout foldout, AnswerConditionSaveData conditionData)
@@ -248,13 +263,11 @@ namespace SDRGames.Whist.DialogueSystem.Editor
         {
             box.Clear();
             DropdownField localizationTextDropdown = CreateLocalizationEntriesDropdown(localizationSaveData, box, uss_class);
-            Foldout localizationTextFoldout = CreateFoldout("Localized text", true);
             TextField localizationText = CreateTextArea(localizationSaveData.LocalizedText, isReadOnly: true);
-            localizationTextFoldout.Add(localizationText);
             if (localizationTextDropdown != null)
             {
                 box.Add(localizationTextDropdown);
-                box.Add(localizationTextFoldout);
+                box.Add(localizationText);
             }
         }
         private static DropdownField CreateLocalizationEntriesDropdown(LocalizationData localizationSaveData, Box box, string uss_class)

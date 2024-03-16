@@ -14,10 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Name>k__BackingField: 
   <DialogueType>k__BackingField: 0
-  <CharacterNameLocalization>k__BackingField:
-    <SelectedLocalizationTable>k__BackingField: 
-    <SelectedEntryKey>k__BackingField: 
-    <LocalizedText>k__BackingField: 
+  <Character>k__BackingField: {fileID: 0}
   <TextLocalization>k__BackingField:
     <SelectedLocalizationTable>k__BackingField: 
     <SelectedEntryKey>k__BackingField: 
