@@ -1,5 +1,3 @@
-using System;
-
 using SDRGames.Whist.DialogueSystem.ScriptableObjects;
 
 using UnityEngine;
@@ -8,16 +6,16 @@ namespace SDRGames.Whist.DialogueSystem.Managers
 {
     public class DialogueManager : MonoBehaviour
     {
-        [field: SerializeField] public DialogueContainerScriptableObject DialogueContainer { get; private set; }
+        [SerializeField] private DialogueContainerScriptableObject _dialogueContainer;
 
         private void Start()
         {
-            Initialize(DialogueContainer);
+            Initialize(_dialogueContainer);
         }
 
         public void Initialize(DialogueContainerScriptableObject dialogueContainer)
         {
-            DialogueContainer = dialogueContainer;
+            _dialogueContainer = dialogueContainer;
         }
     }
 }
