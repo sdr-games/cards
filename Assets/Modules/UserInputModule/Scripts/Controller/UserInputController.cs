@@ -6,9 +6,9 @@ using System;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem.Controls;
 using UnityEngine.InputSystem.Utilities;
-using SDRGames.SpaceTrucker.UserInputModule.ScriptableObjects;
+using SDRGames.Whist.UserInputModule.ScriptableObjects;
 
-namespace SDRGames.SpaceTrucker.UserInputModule.Controller
+namespace SDRGames.Whist.UserInputModule.Controller
 {
     #nullable enable
     public class UserInputController : MonoBehaviour

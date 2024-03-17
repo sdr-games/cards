@@ -3,7 +3,7 @@ using System;
 using SDRGames.Whist.PointsModule.Models;
 using SDRGames.Whist.PointsModule.Presenters;
 using SDRGames.Whist.PointsModule.Views;
-using SDRGames.SpaceTrucker.UserInputModule.Controller;
+using SDRGames.Whist.UserInputModule.Controller;
 
 using TMPro;
 

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3926185381296374501}
   - component: {fileID: 2408838720683819887}
   - component: {fileID: 5746727694715358790}
-  - component: {fileID: 49711729393113664}
+  - component: {fileID: 8195578581125901116}
   m_Layer: 5
   m_Name: DialogueContainer
   m_TagString: Untagged
@@ -76,7 +76,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &49711729393113664
+--- !u!114 &8195578581125901116
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -85,7 +85,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 5041046912877406379}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 28646fa682cd0324aa67e37df8f42e91, type: 3}
+  m_Script: {fileID: 11500000, guid: 895bc34ba7806bf48827aa2181580be3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <DialogueContainer>k__BackingField: {fileID: 0}
+  _userInputController: {fileID: 0}
+  _dialogueContainer: {fileID: 11400000, guid: 32daf364bc3d59840908a018adfa4719, type: 2}
+  _speechLinearViewPrefab: {fileID: 4250556828799840567, guid: e8db714af0a82994fbf33264fde82f60,
+    type: 3}
+  _answerLinearViewPrefab: {fileID: 4250556828799840567, guid: 1ee882a6fe62dad459673bab0966d017,
+    type: 3}

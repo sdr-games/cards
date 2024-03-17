@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace SDRGames.SpaceTrucker.UserInputModule.Controller
+namespace SDRGames.Whist.UserInputModule.Controller
 {
     public class LeftMouseButtonSceneClickEventArgs : EventArgs
     {

@@ -15,7 +15,7 @@ using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Utilities;
 
-namespace SDRGames.SpaceTrucker.UserInputModule
+namespace SDRGames.Whist.UserInputModule
 {
     public partial class @UserInputActions : IInputActionCollection2, IDisposable
     {

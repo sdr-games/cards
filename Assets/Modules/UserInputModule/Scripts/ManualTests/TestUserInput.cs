@@ -1,6 +1,6 @@
 using System;
 
-using SDRGames.SpaceTrucker.UserInputModule.Controller;
+using SDRGames.Whist.UserInputModule.Controller;
 
 using UnityEditor;
 
@@ -8,7 +8,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
 
-namespace SDRGames.SpaceTrucker.UserInputModule
+namespace SDRGames.Whist.UserInputModule
 {
     public class TestUserInput : MonoBehaviour
     {

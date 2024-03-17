@@ -5,7 +5,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace SDRGames.SpaceTrucker.UserInputModule.ScriptableObjects
+namespace SDRGames.Whist.UserInputModule.ScriptableObjects
 {
     [Serializable]
     [CreateAssetMenu(fileName = "PlayerMovementBindings", menuName = "SDRGames/Movement Controls/Movement Bindings")]

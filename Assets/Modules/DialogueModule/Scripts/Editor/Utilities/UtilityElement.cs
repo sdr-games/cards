@@ -148,7 +148,7 @@ namespace SDRGames.Whist.DialogueSystem.Editor
                 localizationTableDropdown.AddClasses(uss_class);
 
                 DropdownField localizationTextDropdown = CreateLocalizationEntriesDropdown(localizationSaveData, subBox, uss_class);
-                TextField localizationText = CreateTextArea(localizationSaveData.LocalizedText, isReadOnly: true);
+                TextField localizationText = CreateTextArea(localizationSaveData.LocalizedTextPreview, isReadOnly: true);
 
                 box.Add(localizationTableDropdown);
                 if (localizationTextDropdown != null)
@@ -263,7 +263,7 @@ namespace SDRGames.Whist.DialogueSystem.Editor
         {
             box.Clear();
             DropdownField localizationTextDropdown = CreateLocalizationEntriesDropdown(localizationSaveData, box, uss_class);
-            TextField localizationText = CreateTextArea(localizationSaveData.LocalizedText, isReadOnly: true);
+            TextField localizationText = CreateTextArea(localizationSaveData.LocalizedTextPreview, isReadOnly: true);
             if (localizationTextDropdown != null)
             {
                 box.Add(localizationTextDropdown);
@@ -287,7 +287,7 @@ namespace SDRGames.Whist.DialogueSystem.Editor
                 {
                     localizationSaveData.SetEntryKey(localizationEntries.Keys.First());
                 }
-                localizationSaveData.SetText(localizationEntries[localizationSaveData.SelectedEntryKey]);
+                localizationSaveData.SetPreviewText(localizationEntries[localizationSaveData.SelectedEntryKey]);
                 DropdownField localizationTextDropdown = CreateDropdownField
                 (
                     localizationEntries.Keys.ToList(),
@@ -296,7 +296,7 @@ namespace SDRGames.Whist.DialogueSystem.Editor
                     callback =>
                     {
                         localizationSaveData.SetEntryKey(callback.newValue);
-                        localizationSaveData.SetText(localizationEntries[localizationSaveData.SelectedEntryKey]);
+                        localizationSaveData.SetPreviewText(localizationEntries[localizationSaveData.SelectedEntryKey]);
                         OnLocalizationDropdownChange(localizationSaveData, box, uss_class);
                     }
                 );

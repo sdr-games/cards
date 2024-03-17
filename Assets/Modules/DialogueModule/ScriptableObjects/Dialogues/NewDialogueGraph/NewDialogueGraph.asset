@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <FileName>k__BackingField: 
   <Dialogues>k__BackingField:
-  - {fileID: 11400000, guid: 327d5dd90b9dc654ea10be8feb53bc33, type: 2}
-  - {fileID: 11400000, guid: 1d8b6dc2d93ea0040a830b7c2b4bd0b1, type: 2}
   - {fileID: 11400000, guid: 398b71246fa4d7246a84e54e199c238c, type: 2}
+  - {fileID: 11400000, guid: 1d8b6dc2d93ea0040a830b7c2b4bd0b1, type: 2}
+  - {fileID: 11400000, guid: 327d5dd90b9dc654ea10be8feb53bc33, type: 2}

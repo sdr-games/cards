@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace SDRGames.SpaceTrucker.UserInputModule.ScriptableObjects
+namespace SDRGames.Whist.UserInputModule.ScriptableObjects
 {
     public abstract class KeyBindings : ScriptableObject
     {
