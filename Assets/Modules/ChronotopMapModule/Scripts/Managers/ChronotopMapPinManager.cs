@@ -21,7 +21,7 @@ namespace SDRGames.Whist.ChronotopMapModule.Managers
 
         [SerializeField] private BezierView _bezierView;
 
-        [SerializeField] private DialogueManager dialogue;
+        [SerializeField] private DialogueLinearManager dialogue;
         
         [field: SerializeField] public ChronotopMapPinController ChronotopMapPinController { get; private set; }
 

@@ -1,11 +1,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using SDRGames.SpaceTrucker.UserInputModule.Controller;
+using SDRGames.Whist.UserInputModule.Controller;
 
 using UnityEngine;
 
-namespace SDRGames.SpaceTrucker.UserInputModule
+namespace SDRGames.Whist.UserInputModule
 {
     public class TestUserUIInput : MonoBehaviour
     {

@@ -225,6 +225,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b66655ee6a00f6546a89e43afd0c9df2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _userInputController: {fileID: 0}
   _currentCharacterPortrair: {fileID: 6971906825244417617}
   _characterName: {fileID: 3231664645758678024}
   _text: {fileID: 4076710491410656368}
@@ -340,8 +341,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 300, y: -100}
-  m_SizeDelta: {x: -400, y: -120}
+  m_AnchoredPosition: {x: 100, y: -100}
+  m_SizeDelta: {x: -200, y: -120}
   m_Pivot: {x: 0, y: 1}
 --- !u!222 &102901967171979024
 CanvasRenderer:

@@ -1,4 +1,7 @@
+using System;
 using System.Collections;
+
+using SDRGames.Whist.UserInputModule.Controller;
 
 using TMPro;
 
@@ -9,6 +12,8 @@ namespace SDRGames.Whist.DialogueSystem.Views
 {
     public class DialogueLinearView : MonoBehaviour
     {
+        private readonly Color DEFAULT_COLOR = Color.white;
+
         [SerializeField] private Image _currentCharacterPortrair;
         [SerializeField] private TextMeshProUGUI _characterName;
         [SerializeField] private TextMeshProUGUI _text;
@@ -17,19 +22,20 @@ namespace SDRGames.Whist.DialogueSystem.Views
         [SerializeField] private int RolloverCharacterSpread = 10;
         [SerializeField] private Color ColorTint;
 
+        private UserInputController _userInputController;
         private Coroutine _appearanceCoroutine;
+        private bool _textVisible;
 
-        private void Start()
-        {
-            Initialize(null, "Valior", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.");
-        }
+        public event EventHandler Destroyed;
 
-        public void Initialize(Sprite characterPortrairSprite, string characterName, string speechText)
+        public void Initialize(Sprite characterPortrairSprite, string characterName, string speechText, UserInputController userInputController)
         {
             _currentCharacterPortrair.sprite = characterPortrairSprite;
             _characterName.text = characterName;
 
             _text.text = speechText;
+            _userInputController = userInputController;
+            _userInputController.LeftMouseButtonReleasedOnUI += OnLeftMouseButtonReleasedOnUI;
 
             ShowText();
         }
@@ -39,6 +45,9 @@ namespace SDRGames.Whist.DialogueSystem.Views
             if (force)
             {
                 StopCoroutine(_appearanceCoroutine);
+                _text.overrideColorTags = true;
+                _text.color = DEFAULT_COLOR;
+                _textVisible = true;
                 return;
             }
 
@@ -47,6 +56,16 @@ namespace SDRGames.Whist.DialogueSystem.Views
                 return;
             }
             _appearanceCoroutine = StartCoroutine(RevealTextCoroutine());
+        }
+
+        private void OnLeftMouseButtonReleasedOnUI(object sender, LeftMouseButtonUIClickEventArgs e)
+        {
+            if (_textVisible)
+            {
+                Destroy(this);
+                return;
+            }
+            ShowText(true);
         }
 
         private IEnumerator RevealTextCoroutine()
@@ -62,7 +81,7 @@ namespace SDRGames.Whist.DialogueSystem.Views
                 int characterCount = textInfo.characterCount;
                 // Spread should not exceed the number of characters.
                 byte fadeSteps = (byte)Mathf.Max(1, 255 / RolloverCharacterSpread);
-                for (int i = startingCharacterRange; i < currentCharacter + 1; i++)
+                for (int i = 0; i < currentCharacter + 1; i++)
                 {
                     // Skip characters that are not visible
                     if (!textInfo.characterInfo[i].isVisible)
@@ -88,19 +107,10 @@ namespace SDRGames.Whist.DialogueSystem.Views
                     newVertexColors[vertexIndex + 3] = (Color)newVertexColors[vertexIndex + 3] * ColorTint;
                     if (alpha == 255)
                     {
-                        //startingCharacterRange += 1;
+                        startingCharacterRange += 1;
                         if (startingCharacterRange == characterCount)
                         {
-                            // Update mesh vertex data one last time.
-                            _text.UpdateVertexData(TMP_VertexDataUpdateFlags.Colors32);
-                            yield return new WaitForSeconds(0.25f - FadeSpeed * 0.01f);
-                            // Reset the text object back to original state.
-                            _text.ForceMeshUpdate();
-                            yield return new WaitForSeconds(0.25f - FadeSpeed * 0.01f);
-                            // Reset our counters.
-                            currentCharacter = 0;
-                            startingCharacterRange = 0;
-                            //isRangeMax = true; // Would end the coroutine.
+                            isRangeMax = true; // Would end the coroutine.
                         }
                     }
                 }
@@ -110,6 +120,14 @@ namespace SDRGames.Whist.DialogueSystem.Views
                     currentCharacter += 1;
                 yield return new WaitForSeconds(0.25f - FadeSpeed * 0.01f);
             }
+            _textVisible = true;
+        }
+
+        private void OnDestroy()
+        {
+            _userInputController.LeftMouseButtonReleasedOnUI -= OnLeftMouseButtonReleasedOnUI;
+            Destroyed?.Invoke(this, EventArgs.Empty);
+            Destroy(gameObject);
         }
     }
 }
