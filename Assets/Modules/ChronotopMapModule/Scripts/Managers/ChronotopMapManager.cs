@@ -23,6 +23,7 @@ namespace SDRGames.Whist.ChronotopMapModule.Managers
         [SerializeField] private float _playerPinMoveSpeed = 1.0f;
 
         private BezierView _currentBezierView;
+        private int _currentPinIndex;
 
         private void OnEnable()
         {
@@ -53,8 +54,11 @@ namespace SDRGames.Whist.ChronotopMapModule.Managers
             foreach (var pinManager in _chronotopMapPinManagers)
             {
                 pinManager.Initialize(_userInputController);
-                pinManager.AvailablePinClicked += OnAvailablePinClick;
-            } 
+            }
+
+            _currentPinIndex = 0;
+            _chronotopMapPinManagers[_currentPinIndex].ChronotopMapPinController.MarkAsAvailable();
+            _chronotopMapPinManagers[_currentPinIndex].AvailablePinClicked += OnAvailablePinClick;
         }
 
         private void OnDisable()
@@ -82,9 +86,11 @@ namespace SDRGames.Whist.ChronotopMapModule.Managers
 
         private void OnDialogueCharacterVisible(object sender, CharacterVisibleEventArgs e)
         {
-            if ((Vector2)_playerPin.transform.position == _currentBezierView.GetControlPointsPosition(1))
+            if (e.CurrentTime > 0.99f)
             {
+                _playerPin.transform.position = _currentBezierView.GetControlPointsPosition(1);
                 _dialogueManager.CharacterVisible -= OnDialogueCharacterVisible;
+                _chronotopMapPinManagers[_currentPinIndex].ChronotopMapPinController.MarkAsReady();
                 return;
             }
             _playerPin.transform.position = _currentBezierView.GetControlPointsPosition(e.CurrentTime);
@@ -101,6 +107,19 @@ namespace SDRGames.Whist.ChronotopMapModule.Managers
                 _playerPin.transform.position = bezierView.GetControlPointsPosition(timer);
                 yield return null;
             }
+            ChangeCurrentPin();
+        }
+
+        private void ChangeCurrentPin()
+        {
+            _chronotopMapPinManagers[_currentPinIndex].ChronotopMapPinController.MarkAsDone();
+            _currentPinIndex++;
+            if(_currentPinIndex >= _chronotopMapPinManagers.Length)
+            {
+                return;
+            } 
+            _chronotopMapPinManagers[_currentPinIndex].ChronotopMapPinController.MarkAsAvailable();
+            _chronotopMapPinManagers[_currentPinIndex].AvailablePinClicked += OnAvailablePinClick;
         }
     }
 }

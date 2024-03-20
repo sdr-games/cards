@@ -1,4 +1,3 @@
-using SDRGames.Whist.DialogueSystem.Views;
 using SDRGames.Whist.BezierModule.Views;
 using SDRGames.Whist.ChronotopMapModule.Controllers;
 using SDRGames.Whist.ChronotopMapModule.Models;
@@ -8,7 +7,6 @@ using UnityEditor;
 
 using UnityEngine;
 using UnityEngine.UI;
-using SDRGames.Whist.DialogueSystem.Managers;
 using System;
 using SDRGames.Whist.UserInputModule.Controller;
 

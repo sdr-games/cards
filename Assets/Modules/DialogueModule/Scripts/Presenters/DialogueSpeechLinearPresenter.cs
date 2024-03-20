@@ -6,6 +6,7 @@ using SDRGames.Whist.UserInputModule.Controller;
 
 namespace SDRGames.Whist.DialogueSystem.Presenters
 {
+    [Serializable]
     public class DialogueSpeechLinearPresenter : IDisposable
     {
         public DialogueSpeechScriptableObject Dialogue { get; private set; }

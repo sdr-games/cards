@@ -33,19 +33,20 @@ namespace SDRGames.Whist.ChronotopMapModule.Controllers
         {
             _chronotopMapPinView = chronotopMapPinView;
             _userInputController = userInputController;
-            _userInputController.LeftMouseButtonClickedOnUI += PinClicked;
             _bezierView = bezierView;
         }
 
         public void MarkAsAvailable()
         {
             _status = Status.Available;
+            _userInputController.LeftMouseButtonClickedOnUI += PinClicked;
             _chronotopMapPinView.MarkAsAvailable();
         }
 
         public void MarkAsReady()
         {
             _status = Status.Ready;
+            _userInputController.LeftMouseButtonClickedOnUI -= PinClicked;
             _chronotopMapPinView.MarkAsReady();
         }
 
@@ -74,6 +75,11 @@ namespace SDRGames.Whist.ChronotopMapModule.Controllers
 
         private void PinClicked(object sender, LeftMouseButtonUIClickEventArgs e)
         {
+            if(e.GameObject != gameObject)
+            {
+                return;
+            }
+
             switch (_status)
             {
                 case Status.Available:
