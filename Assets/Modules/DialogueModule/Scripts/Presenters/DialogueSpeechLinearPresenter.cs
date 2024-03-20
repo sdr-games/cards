@@ -25,6 +25,7 @@ namespace SDRGames.Whist.DialogueSystem.Presenters
 
         public void Dispose()
         {
+            _linearView.Destroyed -= OnViewDestroyed;
             Disposed?.Invoke(this, EventArgs.Empty);
             GC.SuppressFinalize(this);
         }

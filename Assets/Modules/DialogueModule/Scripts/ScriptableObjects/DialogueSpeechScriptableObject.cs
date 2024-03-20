@@ -21,5 +21,10 @@ namespace SDRGames.Whist.DialogueSystem.ScriptableObjects
             TextLocalization = textLocalization;
             Answers = new List<DialogueAnswerScriptableObject>();
         }
+
+        public override int GetCharactersCount()
+        {
+            return TextLocalization.GetLocalizedText().Length;
+        }
     }
 }

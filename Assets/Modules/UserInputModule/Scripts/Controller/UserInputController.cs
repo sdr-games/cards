@@ -17,10 +17,13 @@ namespace SDRGames.Whist.UserInputModule.Controller
 
         [SerializeField] private KeyBindings[] _keyBindings;
 
+        private bool _leftMouseButtonPressed;
+
         public event EventHandler? KeyboardAnyKeyHold;
         public event EventHandler? KeyboardAnyKeyPressed;
         public event EventHandler? KeyboardAnyKeyReleased;
 
+        public event EventHandler<LeftMouseButtonUIClickEventArgs>? LeftMouseButtonHoldOnUI;
         public event EventHandler<LeftMouseButtonUIClickEventArgs>? LeftMouseButtonClickedOnUI;
         public event EventHandler<LeftMouseButtonUIClickEventArgs>? LeftMouseButtonReleasedOnUI;
 
@@ -153,7 +156,7 @@ namespace SDRGames.Whist.UserInputModule.Controller
 
             if (uiElement is not null)
             {
-                LeftMouseButtonClickedOnUI?.Invoke(this, new LeftMouseButtonUIClickEventArgs(uiElement, Mouse.current.position.ReadValue()));
+                LeftMouseButtonHoldOnUI?.Invoke(this, new LeftMouseButtonUIClickEventArgs(uiElement, Mouse.current.position.ReadValue()));
                 return;
             }
 
@@ -169,11 +172,13 @@ namespace SDRGames.Whist.UserInputModule.Controller
         private void LeftMouseButtonReleaseListen()
         {
             if (!Mouse.current.leftButton.wasReleasedThisFrame
-                || Time.timeScale <= 0)
+                || Time.timeScale <= 0
+                || !_leftMouseButtonPressed)
             {
                 return;
             }
 
+            _leftMouseButtonPressed = false;
             // сначала ищем UI элемент, т.к. он должен срабатывать раньше, чем объекты сцены.
             GameObject? uiElement = TryToFindInteractibleUIElement();
 

@@ -1,3 +1,5 @@
+using System;
+
 using SDRGames.Whist.DialogueSystem.Presenters;
 using SDRGames.Whist.DialogueSystem.ScriptableObjects;
 using SDRGames.Whist.DialogueSystem.Views;
@@ -9,58 +11,114 @@ namespace SDRGames.Whist.DialogueSystem.Managers
 {
     public class DialogueLinearManager : MonoBehaviour
     {
-        [SerializeField] private UserInputController _userInputController;
-        [SerializeField] private DialogueContainerScriptableObject _dialogueContainer;
         [SerializeField] private DialogueLinearView _speechLinearViewPrefab;
         [SerializeField] private DialogueLinearView _answerLinearViewPrefab;
 
-        private void Start()
-        {
-            Initialize(_dialogueContainer);
-        }
+        private UserInputController _userInputController;
+        private DialogueContainerScriptableObject _dialogueContainer;
+        private DialogueLinearView _linearView;
+        private DialogueSpeechLinearPresenter _speechLinearPresenter;
+        private DialogueAnswerLinearPresenter _answerLinearPresenter;
+        private int _dialoguesCharactersCount;
+        private int _lastCharacterPosition;
 
-        public void Initialize(DialogueContainerScriptableObject dialogueContainer)
+        public event EventHandler<CharacterVisibleEventArgs> CharacterVisible;
+
+        public void Initialize(DialogueContainerScriptableObject dialogueContainer, UserInputController userInputController)
         {
+            _lastCharacterPosition = -1;
+            _userInputController = userInputController;
             _dialogueContainer = dialogueContainer;
             CreateDialoguePresenter(_dialogueContainer.FirstSpeech);
+
+            _dialoguesCharactersCount = 0;
+            foreach (DialogueScriptableObject dialogue in _dialogueContainer.Dialogues)
+            {
+                _dialoguesCharactersCount += dialogue.GetCharactersCount();
+            }
         }
 
         private void CreateDialoguePresenter(DialogueSpeechScriptableObject dialogue)
         {
-            DialogueLinearView linearView = Instantiate(_speechLinearViewPrefab, transform);
+            if(dialogue == null)
+            {
+                return;
+            } 
 
-            DialogueSpeechLinearPresenter presenter = new DialogueSpeechLinearPresenter(dialogue, linearView, _userInputController);
-            presenter.Disposed += OnSpeechPresenterDisposed;
+            _linearView = Instantiate(_speechLinearViewPrefab, transform);
+            _linearView.CharacterVisible += OnCharacterVisible;
+
+            _speechLinearPresenter = new DialogueSpeechLinearPresenter(dialogue, _linearView, _userInputController);
+            _speechLinearPresenter.Disposed += OnSpeechPresenterDisposed;
+        }
+
+        private void OnCharacterVisible(object sender, Views.CharacterVisibleEventArgs e)
+        {
+            if(_dialoguesCharactersCount == 0)
+            {
+                return;
+            }
+            _lastCharacterPosition += e.CharactersAdded;
+            CharacterVisible?.Invoke(this, new CharacterVisibleEventArgs((float)_lastCharacterPosition / (float)_dialoguesCharactersCount));
         }
 
         private void CreateDialoguePresenter(DialogueAnswerScriptableObject dialogue)
         {
-            DialogueLinearView linearView = Instantiate(_answerLinearViewPrefab, transform);
+            if (dialogue == null)
+            {
+                return;
+            }
 
-            DialogueAnswerLinearPresenter presenter = new DialogueAnswerLinearPresenter(dialogue, linearView, _userInputController);
-            presenter.Disposed += OnAnswerPresenterDisposed;
+            _linearView = Instantiate(_answerLinearViewPrefab, transform);
+            _linearView.CharacterVisible += OnCharacterVisible;
+
+            _answerLinearPresenter = new DialogueAnswerLinearPresenter(dialogue, _linearView, _userInputController);
+            _answerLinearPresenter.Disposed += OnAnswerPresenterDisposed;
         }
 
-        private void OnSpeechPresenterDisposed(object sender, System.EventArgs e)
+        private void OnSpeechPresenterDisposed(object sender, EventArgs e)
         {
             DialogueSpeechLinearPresenter presenter = sender as DialogueSpeechLinearPresenter;
             DialogueAnswerScriptableObject nextDialogue = presenter.Dialogue.Answers[0];
             if (nextDialogue == null)
             {
+                UnsetEvents();
                 return;
             }
             CreateDialoguePresenter(nextDialogue);
         }
 
-        private void OnAnswerPresenterDisposed(object sender, System.EventArgs e)
+        private void OnAnswerPresenterDisposed(object sender, EventArgs e)
         {
             DialogueAnswerLinearPresenter presenter = sender as DialogueAnswerLinearPresenter;
             DialogueSpeechScriptableObject nextDialogue = presenter.Dialogue.NextSpeech;
             if(nextDialogue == null)
             {
+                UnsetEvents();
                 return;
             }
             CreateDialoguePresenter(nextDialogue);
+        }
+
+        private void UnsetEvents()
+        {
+            if (_linearView != null)
+            {
+                _linearView.CharacterVisible -= OnCharacterVisible;
+            }
+            if (_speechLinearPresenter != null)
+            {
+                _speechLinearPresenter.Disposed -= OnSpeechPresenterDisposed;
+            }
+            if (_answerLinearPresenter != null)
+            {
+                _answerLinearPresenter.Disposed -= OnAnswerPresenterDisposed;
+            }
+        }
+
+        private void OnDisable()
+        {
+            UnsetEvents();
         }
     }
 }

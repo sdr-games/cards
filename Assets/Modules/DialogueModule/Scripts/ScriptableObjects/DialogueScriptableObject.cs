@@ -16,5 +16,10 @@ namespace SDRGames.Whist.DialogueSystem.ScriptableObjects
             Name = dialogueName;
             DialogueType = dialogueType;
         }
+
+        public virtual int GetCharactersCount()
+        {
+            return 0;
+        }
     }
 }

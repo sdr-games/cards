@@ -22,5 +22,10 @@ namespace SDRGames.Whist.DialogueSystem.ScriptableObjects
         {
             NextSpeech = nextSpeech;
         }
+
+        public override int GetCharactersCount()
+        {
+            return TextLocalization.GetLocalizedText().Length;
+        }
     }
 }

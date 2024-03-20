@@ -9,6 +9,8 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 using SDRGames.Whist.DialogueSystem.Managers;
+using System;
+using SDRGames.Whist.UserInputModule.Controller;
 
 namespace SDRGames.Whist.ChronotopMapModule.Managers
 {
@@ -20,15 +22,16 @@ namespace SDRGames.Whist.ChronotopMapModule.Managers
         [SerializeField] private Button _button;
 
         [SerializeField] private BezierView _bezierView;
-
-        [SerializeField] private DialogueLinearManager dialogue;
         
         [field: SerializeField] public ChronotopMapPinController ChronotopMapPinController { get; private set; }
 
-        public void Initialize()
+        public event EventHandler<AvailablePinClickedEventArgs> AvailablePinClicked;
+
+        public void Initialize(UserInputController userInputController)
         {
             _chronotopMapPinView.Initialize(_button);
-            ChronotopMapPinController.Initialize(_chronotopMapPinView, _button, _bezierView);
+            ChronotopMapPinController.Initialize(_chronotopMapPinView, userInputController, _bezierView);
+            ChronotopMapPinController.AvailablePinClicked += OnAvailablePinClick;
         }
 
         private void OnEnable()
@@ -56,6 +59,11 @@ namespace SDRGames.Whist.ChronotopMapModule.Managers
                     EditorApplication.isPlaying = false;
                 #endif
             }
+        }
+
+        private void OnAvailablePinClick(object sender, AvailablePinClickedEventArgs e)
+        {
+            AvailablePinClicked?.Invoke(this, new AvailablePinClickedEventArgs(e.BezierView, _chronotopMapFightPinModel.DialogueContainerScriptableObject));
         }
     }
 }
