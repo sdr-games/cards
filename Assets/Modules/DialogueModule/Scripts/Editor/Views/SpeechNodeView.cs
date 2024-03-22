@@ -1,6 +1,6 @@
 using System;
-using System.Collections.Generic;
 
+using SDRGames.Whist.CharacterModule.ScriptableObjects;
 using SDRGames.Whist.DialogueSystem.Models;
 using SDRGames.Whist.DialogueSystem.ScriptableObjects;
 
@@ -14,13 +14,13 @@ namespace SDRGames.Whist.DialogueSystem.Editor.Views
 {
     public class SpeechNodeView : BaseNodeView
     {
-        private DialogueCharacterScriptableObject _character;
+        private CharacterInfoScriptableObject _character;
         private LocalizationData _textLocalization;
 
         public new event EventHandler<SavedToSOEventArgs<DialogueSpeechScriptableObject>> SavedToSO;
         public event EventHandler<CharacterUpdatedEventArgs> CharacterUpdated;
 
-        public void Initialize(string id, string nodeName, Vector2 position, DialogueCharacterScriptableObject character, LocalizationData textLocalization)
+        public void Initialize(string id, string nodeName, Vector2 position, CharacterInfoScriptableObject character, LocalizationData textLocalization)
         {
             base.Initialize(id, nodeName, position);
 
@@ -63,9 +63,9 @@ namespace SDRGames.Whist.DialogueSystem.Editor.Views
 
             Foldout characterFoldout = UtilityElement.CreateFoldout("Character Name");
 
-            ObjectField characterObjectField = UtilityElement.CreateObjectField(typeof(DialogueCharacterScriptableObject), _character, "Character", callback =>
+            ObjectField characterObjectField = UtilityElement.CreateObjectField(typeof(CharacterInfoScriptableObject), _character, "Character", callback =>
             {
-                _character = callback.newValue as DialogueCharacterScriptableObject;
+                _character = callback.newValue as CharacterInfoScriptableObject;
                 CharacterUpdated?.Invoke(this, new CharacterUpdatedEventArgs(_character));
             });
             characterFoldout.Add(characterObjectField);

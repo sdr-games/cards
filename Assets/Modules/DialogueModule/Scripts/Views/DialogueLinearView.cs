@@ -24,8 +24,10 @@ namespace SDRGames.Whist.DialogueSystem.Views
 
         private UserInputController _userInputController;
         private Coroutine _appearanceCoroutine;
+        private int _currentCharacterPosition;
         private bool _textVisible;
 
+        public event EventHandler<CharacterVisibleEventArgs> CharacterVisible;
         public event EventHandler Destroyed;
 
         public void Initialize(Sprite characterPortrairSprite, string characterName, string speechText, UserInputController userInputController)
@@ -35,7 +37,9 @@ namespace SDRGames.Whist.DialogueSystem.Views
 
             _text.text = speechText;
             _userInputController = userInputController;
-            _userInputController.LeftMouseButtonReleasedOnUI += OnLeftMouseButtonReleasedOnUI;
+            _userInputController.LeftMouseButtonClickedOnUI += OnLeftMouseButtonClickedOnUI;
+
+            _currentCharacterPosition = 0;
 
             ShowText();
         }
@@ -48,24 +52,27 @@ namespace SDRGames.Whist.DialogueSystem.Views
                 _text.overrideColorTags = true;
                 _text.color = DEFAULT_COLOR;
                 _textVisible = true;
+                CharacterVisible?.Invoke(this, new CharacterVisibleEventArgs(_text.textInfo.characterCount - _currentCharacterPosition));
                 return;
             }
 
-            if(_appearanceCoroutine != null)
+            if (_appearanceCoroutine != null)
             {
                 return;
             }
             _appearanceCoroutine = StartCoroutine(RevealTextCoroutine());
         }
 
-        private void OnLeftMouseButtonReleasedOnUI(object sender, LeftMouseButtonUIClickEventArgs e)
+        private void OnLeftMouseButtonClickedOnUI(object sender, LeftMouseButtonUIClickEventArgs e)
         {
             if (_textVisible)
             {
-                Destroy(this);
+                _userInputController.LeftMouseButtonClickedOnUI -= OnLeftMouseButtonClickedOnUI;
+                Destroyed?.Invoke(this, EventArgs.Empty);
+                Destroy(gameObject);
                 return;
             }
-            ShowText(true);
+            ShowText(_appearanceCoroutine != null);
         }
 
         private IEnumerator RevealTextCoroutine()
@@ -73,15 +80,14 @@ namespace SDRGames.Whist.DialogueSystem.Views
             _text.ForceMeshUpdate();
             TMP_TextInfo textInfo = _text.textInfo;
             Color32[] newVertexColors;
-            int currentCharacter = 0;
-            int startingCharacterRange = currentCharacter;
+            _currentCharacterPosition = 0;
             bool isRangeMax = false;
             while (!isRangeMax)
             {
                 int characterCount = textInfo.characterCount;
                 // Spread should not exceed the number of characters.
                 byte fadeSteps = (byte)Mathf.Max(1, 255 / RolloverCharacterSpread);
-                for (int i = 0; i < currentCharacter + 1; i++)
+                for (int i = 0; i < _currentCharacterPosition + 1; i++)
                 {
                     // Skip characters that are not visible
                     if (!textInfo.characterInfo[i].isVisible)
@@ -105,29 +111,16 @@ namespace SDRGames.Whist.DialogueSystem.Views
                     newVertexColors[vertexIndex + 1] = (Color)newVertexColors[vertexIndex + 1] * ColorTint;
                     newVertexColors[vertexIndex + 2] = (Color)newVertexColors[vertexIndex + 2] * ColorTint;
                     newVertexColors[vertexIndex + 3] = (Color)newVertexColors[vertexIndex + 3] * ColorTint;
-                    if (alpha == 255)
-                    {
-                        startingCharacterRange += 1;
-                        if (startingCharacterRange == characterCount)
-                        {
-                            isRangeMax = true; // Would end the coroutine.
-                        }
-                    }
                 }
                 // Upload the changed vertex colors to the Mesh.
                 _text.UpdateVertexData(TMP_VertexDataUpdateFlags.Colors32);
-                if (currentCharacter + 1 < characterCount)
-                    currentCharacter += 1;
+                _currentCharacterPosition++;
+                CharacterVisible?.Invoke(this, new CharacterVisibleEventArgs());
+                isRangeMax = _currentCharacterPosition == characterCount;
                 yield return new WaitForSeconds(0.25f - FadeSpeed * 0.01f);
             }
+            ShowText(true);
             _textVisible = true;
-        }
-
-        private void OnDestroy()
-        {
-            _userInputController.LeftMouseButtonReleasedOnUI -= OnLeftMouseButtonReleasedOnUI;
-            Destroyed?.Invoke(this, EventArgs.Empty);
-            Destroy(gameObject);
         }
     }
 }

@@ -60,7 +60,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 0.4056604, g: 0.28855467, b: 0.28855467, a: 0.11764706}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -88,8 +88,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 895bc34ba7806bf48827aa2181580be3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _userInputController: {fileID: 0}
-  _dialogueContainer: {fileID: 11400000, guid: 32daf364bc3d59840908a018adfa4719, type: 2}
   _speechLinearViewPrefab: {fileID: 4250556828799840567, guid: e8db714af0a82994fbf33264fde82f60,
     type: 3}
   _answerLinearViewPrefab: {fileID: 4250556828799840567, guid: 1ee882a6fe62dad459673bab0966d017,

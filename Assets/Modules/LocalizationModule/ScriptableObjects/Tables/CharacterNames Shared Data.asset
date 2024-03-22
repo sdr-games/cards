@@ -23,6 +23,10 @@ MonoBehaviour:
     m_Key: Teofrast
     m_Metadata:
       m_Items: []
+  - m_Id: 5643169906712576
+    m_Key: Test
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

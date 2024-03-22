@@ -3,6 +3,7 @@ using System.Linq;
 
 using SDRGames.Whist.BezierModule.Views;
 using SDRGames.Whist.ChronotopMapModule.Views;
+using SDRGames.Whist.UserInputModule.Controller;
 
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,8 +12,8 @@ namespace SDRGames.Whist.ChronotopMapModule.Controllers
 {
     public class ChronotopMapPinController : MonoBehaviour
     {
+        private UserInputController _userInputController; 
         private ChronotopMapPinView _chronotopMapPinView;
-        private Button _button;
         private BezierView _bezierView;
 
         [SerializeField] private bool _autofinish = false;
@@ -28,23 +29,24 @@ namespace SDRGames.Whist.ChronotopMapModule.Controllers
         public event EventHandler ReadyPinClicked;
         public event EventHandler DonePinClicked;
 
-        public void Initialize(ChronotopMapPinView chronotopMapPinView, Button button, BezierView bezierView)
+        public void Initialize(ChronotopMapPinView chronotopMapPinView, UserInputController userInputController, BezierView bezierView)
         {
             _chronotopMapPinView = chronotopMapPinView;
-            _button = button;
-            _button.onClick.AddListener(PinClicked);
+            _userInputController = userInputController;
             _bezierView = bezierView;
         }
 
         public void MarkAsAvailable()
         {
             _status = Status.Available;
+            _userInputController.LeftMouseButtonClickedOnUI += PinClicked;
             _chronotopMapPinView.MarkAsAvailable();
         }
 
         public void MarkAsReady()
         {
             _status = Status.Ready;
+            _userInputController.LeftMouseButtonClickedOnUI -= PinClicked;
             _chronotopMapPinView.MarkAsReady();
         }
 
@@ -68,11 +70,16 @@ namespace SDRGames.Whist.ChronotopMapModule.Controllers
 
         private void OnDisable()
         {
-            _button.onClick.RemoveAllListeners();
+            _userInputController.LeftMouseButtonClickedOnUI -= PinClicked;
         }
 
-        private void PinClicked()
+        private void PinClicked(object sender, LeftMouseButtonUIClickEventArgs e)
         {
+            if(e.GameObject != gameObject)
+            {
+                return;
+            }
+
             switch (_status)
             {
                 case Status.Available:

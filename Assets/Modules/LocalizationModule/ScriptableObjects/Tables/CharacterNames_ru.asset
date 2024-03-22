@@ -26,6 +26,15 @@ MonoBehaviour:
     m_Localized: "\u0422\u0435\u043E\u0444\u0440\u0430\u0441\u0442"
     m_Metadata:
       m_Items: []
+  - m_Id: 5643169906712576
+    m_Localized: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+      eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
+      veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+      consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
+      dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident,
+      sunt in culpa qui officia deserunt mollit anim id est laborum.
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

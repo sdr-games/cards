@@ -17,7 +17,6 @@ namespace SDRGames.Whist.ChronotopMapModule.Views
         public void Initialize(Button button)
         {
             _button = button;
-            MarkAsAvailable();
         }
 
         public void MarkAsAvailable()

@@ -1,4 +1,3 @@
-using SDRGames.Whist.DialogueSystem.Views;
 using SDRGames.Whist.BezierModule.Views;
 using SDRGames.Whist.ChronotopMapModule.Controllers;
 using SDRGames.Whist.ChronotopMapModule.Models;
@@ -8,7 +7,9 @@ using UnityEditor;
 
 using UnityEngine;
 using UnityEngine.UI;
-using SDRGames.Whist.DialogueSystem.Managers;
+using System;
+using SDRGames.Whist.UserInputModule.Controller;
+using SDRGames.Whist.ChronotopMapModule.Presenters;
 
 namespace SDRGames.Whist.ChronotopMapModule.Managers
 {
@@ -21,14 +22,26 @@ namespace SDRGames.Whist.ChronotopMapModule.Managers
 
         [SerializeField] private BezierView _bezierView;
 
-        [SerializeField] private DialogueLinearManager dialogue;
+        private ChronotopMapPinModalPresenter _modalPresenter;
         
         [field: SerializeField] public ChronotopMapPinController ChronotopMapPinController { get; private set; }
 
-        public void Initialize()
+        public event EventHandler<AvailablePinClickedEventArgs> AvailablePinClicked;
+        public event EventHandler ReadyPinClicked;
+
+        public void Initialize(UserInputController userInputController)
         {
             _chronotopMapPinView.Initialize(_button);
-            ChronotopMapPinController.Initialize(_chronotopMapPinView, _button, _bezierView);
+            ChronotopMapPinController.Initialize(_chronotopMapPinView, userInputController, _bezierView);
+            ChronotopMapPinController.AvailablePinClicked += OnAvailablePinClick;
+
+            _modalPresenter = new ChronotopMapPinModalPresenter(_chronotopMapFightPinModel.EnemyCharacterParams);
+            _modalPresenter.FightButtonClicked += OnFightButtonClick;
+        }
+
+        private void OnFightButtonClick(object sender, EventArgs e)
+        {
+            //start battle
         }
 
         private void OnEnable()
@@ -56,6 +69,17 @@ namespace SDRGames.Whist.ChronotopMapModule.Managers
                     EditorApplication.isPlaying = false;
                 #endif
             }
+        }
+
+        private void OnDisable()
+        {
+            ChronotopMapPinController.AvailablePinClicked -= OnAvailablePinClick;
+            _modalPresenter.FightButtonClicked -= OnFightButtonClick;
+        }
+
+        private void OnAvailablePinClick(object sender, AvailablePinClickedEventArgs e)
+        {
+            AvailablePinClicked?.Invoke(this, new AvailablePinClickedEventArgs(e.BezierView, _chronotopMapFightPinModel.DialogueContainerScriptableObject));
         }
     }
 }

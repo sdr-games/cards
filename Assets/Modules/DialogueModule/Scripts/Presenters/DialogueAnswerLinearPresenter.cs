@@ -1,11 +1,13 @@
 using System;
 
+using SDRGames.Whist.CharacterModule.ScriptableObjects;
 using SDRGames.Whist.DialogueSystem.ScriptableObjects;
 using SDRGames.Whist.DialogueSystem.Views;
 using SDRGames.Whist.UserInputModule.Controller;
 
 namespace SDRGames.Whist.DialogueSystem.Presenters
 {
+    [Serializable]
     public class DialogueAnswerLinearPresenter : IDisposable
     {
         public DialogueAnswerScriptableObject Dialogue { get; private set; }
@@ -16,7 +18,7 @@ namespace SDRGames.Whist.DialogueSystem.Presenters
         public DialogueAnswerLinearPresenter(DialogueAnswerScriptableObject dialogue, DialogueLinearView linearView, UserInputController userInputController)
         {
             Dialogue = dialogue;
-            DialogueCharacterScriptableObject character = Dialogue.Character;
+            CharacterInfoScriptableObject character = Dialogue.Character;
 
             _linearView = linearView;
             _linearView.Initialize(character.CharacterPortrait, character.CharacterNameLocalization.GetLocalizedString(), Dialogue.TextLocalization.GetLocalizedText(), userInputController);
@@ -25,6 +27,7 @@ namespace SDRGames.Whist.DialogueSystem.Presenters
 
         public void Dispose()
         {
+            _linearView.Destroyed -= OnViewDestroyed;
             Disposed?.Invoke(this, EventArgs.Empty);
             GC.SuppressFinalize(this);
         }

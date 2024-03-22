@@ -1,6 +1,7 @@
 using System;
 
-using SDRGames.Whist.CharacterModule.Models;
+using SDRGames.Whist.CharacterModule.ScriptableObjects;
+using SDRGames.Whist.DialogueSystem.ScriptableObjects;
 
 using UnityEngine;
 
@@ -11,7 +12,7 @@ namespace SDRGames.Whist.ChronotopMapModule.Models
     {
         [field: SerializeField] public string PrefightText { get; private set; }
         [field: SerializeField] public CommonCharacterParamsModel EnemyCharacterParams { get; private set; }
-
+        [field: SerializeField] public DialogueContainerScriptableObject DialogueContainerScriptableObject { get; private set; }
         //TODO: add dialogue
         //TODO: add loot and rewards
     }

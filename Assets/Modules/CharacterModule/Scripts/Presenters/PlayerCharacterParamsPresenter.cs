@@ -1,9 +1,7 @@
 using SDRGames.Whist.DiceModule.Presenters;
 using SDRGames.Whist.PointsModule.Presenters;
-using SDRGames.Whist.CharacterModule.Models;
+using SDRGames.Whist.CharacterModule.ScriptableObjects;
 using SDRGames.Whist.CharacterModule.Views;
-
-using UnityEngine;
 
 namespace SDRGames.Whist.CharacterModule.Presenters
 {
@@ -18,7 +16,7 @@ namespace SDRGames.Whist.CharacterModule.Presenters
             _playerCharacterParamsView = playerCharacterParamsView;
 
             _playerCharacterParamsView.Initialize(
-                _playerCharacterParams.CharacterName, 
+                _playerCharacterParams.CharacterInfo.CharacterNameLocalization.GetLocalizedString(), 
                 _playerCharacterParams.Level.ToString(), 
                 _playerCharacterParams.Experience.ToString(),
                 _playerCharacterParams.Glory.ToString(),
@@ -38,7 +36,6 @@ namespace SDRGames.Whist.CharacterModule.Presenters
 
         ~PlayerCharacterParamsPresenter()
         {
-            Debug.Log("Destructor called");
             _playerCharacterParams.LevelChanged -= OnLevelChanged;
             _playerCharacterParams.MagicDamageMultiplierChanged -= OnMagicDamageMultiplierChanged;
         }

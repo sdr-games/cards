@@ -3,12 +3,14 @@ using System;
 using SDRGames.Whist.DiceModule.Models;
 using SDRGames.Whist.PointsModule.Models;
 
-namespace SDRGames.Whist.CharacterModule.Models
+using UnityEngine;
+
+namespace SDRGames.Whist.CharacterModule.ScriptableObjects
 {
     [Serializable]
+    [CreateAssetMenu(fileName = "PlayerParameters", menuName = "SDRGames/Dialogues/Player Parameters")]
     public class PlayerCharacterParamsModel : CommonCharacterParamsModel
     {
-        private readonly string CHARACTER_NAME = "Валиор";
         private const int DEFAULT_BASE_LEVEL = 1;
 
         public int Experience { get; private set; }
@@ -19,9 +21,8 @@ namespace SDRGames.Whist.CharacterModule.Models
         public event EventHandler<GloryChangedEventArgs> GloryChanged;
         public event EventHandler<MagicDamageMultiplierChangedEventArgs> MagicDamageMultiplierChanged;
 
-        public PlayerCharacterParamsModel(string characterName, int level, Points healthPoints, Points staminaPoints, Points breathPoints, Points physicalArmor, Points magicShield, Dice physicalDamage, float magicDamageMultiplier, int experience, int glory) : base(characterName, level, healthPoints, staminaPoints, breathPoints, physicalArmor, magicShield, physicalDamage, magicDamageMultiplier)
+        public PlayerCharacterParamsModel(CharacterInfoScriptableObject characterInfo, int level, Points healthPoints, Points staminaPoints, Points breathPoints, Points physicalArmor, Points magicShield, Dice physicalDamage, float magicDamageMultiplier, int experience, int glory) : base(characterInfo, level, healthPoints, staminaPoints, breathPoints, physicalArmor, magicShield, physicalDamage, magicDamageMultiplier)
         {
-            CharacterName = CHARACTER_NAME;
             Level = DEFAULT_BASE_LEVEL;
             Experience = experience;
             Glory = glory;
