@@ -1,4 +1,4 @@
-﻿namespace SDRGames.Whist.CharacterModule.Models
+﻿namespace SDRGames.Whist.CharacterModule.ScriptableObjects
 {
     public class LevelChangedEventArgs
     {

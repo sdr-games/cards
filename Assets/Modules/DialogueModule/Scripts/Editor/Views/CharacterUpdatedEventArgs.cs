@@ -1,14 +1,14 @@
 ﻿using System;
 
-using SDRGames.Whist.DialogueSystem.ScriptableObjects;
+using SDRGames.Whist.CharacterModule.ScriptableObjects;
 
 namespace SDRGames.Whist.DialogueSystem.Editor.Views
 {
     public class CharacterUpdatedEventArgs : EventArgs
     {
-        public DialogueCharacterScriptableObject Character { get; private set; }
+        public CharacterInfoScriptableObject Character { get; private set; }
 
-        public CharacterUpdatedEventArgs(DialogueCharacterScriptableObject character)
+        public CharacterUpdatedEventArgs(CharacterInfoScriptableObject character)
         {
             Character = character;
         }

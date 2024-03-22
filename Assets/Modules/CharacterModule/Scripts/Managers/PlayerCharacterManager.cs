@@ -1,4 +1,4 @@
-using SDRGames.Whist.CharacterModule.Models;
+using SDRGames.Whist.CharacterModule.ScriptableObjects;
 using SDRGames.Whist.CharacterModule.Presenters;
 using SDRGames.Whist.CharacterModule.Views;
 

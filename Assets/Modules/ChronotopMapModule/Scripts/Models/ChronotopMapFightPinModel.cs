@@ -1,6 +1,6 @@
 using System;
 
-using SDRGames.Whist.CharacterModule.Models;
+using SDRGames.Whist.CharacterModule.ScriptableObjects;
 using SDRGames.Whist.DialogueSystem.ScriptableObjects;
 
 using UnityEngine;

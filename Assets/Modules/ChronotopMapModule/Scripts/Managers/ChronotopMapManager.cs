@@ -67,6 +67,7 @@ namespace SDRGames.Whist.ChronotopMapModule.Managers
             {
                 pinManager.AvailablePinClicked -= OnAvailablePinClick;
             }
+            _dialogueManager.CharacterVisible -= OnDialogueCharacterVisible;
         }
 
         private void OnAvailablePinClick(object sender, AvailablePinClickedEventArgs e)
