@@ -2,17 +2,17 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-using SDRGames.Whist.DialogueSystem.Helpers;
-using SDRGames.Whist.DialogueSystem.ScriptableObjects;
+using SDRGames.Whist.DialogueModule.Helpers;
+using SDRGames.Whist.DialogueModule.ScriptableObjects;
 
 using UnityEditor.Experimental.GraphView;
 
 using UnityEngine;
 using UnityEngine.UIElements;
 
-using static SDRGames.Whist.DialogueSystem.Editor.Managers.GraphManager;
+using static SDRGames.Whist.DialogueModule.Editor.Managers.GraphManager;
 
-namespace SDRGames.Whist.DialogueSystem.Editor.Views
+namespace SDRGames.Whist.DialogueModule.Editor.Views
 {
     [Serializable]
     public class BaseNodeView : Node

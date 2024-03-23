@@ -4,17 +4,17 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-using SDRGames.Whist.DialogueSystem.Editor.Managers;
-using SDRGames.Whist.DialogueSystem.Editor.Presenters;
-using SDRGames.Whist.DialogueSystem.Editor.Views;
-using SDRGames.Whist.DialogueSystem.ScriptableObjects;
+using SDRGames.Whist.DialogueModule.Editor.Managers;
+using SDRGames.Whist.DialogueModule.Editor.Presenters;
+using SDRGames.Whist.DialogueModule.Editor.Views;
+using SDRGames.Whist.DialogueModule.ScriptableObjects;
 
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 
 using UnityEngine;
 
-namespace SDRGames.Whist.DialogueSystem.Editor
+namespace SDRGames.Whist.DialogueModule.Editor
 {
     public static class UtilityIO
     {

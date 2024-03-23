@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace SDRGames.Whist.DialogueSystem.Helpers
+namespace SDRGames.Whist.DialogueModule.Helpers
 {
     public static class CollectionUtility
     {

@@ -7,8 +7,9 @@ namespace SDRGames.Whist.ChronotopMapModule.Views
 {
     public class ChronotopMapPinView : MonoBehaviour
     {
-        private readonly Color DONE_COLOR = new Color(0, 0.8f, 0);
-        private readonly Color ACTIVE_COLOR = new Color(0.8f, 0.4f, 0.1f);
+        private readonly Color32 DONE_COLOR = new Color32(78, 180, 65, 255);
+        private readonly Color32 READY_COLOR = new Color32(204, 102, 24, 255);
+        private readonly Color32 ACTIVE_COLOR = new Color32(180, 180, 65, 255);
 
         private Button _button;
         
@@ -27,7 +28,7 @@ namespace SDRGames.Whist.ChronotopMapModule.Views
 
         public void MarkAsReady()
         {
-            _image.color = ACTIVE_COLOR;
+            _image.color = READY_COLOR;
             _button.interactable = true;
         }
 

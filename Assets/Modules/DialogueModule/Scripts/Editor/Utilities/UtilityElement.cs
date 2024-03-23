@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-using SDRGames.Whist.DialogueSystem.Editor.Views;
-using SDRGames.Whist.DialogueSystem.Models;
+using SDRGames.Whist.DialogueModule.Editor.Views;
+using SDRGames.Whist.LocalizationModule.Models;
 
 using UnityEditor.Experimental.GraphView;
 using UnityEditor.Localization;
@@ -13,7 +13,7 @@ using UnityEngine.Localization.Settings;
 using UnityEngine.Localization.Tables;
 using UnityEngine.UIElements;
 
-namespace SDRGames.Whist.DialogueSystem.Editor
+namespace SDRGames.Whist.DialogueModule.Editor
 {
     public static class UtilityElement
     {

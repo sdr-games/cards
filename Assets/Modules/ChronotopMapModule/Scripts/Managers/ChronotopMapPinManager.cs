@@ -22,21 +22,60 @@ namespace SDRGames.Whist.ChronotopMapModule.Managers
 
         [SerializeField] private BezierView _bezierView;
 
+        [SerializeField] private bool _autofinish = false;
+
         private ChronotopMapPinModalPresenter _modalPresenter;
         
         [field: SerializeField] public ChronotopMapPinController ChronotopMapPinController { get; private set; }
 
         public event EventHandler<AvailablePinClickedEventArgs> AvailablePinClicked;
         public event EventHandler ReadyPinClicked;
+        public event EventHandler DonePinClicked;
 
-        public void Initialize(UserInputController userInputController)
+        public void Initialize(UserInputController userInputController, ChronotopMapPinModalView modalView)
         {
             _chronotopMapPinView.Initialize(_button);
-            ChronotopMapPinController.Initialize(_chronotopMapPinView, userInputController, _bezierView);
-            ChronotopMapPinController.AvailablePinClicked += OnAvailablePinClick;
+            ChronotopMapPinController.Initialize(_chronotopMapPinView, userInputController, _bezierView);            
+        }
 
-            _modalPresenter = new ChronotopMapPinModalPresenter(_chronotopMapFightPinModel.EnemyCharacterParams);
-            _modalPresenter.FightButtonClicked += OnFightButtonClick;
+        public void MarkAsAvailable()
+        {
+            ChronotopMapPinController.MarkAsAvailable();
+            ChronotopMapPinController.AvailablePinClicked += OnAvailablePinClick;
+            _chronotopMapPinView.MarkAsAvailable();
+        }
+
+        public void MarkAsReady(UserInputController userInputController, ChronotopMapPinModalView modalView)
+        {
+            ChronotopMapPinController.MarkAsReady();
+            ChronotopMapPinController.AvailablePinClicked -= OnAvailablePinClick;
+            ChronotopMapPinController.ReadyPinClicked += OnReadyPinClick;
+
+            _chronotopMapPinView.MarkAsReady();
+
+            _modalPresenter = new ChronotopMapPinModalPresenter(_chronotopMapFightPinModel.EnemyCharacterParams, modalView, userInputController);
+        }
+
+        public void MarkAsDone()
+        {
+            _modalPresenter.FightButtonClicked -= OnFightButtonClick;
+            if (_autofinish)
+            {
+                MarkAsFinished();
+                return;
+            }
+
+            ChronotopMapPinController.MarkAsDone();
+            ChronotopMapPinController.ReadyPinClicked -= OnReadyPinClick;
+            ChronotopMapPinController.DonePinClicked += OnDonePinClick;
+            _chronotopMapPinView.MarkAsDone();
+        }
+
+        public void MarkAsFinished()
+        {
+            ChronotopMapPinController.MarkAsFinished();
+            ChronotopMapPinController.DonePinClicked -= OnDonePinClick;
+            _chronotopMapPinView.MarkAsFinished();
         }
 
         private void OnFightButtonClick(object sender, EventArgs e)
@@ -74,12 +113,27 @@ namespace SDRGames.Whist.ChronotopMapModule.Managers
         private void OnDisable()
         {
             ChronotopMapPinController.AvailablePinClicked -= OnAvailablePinClick;
-            _modalPresenter.FightButtonClicked -= OnFightButtonClick;
+            if (_modalPresenter != null)
+            {
+                _modalPresenter.FightButtonClicked -= OnFightButtonClick;
+            }
         }
 
         private void OnAvailablePinClick(object sender, AvailablePinClickedEventArgs e)
         {
             AvailablePinClicked?.Invoke(this, new AvailablePinClickedEventArgs(e.BezierView, _chronotopMapFightPinModel.DialogueContainerScriptableObject));
+        }
+
+        private void OnReadyPinClick(object sender, EventArgs e)
+        {
+            _modalPresenter.ShowView();
+            _modalPresenter.FightButtonClicked += OnFightButtonClick;
+            ReadyPinClicked?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void OnDonePinClick(object sender, EventArgs e)
+        {
+            DonePinClicked?.Invoke(this, EventArgs.Empty);
         }
     }
 }

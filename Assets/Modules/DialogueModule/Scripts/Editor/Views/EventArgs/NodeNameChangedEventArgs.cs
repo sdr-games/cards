@@ -1,4 +1,4 @@
-﻿namespace SDRGames.Whist.DialogueSystem.Editor.Views
+﻿namespace SDRGames.Whist.DialogueModule.Editor.Views
 {
     public class NodeNameChangedEventArgs
     {

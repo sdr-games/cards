@@ -8,7 +8,7 @@ using UnityEngine;
 namespace SDRGames.Whist.CharacterModule.ScriptableObjects
 {
     [Serializable]
-    [CreateAssetMenu(fileName = "CharacterParameters", menuName = "SDRGames/Dialogues/Character Parameters")]
+    [CreateAssetMenu(fileName = "CharacterParameters", menuName = "SDRGames/Characters/Character Parameters")]
     public class CommonCharacterParamsModel : ScriptableObject
     {
         [field: SerializeField] public CharacterInfoScriptableObject CharacterInfo { get; protected set; }

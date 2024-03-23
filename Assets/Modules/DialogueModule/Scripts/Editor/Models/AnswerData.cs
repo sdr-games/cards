@@ -1,12 +1,12 @@
 using System;
 
 using SDRGames.Whist.CharacterModule.ScriptableObjects;
-using SDRGames.Whist.DialogueSystem.Models;
-using SDRGames.Whist.DialogueSystem.ScriptableObjects;
+using SDRGames.Whist.DialogueModule.ScriptableObjects;
+using SDRGames.Whist.LocalizationModule.Models;
 
 using UnityEngine;
 
-namespace SDRGames.Whist.DialogueSystem.Editor.Models
+namespace SDRGames.Whist.DialogueModule.Editor.Models
 {
     [Serializable]
     public class AnswerData : BaseData

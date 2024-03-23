@@ -1,16 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 
-using SDRGames.Whist.DialogueSystem.Editor.Managers;
-using SDRGames.Whist.DialogueSystem.Editor.Presenters;
+using SDRGames.Whist.DialogueModule.Editor.Managers;
+using SDRGames.Whist.DialogueModule.Editor.Presenters;
 
 using UnityEditor.Experimental.GraphView;
 
 using UnityEngine;
 
-using static SDRGames.Whist.DialogueSystem.Editor.Managers.GraphManager;
+using static SDRGames.Whist.DialogueModule.Editor.Managers.GraphManager;
 
-namespace SDRGames.Whist.DialogueSystem.Editor
+namespace SDRGames.Whist.DialogueModule.Editor
 {
     public class NodesSearchWindow : ScriptableObject, ISearchWindowProvider
     {

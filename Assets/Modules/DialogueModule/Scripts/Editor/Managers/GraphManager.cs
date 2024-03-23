@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-using SDRGames.Whist.DialogueSystem.Editor.Models;
-using SDRGames.Whist.DialogueSystem.Editor.Presenters;
-using SDRGames.Whist.DialogueSystem.Editor.Views;
-using SDRGames.Whist.DialogueSystem.Helpers;
+using SDRGames.Whist.DialogueModule.Editor.Models;
+using SDRGames.Whist.DialogueModule.Editor.Presenters;
+using SDRGames.Whist.DialogueModule.Editor.Views;
+using SDRGames.Whist.DialogueModule.Helpers;
 
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
@@ -13,7 +13,7 @@ using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace SDRGames.Whist.DialogueSystem.Editor.Managers
+namespace SDRGames.Whist.DialogueModule.Editor.Managers
 {
     public class GraphManager : GraphView
     {

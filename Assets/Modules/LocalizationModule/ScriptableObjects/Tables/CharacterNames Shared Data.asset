@@ -27,6 +27,10 @@ MonoBehaviour:
     m_Key: Test
     m_Metadata:
       m_Items: []
+  - m_Id: 6741295845498880
+    m_Key: Slime
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

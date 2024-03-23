@@ -2,7 +2,7 @@ using UnityEditor;
 
 using UnityEngine.UIElements;
 
-namespace SDRGames.Whist.DialogueSystem.Editor
+namespace SDRGames.Whist.DialogueModule.Editor
 {
     public static class UtilityStyle
     {

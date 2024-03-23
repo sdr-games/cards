@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace SDRGames.Whist.DialogueSystem.ScriptableObjects
+namespace SDRGames.Whist.DialogueModule.ScriptableObjects
 {
     public class DialogueStartScriptableObject : DialogueScriptableObject
     {

@@ -1,12 +1,10 @@
 using System;
-using System.Linq;
 
 using SDRGames.Whist.BezierModule.Views;
 using SDRGames.Whist.ChronotopMapModule.Views;
 using SDRGames.Whist.UserInputModule.Controller;
 
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace SDRGames.Whist.ChronotopMapModule.Controllers
 {
@@ -15,8 +13,6 @@ namespace SDRGames.Whist.ChronotopMapModule.Controllers
         private UserInputController _userInputController; 
         private ChronotopMapPinView _chronotopMapPinView;
         private BezierView _bezierView;
-
-        [SerializeField] private bool _autofinish = false;
 
         // Available - player pin can be moved to pin position
         // Ready - player pin is on pin position and click will show fight tooltip
@@ -40,32 +36,22 @@ namespace SDRGames.Whist.ChronotopMapModule.Controllers
         {
             _status = Status.Available;
             _userInputController.LeftMouseButtonClickedOnUI += PinClicked;
-            _chronotopMapPinView.MarkAsAvailable();
         }
 
         public void MarkAsReady()
         {
             _status = Status.Ready;
-            _userInputController.LeftMouseButtonClickedOnUI -= PinClicked;
-            _chronotopMapPinView.MarkAsReady();
         }
 
         public void MarkAsDone()
         {
-            if (_autofinish)
-            {
-                MarkAsFinished();
-                return;
-            }
-
             _status = Status.Done;
-            _chronotopMapPinView.MarkAsDone();
         }
 
         public void MarkAsFinished()
         {
+            _userInputController.LeftMouseButtonClickedOnUI -= PinClicked;
             _status = Status.Finished;
-            _chronotopMapPinView.MarkAsFinished();
         }
 
         private void OnDisable()

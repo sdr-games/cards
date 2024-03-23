@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-using SDRGames.Whist.DialogueSystem.Editor.Managers;
+using SDRGames.Whist.DialogueModule.Editor.Managers;
 
 using UnityEditor.Experimental.GraphView;
 using UnityEditor.Localization.Plugins.XLIFF.V12;
@@ -9,7 +9,7 @@ using UnityEditor.Localization.Plugins.XLIFF.V12;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace SDRGames.Whist.DialogueSystem.Editor.Views
+namespace SDRGames.Whist.DialogueModule.Editor.Views
 {
     public class PortView : Port
     {

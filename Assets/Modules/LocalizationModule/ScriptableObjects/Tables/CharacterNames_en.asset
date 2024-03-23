@@ -35,6 +35,10 @@ MonoBehaviour:
       sunt in culpa qui officia deserunt mollit anim id est laborum.
     m_Metadata:
       m_Items: []
+  - m_Id: 6741295845498880
+    m_Localized: Slime
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []
