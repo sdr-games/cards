@@ -8,7 +8,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace SDRGames.Whist.DialogueSystem.Views
+namespace SDRGames.Whist.DialogueModule.Views
 {
     public class DialogueLinearView : MonoBehaviour
     {
@@ -27,7 +27,7 @@ namespace SDRGames.Whist.DialogueSystem.Views
         private int _currentCharacterPosition;
         private bool _textVisible;
 
-        public event EventHandler<CharacterVisibleEventArgs> CharacterVisible;
+        public event EventHandler<CharacterVisibleAddedEventArgs> CharacterVisible;
         public event EventHandler Destroyed;
 
         public void Initialize(Sprite characterPortrairSprite, string characterName, string speechText, UserInputController userInputController)
@@ -52,7 +52,7 @@ namespace SDRGames.Whist.DialogueSystem.Views
                 _text.overrideColorTags = true;
                 _text.color = DEFAULT_COLOR;
                 _textVisible = true;
-                CharacterVisible?.Invoke(this, new CharacterVisibleEventArgs(_text.textInfo.characterCount - _currentCharacterPosition));
+                CharacterVisible?.Invoke(this, new CharacterVisibleAddedEventArgs(_text.textInfo.characterCount - _currentCharacterPosition));
                 return;
             }
 
@@ -115,7 +115,7 @@ namespace SDRGames.Whist.DialogueSystem.Views
                 // Upload the changed vertex colors to the Mesh.
                 _text.UpdateVertexData(TMP_VertexDataUpdateFlags.Colors32);
                 _currentCharacterPosition++;
-                CharacterVisible?.Invoke(this, new CharacterVisibleEventArgs());
+                CharacterVisible?.Invoke(this, new CharacterVisibleAddedEventArgs());
                 isRangeMax = _currentCharacterPosition == characterCount;
                 yield return new WaitForSeconds(0.25f - FadeSpeed * 0.01f);
             }

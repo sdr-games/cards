@@ -1,10 +1,9 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 
 using SDRGames.Whist.BezierModule.Views;
 using SDRGames.Whist.ChronotopMapModule.Controllers;
-using SDRGames.Whist.DialogueSystem.Managers;
+using SDRGames.Whist.ChronotopMapModule.Views;
+using SDRGames.Whist.DialogueModule.Managers;
 using SDRGames.Whist.UserInputModule.Controller;
 
 using UnityEditor;
@@ -19,6 +18,7 @@ namespace SDRGames.Whist.ChronotopMapModule.Managers
         [SerializeField] private ChronotopMapPinManager[] _chronotopMapPinManagers;
         [SerializeField] private DialogueLinearManager _dialogueManager;
         [SerializeField] private UserInputController _userInputController;
+        [SerializeField] private ChronotopMapPinModalView _modalView;
         [SerializeField] private Image _playerPin;
         [SerializeField] private float _playerPinMoveSpeed = 1.0f;
 
@@ -43,6 +43,22 @@ namespace SDRGames.Whist.ChronotopMapModule.Managers
                 #endif
             }
 
+            if (_userInputController == null)
+            {
+                Debug.LogError("User Input Controller не был назначен");
+                #if UNITY_EDITOR
+                    EditorApplication.isPlaying = false;
+                #endif
+            }
+
+            if (_modalView == null)
+            {
+                Debug.LogError("Modal View не был назначен");
+                #if UNITY_EDITOR
+                    EditorApplication.isPlaying = false;
+                #endif
+            }
+
             if (_playerPin == null)
             {
                 Debug.LogError("Player Pin не был назначен");
@@ -53,11 +69,11 @@ namespace SDRGames.Whist.ChronotopMapModule.Managers
 
             foreach (var pinManager in _chronotopMapPinManagers)
             {
-                pinManager.Initialize(_userInputController);
+                pinManager.Initialize(_userInputController, _modalView);
             }
 
             _currentPinIndex = 0;
-            _chronotopMapPinManagers[_currentPinIndex].ChronotopMapPinController.MarkAsAvailable();
+            _chronotopMapPinManagers[_currentPinIndex].MarkAsAvailable();
             _chronotopMapPinManagers[_currentPinIndex].AvailablePinClicked += OnAvailablePinClick;
         }
 
@@ -67,7 +83,7 @@ namespace SDRGames.Whist.ChronotopMapModule.Managers
             {
                 pinManager.AvailablePinClicked -= OnAvailablePinClick;
             }
-            _dialogueManager.CharacterVisible -= OnDialogueCharacterVisible;
+            _dialogueManager.CharacterVisibleSynced -= OnDialogueCharacterVisible;
         }
 
         private void OnAvailablePinClick(object sender, AvailablePinClickedEventArgs e)
@@ -75,7 +91,7 @@ namespace SDRGames.Whist.ChronotopMapModule.Managers
             if (e.DialogueContainerScriptableObject != null)
             {
                 _dialogueManager.Initialize(e.DialogueContainerScriptableObject, _userInputController);
-                _dialogueManager.CharacterVisible += OnDialogueCharacterVisible;
+                _dialogueManager.CharacterVisibleSynced += OnDialogueCharacterVisible;
                 _currentBezierView = e.BezierView;
             }
             else
@@ -85,13 +101,13 @@ namespace SDRGames.Whist.ChronotopMapModule.Managers
             ((ChronotopMapPinManager)sender).AvailablePinClicked -= OnAvailablePinClick;
         }
 
-        private void OnDialogueCharacterVisible(object sender, CharacterVisibleEventArgs e)
+        private void OnDialogueCharacterVisible(object sender, CharacterVisibleSyncedEventArgs e)
         {
             if (e.CurrentTime > 0.99f)
             {
                 _playerPin.transform.position = _currentBezierView.GetControlPointsPosition(1);
-                _dialogueManager.CharacterVisible -= OnDialogueCharacterVisible;
-                _chronotopMapPinManagers[_currentPinIndex].ChronotopMapPinController.MarkAsReady();
+                _dialogueManager.CharacterVisibleSynced -= OnDialogueCharacterVisible;
+                _chronotopMapPinManagers[_currentPinIndex].MarkAsReady(_userInputController, _modalView);
                 return;
             }
             _playerPin.transform.position = _currentBezierView.GetControlPointsPosition(e.CurrentTime);
@@ -113,13 +129,13 @@ namespace SDRGames.Whist.ChronotopMapModule.Managers
 
         private void ChangeCurrentPin()
         {
-            _chronotopMapPinManagers[_currentPinIndex].ChronotopMapPinController.MarkAsDone();
+            _chronotopMapPinManagers[_currentPinIndex].MarkAsDone();
             _currentPinIndex++;
             if(_currentPinIndex >= _chronotopMapPinManagers.Length)
             {
                 return;
             } 
-            _chronotopMapPinManagers[_currentPinIndex].ChronotopMapPinController.MarkAsAvailable();
+            _chronotopMapPinManagers[_currentPinIndex].MarkAsAvailable();
             _chronotopMapPinManagers[_currentPinIndex].AvailablePinClicked += OnAvailablePinClick;
         }
     }

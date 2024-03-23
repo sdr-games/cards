@@ -1,8 +1,8 @@
 using System;
 
 using SDRGames.Whist.CharacterModule.ScriptableObjects;
-using SDRGames.Whist.DialogueSystem.Models;
-using SDRGames.Whist.DialogueSystem.ScriptableObjects;
+using SDRGames.Whist.LocalizationModule.Models;
+using SDRGames.Whist.DialogueModule.ScriptableObjects;
 
 using UnityEditor.Experimental.GraphView;
 using UnityEditor.UIElements;
@@ -10,7 +10,7 @@ using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace SDRGames.Whist.DialogueSystem.Editor.Views
+namespace SDRGames.Whist.DialogueModule.Editor.Views
 {
     public class SpeechNodeView : BaseNodeView
     {

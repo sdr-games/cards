@@ -1,14 +1,14 @@
 using System.IO;
 
-using SDRGames.Whist.DialogueSystem.Editor.Managers;
-using SDRGames.Whist.DialogueSystem.Editor.Presenters;
-using SDRGames.Whist.DialogueSystem.Helpers;
+using SDRGames.Whist.DialogueModule.Editor.Managers;
+using SDRGames.Whist.DialogueModule.Editor.Presenters;
+using SDRGames.Whist.DialogueModule.Helpers;
 
 using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine.UIElements;
 
-namespace SDRGames.Whist.DialogueSystem.Editor
+namespace SDRGames.Whist.DialogueModule.Editor
 {
     public class DialogueEditorWindow : EditorWindow
     {

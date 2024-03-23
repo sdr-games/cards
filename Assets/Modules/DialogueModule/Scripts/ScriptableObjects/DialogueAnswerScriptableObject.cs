@@ -1,10 +1,11 @@
 using SDRGames.Whist.CharacterModule.ScriptableObjects;
-using SDRGames.Whist.DialogueSystem.Models;
+using SDRGames.Whist.LocalizationModule.Models;
+
 using UnityEngine;
 
-using static SDRGames.Whist.DialogueSystem.Editor.Managers.GraphManager;
+using static SDRGames.Whist.DialogueModule.Editor.Managers.GraphManager;
 
-namespace SDRGames.Whist.DialogueSystem.ScriptableObjects
+namespace SDRGames.Whist.DialogueModule.ScriptableObjects
 {
     public class DialogueAnswerScriptableObject : DialogueScriptableObject
     {

@@ -1,7 +1,7 @@
 using System;
 
 using SDRGames.Whist.CharacterModule.ScriptableObjects;
-using SDRGames.Whist.DialogueSystem.ScriptableObjects;
+using SDRGames.Whist.DialogueModule.ScriptableObjects;
 
 using UnityEngine;
 

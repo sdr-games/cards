@@ -1,13 +1,13 @@
 using System;
 
-using SDRGames.Whist.DialogueSystem.Editor.Models;
-using SDRGames.Whist.DialogueSystem.Editor.Views;
-using SDRGames.Whist.DialogueSystem.Models;
-using SDRGames.Whist.DialogueSystem.ScriptableObjects;
+using SDRGames.Whist.DialogueModule.Editor.Models;
+using SDRGames.Whist.DialogueModule.Editor.Views;
+using SDRGames.Whist.LocalizationModule.Models;
+using SDRGames.Whist.DialogueModule.ScriptableObjects;
 
 using UnityEngine;
 
-namespace SDRGames.Whist.DialogueSystem.Editor.Presenters
+namespace SDRGames.Whist.DialogueModule.Editor.Presenters
 {
     public class SpeechNodePresenter : BaseNodePresenter
     {

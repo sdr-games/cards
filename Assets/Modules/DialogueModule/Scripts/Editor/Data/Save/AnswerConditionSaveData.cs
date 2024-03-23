@@ -2,7 +2,7 @@ using System;
 
 using UnityEngine;
 
-namespace SDRGames.Whist.DialogueSystem.Editor
+namespace SDRGames.Whist.DialogueModule.Editor
 {
     [Serializable]
     public class AnswerConditionSaveData

@@ -1,11 +1,11 @@
 using System;
 
 using SDRGames.Whist.CharacterModule.ScriptableObjects;
-using SDRGames.Whist.DialogueSystem.ScriptableObjects;
-using SDRGames.Whist.DialogueSystem.Views;
+using SDRGames.Whist.DialogueModule.ScriptableObjects;
+using SDRGames.Whist.DialogueModule.Views;
 using SDRGames.Whist.UserInputModule.Controller;
 
-namespace SDRGames.Whist.DialogueSystem.Presenters
+namespace SDRGames.Whist.DialogueModule.Presenters
 {
     [Serializable]
     public class DialogueAnswerLinearPresenter : IDisposable

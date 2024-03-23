@@ -1,8 +1,8 @@
-using SDRGames.Whist.DialogueSystem.Editor.Views;
+using SDRGames.Whist.DialogueModule.Editor.Views;
 
 using UnityEngine;
 
-namespace SDRGames.Whist.DialogueSystem.Editor.Presenters
+namespace SDRGames.Whist.DialogueModule.Editor.Presenters
 {
     public abstract class BaseNodePresenter
     {

@@ -5,7 +5,7 @@ using System.Linq;
 using UnityEngine;
 
 
-namespace SDRGames.Whist.DialogueSystem.Helpers
+namespace SDRGames.Whist.DialogueModule.Helpers
 {
     public class SerializableDictionary
     {

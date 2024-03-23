@@ -3,7 +3,7 @@ using System;
 using UnityEngine;
 using UnityEngine.Localization;
 
-namespace SDRGames.Whist.DialogueSystem.Models
+namespace SDRGames.Whist.LocalizationModule.Models
 {
     [Serializable]
     public class LocalizationData

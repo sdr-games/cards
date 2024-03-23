@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 
-using SDRGames.Whist.DialogueSystem.Editor.Views;
+using SDRGames.Whist.DialogueModule.Editor.Views;
 
 using UnityEngine;
 
-namespace SDRGames.Whist.DialogueSystem.Editor
+namespace SDRGames.Whist.DialogueModule.Editor
 {
     [Serializable]
     public class GraphSaveDataScriptableObject : ScriptableObject

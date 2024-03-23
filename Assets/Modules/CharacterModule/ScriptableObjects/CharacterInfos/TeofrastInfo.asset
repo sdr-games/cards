@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9a33062fd4de85c42b79ad801a237c36, type: 3}
-  m_Name: Valior
+  m_Name: TeofrastInfo
   m_EditorClassIdentifier: 
   <CharacterPortrait>k__BackingField: {fileID: 0}
   <CharacterNameLocalization>k__BackingField:
     m_TableReference:
       m_TableCollectionName: GUID:179cb9af71b3dc749946d07fca3d67d4
     m_TableEntryReference:
-      m_KeyId: 549234827264
+      m_KeyId: 1308420111228928
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 0

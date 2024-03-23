@@ -1,13 +1,13 @@
 using System;
 
-using SDRGames.Whist.DialogueSystem.Presenters;
-using SDRGames.Whist.DialogueSystem.ScriptableObjects;
-using SDRGames.Whist.DialogueSystem.Views;
+using SDRGames.Whist.DialogueModule.Presenters;
+using SDRGames.Whist.DialogueModule.ScriptableObjects;
+using SDRGames.Whist.DialogueModule.Views;
 using SDRGames.Whist.UserInputModule.Controller;
 
 using UnityEngine;
 
-namespace SDRGames.Whist.DialogueSystem.Managers
+namespace SDRGames.Whist.DialogueModule.Managers
 {
     public class DialogueLinearManager : MonoBehaviour
     {
@@ -22,7 +22,7 @@ namespace SDRGames.Whist.DialogueSystem.Managers
         private int _dialoguesCharactersCount;
         private int _lastCharacterPosition;
 
-        public event EventHandler<CharacterVisibleEventArgs> CharacterVisible;
+        public event EventHandler<CharacterVisibleSyncedEventArgs> CharacterVisibleSynced;
 
         public void Initialize(DialogueContainerScriptableObject dialogueContainer, UserInputController userInputController)
         {
@@ -52,14 +52,14 @@ namespace SDRGames.Whist.DialogueSystem.Managers
             _speechLinearPresenter.Disposed += OnSpeechPresenterDisposed;
         }
 
-        private void OnCharacterVisible(object sender, Views.CharacterVisibleEventArgs e)
+        private void OnCharacterVisible(object sender, Views.CharacterVisibleAddedEventArgs e)
         {
             if(_dialoguesCharactersCount == 0)
             {
                 return;
             }
             _lastCharacterPosition += e.CharactersAdded;
-            CharacterVisible?.Invoke(this, new CharacterVisibleEventArgs((float)_lastCharacterPosition / (float)_dialoguesCharactersCount));
+            CharacterVisibleSynced?.Invoke(this, new CharacterVisibleSyncedEventArgs((float)_lastCharacterPosition / (float)_dialoguesCharactersCount));
         }
 
         private void CreateDialoguePresenter(DialogueAnswerScriptableObject dialogue)

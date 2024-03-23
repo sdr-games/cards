@@ -2,7 +2,7 @@
 
 using SDRGames.Whist.CharacterModule.ScriptableObjects;
 
-namespace SDRGames.Whist.DialogueSystem.Editor.Views
+namespace SDRGames.Whist.DialogueModule.Editor.Views
 {
     public class CharacterUpdatedEventArgs : EventArgs
     {

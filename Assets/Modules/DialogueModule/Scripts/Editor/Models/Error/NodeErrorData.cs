@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 
-using SDRGames.Whist.DialogueSystem.Editor.Views;
+using SDRGames.Whist.DialogueModule.Editor.Views;
 
-namespace SDRGames.Whist.DialogueSystem.Editor.Models
+namespace SDRGames.Whist.DialogueModule.Editor.Models
 {
     public class NodeErrorData : BaseErrorData
     {

@@ -1,8 +1,8 @@
 ﻿using System;
 
-using SDRGames.Whist.DialogueSystem.ScriptableObjects;
+using SDRGames.Whist.DialogueModule.ScriptableObjects;
 
-namespace SDRGames.Whist.DialogueSystem.Editor.Views
+namespace SDRGames.Whist.DialogueModule.Editor.Views
 {
     public class SavedToSOEventArgs<T> : EventArgs where T : DialogueScriptableObject
     {

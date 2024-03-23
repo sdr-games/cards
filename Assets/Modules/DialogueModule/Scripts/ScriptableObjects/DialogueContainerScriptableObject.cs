@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 using UnityEngine;
 
-namespace SDRGames.Whist.DialogueSystem.ScriptableObjects
+namespace SDRGames.Whist.DialogueModule.ScriptableObjects
 {
     public class DialogueContainerScriptableObject : ScriptableObject
     {
