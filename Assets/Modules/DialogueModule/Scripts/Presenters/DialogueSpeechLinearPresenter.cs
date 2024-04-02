@@ -15,13 +15,13 @@ namespace SDRGames.Whist.DialogueModule.Presenters
 
         public event EventHandler Disposed;
 
-        public DialogueSpeechLinearPresenter(DialogueSpeechScriptableObject dialogue, DialogueLinearView linearView, UserInputController userInputController)
+        public DialogueSpeechLinearPresenter(DialogueSpeechScriptableObject dialogue, DialogueLinearView linearView, UserInputController userInputController, float fadeSpeed, int rolloverSpeed)
         {
             Dialogue = dialogue;
             CharacterInfoScriptableObject character = Dialogue.Character;
 
             _linearView = linearView;
-            _linearView.Initialize(character.CharacterPortrait, character.CharacterNameLocalization.GetLocalizedString(), Dialogue.TextLocalization.GetLocalizedText(), userInputController);
+            _linearView.Initialize(character.CharacterPortrait, character.CharacterNameLocalization.GetLocalizedString(), Dialogue.TextLocalization.GetLocalizedText(), userInputController, fadeSpeed, rolloverSpeed);
             _linearView.Destroyed += OnViewDestroyed;
         }
 

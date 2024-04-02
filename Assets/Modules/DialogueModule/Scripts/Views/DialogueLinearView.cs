@@ -18,9 +18,8 @@ namespace SDRGames.Whist.DialogueModule.Views
         [SerializeField] private TextMeshProUGUI _characterName;
         [SerializeField] private TextMeshProUGUI _text;
 
-        [SerializeField] private float FadeSpeed = 1.0F;
-        [SerializeField] private int RolloverCharacterSpread = 10;
-        [SerializeField] private Color ColorTint;
+        private float _fadeSpeed;
+        private int _rolloverCharacterSpread;
 
         private UserInputController _userInputController;
         private Coroutine _appearanceCoroutine;
@@ -30,8 +29,11 @@ namespace SDRGames.Whist.DialogueModule.Views
         public event EventHandler<CharacterVisibleAddedEventArgs> CharacterVisible;
         public event EventHandler Destroyed;
 
-        public void Initialize(Sprite characterPortrairSprite, string characterName, string speechText, UserInputController userInputController)
+        public void Initialize(Sprite characterPortrairSprite, string characterName, string speechText, UserInputController userInputController, float fadeSpeed, int rolloverSpeed)
         {
+            _fadeSpeed = fadeSpeed;
+            _rolloverCharacterSpread = rolloverSpeed;
+
             _currentCharacterPortrair.sprite = characterPortrairSprite;
             _characterName.text = characterName;
 
@@ -80,13 +82,14 @@ namespace SDRGames.Whist.DialogueModule.Views
             _text.ForceMeshUpdate();
             TMP_TextInfo textInfo = _text.textInfo;
             Color32[] newVertexColors;
+            Color colorTint = Color.white;
             _currentCharacterPosition = 0;
             bool isRangeMax = false;
             while (!isRangeMax)
             {
                 int characterCount = textInfo.characterCount;
                 // Spread should not exceed the number of characters.
-                byte fadeSteps = (byte)Mathf.Max(1, 255 / RolloverCharacterSpread);
+                byte fadeSteps = (byte)Mathf.Max(1, 255 / _rolloverCharacterSpread);
                 for (int i = 0; i < _currentCharacterPosition + 1; i++)
                 {
                     // Skip characters that are not visible
@@ -107,17 +110,17 @@ namespace SDRGames.Whist.DialogueModule.Views
                     newVertexColors[vertexIndex + 3].a = alpha;
                     // Tint vertex colors
                     // Note: Vertex colors are Color32 so we need to cast to Color to multiply with tint which is Color.
-                    newVertexColors[vertexIndex + 0] = (Color)newVertexColors[vertexIndex + 0] * ColorTint;
-                    newVertexColors[vertexIndex + 1] = (Color)newVertexColors[vertexIndex + 1] * ColorTint;
-                    newVertexColors[vertexIndex + 2] = (Color)newVertexColors[vertexIndex + 2] * ColorTint;
-                    newVertexColors[vertexIndex + 3] = (Color)newVertexColors[vertexIndex + 3] * ColorTint;
+                    newVertexColors[vertexIndex + 0] = (Color)newVertexColors[vertexIndex + 0] * colorTint;
+                    newVertexColors[vertexIndex + 1] = (Color)newVertexColors[vertexIndex + 1] * colorTint;
+                    newVertexColors[vertexIndex + 2] = (Color)newVertexColors[vertexIndex + 2] * colorTint;
+                    newVertexColors[vertexIndex + 3] = (Color)newVertexColors[vertexIndex + 3] * colorTint;
                 }
                 // Upload the changed vertex colors to the Mesh.
                 _text.UpdateVertexData(TMP_VertexDataUpdateFlags.Colors32);
                 _currentCharacterPosition++;
                 CharacterVisible?.Invoke(this, new CharacterVisibleAddedEventArgs());
                 isRangeMax = _currentCharacterPosition == characterCount;
-                yield return new WaitForSeconds(0.25f - FadeSpeed * 0.01f);
+                yield return new WaitForSeconds(0.25f - _fadeSpeed * 0.01f);
             }
             ShowText(true);
             _textVisible = true;
