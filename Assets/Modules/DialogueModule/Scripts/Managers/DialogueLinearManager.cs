@@ -13,6 +13,8 @@ namespace SDRGames.Whist.DialogueModule.Managers
     {
         [SerializeField] private DialogueLinearView _speechLinearViewPrefab;
         [SerializeField] private DialogueLinearView _answerLinearViewPrefab;
+        [SerializeField] private float _fadeSpeed;
+        [SerializeField] private int _rolloverCharacterSpread;
 
         private UserInputController _userInputController;
         private DialogueContainerScriptableObject _dialogueContainer;
@@ -48,7 +50,7 @@ namespace SDRGames.Whist.DialogueModule.Managers
             _linearView = Instantiate(_speechLinearViewPrefab, transform);
             _linearView.CharacterVisible += OnCharacterVisible;
 
-            _speechLinearPresenter = new DialogueSpeechLinearPresenter(dialogue, _linearView, _userInputController);
+            _speechLinearPresenter = new DialogueSpeechLinearPresenter(dialogue, _linearView, _userInputController, _fadeSpeed, _rolloverCharacterSpread);
             _speechLinearPresenter.Disposed += OnSpeechPresenterDisposed;
         }
 
@@ -72,7 +74,7 @@ namespace SDRGames.Whist.DialogueModule.Managers
             _linearView = Instantiate(_answerLinearViewPrefab, transform);
             _linearView.CharacterVisible += OnCharacterVisible;
 
-            _answerLinearPresenter = new DialogueAnswerLinearPresenter(dialogue, _linearView, _userInputController);
+            _answerLinearPresenter = new DialogueAnswerLinearPresenter(dialogue, _linearView, _userInputController, _fadeSpeed, _rolloverCharacterSpread);
             _answerLinearPresenter.Disposed += OnAnswerPresenterDisposed;
         }
 
