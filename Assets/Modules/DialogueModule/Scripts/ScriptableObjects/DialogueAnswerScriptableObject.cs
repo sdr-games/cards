@@ -1,4 +1,5 @@
 using SDRGames.Whist.CharacterModule.ScriptableObjects;
+using SDRGames.Whist.HelpersModule;
 using SDRGames.Whist.LocalizationModule.Models;
 
 using UnityEngine;
@@ -7,9 +8,9 @@ namespace SDRGames.Whist.DialogueModule.ScriptableObjects
 {
     public class DialogueAnswerScriptableObject : DialogueScriptableObject
     {
-        [field: SerializeField] public CharacterInfoScriptableObject Character { get; private set; }
-        [field: SerializeField] public LocalizationData TextLocalization { get; private set; }
-        [field: SerializeField] public DialogueSpeechScriptableObject NextSpeech { get; private set; }
+        [field: SerializeField][field: ReadOnly] public CharacterInfoScriptableObject Character { get; private set; }
+        [field: SerializeField][field: ReadOnly] public LocalizationData TextLocalization { get; private set; }
+        [field: SerializeField][field: ReadOnly] public DialogueSpeechScriptableObject NextSpeech { get; private set; }
 
         public void Initialize(string dialogueName, NodeTypes dialogueType, CharacterInfoScriptableObject character, LocalizationData textLocalization)
         {

@@ -1,13 +1,15 @@
 using System.Collections.Generic;
 
+using SDRGames.Whist.HelpersModule;
+
 using UnityEngine;
 
 namespace SDRGames.Whist.DialogueModule.ScriptableObjects
 {
     public class DialogueContainerScriptableObject : ScriptableObject
     {
-        [field: SerializeField] public string FileName { get; set; }
-        [field: SerializeField] public List<DialogueScriptableObject> Dialogues { get; set; }
+        [field: SerializeField][field: ReadOnly] public string FileName { get; set; }
+        [field: SerializeField][field: ReadOnly] public List<DialogueScriptableObject> Dialogues { get; set; }
         public DialogueSpeechScriptableObject FirstSpeech => GetFirstSpeech();
 
         public void Initialize(string fileName)
