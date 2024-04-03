@@ -1,7 +1,7 @@
 using System.IO;
 
 using SDRGames.Whist.DialogueEditorModule.Managers;
-using SDRGames.Whist.DialogueEditorModule.Helpers;
+using SDRGames.Whist.HelpersModule;
 
 using UnityEditor;
 using UnityEditor.UIElements;

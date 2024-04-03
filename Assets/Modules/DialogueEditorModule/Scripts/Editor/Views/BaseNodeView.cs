@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-using SDRGames.Whist.DialogueEditorModule.Helpers;
+using SDRGames.Whist.HelpersModule;
 using SDRGames.Whist.DialogueModule.ScriptableObjects;
 
 using UnityEditor.Experimental.GraphView;
