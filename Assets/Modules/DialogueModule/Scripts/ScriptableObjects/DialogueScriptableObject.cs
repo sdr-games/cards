@@ -1,13 +1,10 @@
-using SDRGames.Whist.DialogueModule.Editor;
-
 using UnityEngine;
-
-using static SDRGames.Whist.DialogueModule.Editor.Managers.GraphManager;
 
 namespace SDRGames.Whist.DialogueModule.ScriptableObjects
 {
     public class DialogueScriptableObject : ScriptableObject
     {
+        public enum NodeTypes { Start = 0, Speech = 1, Answer = 2 };
         [field: SerializeField] public string Name { get; private set; }
         [field: SerializeField] public NodeTypes DialogueType { get; private set; }
 

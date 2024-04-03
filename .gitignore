@@ -4,6 +4,7 @@
 [Aa]ssets/AssetStoreTools*
 [Aa]ssets/AddressableAssetsData/
 [Bb]uild/
+[Bb]uilds/
 [Ll]ibrary/
 [Ll]ogs/
 [Ll]ocal[Cc]ache/
@@ -40,6 +41,8 @@ OBJExport.meta
 .vsconfig
 *.csproj
 *.sln
+*.rar
+*.zip
 
 ###
 # OS generated

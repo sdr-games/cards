@@ -3,8 +3,6 @@ using SDRGames.Whist.LocalizationModule.Models;
 
 using UnityEngine;
 
-using static SDRGames.Whist.DialogueModule.Editor.Managers.GraphManager;
-
 namespace SDRGames.Whist.DialogueModule.ScriptableObjects
 {
     public class DialogueAnswerScriptableObject : DialogueScriptableObject
