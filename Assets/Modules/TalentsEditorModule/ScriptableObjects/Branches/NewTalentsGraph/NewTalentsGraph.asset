@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e27b5ac8de4c7949a7747223e0df75b, type: 3}
+  m_Name: NewTalentsGraph
+  m_EditorClassIdentifier: 
+  <FileName>k__BackingField: 
+  <Talents>k__BackingField:
+  - {fileID: 11400000, guid: dca169f68687a5440a1c972183f233f3, type: 2}
+  - {fileID: 11400000, guid: 30e35e41d6dceb748bcf974cbe578de7, type: 2}
+  - {fileID: 11400000, guid: 48b483cce8a7c0147a334bbd1534b758, type: 2}
+  - {fileID: 11400000, guid: efd13ab7c5e4f0c4696db371537f4052, type: 2}
+  - {fileID: 11400000, guid: 5cdfe7e67bd4ddd4f88b5b2360336984, type: 2}
+  - {fileID: 11400000, guid: 4fd48ba4c0cdd644196c748ab0e2e445, type: 2}
