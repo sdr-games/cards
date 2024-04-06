@@ -1,0 +1,16 @@
+{
+    "name": "TalentsModule",
+    "rootNamespace": "SDRGames.Whist.TalentsModule",
+    "references": [
+        "GUID:e41ff2de5c626d64f9b1425803813a35"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

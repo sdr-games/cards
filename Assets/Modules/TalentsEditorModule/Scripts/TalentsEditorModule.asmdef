@@ -1,0 +1,19 @@
+{
+    "name": "TalentsEditorModule",
+    "rootNamespace": "SDRGames.Whist.TalentsEditorModule",
+    "references": [
+        "GUID:e41ff2de5c626d64f9b1425803813a35",
+        "GUID:ff0d9ac25f698134b888e2e15ca3127f"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
