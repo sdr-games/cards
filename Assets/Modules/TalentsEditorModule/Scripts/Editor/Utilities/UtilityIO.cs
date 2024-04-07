@@ -131,15 +131,12 @@ namespace SDRGames.Whist.TalentsEditorModule
         {
             foreach (BaseNodeView node in _nodes)
             {
-                foreach (Port port in node.OutputPorts)
+                foreach (Port port in node.InputPorts)
                 {
                     foreach (Edge edge in port.connections)
                     {
-                        string inputNodeID = ((BaseNodeView)edge.input.node).ID;
-                        if (createdTalents[node.ID] is TalamusScriptableObject talamusSO)
-                        {
-                            talamusSO.Connections.Add(createdTalents[inputNodeID]);
-                        }
+                        string outputNodeID = ((BaseNodeView)edge.output.node).ID;
+                        createdTalents[node.ID].Dependencies.Add(createdTalents[outputNodeID]);
                     }
                 }
             }
