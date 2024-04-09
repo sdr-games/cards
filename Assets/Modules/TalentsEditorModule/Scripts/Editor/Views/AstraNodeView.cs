@@ -9,14 +9,17 @@ using UnityEngine;
 using UnityEngine.UIElements;
 
 using static SDRGames.Whist.TalentsEditorModule.Models.AstraData;
+using static SDRGames.Whist.TalentsEditorModule.Models.TalamusData;
 
 namespace SDRGames.Whist.TalentsEditorModule.Views
 {
+    [Serializable]
     public class AstraNodeView : BaseNodeView
     {
-        private EquipmentName _equipment;
+        [field: SerializeField] public EquipmentNames Equipment { get; private set; }
 
         public new event EventHandler<SavedToSOEventArgs<AstraScriptableObject>> SavedToSO;
+        public event EventHandler<AstraLoadedEventArgs> Loaded;
         public event EventHandler<EquipmentChangedEventArgs> EquipmentChanged;
 
         public void Initialize(string id, string nodeName, Vector2 position)
@@ -42,12 +45,12 @@ namespace SDRGames.Whist.TalentsEditorModule.Views
 
             DropdownField equipmentDropdown = UtilityElement.CreateDropdownField
             (
-                typeof(EquipmentName),
-                _equipment.ToString(),
+                typeof(EquipmentNames),
+                Equipment.ToString(),
                 null,
                 callback =>
                 {
-                    _equipment = (EquipmentName)Enum.Parse(typeof(EquipmentName), callback.newValue);
+                    Equipment = (EquipmentNames)Enum.Parse(typeof(EquipmentNames), callback.newValue);
                     EquipmentChanged?.Invoke(this, new EquipmentChangedEventArgs(callback.newValue));
                 }
             );
@@ -73,12 +76,20 @@ namespace SDRGames.Whist.TalentsEditorModule.Views
 
         public override TalentScriptableObject SaveToSO(string folderPath)
         {
-            AstraScriptableObject dialogueSO;
+            AstraScriptableObject astraSO;
 
-            dialogueSO = UtilityIO.CreateAsset<AstraScriptableObject>($"{folderPath}/Talents", NodeName);
+            astraSO = UtilityIO.CreateAsset<AstraScriptableObject>($"{folderPath}/Talents", NodeName);
+            astraSO.SetPosition(Position);
 
-            SavedToSO?.Invoke(this, new SavedToSOEventArgs<AstraScriptableObject>(dialogueSO));
-            return dialogueSO;
+            SavedToSO?.Invoke(this, new SavedToSOEventArgs<AstraScriptableObject>(astraSO));
+            return astraSO;
+        }
+
+        public void Load(AstraNodeView node)
+        {
+            base.Load(node);
+            Equipment = node.Equipment;
+            Loaded?.Invoke(this, new AstraLoadedEventArgs(Equipment));
         }
 
         public override Port CreateInputPort()

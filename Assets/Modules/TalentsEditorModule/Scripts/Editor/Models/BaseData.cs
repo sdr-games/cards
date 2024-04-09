@@ -30,14 +30,5 @@ namespace SDRGames.Whist.TalentsEditorModule.Models
         {
             NodeType = nodeType;
         }
-
-        public virtual TalentScriptableObject SaveToSO(TalentScriptableObject dialogueSO)
-        {
-            dialogueSO.Initialize(
-                NodeName,
-                NodeType
-            );
-            return dialogueSO;
-        }
     }
 }

@@ -146,8 +146,11 @@ namespace SDRGames.Whist.TalentsEditorModule
         {
             foreach (AstraNodeView node in nodes)
             {
-                _graphView.AddElement(node);
-                _loadedNodes.Add(node.ID, node);
+                AstraNodeView newNode = (AstraNodeView)_graphView.CreateNode<AstraNodePresenter>(node.NodeName, node.Position, false);
+                newNode.Load(node);
+                newNode.Draw();
+                _graphView.AddElement(newNode);
+                _loadedNodes.Add(newNode.ID, newNode);
             }
         }
 
@@ -155,8 +158,11 @@ namespace SDRGames.Whist.TalentsEditorModule
         {
             foreach (TalamusNodeView node in nodes)
             {
-                _graphView.AddElement(node);
-                _loadedNodes.Add(node.ID, node);
+                TalamusNodeView newNode = (TalamusNodeView)_graphView.CreateNode<TalamusNodePresenter>(node.NodeName, node.Position, false);
+                newNode.Load(node);
+                newNode.Draw();
+                _graphView.AddElement(newNode);
+                _loadedNodes.Add(newNode.ID, newNode);
             }
         }
 
@@ -165,15 +171,13 @@ namespace SDRGames.Whist.TalentsEditorModule
             foreach (KeyValuePair<string, BaseNodeView> loadedNode in _loadedNodes)
             {
                 BaseNodeView node = loadedNode.Value;
-                foreach(Port port in node.OutputPorts)
+                foreach(string id in node.OutputConnections)
                 {
-                    List<Edge> connections = port.connections.ToList();
-                    foreach(Edge edge in connections)
-                    {
-                        _graphView.AddElement(edge);
-                        node.RefreshPorts();
-                    }
+                    Port inputPort = _loadedNodes[id].InputPorts[0];
+                    Edge edge = node.OutputPorts[0].ConnectTo(inputPort);
+                    _graphView.AddElement(edge);
                 }
+                node.RefreshPorts();
             }
         }
 

@@ -16,23 +16,22 @@ namespace SDRGames.Whist.TalentsModule.Views
 
         [SerializeField] private Image _image;
 
-        private UserInputController _userInputController;
-
         public bool IsActive { get; private set; }
 
         public EventHandler<ActivationChangedEventArgs> ActivationChanged;
 
-        public void Initialize(Color activeColor, Color inactiveColor)
+        public void Initialize(Color activeColor, Color inactiveColor, Vector2 position)
         {
             _activeColor = activeColor;
             _inactiveColor = inactiveColor;
 
             _image.color = _inactiveColor;
+            transform.position = position;
         }
 
-        private void SetActive(object sender, LeftMouseButtonUIClickEventArgs e)
+        public void ChangeActive(bool _isActive)
         {
-            IsActive = !IsActive;
+            IsActive = _isActive;
             _image.color = IsActive ? _activeColor : _inactiveColor;
         }
 

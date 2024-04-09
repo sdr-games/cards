@@ -2,6 +2,8 @@ using System;
 
 using SDRGames.Whist.TalentsModule.ScriptableObjects;
 
+using UnityEngine;
+
 using static SDRGames.Whist.TalentsModule.ScriptableObjects.TalentScriptableObject;
 
 namespace SDRGames.Whist.TalentsEditorModule.Models
@@ -13,10 +15,16 @@ namespace SDRGames.Whist.TalentsEditorModule.Models
         public CharacteristicNames CharacteristicName { get; private set; }
         public int CharacteristicValue { get; private set; }
 
-        public TalamusData(string name, CharacteristicNames characteristicName, int characteristicValue) : base(name)
+        public TalamusData(string name) : base(name)
         {
             NodeType = NodeTypes.Talamus;
 
+            CharacteristicName = default;
+            CharacteristicValue = 0;
+        }
+
+        public void Load(CharacteristicNames characteristicName, int characteristicValue) 
+        {
             CharacteristicName = characteristicName;
             CharacteristicValue = characteristicValue;
         }
@@ -26,8 +34,13 @@ namespace SDRGames.Whist.TalentsEditorModule.Models
             NodeName = name;
         }
 
+        public void SetCharacteristicName(CharacteristicNames characteristicName)
+        {
+            CharacteristicName = characteristicName;
+        }
+
         public void SetCharacteristicName(string characteristicName)
-{
+        {
             CharacteristicName = (CharacteristicNames)Enum.Parse(typeof(CharacteristicNames), characteristicName);
         }
 

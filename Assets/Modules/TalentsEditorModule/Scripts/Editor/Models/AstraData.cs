@@ -8,13 +8,18 @@ namespace SDRGames.Whist.TalentsEditorModule.Models
 {
     public class AstraData : BaseData
     {
-        public enum EquipmentName { Weapon }
-        public EquipmentName Equipment { get; private set; }
+        public enum EquipmentNames { Weapon }
+        public EquipmentNames Equipment { get; private set; }
 
-        public AstraData(string name, EquipmentName equipment) : base(name)
+        public AstraData(string name) : base(name)
         {
             NodeType = NodeTypes.Astra;
 
+            Equipment = default;
+        }
+
+        public void Load(EquipmentNames equipment)
+        {
             Equipment = equipment;
         }
 
@@ -22,9 +27,10 @@ namespace SDRGames.Whist.TalentsEditorModule.Models
         {
             NodeName = name;
         }
+
         public void SetEquipment(string equipment)
         {
-            Equipment = (EquipmentName)Enum.Parse(typeof(EquipmentName), equipment);
+            Equipment = (EquipmentNames)Enum.Parse(typeof(EquipmentNames), equipment);
         }
 
         public AstraScriptableObject SaveToSO(AstraScriptableObject astraSO)

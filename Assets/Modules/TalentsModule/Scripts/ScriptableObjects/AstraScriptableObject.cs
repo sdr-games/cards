@@ -8,9 +8,9 @@ namespace SDRGames.Whist.TalentsModule.ScriptableObjects
     {
         [field: SerializeField][field: ReadOnly] public string Equipment { get; private set; }
 
-        public void Initialize(string dialogueName, NodeTypes dialogueType, string equipment)
+        public void Initialize(string name, NodeTypes dialogueType, string equipment)
         {
-            base.Initialize(dialogueName, dialogueType);
+            base.Initialize(name, dialogueType);
             Equipment = equipment;
         }
     }

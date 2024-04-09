@@ -9,11 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8a14f64b3bdf6434b96df8acde5a77a4, type: 3}
-  m_Name: Talamus0
+  m_Script: {fileID: 11500000, guid: 09a3027e02023dc4da8fa65f361653a1, type: 3}
+  m_Name: Astra0
   m_EditorClassIdentifier: 
-  <Name>k__BackingField: 
-  <TalentType>k__BackingField: 0
-  <Characteristic>k__BackingField: 
-  <CharacteristicValue>k__BackingField: 0
-  <Connections>k__BackingField: []
+  <Name>k__BackingField: Astra05
+  <TalentType>k__BackingField: 1
+  <Position>k__BackingField: {x: 105.6, y: 156.8}
+  <Dependencies>k__BackingField: []
+  <Equipment>k__BackingField: Weapon

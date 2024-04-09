@@ -11,9 +11,9 @@ namespace SDRGames.Whist.TalentsModule.ScriptableObjects
         [field: SerializeField][field: ReadOnly] public string Characteristic { get; private set; }
         [field: SerializeField][field: ReadOnly] public int CharacteristicValue { get; private set; }
 
-        public void Initialize(string dialogueName, NodeTypes dialogueType, string characteristic, int characteristicValue)
+        public void Initialize(string name, NodeTypes talentType, string characteristic, int characteristicValue)
         {
-            base.Initialize(dialogueName, dialogueType);
+            base.Initialize(name, talentType);
             Characteristic = characteristic;
             CharacteristicValue = characteristicValue;
         }
