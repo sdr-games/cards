@@ -15,7 +15,7 @@ namespace SDRGames.Whist.DialogueEditorModule.Models
         [field: SerializeField] public string NodeName { get; protected set; }
         [field: SerializeField] public NodeTypes NodeType { get; protected set; }
 
-        public BaseData(string nodeName, Vector2 position)
+        public BaseData(string nodeName)
         {
             ID = Guid.NewGuid().ToString();
             NodeName = nodeName;

@@ -1,3 +1,5 @@
+using System;
+
 using SDRGames.Whist.CharacterModule.ScriptableObjects;
 using SDRGames.Whist.LocalizationModule.Models;
 using SDRGames.Whist.DialogueModule.ScriptableObjects;
@@ -7,14 +9,21 @@ using static SDRGames.Whist.DialogueModule.ScriptableObjects.DialogueScriptableO
 
 namespace SDRGames.Whist.DialogueEditorModule.Models
 {
+    [Serializable]
     public class SpeechData : BaseData
     {
         [field: SerializeField] public CharacterInfoScriptableObject Character { get; private set; }
         [field: SerializeField] public LocalizationData TextLocalization { get; private set; }
 
-        public SpeechData(string name, Vector2 position, LocalizationData textLocalization) : base(name, position)
+        public SpeechData(string name) : base(name)
         {
             NodeType = NodeTypes.Speech;
+            TextLocalization = new LocalizationData("", "", "");
+        }
+
+        public void Load(CharacterInfoScriptableObject character, LocalizationData textLocalization)
+        {
+            Character = character;
             TextLocalization = textLocalization;
         }
 
