@@ -8,13 +8,16 @@ using UnityEngine;
 
 namespace SDRGames.Whist.DialogueEditorModule.Views
 {
+    [Serializable]
     public class StartNodeView : BaseNodeView
     {
         public new event EventHandler<SavedToSOEventArgs<DialogueStartScriptableObject>> SavedToSO;
+        public event EventHandler Loaded;
 
         public override void Initialize(string id, string nodeName, Vector2 position)
         {
             base.Initialize(id, nodeName, position);
+
             CreateOutputPort();
         }
 

@@ -157,18 +157,22 @@ namespace SDRGames.Whist.DialogueEditorModule
 
         private static void LoadNode(StartNodeView node)
         {
-            StartNodeView newNode = _graphView.CreateNode<StartNodePresenter>(node.NodeName, node.Position) as StartNodeView;
-            newNode.LoadData(node);
-            _graphView.AddElement(node);
-            _loadedNodes.Add(node.ID, node);
+            StartNodeView newNode = _graphView.CreateNode<StartNodePresenter>(node.NodeName, node.Position, false) as StartNodeView;
+            newNode.Load(node);
+            newNode.Draw();
+            _graphView.AddElement(newNode);
+            _loadedNodes.Add(newNode.ID, newNode);
         }
 
         private static void LoadNodes(List<SpeechNodeView> nodes)
         {
             foreach (SpeechNodeView node in nodes)
             {
-                _graphView.AddElement(node);
-                _loadedNodes.Add(node.ID, node);
+                SpeechNodeView newNode = _graphView.CreateNode<SpeechNodePresenter>(node.NodeName, node.Position, false) as SpeechNodeView;
+                newNode.Load(node);
+                newNode.Draw();
+                _graphView.AddElement(newNode);
+                _loadedNodes.Add(newNode.ID, newNode);
             }
         }
 
@@ -176,8 +180,11 @@ namespace SDRGames.Whist.DialogueEditorModule
         {
             foreach (AnswerNodeView node in nodes)
             {
-                _graphView.AddElement(node);
-                _loadedNodes.Add(node.ID, node);
+                AnswerNodeView newNode = _graphView.CreateNode<AnswerNodePresenter>(node.NodeName, node.Position, false) as AnswerNodeView;
+                newNode.Load(node);
+                newNode.Draw();
+                _graphView.AddElement(newNode);
+                _loadedNodes.Add(newNode.ID, newNode);
             }
         }
 
@@ -186,15 +193,13 @@ namespace SDRGames.Whist.DialogueEditorModule
             foreach (KeyValuePair<string, BaseNodeView> loadedNode in _loadedNodes)
             {
                 BaseNodeView node = loadedNode.Value;
-                foreach(Port port in node.OutputPorts)
+                foreach (string id in node.OutputConnections)
                 {
-                    List<Edge> connections = port.connections.ToList();
-                    foreach(Edge edge in connections)
-                    {
-                        _graphView.AddElement(edge);
-                        node.RefreshPorts();
-                    }
+                    Port inputPort = _loadedNodes[id].InputPorts[0];
+                    Edge edge = node.OutputPorts[0].ConnectTo(inputPort);
+                    _graphView.AddElement(edge);
                 }
+                node.RefreshPorts();
             }
         }
 

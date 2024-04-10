@@ -20,6 +20,7 @@ namespace SDRGames.Whist.DialogueEditorModule.Views
         [field: SerializeField] public string NodeName { get; protected set; }
         [field: SerializeField] public List<Port> InputPorts { get; protected set; }
         [field: SerializeField] public List<Port> OutputPorts { get; protected set; }
+        [field: SerializeField] public List<string> OutputConnections { get; protected set; }
         [field: SerializeField] public Vector2 Position { get; protected set; }
 
         public event EventHandler<NodeNameChangedEventArgs> NodeNameTextFieldChanged;
@@ -94,6 +95,14 @@ namespace SDRGames.Whist.DialogueEditorModule.Views
         public virtual void SaveToGraph(GraphSaveDataScriptableObject graphData) 
         {
             Position = GetPosition().position;
+            OutputConnections = new List<string>();
+            foreach (Port port in OutputPorts)
+            {
+                foreach (Edge edge in port.connections)
+                {
+                    OutputConnections.Add(((BaseNodeView)edge.input.node).ID);
+                }
+            }
         }
 
         public virtual DialogueScriptableObject SaveToSO(string folderPath)
@@ -106,13 +115,11 @@ namespace SDRGames.Whist.DialogueEditorModule.Views
             return dialogueSO;
         }
 
-        public virtual void LoadData(BaseNodeView node)
+        public void Load(BaseNodeView node)
         {
             ID = node.ID;
             NodeName = node.NodeName;
-            InputPorts = node.InputPorts;
-            OutputPorts = node.OutputPorts;
-            Position = node.Position;
+            OutputConnections = node.OutputConnections;
         }
 
         public void DisconnectAllPorts()

@@ -12,20 +12,21 @@ using UnityEngine.UIElements;
 
 namespace SDRGames.Whist.DialogueEditorModule.Views
 {
+    [Serializable]
     public class AnswerNodeView : BaseNodeView
     {
-        private CharacterInfoScriptableObject _character;
-        private LocalizationData _textLocalization;
+        [field: SerializeField] public CharacterInfoScriptableObject Character { get; private set; }
+        [field: SerializeField] public LocalizationData TextLocalization { get; private set; }
 
         public new event EventHandler<SavedToSOEventArgs<DialogueAnswerScriptableObject>> SavedToSO;
+        public event EventHandler<AnswerLoadedEventArgs> Loaded;
         public event EventHandler<CharacterUpdatedEventArgs> CharacterUpdated;
 
-        public void Initialize(string id, string nodeName, Vector2 position, CharacterInfoScriptableObject character, LocalizationData textLocalization)
+        public void Initialize(string id, string nodeName, Vector2 position)
         {
             base.Initialize(id, nodeName, position);
 
-            _character = character;
-            _textLocalization = textLocalization;
+            TextLocalization = new LocalizationData("", "", "");
 
             CreateInputPort();
             CreateOutputPort();
@@ -53,16 +54,16 @@ namespace SDRGames.Whist.DialogueEditorModule.Views
 
             Foldout characterFoldout = UtilityElement.CreateFoldout("Character Name");
 
-            ObjectField characterObjectField = UtilityElement.CreateObjectField(typeof(CharacterInfoScriptableObject), _character, "Character", callback =>
+            ObjectField characterObjectField = UtilityElement.CreateObjectField(typeof(CharacterInfoScriptableObject), Character, "Character", callback =>
             {
-                _character = callback.newValue as CharacterInfoScriptableObject;
-                CharacterUpdated?.Invoke(this, new CharacterUpdatedEventArgs(_character));
+                Character = callback.newValue as CharacterInfoScriptableObject;
+                CharacterUpdated?.Invoke(this, new CharacterUpdatedEventArgs(Character));
             });
             characterFoldout.Add(characterObjectField);
 
             Foldout textFoldout = UtilityElement.CreateFoldout("Answer Text");
 
-            Box localizationBox = UtilityElement.CreateLocalizationBox(_textLocalization);
+            Box localizationBox = UtilityElement.CreateLocalizationBox(TextLocalization);
             textFoldout.Add(localizationBox);
 
             customDataContainer.Add(characterFoldout);
@@ -86,6 +87,14 @@ namespace SDRGames.Whist.DialogueEditorModule.Views
 
             SavedToSO?.Invoke(this, new SavedToSOEventArgs<DialogueAnswerScriptableObject>(dialogueSO));
             return dialogueSO;
+        }
+
+        public void Load(AnswerNodeView node)
+        {
+            base.Load(node);
+            Character = node.Character;
+            TextLocalization = node.TextLocalization;
+            Loaded?.Invoke(this, new AnswerLoadedEventArgs(Character, TextLocalization));
         }
 
         public override Port CreateInputPort()

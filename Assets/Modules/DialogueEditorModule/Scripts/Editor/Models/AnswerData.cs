@@ -16,9 +16,15 @@ namespace SDRGames.Whist.DialogueEditorModule.Models
         [field: SerializeField] public CharacterInfoScriptableObject Character { get; private set; }
         [field: SerializeField] public LocalizationData TextLocalization { get; private set; }
 
-        public AnswerData(string name, Vector2 position, LocalizationData textLocalization) : base(name, position)
+        public AnswerData(string name) : base(name)
         {
             NodeType = NodeTypes.Answer;
+            TextLocalization = new LocalizationData("", "", "");
+        }
+
+        public void Load(CharacterInfoScriptableObject character, LocalizationData textLocalization)
+        {
+            Character = character;
             TextLocalization = textLocalization;
         }
 

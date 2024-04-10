@@ -2,7 +2,6 @@ using System;
 
 using SDRGames.Whist.DialogueEditorModule.Models;
 using SDRGames.Whist.DialogueEditorModule.Views;
-using SDRGames.Whist.LocalizationModule.Models;
 using SDRGames.Whist.DialogueModule.ScriptableObjects;
 
 using UnityEngine;
@@ -22,12 +21,11 @@ namespace SDRGames.Whist.DialogueEditorModule.Presenters
 
         public override void Initialize(string name, Vector2 position)
         {
-            LocalizationData textLocalization = new LocalizationData("", "", "");
+            _data = new SpeechData(name);
 
-            _data = new SpeechData(name, position, textLocalization);
-
-            _nodeView.Initialize(_data.ID, _data.NodeName, position, _data.Character, _data.TextLocalization);
+            _nodeView.Initialize(_data.ID, _data.NodeName, position);
             _nodeView.SavedToSO += OnSavedToSO;
+            _nodeView.Loaded += OnLoaded;
             _nodeView.CharacterUpdated += OnCharacterUpdated;
         }
 
@@ -44,6 +42,11 @@ namespace SDRGames.Whist.DialogueEditorModule.Presenters
         protected void OnSavedToSO(object sender, SavedToSOEventArgs<DialogueSpeechScriptableObject> e)
         {
             _data.SaveToSO(e.DialogueSO);
+        }
+
+        private void OnLoaded(object sender, SpeechLoadedEventArgs e)
+        {
+            _data.Load(e.Character, e.TextLocalization);
         }
 
         private void OnCharacterUpdated(object sender, CharacterUpdatedEventArgs e)

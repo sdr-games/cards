@@ -23,7 +23,7 @@ namespace SDRGames.Whist.DialogueEditorModule.Presenters
 
         public override void Initialize(string name, Vector2 position)
         {
-            _data = new BaseData(name, position);
+            _data = new BaseData(name);
             _data.SetNodeType(NodeTypes.Start);
             
             _nodeView.Initialize(_data.ID, _data.NodeName, position);
