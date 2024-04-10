@@ -169,7 +169,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a052bd3b541bec47b920d53d43f8abc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _talentBranch: {fileID: 0}
+  _talentBranch: {fileID: 11400000, guid: 0a15406e84e15b548be7fe7ad263bf56, type: 2}
   _astraPrefab: {fileID: 7469305405322914884, guid: 3539eae9e7a88474ba1d1b923a3b9b67,
     type: 3}
   _talamusPrefab: {fileID: 483774868789716174, guid: 74f509bf42f1aa248aae861900041c35,
