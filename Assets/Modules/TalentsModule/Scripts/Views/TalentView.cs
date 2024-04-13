@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 
+using SDRGames.Whist.TalentsModule.Models;
 using SDRGames.Whist.UserInputModule.Controller;
 
 using UnityEditor;
@@ -15,16 +16,15 @@ namespace SDRGames.Whist.TalentsModule.Views
         private Color _activeColor;
         private Color _inactiveColor;
 
+        private bool _isActive;
+        private bool _isBlocked;
+
         [SerializeField] private Image _image;
         [SerializeField] private Button _button;
         [SerializeField] private LineView _lineViewPrefab;
 
         [SerializeField] private List<TalentView> _blockers;
         [SerializeField] private List<TalentView> _dependencies;
-
-        public bool IsActive { get; private set; }
-
-        public EventHandler<ActivationChangedEventArgs> ActivationChanged;
 
         public void Initialize(Color activeColor, Color inactiveColor, Vector2 position)
         {
@@ -33,6 +33,9 @@ namespace SDRGames.Whist.TalentsModule.Views
 
             _image.color = _inactiveColor;
             transform.position = position;
+
+            _isActive = false;
+            ChangeBlock();
         }
 
         public void SetDependencies(List<TalentView> dependencies)
@@ -54,13 +57,40 @@ namespace SDRGames.Whist.TalentsModule.Views
                 return;
             }
             _blockers.Add(blocker);
+            ChangeBlock();
         }
 
-        public void ChangeActive(bool _isActive)
+        public void ChangeActive()
         {
-            IsActive = _isActive;
-            _image.color = IsActive ? _activeColor : _inactiveColor;
-            _button.interactable = _isActive;
+            SetActive(!_isActive);
+            foreach (TalentView dependency in _dependencies)
+            {
+                dependency.ChangeBlock();
+            }
+        }
+
+        private void SetActive(bool isActive)
+        {
+            _isActive = isActive;
+            _image.color = _isActive ? _activeColor : _inactiveColor;
+        }
+
+        private void ChangeBlock()
+        {
+            _isBlocked = false;
+            foreach (TalentView blocker in _blockers)
+            {
+                if(!blocker._isActive)
+                {
+                    _isBlocked = true;
+                    break;
+                }
+            }
+            if(_isBlocked)
+            {
+                SetActive(false);
+            }
+            _button.interactable = !_isBlocked;
         }
 
         private void OnEnable()

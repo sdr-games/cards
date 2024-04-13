@@ -1,8 +1,6 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 
-using SDRGames.Whist.TalentsModule.ScriptableObjects;
+using SDRGames.Whist.TalentsModule.Models;
 using SDRGames.Whist.TalentsModule.Views;
 
 using UnityEngine;
@@ -15,22 +13,15 @@ namespace SDRGames.Whist.TalentsModule.Presenters
         private readonly Color ACTIVE_COLOR = Color.yellow;
         private readonly Color INACTIVE_COLOR = Color.gray;
 
-        private AstraScriptableObject _data;
+        private Astra _astra;
         private TalentView _talentView;
 
-        public AstraPresenter(AstraScriptableObject data, TalentView talentView)
+        public AstraPresenter(Astra data, TalentView talentView, Vector2 position)
         {
-            _data = data;
+            _astra = data;
 
             _talentView = talentView;
-            _talentView.Initialize(ACTIVE_COLOR, INACTIVE_COLOR, data.Position);
-
-            //_data.ActiveChanged += ChangeActive;
+            _talentView.Initialize(ACTIVE_COLOR, INACTIVE_COLOR, position);
         }
-
-        //public void ChangeActive(object sender, ActiveChangedEventArgs e)
-        //{
-        //    _talentView.ChangeActive(e.IsActive);
-        //}
     }
 }

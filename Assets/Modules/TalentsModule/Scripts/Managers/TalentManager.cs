@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 using SDRGames.Whist.TalentsModule.ScriptableObjects;
 using SDRGames.Whist.TalentsModule.Views;
 using SDRGames.Whist.UserInputModule.Controller;
@@ -30,9 +28,12 @@ namespace SDRGames.Whist.TalentsModule.Managers
             _userInputController.LeftMouseButtonClickedOnUI += OnLeftMouseButtonClickedOnUI;
         }
 
-        protected virtual void OnLeftMouseButtonClickedOnUI(object sender, LeftMouseButtonUIClickEventArgs e)
+        private void OnLeftMouseButtonClickedOnUI(object sender, LeftMouseButtonUIClickEventArgs e)
         {
-            return;
+            if (e.GameObject == gameObject)
+            {
+                TalentView.ChangeActive();
+            }
         }
 
         private void OnDisable()

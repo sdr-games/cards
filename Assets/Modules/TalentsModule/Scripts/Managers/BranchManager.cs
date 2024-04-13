@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 
-using SDRGames.Whist.TalentsModule.Models;
 using SDRGames.Whist.TalentsModule.ScriptableObjects;
 using SDRGames.Whist.TalentsModule.Views;
 using SDRGames.Whist.UserInputModule.Controller;
@@ -60,7 +59,6 @@ namespace SDRGames.Whist.TalentsModule.Managers
                     dependencies.Add(_createdTalents[talent.Name].TalentView);
                     continue;
                 }
-
 
                 if (talent is AstraScriptableObject astraTalent)
                 {
