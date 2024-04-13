@@ -131,12 +131,13 @@ namespace SDRGames.Whist.TalentsEditorModule
         {
             foreach (BaseNodeView node in _nodes)
             {
-                foreach (Port port in node.InputPorts)
+                foreach (Port port in node.OutputPorts)
                 {
                     foreach (Edge edge in port.connections)
                     {
-                        string outputNodeID = ((BaseNodeView)edge.output.node).ID;
-                        createdTalents[node.ID].Dependencies.Add(createdTalents[outputNodeID]);
+                        string inputNodeID = ((BaseNodeView)edge.input.node).ID;
+                        createdTalents[node.ID].Dependencies.Add(createdTalents[inputNodeID]);
+                        createdTalents[inputNodeID].Blockers.Add(createdTalents[node.ID]);
                     }
                 }
             }

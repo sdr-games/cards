@@ -1,5 +1,6 @@
 using System;
 
+using SDRGames.Whist.TalentsModule.Models;
 using SDRGames.Whist.TalentsModule.ScriptableObjects;
 using SDRGames.Whist.TalentsModule.Views;
 
@@ -8,25 +9,27 @@ using UnityEngine;
 namespace SDRGames.Whist.TalentsModule.Presenters
 {
     [Serializable]
-    public class TalamusPresenter : MonoBehaviour
+    public class TalamusPresenter
     {
-        private readonly Color ACTIVE_COLOR = Color.yellow;
-        private readonly Color INACTIVE_COLOR = Color.gray;
+        private readonly Color ACTIVE_COLOR = Color.blue;
+        private readonly Color INACTIVE_COLOR = Color.cyan;
 
-        private TalamusScriptableObject _data;
+        private Talamus _talamus;
         private TalentView _talentView;
 
-        public TalamusPresenter(TalamusScriptableObject data, TalentView talentView)
+        public TalamusPresenter(Talamus data, TalentView talentView, Vector2 position)
         {
-            _data = data;
+            _talamus = data;
 
             _talentView = talentView;
-            _talentView.Initialize(ACTIVE_COLOR, INACTIVE_COLOR, data.Position);
+            _talentView.Initialize(ACTIVE_COLOR, INACTIVE_COLOR, position);
+
+            //_data.ActiveChanged += ChangeActive;
         }
 
-        public void ChangeActive()
+        public void ChangeActive(object sender, ActiveChangedEventArgs e)
         {
-            _talentView.ChangeActive(_data.ChangeActive());
+            _talentView.ChangeActive(e.IsActive);
         }
     }
 }

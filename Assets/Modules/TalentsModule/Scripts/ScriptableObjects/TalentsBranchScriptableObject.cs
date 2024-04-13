@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 
 using SDRGames.Whist.HelpersModule;
 
@@ -10,6 +11,7 @@ namespace SDRGames.Whist.TalentsModule.ScriptableObjects
     {
         [field: SerializeField][field: ReadOnly] public string FileName { get; set; }
         [field: SerializeField][field: ReadOnly] public List<TalentScriptableObject> Talents { get; set; }
+        public List<TalentScriptableObject> StartTalents => Talents.Where(x => x.Blockers.Count == 0).ToList();
 
         public void Initialize(string fileName)
         {

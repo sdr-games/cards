@@ -15,6 +15,7 @@ MonoBehaviour:
   <Name>k__BackingField: 
   <TalentType>k__BackingField: 0
   <Position>k__BackingField: {x: 0, y: 0}
+  <Blockers>k__BackingField: []
   <Dependencies>k__BackingField: []
   <Characteristic>k__BackingField: 
   <CharacteristicValue>k__BackingField: 0

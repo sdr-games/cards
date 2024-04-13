@@ -15,5 +15,6 @@ MonoBehaviour:
   <Name>k__BackingField: Astra05
   <TalentType>k__BackingField: 1
   <Position>k__BackingField: {x: 105.6, y: 156.8}
+  <Blockers>k__BackingField: []
   <Dependencies>k__BackingField: []
   <Equipment>k__BackingField: Weapon

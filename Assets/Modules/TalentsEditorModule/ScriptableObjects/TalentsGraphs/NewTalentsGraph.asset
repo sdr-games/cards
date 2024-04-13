@@ -20,7 +20,9 @@ MonoBehaviour:
     - 95dc05ff-3dd5-4bf0-8c32-dcb9beb1fd7d
     - 4d1c243e-5f38-4c85-bbe9-fab71292ac3e
     - 5a52b38f-8674-4b5a-879d-961c3babc40d
-    <Position>k__BackingField: {x: 348.80002, y: 282.4}
+    - 6c16c879-bfdf-4abc-b3ee-4dc05f340d3a
+    - 79ebd978-1740-44ba-9343-0a650acf3cbd
+    <Position>k__BackingField: {x: 363.2, y: 293.59998}
     <CharacteristicName>k__BackingField: 0
     <CharacteristicValue>k__BackingField: 3
   - <ID>k__BackingField: 5a52b38f-8674-4b5a-879d-961c3babc40d
@@ -28,7 +30,7 @@ MonoBehaviour:
     <OutputConnections>k__BackingField:
     - 6c16c879-bfdf-4abc-b3ee-4dc05f340d3a
     - 79ebd978-1740-44ba-9343-0a650acf3cbd
-    <Position>k__BackingField: {x: 710.4, y: 292}
+    <Position>k__BackingField: {x: 694.4, y: 293.59998}
     <CharacteristicName>k__BackingField: 1
     <CharacteristicValue>k__BackingField: 2
   <AstraNodes>k__BackingField:

@@ -12,8 +12,8 @@ namespace SDRGames.Whist.TalentsModule.Presenters
     [Serializable]
     public class AstraPresenter
     {
-        private readonly Color ACTIVE_COLOR = Color.blue;
-        private readonly Color INACTIVE_COLOR = Color.cyan;
+        private readonly Color ACTIVE_COLOR = Color.yellow;
+        private readonly Color INACTIVE_COLOR = Color.gray;
 
         private AstraScriptableObject _data;
         private TalentView _talentView;
@@ -24,11 +24,13 @@ namespace SDRGames.Whist.TalentsModule.Presenters
 
             _talentView = talentView;
             _talentView.Initialize(ACTIVE_COLOR, INACTIVE_COLOR, data.Position);
+
+            //_data.ActiveChanged += ChangeActive;
         }
 
-        public void ChangeActive()
-        {
-            _talentView.ChangeActive(_data.ChangeActive());
-        }
+        //public void ChangeActive(object sender, ActiveChangedEventArgs e)
+        //{
+        //    _talentView.ChangeActive(e.IsActive);
+        //}
     }
 }
