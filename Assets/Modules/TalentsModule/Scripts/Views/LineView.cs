@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,6 +5,9 @@ namespace SDRGames.Whist.TalentsModule
 {
     public class LineView : Graphic
     {
+        private readonly Color _activeColor = Color.red;
+        private readonly Color _inactiveColor = Color.green;
+
         [SerializeField] private float _thickness = 10f;
 
         private Vector2 _endPoint;
@@ -40,11 +40,13 @@ namespace SDRGames.Whist.TalentsModule
         private void DrawVerticesForPoint(Vector2 point, VertexHelper vh, float angle)
         {
             UIVertex vertex = UIVertex.simpleVert;
-            vertex.color = color;
+            vertex.color = _activeColor;
 
             vertex.position = Quaternion.Euler(0, 0, angle) * new Vector3(-_thickness / 2, 0);
             vertex.position += new Vector3(point.x, point.y);
             vh.AddVert(vertex);
+
+            vertex.color = _inactiveColor;
 
             vertex.position = Quaternion.Euler(0, 0, angle) * new Vector3(_thickness / 2, 0);
             vertex.position += new Vector3(point.x, point.y);

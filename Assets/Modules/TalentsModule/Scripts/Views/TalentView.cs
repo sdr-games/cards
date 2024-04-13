@@ -62,6 +62,10 @@ namespace SDRGames.Whist.TalentsModule.Views
 
         public void ChangeActive()
         {
+            if(_isBlocked)
+            {
+                return;
+            }
             SetActive(!_isActive);
             foreach (TalentView dependency in _dependencies)
             {
