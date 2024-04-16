@@ -13,6 +13,7 @@ namespace SDRGames.Whist.TalentsEditorModule.Models
     {
         [field: SerializeField] public string ID { get; protected set; }
         [field: SerializeField] public string NodeName { get; protected set; }
+        [field: SerializeField] public int Cost { get; protected set; }
         [field: SerializeField] public NodeTypes NodeType { get; protected set; }
 
         public BaseData(string nodeName)
@@ -26,18 +27,14 @@ namespace SDRGames.Whist.TalentsEditorModule.Models
             NodeName = nodeName;
         }
 
+        public virtual void SetCost(int cost)
+        {
+            Cost = cost;
+        }
+
         public void SetNodeType(NodeTypes nodeType)
         {
             NodeType = nodeType;
-        }
-
-        public virtual TalentScriptableObject SaveToSO(TalentScriptableObject dialogueSO)
-        {
-            dialogueSO.Initialize(
-                NodeName,
-                NodeType
-            );
-            return dialogueSO;
         }
     }
 }

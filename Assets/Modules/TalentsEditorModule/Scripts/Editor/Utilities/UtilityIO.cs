@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text.RegularExpressions;
 
 using SDRGames.Whist.TalentsEditorModule.Managers;
+using SDRGames.Whist.TalentsEditorModule.Models;
 using SDRGames.Whist.TalentsEditorModule.Presenters;
 using SDRGames.Whist.TalentsEditorModule.Views;
 using SDRGames.Whist.TalentsModule.ScriptableObjects;
@@ -51,6 +51,7 @@ namespace SDRGames.Whist.TalentsEditorModule
             talentsBranch.Initialize(_graphFileName);
 
             SaveNodes(graphData, talentsBranch);
+            SaveVariables(graphData, talentsBranch);
 
             SaveAsset(graphData);
             SaveAsset(talentsBranch);
@@ -106,6 +107,7 @@ namespace SDRGames.Whist.TalentsEditorModule
             _graphView.ClearGraph();
             LoadNodes(graphData.TalamusNodes);
             LoadNodes(graphData.AstraNodes);
+            LoadVariables(graphData.Variables);
             LoadNodesConnections();
         }
 
@@ -127,6 +129,16 @@ namespace SDRGames.Whist.TalentsEditorModule
             UpdateDialoguesChoicesConnections(createdTalents);
         }
 
+        private static void SaveVariables(GraphSaveDataScriptableObject graphData, TalentsBranchScriptableObject talentsBranch)
+        {
+            foreach(VariableData variable in _graphView.BlackboardWindow.Variables)
+            {
+                graphData.AddVariable(variable);
+                BonusScriptableObject bonusSO = variable.SaveToSO(_containerFolderPath);
+                talentsBranch.Bonuses.Add(bonusSO);
+            } 
+        }
+
         private static void UpdateDialoguesChoicesConnections(Dictionary<string, TalentScriptableObject> createdTalents)
         {
             foreach (BaseNodeView node in _nodes)
@@ -136,10 +148,8 @@ namespace SDRGames.Whist.TalentsEditorModule
                     foreach (Edge edge in port.connections)
                     {
                         string inputNodeID = ((BaseNodeView)edge.input.node).ID;
-                        if (createdTalents[node.ID] is TalamusScriptableObject talamusSO)
-                        {
-                            talamusSO.Connections.Add(createdTalents[inputNodeID]);
-                        }
+                        createdTalents[node.ID].Dependencies.Add(createdTalents[inputNodeID]);
+                        createdTalents[inputNodeID].Blockers.Add(createdTalents[node.ID]);
                     }
                 }
             }
@@ -149,8 +159,11 @@ namespace SDRGames.Whist.TalentsEditorModule
         {
             foreach (AstraNodeView node in nodes)
             {
-                _graphView.AddElement(node);
-                _loadedNodes.Add(node.ID, node);
+                AstraNodeView newNode = (AstraNodeView)_graphView.CreateNode<AstraNodePresenter>(node.NodeName, node.Position, false);
+                newNode.Load(node);
+                newNode.Draw();
+                _graphView.AddElement(newNode);
+                _loadedNodes.Add(newNode.ID, newNode);
             }
         }
 
@@ -158,8 +171,19 @@ namespace SDRGames.Whist.TalentsEditorModule
         {
             foreach (TalamusNodeView node in nodes)
             {
-                _graphView.AddElement(node);
-                _loadedNodes.Add(node.ID, node);
+                TalamusNodeView newNode = (TalamusNodeView)_graphView.CreateNode<TalamusNodePresenter>(node.NodeName, node.Position, false);
+                newNode.Load(node);
+                newNode.Draw();
+                _graphView.AddElement(newNode);
+                _loadedNodes.Add(newNode.ID, newNode);
+            }
+        }
+
+        private static void LoadVariables(List<VariableData> variables)
+        {
+            foreach(VariableData variable in variables)
+            {
+                _graphView.BlackboardWindow.CreateVariable(variable);
             }
         }
 
@@ -168,15 +192,13 @@ namespace SDRGames.Whist.TalentsEditorModule
             foreach (KeyValuePair<string, BaseNodeView> loadedNode in _loadedNodes)
             {
                 BaseNodeView node = loadedNode.Value;
-                foreach(Port port in node.OutputPorts)
+                foreach(string id in node.OutputConnections)
                 {
-                    List<Edge> connections = port.connections.ToList();
-                    foreach(Edge edge in connections)
-                    {
-                        _graphView.AddElement(edge);
-                        node.RefreshPorts();
-                    }
+                    Port inputPort = _loadedNodes[id].InputPorts[0];
+                    Edge edge = node.OutputPorts[0].ConnectTo(inputPort);
+                    _graphView.AddElement(edge);
                 }
+                node.RefreshPorts();
             }
         }
 

@@ -6,6 +6,8 @@ using SDRGames.Whist.HelpersModule;
 using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine.UIElements;
+using UnityEditor.Experimental.GraphView;
+using UnityEngine;
 
 namespace SDRGames.Whist.TalentsEditorModule
 {
@@ -55,6 +57,7 @@ namespace SDRGames.Whist.TalentsEditorModule
             _graphView = new GraphManager(this);
 
             rootVisualElement.Add(_graphView);
+            //rootVisualElement.Add(new Pill());
         }
 
         private void AddToolbar()
@@ -97,7 +100,7 @@ namespace SDRGames.Whist.TalentsEditorModule
             {
                 _fileNameTextField.value = "NewTalentsGraph";
             }
-            CreateDefaultFolders(_fileNameTextField.value);
+            CreateDefaultFolders();
 
             var path = EditorUtility.SaveFilePanel("Save talents graph", $"{MODULE_ROOT}/ScriptableObjects/TalentsGraphs", $"{_fileNameTextField.value}.asset", "asset");
 
@@ -108,6 +111,7 @@ namespace SDRGames.Whist.TalentsEditorModule
             }
             path = $"Assets\\{Path.GetRelativePath("Assets", path)}";
             _fileNameTextField.value = Path.GetFileNameWithoutExtension(path);
+            CreateBranchFolders(_fileNameTextField.value);
             UtilityIO.Initialize(_graphView, _fileNameTextField.value);
             UtilityIO.Save(path);
         }
@@ -145,12 +149,16 @@ namespace SDRGames.Whist.TalentsEditorModule
             _miniMapButton.ToggleInClassList("ds-toolbar__button__selected");
         }
 
-        private void CreateDefaultFolders(string graphFileName)
+        private void CreateDefaultFolders()
         {
-            string containerFolderPath = $"{MODULE_ROOT}/ScriptableObjects/Branches/{graphFileName}";
             CreateFolder($"{MODULE_ROOT}", "ScriptableObjects");
             CreateFolder($"{MODULE_ROOT}/ScriptableObjects", "TalentsGraphs");
             CreateFolder($"{MODULE_ROOT}/ScriptableObjects", "Branches");
+        }
+
+        private void CreateBranchFolders(string graphFileName)
+        {
+            string containerFolderPath = $"{MODULE_ROOT}/ScriptableObjects/Branches/{graphFileName}";
 
             CreateFolder($"{MODULE_ROOT}/ScriptableObjects/Branches", graphFileName);
             CreateFolder(containerFolderPath, "Talents");

@@ -9,11 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8a14f64b3bdf6434b96df8acde5a77a4, type: 3}
-  m_Name: Talamus0
+  m_Script: {fileID: 11500000, guid: 501dd7249b8dcdd4e940cb991454610d, type: 3}
+  m_Name: New HalfAstraBonus
   m_EditorClassIdentifier: 
-  <Name>k__BackingField: 
-  <TalentType>k__BackingField: 0
-  <Characteristic>k__BackingField: 
-  <CharacteristicValue>k__BackingField: 0
-  <Connections>k__BackingField: []
+  <Value>k__BackingField: {fileID: 11400000, guid: ab477d19baf151d4ebc0aea121f62ca4,
+    type: 2}

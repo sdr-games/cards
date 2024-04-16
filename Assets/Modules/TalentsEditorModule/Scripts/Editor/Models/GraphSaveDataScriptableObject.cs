@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 
+using SDRGames.Whist.TalentsEditorModule.Models;
 using SDRGames.Whist.TalentsEditorModule.Views;
 
 using UnityEngine;
@@ -13,6 +14,7 @@ namespace SDRGames.Whist.TalentsEditorModule
         [field: SerializeField] public string FileName { get; private set; }
         [field: SerializeField] public List<TalamusNodeView> TalamusNodes { get; private set; }
         [field: SerializeField] public List<AstraNodeView> AstraNodes { get; private set; }
+        [field: SerializeField] public List<VariableData> Variables { get; private set; }
 
         public void Initialize(string fileName)
         {
@@ -20,6 +22,7 @@ namespace SDRGames.Whist.TalentsEditorModule
 
             TalamusNodes = new List<TalamusNodeView>();
             AstraNodes = new List<AstraNodeView>();
+            Variables = new List<VariableData>();
         }
 
         public void AddTalamusNode(TalamusNodeView talamusNodeView)
@@ -30,12 +33,21 @@ namespace SDRGames.Whist.TalentsEditorModule
             }
         }
 
-        public void AddAstrahNode(AstraNodeView astraNodeView)
+        public void AddAstraNode(AstraNodeView astraNodeView)
         {
             if(!AstraNodes.Contains(astraNodeView))
             {
                 AstraNodes.Add(astraNodeView);
             }
         }
+
+        public void AddVariable(VariableData variable)
+        {
+            if (!Variables.Contains(variable))
+            {
+                Variables.Add(variable);
+            } 
+        }
+         
     }
 }

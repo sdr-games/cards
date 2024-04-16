@@ -24,6 +24,8 @@ namespace SDRGames.Whist.TalentsEditorModule.Managers
         private SerializableDictionary<BaseNodeView, BaseNodePresenter> _nodesPresenters;
         private int _nameErrorsAmount;
 
+        public VariablesBlackboardWindow BlackboardWindow { get; private set; }
+
         public int NameErrorsAmount
         {
             get => _nameErrorsAmount;
@@ -56,6 +58,7 @@ namespace SDRGames.Whist.TalentsEditorModule.Managers
             AddGridBackground();
             AddMiniMap();
             AddSearchWindow();
+            AddBlackboard();
 
             OnElementsDeleted();
 
@@ -175,7 +178,12 @@ namespace SDRGames.Whist.TalentsEditorModule.Managers
                         edgesToDelete.Add(edge);
                         continue;
                     }
-                    nodesToDelete.Add((BaseNodeView)selectedElement);
+
+                    if(selectedElement is BaseNodeView nodeView)
+                    {
+                        nodesToDelete.Add(nodeView);
+                        continue;
+                    }
                 }
 
                 DeleteElements(edgesToDelete);
@@ -319,6 +327,12 @@ namespace SDRGames.Whist.TalentsEditorModule.Managers
                 _searchWindow.Initialize(this);
             }
             nodeCreationRequest = context => SearchWindow.Open(new SearchWindowContext(context.screenMousePosition), _searchWindow);
+        }
+
+        private void AddBlackboard()
+        {
+            BlackboardWindow = new VariablesBlackboardWindow(this);
+            Add(BlackboardWindow);
         }
 
         private void OnNodeNameTextFieldChanged(object sender, NodeNameChangedEventArgs args)

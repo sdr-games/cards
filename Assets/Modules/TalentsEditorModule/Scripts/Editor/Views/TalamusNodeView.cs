@@ -14,18 +14,22 @@ using static SDRGames.Whist.TalentsEditorModule.Models.TalamusData;
 
 namespace SDRGames.Whist.TalentsEditorModule.Views
 {
+    [Serializable]
     public class TalamusNodeView : BaseNodeView
     {
-        private CharacteristicNames _characteristicName;
-        private int _characteristicValue;
+        [field: SerializeField] public CharacteristicNames CharacteristicName { get; private set; }
+        [field: SerializeField] public int CharacteristicValue { get; private set; }
 
         public new event EventHandler<SavedToSOEventArgs<TalamusScriptableObject>> SavedToSO;
+        public event EventHandler<TalamusLoadedEventArgs> Loaded;
         public event EventHandler<CharacteristicNameChangedEventArgs> CharactersticNameChanged;
         public event EventHandler<CharacteristicValueChangedEventArgs> CharactersticValueChanged;
 
         public void Initialize(string id, string nodeName, Vector2 position)
         {
             base.Initialize(id, nodeName, position);
+            CharacteristicName = default;
+            CharacteristicValue = 0;
 
             CreateInputPort();
             CreateOutputPort();
@@ -52,24 +56,34 @@ namespace SDRGames.Whist.TalentsEditorModule.Views
             VisualElement customDataContainer = new VisualElement();
             customDataContainer.AddToClassList("ds-node__custom-data-container");
 
+            TextField costTextField = UtilityElement.CreateTextField(
+                Cost.ToString(), 
+                "Cost", 
+                callback => 
+                {
+                    Cost = int.Parse(callback.newValue);
+                    CostChanged(new CostChangedEventArgs(Cost));
+                }
+            );
+
             DropdownField characteristicDropdown = UtilityElement.CreateDropdownField
             (
                 typeof(CharacteristicNames),
-                _characteristicName.ToString(),
+                CharacteristicName.ToString(),
                 null,
                 callback =>
                 {
-                    _characteristicName = (CharacteristicNames)Enum.Parse(typeof(CharacteristicNames), callback.newValue);
+                    CharacteristicName = (CharacteristicNames)Enum.Parse(typeof(CharacteristicNames), callback.newValue);
                     CharactersticNameChanged?.Invoke(this, new CharacteristicNameChangedEventArgs(callback.newValue));
                 }
             );
 
-            TextField characteristicValueTextField = UtilityElement.CreateTextField(_characteristicValue.ToString(), null, callback =>
+            TextField characteristicValueTextField = UtilityElement.CreateTextField(CharacteristicValue.ToString(), null, callback =>
             {
                 TextField target = (TextField)callback.target;
                 target.value = callback.newValue.RemoveWhitespaces().RemoveSpecialCharacters();
-                _characteristicValue = int.Parse(target.value);
-                CharactersticValueChanged?.Invoke(this, new CharacteristicValueChangedEventArgs(_characteristicValue));
+                CharacteristicValue = int.Parse(target.value);
+                CharactersticValueChanged?.Invoke(this, new CharacteristicValueChangedEventArgs(CharacteristicValue));
             });
 
             //ObjectField characterObjectField = UtilityElement.CreateObjectField(typeof(CharacterInfoScriptableObject), _character, "Character", callback =>
@@ -79,6 +93,7 @@ namespace SDRGames.Whist.TalentsEditorModule.Views
             //});
             //characterFoldout.Add(characterObjectField);
 
+            customDataContainer.Add(costTextField);
             customDataContainer.Add(characteristicDropdown);
             customDataContainer.Add(characteristicValueTextField);
             extensionContainer.Add(customDataContainer);
@@ -94,15 +109,24 @@ namespace SDRGames.Whist.TalentsEditorModule.Views
 
         public override TalentScriptableObject SaveToSO(string folderPath)
         {
-            TalamusScriptableObject dialogueSO;
+            TalamusScriptableObject talamusSO;
 
-            dialogueSO = UtilityIO.CreateAsset<TalamusScriptableObject>($"{folderPath}/Talents", NodeName);
+            talamusSO = UtilityIO.CreateAsset<TalamusScriptableObject>($"{folderPath}/Talents", NodeName);
+            talamusSO.SetPosition(Position);
 
-            SavedToSO?.Invoke(this, new SavedToSOEventArgs<TalamusScriptableObject>(dialogueSO));
-            return dialogueSO;
+            SavedToSO?.Invoke(this, new SavedToSOEventArgs<TalamusScriptableObject>(talamusSO));
+            return talamusSO;
         }
 
-        public override Port CreateInputPort()
+        public void Load(TalamusNodeView node)
+        {
+            base.Load(node);
+            CharacteristicName = node.CharacteristicName;
+            CharacteristicValue = node.CharacteristicValue;
+            Loaded?.Invoke(this, new TalamusLoadedEventArgs(CharacteristicName, CharacteristicValue));
+        }
+
+        protected override Port CreateInputPort()
         {
             Port port = this.CreatePort(typeof(BaseNodeView), "Talamus", Orientation.Horizontal, Direction.Input, Port.Capacity.Multi);
             port.ClearClassList();
@@ -112,7 +136,7 @@ namespace SDRGames.Whist.TalentsEditorModule.Views
             return port;
         }
 
-        public override Port CreateOutputPort()
+        protected override Port CreateOutputPort()
         {
             Port port = this.CreatePort(typeof(BaseNodeView), "Astra/Talamus", capacity: Port.Capacity.Multi);
             port.ClearClassList();

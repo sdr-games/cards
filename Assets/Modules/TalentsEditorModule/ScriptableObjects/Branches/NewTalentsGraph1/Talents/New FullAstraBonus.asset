@@ -9,9 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 09a3027e02023dc4da8fa65f361653a1, type: 3}
-  m_Name: Astra3
+  m_Script: {fileID: 11500000, guid: 501dd7249b8dcdd4e940cb991454610d, type: 3}
+  m_Name: New FullAstraBonus
   m_EditorClassIdentifier: 
-  <Name>k__BackingField: Astra3
-  <TalentType>k__BackingField: 1
-  <Equipment>k__BackingField: Weapon
+  <Value>k__BackingField: {fileID: 11400000, guid: 4df52437518893f4e899c026694ff093,
+    type: 2}
