@@ -29,11 +29,6 @@ namespace SDRGames.Whist.TalentsEditorModule.Models
             CharacteristicValue = characteristicValue;
         }
 
-        public override void SetNodeName(string name)
-        {
-            NodeName = name;
-        }
-
         public void SetCharacteristicName(CharacteristicNames characteristicName)
         {
             CharacteristicName = characteristicName;
@@ -53,6 +48,7 @@ namespace SDRGames.Whist.TalentsEditorModule.Models
         {
             talamusSO.Initialize(
                 NodeName,
+                Cost,
                 NodeType,
                 CharacteristicName.ToString(),
                 CharacteristicValue

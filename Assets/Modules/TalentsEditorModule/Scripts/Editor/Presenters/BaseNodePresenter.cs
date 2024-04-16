@@ -13,5 +13,7 @@ namespace SDRGames.Whist.TalentsEditorModule.Presenters
         public abstract void Initialize(string name, Vector2 position);
 
         protected abstract void OnNodeNameTextFieldChanged(object sender, NodeNameChangedEventArgs e);
+
+        protected abstract void OnCostTextFieldChanged(object sender, CostChangedEventArgs e);
     }
 }

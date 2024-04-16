@@ -43,6 +43,16 @@ namespace SDRGames.Whist.TalentsEditorModule.Views
             VisualElement customDataContainer = new VisualElement();
             customDataContainer.AddToClassList("ds-node__custom-data-container");
 
+            TextField costTextField = UtilityElement.CreateTextField(
+                Cost.ToString(),
+                "Cost",
+                callback =>
+                {
+                    Cost = int.Parse(callback.newValue);
+                    CostChanged(new CostChangedEventArgs(Cost));
+                }
+            );
+
             DropdownField equipmentDropdown = UtilityElement.CreateDropdownField
             (
                 typeof(EquipmentNames),
@@ -62,6 +72,7 @@ namespace SDRGames.Whist.TalentsEditorModule.Views
             //});
             //characterFoldout.Add(characterObjectField);
 
+            customDataContainer.Add(costTextField);
             customDataContainer.Add(equipmentDropdown);
             extensionContainer.Add(customDataContainer);
 
@@ -71,7 +82,7 @@ namespace SDRGames.Whist.TalentsEditorModule.Views
         public override void SaveToGraph(GraphSaveDataScriptableObject graphData)
         {
             base.SaveToGraph(graphData);
-            graphData.AddAstrahNode(this);
+            graphData.AddAstraNode(this);
         }
 
         public override TalentScriptableObject SaveToSO(string folderPath)
@@ -92,7 +103,7 @@ namespace SDRGames.Whist.TalentsEditorModule.Views
             Loaded?.Invoke(this, new AstraLoadedEventArgs(Equipment));
         }
 
-        public override Port CreateInputPort()
+        protected override Port CreateInputPort()
         {
             Port port = this.CreatePort(typeof(BaseNodeView), "Talamus", Orientation.Horizontal, Direction.Input, Port.Capacity.Multi);
             port.ClearClassList();

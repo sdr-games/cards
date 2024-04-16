@@ -18,12 +18,14 @@ namespace SDRGames.Whist.TalentsEditorModule.Views
 
         [field: SerializeField] public string ID { get; protected set; }
         [field: SerializeField] public string NodeName { get; protected set; }
+        [field: SerializeField] public int Cost { get; protected set; }
         [field: SerializeField] public List<Port> InputPorts { get; protected set; }
         [field: SerializeField] public List<Port> OutputPorts { get; protected set; }
         [field: SerializeField] public List<string> OutputConnections { get; protected set; }
         [field: SerializeField] public Vector2 Position { get; protected set; }
 
         public event EventHandler<NodeNameChangedEventArgs> NodeNameTextFieldChanged;
+        public event EventHandler<CostChangedEventArgs> CostTextFieldChanged;
         public event EventHandler PortDisconnected;
 
         public event EventHandler<SavedToSOEventArgs<TalentScriptableObject>> SavedToSO;
@@ -60,6 +62,7 @@ namespace SDRGames.Whist.TalentsEditorModule.Views
         public virtual void Draw()
         {
             /* TITLE CONTAINER */
+
             TextField nodeNameTextField = UtilityElement.CreateTextField(NodeName, null, callback =>
             {
                 string oldName = NodeName;
@@ -115,27 +118,33 @@ namespace SDRGames.Whist.TalentsEditorModule.Views
             return dialogueSO;
         }
 
-        protected void Load(BaseNodeView node)
-        {
-            ID = node.ID;
-            NodeName = node.NodeName;
-            OutputConnections = node.OutputConnections;
-        }
-
         public void DisconnectAllPorts()
         {
             DisconnectInputPorts();
             DisconnectOutputPorts();
         }
 
-        public virtual Port CreateInputPort()
+        protected void Load(BaseNodeView node)
+        {
+            ID = node.ID;
+            NodeName = node.NodeName;
+            Cost = node.Cost;
+            OutputConnections = node.OutputConnections;
+        }
+
+        protected virtual Port CreateInputPort()
         {
             return null;
         }
 
-        public virtual Port CreateOutputPort()
+        protected virtual Port CreateOutputPort()
         {
             return null;
+        }
+
+        protected virtual void CostChanged(CostChangedEventArgs e)
+        {
+            CostTextFieldChanged?.Invoke(this, e);
         }
 
         private void DisconnectInputPorts()

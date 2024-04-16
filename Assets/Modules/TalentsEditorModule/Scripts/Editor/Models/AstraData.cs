@@ -23,11 +23,6 @@ namespace SDRGames.Whist.TalentsEditorModule.Models
             Equipment = equipment;
         }
 
-        public override void SetNodeName(string name)
-        {
-            NodeName = name;
-        }
-
         public void SetEquipment(string equipment)
         {
             Equipment = (EquipmentNames)Enum.Parse(typeof(EquipmentNames), equipment);
@@ -37,6 +32,7 @@ namespace SDRGames.Whist.TalentsEditorModule.Models
         {
             astraSO.Initialize(
                 NodeName,
+                Cost,
                 NodeType,
                 Equipment.ToString()
             );

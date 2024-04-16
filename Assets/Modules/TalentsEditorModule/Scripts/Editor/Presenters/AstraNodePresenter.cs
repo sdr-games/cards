@@ -6,7 +6,6 @@ using SDRGames.Whist.TalentsModule.ScriptableObjects;
 
 using UnityEngine;
 
-using static SDRGames.Whist.TalentsEditorModule.Models.AstraData;
 using static SDRGames.Whist.TalentsModule.ScriptableObjects.TalentScriptableObject;
 
 namespace SDRGames.Whist.TalentsEditorModule.Presenters
@@ -30,6 +29,7 @@ namespace SDRGames.Whist.TalentsEditorModule.Presenters
             _nodeView.Initialize(_data.ID, _data.NodeName, position);
             _nodeView.SavedToSO += OnSavedToSO;
             _nodeView.Loaded += OnLoaded;
+            _nodeView.CostTextFieldChanged += OnCostTextFieldChanged;
             _nodeView.EquipmentChanged += OnEquipmentChanged;
         }
 
@@ -41,6 +41,11 @@ namespace SDRGames.Whist.TalentsEditorModule.Presenters
         protected override void OnNodeNameTextFieldChanged(object sender, NodeNameChangedEventArgs e)
         {
             _data.SetNodeName(e.NewNode.NodeName);
+        }
+
+        protected override void OnCostTextFieldChanged(object sender, CostChangedEventArgs e)
+        {
+            _data.SetCost(e.Cost);
         }
 
         protected void OnSavedToSO(object sender, SavedToSOEventArgs<AstraScriptableObject> e)

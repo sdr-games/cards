@@ -56,6 +56,16 @@ namespace SDRGames.Whist.TalentsEditorModule.Views
             VisualElement customDataContainer = new VisualElement();
             customDataContainer.AddToClassList("ds-node__custom-data-container");
 
+            TextField costTextField = UtilityElement.CreateTextField(
+                Cost.ToString(), 
+                "Cost", 
+                callback => 
+                {
+                    Cost = int.Parse(callback.newValue);
+                    CostChanged(new CostChangedEventArgs(Cost));
+                }
+            );
+
             DropdownField characteristicDropdown = UtilityElement.CreateDropdownField
             (
                 typeof(CharacteristicNames),
@@ -83,6 +93,7 @@ namespace SDRGames.Whist.TalentsEditorModule.Views
             //});
             //characterFoldout.Add(characterObjectField);
 
+            customDataContainer.Add(costTextField);
             customDataContainer.Add(characteristicDropdown);
             customDataContainer.Add(characteristicValueTextField);
             extensionContainer.Add(customDataContainer);
@@ -115,7 +126,7 @@ namespace SDRGames.Whist.TalentsEditorModule.Views
             Loaded?.Invoke(this, new TalamusLoadedEventArgs(CharacteristicName, CharacteristicValue));
         }
 
-        public override Port CreateInputPort()
+        protected override Port CreateInputPort()
         {
             Port port = this.CreatePort(typeof(BaseNodeView), "Talamus", Orientation.Horizontal, Direction.Input, Port.Capacity.Multi);
             port.ClearClassList();
@@ -125,7 +136,7 @@ namespace SDRGames.Whist.TalentsEditorModule.Views
             return port;
         }
 
-        public override Port CreateOutputPort()
+        protected override Port CreateOutputPort()
         {
             Port port = this.CreatePort(typeof(BaseNodeView), "Astra/Talamus", capacity: Port.Capacity.Multi);
             port.ClearClassList();

@@ -6,6 +6,8 @@ using SDRGames.Whist.HelpersModule;
 using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine.UIElements;
+using UnityEditor.Experimental.GraphView;
+using UnityEngine;
 
 namespace SDRGames.Whist.TalentsEditorModule
 {
@@ -55,6 +57,7 @@ namespace SDRGames.Whist.TalentsEditorModule
             _graphView = new GraphManager(this);
 
             rootVisualElement.Add(_graphView);
+            //rootVisualElement.Add(new Pill());
         }
 
         private void AddToolbar()

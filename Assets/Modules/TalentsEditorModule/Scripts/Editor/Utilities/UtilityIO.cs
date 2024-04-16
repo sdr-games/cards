@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text.RegularExpressions;
 
 using SDRGames.Whist.TalentsEditorModule.Managers;
+using SDRGames.Whist.TalentsEditorModule.Models;
 using SDRGames.Whist.TalentsEditorModule.Presenters;
 using SDRGames.Whist.TalentsEditorModule.Views;
 using SDRGames.Whist.TalentsModule.ScriptableObjects;
@@ -51,6 +51,7 @@ namespace SDRGames.Whist.TalentsEditorModule
             talentsBranch.Initialize(_graphFileName);
 
             SaveNodes(graphData, talentsBranch);
+            SaveVariables(graphData, talentsBranch);
 
             SaveAsset(graphData);
             SaveAsset(talentsBranch);
@@ -106,6 +107,7 @@ namespace SDRGames.Whist.TalentsEditorModule
             _graphView.ClearGraph();
             LoadNodes(graphData.TalamusNodes);
             LoadNodes(graphData.AstraNodes);
+            LoadVariables(graphData.Variables);
             LoadNodesConnections();
         }
 
@@ -125,6 +127,16 @@ namespace SDRGames.Whist.TalentsEditorModule
             }
 
             UpdateDialoguesChoicesConnections(createdTalents);
+        }
+
+        private static void SaveVariables(GraphSaveDataScriptableObject graphData, TalentsBranchScriptableObject talentsBranch)
+        {
+            foreach(VariableData variable in _graphView.BlackboardWindow.Variables)
+            {
+                graphData.AddVariable(variable);
+                BonusScriptableObject bonusSO = variable.SaveToSO(_containerFolderPath);
+                talentsBranch.Bonuses.Add(bonusSO);
+            } 
         }
 
         private static void UpdateDialoguesChoicesConnections(Dictionary<string, TalentScriptableObject> createdTalents)
@@ -164,6 +176,14 @@ namespace SDRGames.Whist.TalentsEditorModule
                 newNode.Draw();
                 _graphView.AddElement(newNode);
                 _loadedNodes.Add(newNode.ID, newNode);
+            }
+        }
+
+        private static void LoadVariables(List<VariableData> variables)
+        {
+            foreach(VariableData variable in variables)
+            {
+                _graphView.BlackboardWindow.CreateVariable(variable);
             }
         }
 
