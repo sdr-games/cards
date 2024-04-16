@@ -105,6 +105,7 @@ namespace SDRGames.Whist.TalentsEditorModule.Managers
         {
             graphElements.ForEach(graphElement => RemoveElement(graphElement));
             _nodes.Clear();
+            BlackboardWindow.Clear();
             NameErrorsAmount = 0;
         }
 

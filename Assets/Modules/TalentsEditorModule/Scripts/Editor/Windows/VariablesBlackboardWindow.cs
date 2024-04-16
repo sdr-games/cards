@@ -43,6 +43,12 @@ namespace SDRGames.Whist.TalentsEditorModule
             CreateVariable(presenter);
         }
 
+        public void Clear()
+        {
+            base.Clear();
+            Variables.Clear();
+        }
+
         private void CreateVariable(VariablePresenter presenter)
         {
             presenter.VariableView.VariableSelected += OnVariableSelected;
