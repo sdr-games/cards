@@ -15,7 +15,7 @@ namespace SDRGames.Whist.TalentsModule.Managers
             base.Initialize(userInputController, talamusScriptableObject);
             _talamus = new Talamus(talamusScriptableObject);
 
-            _talamusPresenter = new TalamusPresenter(_talamus, TalentView, talamusScriptableObject.Position);
+            _talamusPresenter = new TalamusPresenter(_talamus, TalentView, talamusScriptableObject.PositionPercentages);
         }
     }
 }

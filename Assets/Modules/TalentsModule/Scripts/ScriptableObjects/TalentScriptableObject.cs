@@ -13,7 +13,7 @@ namespace SDRGames.Whist.TalentsModule.ScriptableObjects
         [field: SerializeField][field: ReadOnly] public string Name { get; private set; }
         [field: SerializeField][field: ReadOnly] public int Cost { get; private set; }
         [field: SerializeField][field: ReadOnly] public NodeTypes TalentType { get; private set; }
-        [field: SerializeField][field: ReadOnly] public Vector2 Position { get; private set; }
+        [field: SerializeField][field: ReadOnly] public Vector2 PositionPercentages { get; private set; }
         [field: SerializeField][field: ReadOnly] public List<TalentScriptableObject> Blockers { get; private set; }
         [field: SerializeField][field: ReadOnly] public List<TalentScriptableObject> Dependencies { get; private set; }
 
@@ -26,9 +26,9 @@ namespace SDRGames.Whist.TalentsModule.ScriptableObjects
             Dependencies = new List<TalentScriptableObject>();
         }
 
-        public void SetPosition(Vector2 position)
+        public void SetPositionPercentages(Vector2 positionPercentages)
         {
-            Position = position;
+            PositionPercentages = positionPercentages;
         }
     }
 }

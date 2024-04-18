@@ -32,7 +32,7 @@ namespace SDRGames.Whist.TalentsModule.Views
             _inactiveColor = inactiveColor;
 
             _image.color = _inactiveColor;
-            transform.position = position;
+            transform.position = ((RectTransform)transform.parent).rect.size * position / 100;
 
             _isActive = false;
             ChangeBlock();

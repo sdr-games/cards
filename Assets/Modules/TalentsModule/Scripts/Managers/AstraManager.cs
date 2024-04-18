@@ -15,7 +15,7 @@ namespace SDRGames.Whist.TalentsModule.Managers
             base.Initialize(userInputController, astraScriptableObject);
             _astra = new Astra(astraScriptableObject);
 
-            _astraPresenter = new AstraPresenter(_astra, TalentView, astraScriptableObject.Position);
+            _astraPresenter = new AstraPresenter(_astra, TalentView, astraScriptableObject.PositionPercentages);
         }
     }
 }
