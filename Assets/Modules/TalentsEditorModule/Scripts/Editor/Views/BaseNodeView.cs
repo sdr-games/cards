@@ -108,14 +108,16 @@ namespace SDRGames.Whist.TalentsEditorModule.Views
             }
         }
 
-        public virtual TalentScriptableObject SaveToSO(string folderPath)
+        public virtual TalentScriptableObject SaveToSO(string folderPath, Vector2 graphSize)
         {
-            TalentScriptableObject dialogueSO;
+            TalentScriptableObject talentSO;
 
-            dialogueSO = UtilityIO.CreateAsset<TalentScriptableObject>($"{folderPath}/Talents", NodeName);
+            talentSO = UtilityIO.CreateAsset<TalentScriptableObject>($"{folderPath}/Talents", NodeName);
+            Vector2 position = new Vector2(Position.x * 100 / graphSize.x, Position.y * 100 / graphSize.y);
+            talentSO.SetPositionPercentages(position);
 
-            SavedToSO?.Invoke(this, new SavedToSOEventArgs<TalentScriptableObject>(dialogueSO));
-            return dialogueSO;
+            SavedToSO?.Invoke(this, new SavedToSOEventArgs<TalentScriptableObject>(talentSO));
+            return talentSO;
         }
 
         public void DisconnectAllPorts()

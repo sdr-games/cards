@@ -9,13 +9,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 09a3027e02023dc4da8fa65f361653a1, type: 3}
-  m_Name: Astra0
+  m_Script: {fileID: 11500000, guid: 8a14f64b3bdf6434b96df8acde5a77a4, type: 3}
+  m_Name: Talamus1
   m_EditorClassIdentifier: 
-  <Name>k__BackingField: Astra02
+  <Name>k__BackingField: 
   <Cost>k__BackingField: 0
-  <TalentType>k__BackingField: 1
-  <Position>k__BackingField: {x: 379.2, y: 343.19998}
+  <TalentType>k__BackingField: 0
+  <PositionPercentages>k__BackingField: {x: 0, y: 0}
   <Blockers>k__BackingField: []
   <Dependencies>k__BackingField: []
-  <Equipment>k__BackingField: Weapon
+  <Characteristic>k__BackingField: 
+  <CharacteristicValue>k__BackingField: 0

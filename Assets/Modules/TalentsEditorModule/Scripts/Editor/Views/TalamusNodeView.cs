@@ -107,12 +107,13 @@ namespace SDRGames.Whist.TalentsEditorModule.Views
             graphData.AddTalamusNode(this);
         }
 
-        public override TalentScriptableObject SaveToSO(string folderPath)
+        public override TalentScriptableObject SaveToSO(string folderPath, Vector2 graphSize)
         {
             TalamusScriptableObject talamusSO;
 
             talamusSO = UtilityIO.CreateAsset<TalamusScriptableObject>($"{folderPath}/Talents", NodeName);
-            talamusSO.SetPosition(Position);
+            Vector2 position = new Vector2(Position.x * 100 / graphSize.x, Position.y * 100 / graphSize.y);
+            talamusSO.SetPositionPercentages(position);
 
             SavedToSO?.Invoke(this, new SavedToSOEventArgs<TalamusScriptableObject>(talamusSO));
             return talamusSO;

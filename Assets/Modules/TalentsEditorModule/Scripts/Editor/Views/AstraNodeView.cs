@@ -85,12 +85,13 @@ namespace SDRGames.Whist.TalentsEditorModule.Views
             graphData.AddAstraNode(this);
         }
 
-        public override TalentScriptableObject SaveToSO(string folderPath)
+        public override TalentScriptableObject SaveToSO(string folderPath, Vector2 graphSize)
         {
             AstraScriptableObject astraSO;
 
             astraSO = UtilityIO.CreateAsset<AstraScriptableObject>($"{folderPath}/Talents", NodeName);
-            astraSO.SetPosition(Position);
+            Vector2 position = new Vector2(Position.x * 100 / graphSize.x, Position.y * 100 / graphSize.y);
+            astraSO.SetPositionPercentages(position);
 
             SavedToSO?.Invoke(this, new SavedToSOEventArgs<AstraScriptableObject>(astraSO));
             return astraSO;

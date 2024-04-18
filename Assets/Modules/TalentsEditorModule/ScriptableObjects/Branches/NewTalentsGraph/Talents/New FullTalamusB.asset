@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 501dd7249b8dcdd4e940cb991454610d, type: 3}
-  m_Name: New FullAstraBonus
+  m_Name: New FullTalamusB
   m_EditorClassIdentifier: 
-  <Value>k__BackingField: {fileID: 11400000, guid: 4df52437518893f4e899c026694ff093,
+  <Value>k__BackingField: {fileID: 11400000, guid: 8c94772e1045189449556623ed06db0f,
     type: 2}

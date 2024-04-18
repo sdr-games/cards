@@ -12,7 +12,62 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50a8127899c311142a6d585424984797, type: 3}
   m_Name: NewTalentsGraph2
   m_EditorClassIdentifier: 
-  <FileName>k__BackingField: NewTalentsGraph2
-  <TalamusNodes>k__BackingField: []
-  <AstraNodes>k__BackingField: []
-  <Variables>k__BackingField: []
+  <FileName>k__BackingField: 
+  <TalamusNodes>k__BackingField:
+  - <ID>k__BackingField: 1eafc3ed-ce1a-4afd-a1b7-31d7687dc963
+    <NodeName>k__BackingField: Talamus1
+    <Cost>k__BackingField: 2
+    <OutputConnections>k__BackingField:
+    - 4406013c-0a3b-444c-a435-fc9671bf2344
+    - ca4b7d10-4594-4770-86f8-e995958eb262
+    - ce7e4ce0-9a37-410d-a9de-55535048ed68
+    <Position>k__BackingField: {x: 708, y: 346.4}
+    <CharacteristicName>k__BackingField: 0
+    <CharacteristicValue>k__BackingField: 2
+  - <ID>k__BackingField: 4406013c-0a3b-444c-a435-fc9671bf2344
+    <NodeName>k__BackingField: Talamus3
+    <Cost>k__BackingField: 2
+    <OutputConnections>k__BackingField:
+    - e63b6da1-a9d5-4d3e-85ed-b43cc5dfff58
+    - d6f9dad7-48de-4f9f-8919-431ecb3012a6
+    <Position>k__BackingField: {x: 1035.2, y: 346.4}
+    <CharacteristicName>k__BackingField: 1
+    <CharacteristicValue>k__BackingField: 3
+  <AstraNodes>k__BackingField:
+  - <ID>k__BackingField: ca4b7d10-4594-4770-86f8-e995958eb262
+    <NodeName>k__BackingField: Astra0
+    <Cost>k__BackingField: 3
+    <OutputConnections>k__BackingField: []
+    <Position>k__BackingField: {x: 340, y: 188}
+    <Equipment>k__BackingField: 0
+  - <ID>k__BackingField: ce7e4ce0-9a37-410d-a9de-55535048ed68
+    <NodeName>k__BackingField: Astra2
+    <Cost>k__BackingField: 3
+    <OutputConnections>k__BackingField: []
+    <Position>k__BackingField: {x: 340, y: 474.4}
+    <Equipment>k__BackingField: 0
+  - <ID>k__BackingField: e63b6da1-a9d5-4d3e-85ed-b43cc5dfff58
+    <NodeName>k__BackingField: Astra4
+    <Cost>k__BackingField: 3
+    <OutputConnections>k__BackingField: []
+    <Position>k__BackingField: {x: 1327.2, y: 188}
+    <Equipment>k__BackingField: 0
+  - <ID>k__BackingField: d6f9dad7-48de-4f9f-8919-431ecb3012a6
+    <NodeName>k__BackingField: Astra5
+    <Cost>k__BackingField: 3
+    <OutputConnections>k__BackingField: []
+    <Position>k__BackingField: {x: 1327.2, y: 474.4}
+    <Equipment>k__BackingField: 0
+  <Variables>k__BackingField:
+  - <Name>k__BackingField: New HalfAstraB
+    <Value>k__BackingField: {fileID: 11400000, guid: 26c818cfce9db744082321003862ece5,
+      type: 2}
+    <Type>k__BackingField: 0
+  - <Name>k__BackingField: New FullAstraBonu
+    <Value>k__BackingField: {fileID: 11400000, guid: ee8fc9a5d42e6b04489a5e5daf1ab0fa,
+      type: 2}
+    <Type>k__BackingField: 1
+  - <Name>k__BackingField: New FullTalam
+    <Value>k__BackingField: {fileID: 11400000, guid: 173c9d125244aa645abf89cc72e2a77f,
+      type: 2}
+    <Type>k__BackingField: 2

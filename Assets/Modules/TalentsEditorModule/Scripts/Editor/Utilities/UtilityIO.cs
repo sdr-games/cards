@@ -115,11 +115,12 @@ namespace SDRGames.Whist.TalentsEditorModule
         {
             List<string> nodeNames = new List<string>();
             Dictionary<string, TalentScriptableObject> createdTalents = new Dictionary<string, TalentScriptableObject>();
+            Vector2 graphSize = _graphView.GetGraphSize();
 
             foreach (BaseNodeView node in _nodes)
             {
                 node.SaveToGraph(graphData);
-                TalentScriptableObject talentSO = node.SaveToSO(_containerFolderPath);
+                TalentScriptableObject talentSO = node.SaveToSO(_containerFolderPath, graphSize);
                 createdTalents.Add(node.ID, talentSO);
 
                 talentsBranch.Talents.Add(talentSO);

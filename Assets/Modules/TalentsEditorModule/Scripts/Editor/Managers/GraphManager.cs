@@ -123,6 +123,11 @@ namespace SDRGames.Whist.TalentsEditorModule.Managers
               .ToList();
         }
 
+        public Vector2 GetGraphSize()
+        {
+            return CalculateRectToFitAll(contentContainer).max;
+        }
+
         private void AddNode(string nodeName, BaseNodeView node)
         {
             if (!_nodes.ContainsKey(nodeName))
