@@ -1,5 +1,6 @@
 using System;
 
+using SDRGames.Whist.TalentsEditorModule.Views;
 using SDRGames.Whist.TalentsModule.ScriptableObjects;
 
 using UnityEngine;
@@ -23,10 +24,13 @@ namespace SDRGames.Whist.TalentsEditorModule.Models
             CharacteristicValue = 0;
         }
 
-        public void Load(CharacteristicNames characteristicName, int characteristicValue) 
+        public void Load(TalamusLoadedEventArgs data) 
         {
-            CharacteristicName = characteristicName;
-            CharacteristicValue = characteristicValue;
+            ID = data.ID;
+            NodeName = data.NodeName;
+            Cost = data.Cost;
+            CharacteristicName = data.CharacteristicName;
+            CharacteristicValue = data.CharacteristicValue;
         }
 
         public void SetCharacteristicName(CharacteristicNames characteristicName)

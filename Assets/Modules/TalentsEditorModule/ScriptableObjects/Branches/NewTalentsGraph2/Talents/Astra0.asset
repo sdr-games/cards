@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09a3027e02023dc4da8fa65f361653a1, type: 3}
   m_Name: Astra0
   m_EditorClassIdentifier: 
-  <Name>k__BackingField: Astra02
-  <Cost>k__BackingField: 0
+  <Name>k__BackingField: Astra0
+  <Cost>k__BackingField: 3
   <TalentType>k__BackingField: 1
   <PositionPercentages>k__BackingField: {x: 22.100885, y: 30.440416}
   <Blockers>k__BackingField: []
