@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Talamus3
   m_EditorClassIdentifier: 
   <Name>k__BackingField: 
+  <Cost>k__BackingField: 0
   <TalentType>k__BackingField: 0
   <Position>k__BackingField: {x: 0, y: 0}
   <Blockers>k__BackingField: []
