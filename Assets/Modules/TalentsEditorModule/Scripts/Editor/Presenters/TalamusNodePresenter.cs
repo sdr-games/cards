@@ -56,7 +56,7 @@ namespace SDRGames.Whist.TalentsEditorModule.Presenters
 
         private void OnLoaded(object sender, TalamusLoadedEventArgs e)
         {
-            _data.Load(e.CharacteristicName, e.CharacteristicValue);
+            _data.Load(e);
         }
 
         private void OnCharactersticNameChanged(object sender, CharacteristicNameChangedEventArgs e)

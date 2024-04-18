@@ -55,7 +55,7 @@ namespace SDRGames.Whist.TalentsEditorModule.Presenters
 
         private void OnLoaded(object sender, AstraLoadedEventArgs e)
         {
-            _data.Load(e.EquipmentName);
+            _data.Load(e);
         }
 
         private void OnEquipmentChanged(object sender, EquipmentChangedEventArgs e)

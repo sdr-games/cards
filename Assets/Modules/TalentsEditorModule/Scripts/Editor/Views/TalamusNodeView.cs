@@ -124,7 +124,7 @@ namespace SDRGames.Whist.TalentsEditorModule.Views
             base.Load(node);
             CharacteristicName = node.CharacteristicName;
             CharacteristicValue = node.CharacteristicValue;
-            Loaded?.Invoke(this, new TalamusLoadedEventArgs(CharacteristicName, CharacteristicValue));
+            Loaded?.Invoke(this, new TalamusLoadedEventArgs(ID, NodeName, Cost, CharacteristicName, CharacteristicValue));
         }
 
         protected override Port CreateInputPort()

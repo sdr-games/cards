@@ -101,7 +101,7 @@ namespace SDRGames.Whist.TalentsEditorModule.Views
         {
             base.Load(node);
             Equipment = node.Equipment;
-            Loaded?.Invoke(this, new AstraLoadedEventArgs(Equipment));
+            Loaded?.Invoke(this, new AstraLoadedEventArgs(ID, NodeName, Cost, Equipment));
         }
 
         protected override Port CreateInputPort()

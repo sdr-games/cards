@@ -1,5 +1,6 @@
 using System;
 
+using SDRGames.Whist.TalentsEditorModule.Views;
 using SDRGames.Whist.TalentsModule.ScriptableObjects;
 
 using static SDRGames.Whist.TalentsModule.ScriptableObjects.TalentScriptableObject;
@@ -18,9 +19,12 @@ namespace SDRGames.Whist.TalentsEditorModule.Models
             Equipment = default;
         }
 
-        public void Load(EquipmentNames equipment)
+        public void Load(AstraLoadedEventArgs data)
         {
-            Equipment = equipment;
+            ID = data.ID;
+            NodeName = data.NodeName;
+            Cost = data.Cost;
+            Equipment = data.EquipmentName;
         }
 
         public void SetEquipment(string equipment)
