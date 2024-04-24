@@ -108,13 +108,13 @@ namespace SDRGames.Whist.TalentsEditorModule.Views
             }
         }
 
-        public virtual TalentScriptableObject SaveToSO(string folderPath, Vector2 graphSize)
+        public virtual TalentScriptableObject SaveToSO(string folderPath, Rect graphRect)
         {
             TalentScriptableObject talentSO;
 
             talentSO = UtilityIO.CreateAsset<TalentScriptableObject>($"{folderPath}/Talents", NodeName);
-            Vector2 position = new Vector2(Position.x * 100 / graphSize.x, Position.y * 100 / graphSize.y);
-            talentSO.SetPositionPercentages(position);
+            Vector2 positionPercentages = CalculateLocalPositionPercentages(graphRect);
+            talentSO.SetPositionPercentages(positionPercentages);
 
             SavedToSO?.Invoke(this, new SavedToSOEventArgs<TalentScriptableObject>(talentSO));
             return talentSO;
@@ -147,6 +147,11 @@ namespace SDRGames.Whist.TalentsEditorModule.Views
         protected virtual void CostChanged(CostChangedEventArgs e)
         {
             CostTextFieldChanged?.Invoke(this, e);
+        }
+
+        protected Vector2 CalculateLocalPositionPercentages(Rect graphRect)
+        {
+            return new Vector2((Position.x - graphRect.xMin) * 100 / (graphRect.size.x - localBound.size.x), (Position.y - graphRect.yMin) * 100 / (graphRect.size.y - localBound.size.y));
         }
 
         private void DisconnectInputPorts()

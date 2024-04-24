@@ -12,15 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e27b5ac8de4c7949a7747223e0df75b, type: 3}
   m_Name: NewTalentsGraph
   m_EditorClassIdentifier: 
-  <FileName>k__BackingField: 
+  <FileName>k__BackingField: NewTalentsGraph
   <Talents>k__BackingField:
+  - {fileID: 11400000, guid: 771d76e90c8afc649a258e4346c8cc66, type: 2}
+  - {fileID: 11400000, guid: 4df52437518893f4e899c026694ff093, type: 2}
   - {fileID: 11400000, guid: 6516057d363b6af4b8c8cb9897f5b5e4, type: 2}
   - {fileID: 11400000, guid: 296ab4a5093896747bec985ebc9eb4fd, type: 2}
-  - {fileID: 11400000, guid: 771d76e90c8afc649a258e4346c8cc66, type: 2}
   - {fileID: 11400000, guid: 3ba748c5957a3864d9edc3e606a13673, type: 2}
   - {fileID: 11400000, guid: e290f044fb8d70349ad741167170969c, type: 2}
-  - {fileID: 11400000, guid: 4df52437518893f4e899c026694ff093, type: 2}
-  <Bonuses>k__BackingField:
-  - {fileID: 11400000, guid: 7c799f7b7fe54cf43abfcc5ec4928545, type: 2}
-  - {fileID: 11400000, guid: efe77a139fcbc0a48bb207fd73576431, type: 2}
-  - {fileID: 11400000, guid: be43641b650b0794fb94dea1544ae129, type: 2}
+  <Bonuses>k__BackingField: []

@@ -1,8 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-using SDRGames.Whist.TalentsModule.Models;
-using SDRGames.Whist.UserInputModule.Controller;
+using TMPro;
 
 using UnityEditor;
 
@@ -16,25 +15,31 @@ namespace SDRGames.Whist.TalentsModule.Views
         private Color _activeColor;
         private Color _inactiveColor;
 
-        private bool _isActive;
-        private bool _isBlocked;
+        private List<TalentView> _blockers;
+        private List<TalentView> _dependencies;
 
         [SerializeField] private Image _image;
         [SerializeField] private Button _button;
+        [SerializeField] private TextMeshProUGUI _currentPointsText;
         [SerializeField] private LineView _lineViewPrefab;
 
-        [SerializeField] private List<TalentView> _blockers;
-        [SerializeField] private List<TalentView> _dependencies;
+        public event EventHandler BlockChanged;
 
-        public void Initialize(Color activeColor, Color inactiveColor, Vector2 position)
+        public bool IsActive { get; private set; }
+        public bool IsBlocked { get; private set; }
+
+        public void Initialize(Color activeColor, Color inactiveColor, int cost, Vector2 position)
         {
             _activeColor = activeColor;
             _inactiveColor = inactiveColor;
 
             _image.color = _inactiveColor;
-            transform.position = ((RectTransform)transform.parent).rect.size * position / 100;
+            _currentPointsText.text = $"0/{cost}";
 
-            _isActive = false;
+            ((RectTransform)transform).anchoredPosition = position;
+
+            IsActive = false;
+
             ChangeBlock();
         }
 
@@ -62,39 +67,50 @@ namespace SDRGames.Whist.TalentsModule.Views
 
         public void ChangeActive()
         {
-            if(_isBlocked)
+            if(IsBlocked)
             {
                 return;
             }
-            SetActive(!_isActive);
+            SetActive(!IsActive);
+        }
+
+        public void ChangeCurrentPoints(string text)
+        {
+            _currentPointsText.text = text;
+        }
+
+        public void SetActive(bool isActive)
+        {
+            IsActive = isActive;
+            _image.color = IsActive ? _activeColor : _inactiveColor;
             foreach (TalentView dependency in _dependencies)
             {
                 dependency.ChangeBlock();
             }
         }
 
-        private void SetActive(bool isActive)
+        public void SetParent(Transform parent)
         {
-            _isActive = isActive;
-            _image.color = _isActive ? _activeColor : _inactiveColor;
+            transform.SetParent(parent, false);
         }
 
         private void ChangeBlock()
         {
-            _isBlocked = false;
+            IsBlocked = false;
             foreach (TalentView blocker in _blockers)
             {
-                if(!blocker._isActive)
+                if(!blocker.IsActive)
                 {
-                    _isBlocked = true;
+                    IsBlocked = true;
                     break;
                 }
             }
-            if(_isBlocked)
+            if(IsBlocked)
             {
                 SetActive(false);
+                BlockChanged?.Invoke(this, EventArgs.Empty);
             }
-            _button.interactable = !_isBlocked;
+            _button.interactable = !IsBlocked;
         }
 
         private void OnEnable()
@@ -115,6 +131,14 @@ namespace SDRGames.Whist.TalentsModule.Views
                 #endif
             }
 
+            if (_currentPointsText == null)
+            {
+                Debug.LogError("Current Points Text не был назначен");
+                #if UNITY_EDITOR
+                    EditorApplication.isPlaying = false;
+                #endif
+            }
+
             if (_lineViewPrefab == null)
             {
                 Debug.LogError("Line View Prefab не был назначен");
@@ -122,6 +146,9 @@ namespace SDRGames.Whist.TalentsModule.Views
                     EditorApplication.isPlaying = false;
                 #endif
             }
+
+            _blockers = new List<TalentView>();
+            _dependencies = new List<TalentView>();
         }
     }
 }

@@ -12,10 +12,10 @@ namespace SDRGames.Whist.TalentsModule.Managers
 
         public void Initialize(UserInputController userInputController, AstraScriptableObject astraScriptableObject)
         {
-            base.Initialize(userInputController, astraScriptableObject);
             _astra = new Astra(astraScriptableObject);
+            base.Initialize(userInputController, _astra);
 
-            _astraPresenter = new AstraPresenter(_astra, TalentView, astraScriptableObject.PositionPercentages);
+            _astraPresenter = new AstraPresenter(_astra, TalentView, astraScriptableObject.CalculatePositionInContainer());
         }
     }
 }

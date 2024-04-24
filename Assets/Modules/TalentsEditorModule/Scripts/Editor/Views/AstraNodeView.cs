@@ -3,13 +3,11 @@ using System;
 using SDRGames.Whist.TalentsModule.ScriptableObjects;
 
 using UnityEditor.Experimental.GraphView;
-using UnityEditor.UIElements;
 
 using UnityEngine;
 using UnityEngine.UIElements;
 
 using static SDRGames.Whist.TalentsEditorModule.Models.AstraData;
-using static SDRGames.Whist.TalentsEditorModule.Models.TalamusData;
 
 namespace SDRGames.Whist.TalentsEditorModule.Views
 {
@@ -85,13 +83,13 @@ namespace SDRGames.Whist.TalentsEditorModule.Views
             graphData.AddAstraNode(this);
         }
 
-        public override TalentScriptableObject SaveToSO(string folderPath, Vector2 graphSize)
+        public override TalentScriptableObject SaveToSO(string folderPath, Rect graphRect)
         {
             AstraScriptableObject astraSO;
 
             astraSO = UtilityIO.CreateAsset<AstraScriptableObject>($"{folderPath}/Talents", NodeName);
-            Vector2 position = new Vector2(Position.x * 100 / graphSize.x, Position.y * 100 / graphSize.y);
-            astraSO.SetPositionPercentages(position);
+            Vector2 positionPercentages = CalculateLocalPositionPercentages(graphRect);
+            astraSO.SetPositionPercentages(positionPercentages);
 
             SavedToSO?.Invoke(this, new SavedToSOEventArgs<AstraScriptableObject>(astraSO));
             return astraSO;

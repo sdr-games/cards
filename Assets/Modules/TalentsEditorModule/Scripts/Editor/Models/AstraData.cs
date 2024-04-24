@@ -3,6 +3,8 @@ using System;
 using SDRGames.Whist.TalentsEditorModule.Views;
 using SDRGames.Whist.TalentsModule.ScriptableObjects;
 
+using UnityEditor;
+
 using static SDRGames.Whist.TalentsModule.ScriptableObjects.TalentScriptableObject;
 
 namespace SDRGames.Whist.TalentsEditorModule.Models
@@ -41,6 +43,7 @@ namespace SDRGames.Whist.TalentsEditorModule.Models
                 Equipment.ToString()
             );
             UtilityIO.SaveAsset(astraSO);
+            EditorUtility.SetDirty(astraSO);
             return astraSO;
         }
     }

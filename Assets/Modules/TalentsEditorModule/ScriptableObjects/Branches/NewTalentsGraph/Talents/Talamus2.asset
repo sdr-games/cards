@@ -12,11 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a14f64b3bdf6434b96df8acde5a77a4, type: 3}
   m_Name: Talamus2
   m_EditorClassIdentifier: 
-  <Name>k__BackingField: 
-  <Cost>k__BackingField: 0
+  <Name>k__BackingField: Talamus2
+  <Cost>k__BackingField: 2
   <TalentType>k__BackingField: 0
-  <Position>k__BackingField: {x: 0, y: 0}
+  <PositionPercentages>k__BackingField: {x: 39.79261, y: 50.386097}
   <Blockers>k__BackingField: []
-  <Dependencies>k__BackingField: []
-  <Characteristic>k__BackingField: 
-  <CharacteristicValue>k__BackingField: 0
+  <Dependencies>k__BackingField:
+  - {fileID: 11400000, guid: 296ab4a5093896747bec985ebc9eb4fd, type: 2}
+  - {fileID: 11400000, guid: 771d76e90c8afc649a258e4346c8cc66, type: 2}
+  - {fileID: 11400000, guid: 4df52437518893f4e899c026694ff093, type: 2}
+  <Characteristic>k__BackingField: Strength
+  <CharacteristicValue>k__BackingField: 2

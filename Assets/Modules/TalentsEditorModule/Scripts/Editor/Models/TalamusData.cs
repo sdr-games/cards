@@ -1,7 +1,10 @@
 using System;
 
 using SDRGames.Whist.TalentsEditorModule.Views;
+using SDRGames.Whist.TalentsModule.Models;
 using SDRGames.Whist.TalentsModule.ScriptableObjects;
+
+using UnityEditor;
 
 using UnityEngine;
 
@@ -57,6 +60,8 @@ namespace SDRGames.Whist.TalentsEditorModule.Models
                 CharacteristicName.ToString(),
                 CharacteristicValue
             );
+            EditorUtility.SetDirty(talamusSO);
+            UtilityIO.SaveAsset(talamusSO);
             return talamusSO;
         }
     }

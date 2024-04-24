@@ -31,8 +31,11 @@ namespace SDRGames.Whist.UserInputModule.Controller
         public event EventHandler<LeftMouseButtonSceneClickEventArgs>? LeftMouseButtonClickedOnScene;
         public event EventHandler<LeftMouseButtonSceneClickEventArgs>? LeftMouseButtonReleasedOnScene;
 
-        public event EventHandler<RightMouseButtonClickEventArgs>? RightMouseButtonClicked;
-        public event EventHandler<RightMouseButtonClickEventArgs>? RightMouseButtonReleased;
+        public event EventHandler<RightMouseButtonSceneClickEventArgs>? RightMouseButtonClickedOnScene;
+        public event EventHandler<RightMouseButtonSceneClickEventArgs>? RightMouseButtonReleasedOnScene;
+        
+        public event EventHandler<RightMouseButtonUIClickEventArgs>? RightMouseButtonClickedOnUI;
+        public event EventHandler<RightMouseButtonUIClickEventArgs>? RightMouseButtonReleasedOnUI;
 
         public event EventHandler<MiddleMouseButtonScrollEventArgs>? MiddleMouseButtonScrollStarted;
         public event EventHandler<MiddleMouseButtonScrollEventArgs>? MiddleMouseButtonScrollEnded;
@@ -205,7 +208,16 @@ namespace SDRGames.Whist.UserInputModule.Controller
             {
                 return;
             }
-            RightMouseButtonClicked?.Invoke(this, new RightMouseButtonClickEventArgs(Mouse.current.delta.ReadValue()));
+
+            // сначала ищем UI элемент, т.к. он должен срабатывать раньше, чем объекты сцены.
+            GameObject? uiElement = TryToFindInteractibleUIElement();
+
+            if (uiElement is not null)
+            {
+                RightMouseButtonClickedOnUI?.Invoke(this, new RightMouseButtonUIClickEventArgs(uiElement, Mouse.current.position.ReadValue()));
+                return;
+            }
+            RightMouseButtonClickedOnScene?.Invoke(this, new RightMouseButtonSceneClickEventArgs(Mouse.current.delta.ReadValue()));
         }
 
         private void RightMouseButtonReleaseListen()
@@ -215,7 +227,16 @@ namespace SDRGames.Whist.UserInputModule.Controller
             {
                 return;
             }
-            RightMouseButtonReleased?.Invoke(this, new RightMouseButtonClickEventArgs(Mouse.current.delta.ReadValue()));
+
+            // сначала ищем UI элемент, т.к. он должен срабатывать раньше, чем объекты сцены.
+            GameObject? uiElement = TryToFindInteractibleUIElement();
+
+            if (uiElement is not null)
+            {
+                RightMouseButtonReleasedOnUI?.Invoke(this, new RightMouseButtonUIClickEventArgs(uiElement, Mouse.current.position.ReadValue()));
+                return;
+            }
+            RightMouseButtonReleasedOnScene?.Invoke(this, new RightMouseButtonSceneClickEventArgs(Mouse.current.delta.ReadValue()));
         }
         #endregion
 

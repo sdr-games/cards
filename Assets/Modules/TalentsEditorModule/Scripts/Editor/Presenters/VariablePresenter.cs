@@ -4,6 +4,7 @@ using SDRGames.Whist.TalentsEditorModule.Models;
 using SDRGames.Whist.TalentsEditorModule.Views;
 
 using static SDRGames.Whist.TalentsEditorModule.Models.VariableData;
+using static SDRGames.Whist.TalentsModule.ScriptableObjects.BonusScriptableObject;
 
 namespace SDRGames.Whist.TalentsEditorModule.Presenters
 {

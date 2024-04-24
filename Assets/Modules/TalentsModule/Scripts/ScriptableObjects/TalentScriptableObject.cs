@@ -7,6 +7,7 @@ using UnityEngine;
 
 namespace SDRGames.Whist.TalentsModule.ScriptableObjects
 {
+    [Serializable]
     public class TalentScriptableObject : ScriptableObject
     {
         public enum NodeTypes { Talamus = 0, Astra = 1 };
@@ -29,6 +30,15 @@ namespace SDRGames.Whist.TalentsModule.ScriptableObjects
         public void SetPositionPercentages(Vector2 positionPercentages)
         {
             PositionPercentages = positionPercentages;
+        }
+
+        public Vector2 CalculatePositionInContainer()
+        {
+            Vector2 containerSize = new Vector2(Screen.width / 2, Screen.height / 2);
+            return new Vector2(
+                containerSize.x * PositionPercentages.x / 100,
+                containerSize.y - containerSize.y * PositionPercentages.y / 100
+            );
         }
     }
 }
