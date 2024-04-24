@@ -13,12 +13,13 @@ MonoBehaviour:
   m_Name: Talamus2
   m_EditorClassIdentifier: 
   <Name>k__BackingField: Talamus2
-  <Cost>k__BackingField: 0
+  <Cost>k__BackingField: 2
   <TalentType>k__BackingField: 0
-  <PositionPercentages>k__BackingField: {x: 69.965866, y: 46.57763}
+  <PositionPercentages>k__BackingField: {x: 31.447748, y: 54.870132}
   <Blockers>k__BackingField: []
   <Dependencies>k__BackingField:
+  - {fileID: 11400000, guid: 8713074404ad81a47842d6bc80424545, type: 2}
   - {fileID: 11400000, guid: 3c4d0f199d2098f42abdc47453f931c5, type: 2}
   - {fileID: 11400000, guid: e74a36e15b64b8344a47471ce6963a4a, type: 2}
-  <Characteristic>k__BackingField: Strength
-  <CharacteristicValue>k__BackingField: 0
+  <Characteristic>k__BackingField: Stamina
+  <CharacteristicValue>k__BackingField: 3

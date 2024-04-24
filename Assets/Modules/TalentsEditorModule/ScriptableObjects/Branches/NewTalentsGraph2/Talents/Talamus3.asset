@@ -15,11 +15,11 @@ MonoBehaviour:
   <Name>k__BackingField: Talamus3
   <Cost>k__BackingField: 2
   <TalentType>k__BackingField: 0
-  <PositionPercentages>k__BackingField: {x: 59.818535, y: 52.509647}
+  <PositionPercentages>k__BackingField: {x: 64.42953, y: 54.545452}
   <Blockers>k__BackingField:
-  - {fileID: 11400000, guid: 6516057d363b6af4b8c8cb9897f5b5e4, type: 2}
+  - {fileID: 11400000, guid: e33f10f1dcdbc6f43b003127d8ae1803, type: 2}
   <Dependencies>k__BackingField:
-  - {fileID: 11400000, guid: e290f044fb8d70349ad741167170969c, type: 2}
-  - {fileID: 11400000, guid: 3ba748c5957a3864d9edc3e606a13673, type: 2}
-  <Characteristic>k__BackingField: Agility
+  - {fileID: 11400000, guid: a2d407215f1c410439968e03477a17b3, type: 2}
+  - {fileID: 11400000, guid: c3c54d06b3aa1e14bba81095cf1b3bd4, type: 2}
+  <Characteristic>k__BackingField: Strength
   <CharacteristicValue>k__BackingField: 2

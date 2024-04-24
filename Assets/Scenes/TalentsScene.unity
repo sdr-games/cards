@@ -177,14 +177,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc984c21227ba5f46a2505759bf8f30b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _radius: 2000
   _startScale: 0.4
   _branchManagerPrefab: {fileID: 4762212149026820521, guid: 1804f0fccb5dc3542a7e8d0e69d9b5a5,
     type: 3}
   _userInputController: {fileID: 2101908830}
   _talentBranchesSO:
-  - {fileID: 11400000, guid: f545d85d13cc29c4e8c172ef4379f8af, type: 2}
-  - {fileID: 11400000, guid: f545d85d13cc29c4e8c172ef4379f8af, type: 2}
+  - {fileID: 11400000, guid: 0a15406e84e15b548be7fe7ad263bf56, type: 2}
+  - {fileID: 11400000, guid: a108daae6dbe5c94a986d51aacfe73df, type: 2}
   - {fileID: 11400000, guid: f545d85d13cc29c4e8c172ef4379f8af, type: 2}
 --- !u!1 &809495764
 GameObject:
@@ -234,7 +233,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 1
+  m_UiScaleMode: 0
   m_ReferencePixelsPerUnit: 1
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 1920, y: 1080}

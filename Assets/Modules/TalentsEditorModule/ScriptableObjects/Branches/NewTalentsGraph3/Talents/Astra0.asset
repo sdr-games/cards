@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: Astra0
   m_EditorClassIdentifier: 
   <Name>k__BackingField: Astra0
-  <Cost>k__BackingField: 0
+  <Cost>k__BackingField: 3
   <TalentType>k__BackingField: 1
   <PositionPercentages>k__BackingField: {x: 0, y: 0}
-  <Blockers>k__BackingField: []
+  <Blockers>k__BackingField:
+  - {fileID: 11400000, guid: fc840aa16fc7151488fb1cc0c991bc91, type: 2}
   <Dependencies>k__BackingField: []
   <Equipment>k__BackingField: Weapon

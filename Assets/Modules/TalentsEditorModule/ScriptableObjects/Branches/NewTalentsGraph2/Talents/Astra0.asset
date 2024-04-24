@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Astra0
   m_EditorClassIdentifier: 
   <Name>k__BackingField: Astra0
-  <Cost>k__BackingField: 0
+  <Cost>k__BackingField: 3
   <TalentType>k__BackingField: 1
-  <PositionPercentages>k__BackingField: {x: 37.88396, y: 19.699497}
+  <PositionPercentages>k__BackingField: {x: 0, y: 0}
   <Blockers>k__BackingField:
   - {fileID: 11400000, guid: e33f10f1dcdbc6f43b003127d8ae1803, type: 2}
   <Dependencies>k__BackingField: []

@@ -10,16 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8a14f64b3bdf6434b96df8acde5a77a4, type: 3}
-  m_Name: Talamus2
+  m_Name: Talamus0
   m_EditorClassIdentifier: 
-  <Name>k__BackingField: Talamus2
+  <Name>k__BackingField: Talamus0
   <Cost>k__BackingField: 2
   <TalentType>k__BackingField: 0
-  <PositionPercentages>k__BackingField: {x: 39.79261, y: 50.386097}
+  <PositionPercentages>k__BackingField: {x: 37.865746, y: 0}
   <Blockers>k__BackingField: []
   <Dependencies>k__BackingField:
-  - {fileID: 11400000, guid: 296ab4a5093896747bec985ebc9eb4fd, type: 2}
-  - {fileID: 11400000, guid: 771d76e90c8afc649a258e4346c8cc66, type: 2}
+  - {fileID: 11400000, guid: f69898f9a4e2539448eb843cbdd8adf4, type: 2}
+  - {fileID: 11400000, guid: e290f044fb8d70349ad741167170969c, type: 2}
+  - {fileID: 11400000, guid: e94b90246cc9ab64e9d8e45a42dae37c, type: 2}
   - {fileID: 11400000, guid: 4df52437518893f4e899c026694ff093, type: 2}
-  <Characteristic>k__BackingField: Strength
-  <CharacteristicValue>k__BackingField: 2
+  <Characteristic>k__BackingField: Immunity
+  <CharacteristicValue>k__BackingField: 3

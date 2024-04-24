@@ -8,6 +8,8 @@ using UnityEditor;
 
 using UnityEngine;
 
+using static UnityEngine.GraphicsBuffer;
+
 namespace SDRGames.Whist.TalentsModule.Managers
 {
     public class BranchManager : MonoBehaviour
@@ -41,7 +43,7 @@ namespace SDRGames.Whist.TalentsModule.Managers
             }
         }
 
-        public void SetPosition(Vector2 position, Vector2 padding = default)
+        public void SetPositionAndSize(Vector2 position, Vector2 padding = default)
         {
             _rectTransform.sizeDelta = new Vector2(Screen.width / 2 + padding.x, Screen.height / 2 + padding.y);
             transform.position = position;
@@ -49,6 +51,13 @@ namespace SDRGames.Whist.TalentsModule.Managers
             {
                 talentManager.TalentView.SetParent(transform);
             }
+        }
+
+        public void SetRotation()
+        {
+            Vector3 relative = transform.InverseTransformPoint(transform.parent.position);
+            float angle = Mathf.Atan2(relative.x, relative.y) * Mathf.Rad2Deg;
+            transform.RotateAround(transform.TransformPoint(_rectTransform.rect.center), Vector3.forward, 180-angle);
         }
 
         private void OnEnable()
@@ -98,40 +107,6 @@ namespace SDRGames.Whist.TalentsModule.Managers
             astraManager.TalentView.SetDependencies(dependencies);
             _createdTalents.Add(astra.Name, astraManager);
             return astraManager;
-        }
-
-        public void CheckForChanges()
-        {
-
-            float minX = Screen.width;
-            float minY = Screen.height;
-            float maxX = 0;
-            float maxY = 0;
-
-            foreach (TalentManager talentManager in _createdTalents.Values)
-            {
-                Vector2 talentViewPosition = talentManager.TalentView.transform.position;
-                Debug.Log(talentViewPosition);
-                Vector2 elementSize = ((RectTransform)talentManager.TalentView.transform).sizeDelta;
-                if (minX > talentViewPosition.x)
-                {
-                    minX = talentViewPosition.x - elementSize.x / 2;
-                }
-                if (maxX < talentViewPosition.x)
-                {
-                    maxX = talentViewPosition.x + elementSize.x / 2;
-                }
-
-                if (minY > talentViewPosition.y)
-                {
-                    minY = talentViewPosition.y - elementSize.y / 2;
-                }
-                if (maxY < talentViewPosition.y)
-                {
-                    maxY = talentViewPosition.y - elementSize.y / 2;
-                }
-            }
-            ((RectTransform)transform).sizeDelta = new Vector2(maxX - minX, maxY - minY);
         }
     }
 }

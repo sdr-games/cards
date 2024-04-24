@@ -13,4 +13,41 @@ MonoBehaviour:
   m_Name: NewTalentsGraph
   m_EditorClassIdentifier: 
   <FileName>k__BackingField: NewTalentsGraph
+  <TalamusNodes>k__BackingField:
+  - <ID>k__BackingField: 92068f75-da3b-448c-9c1a-8699098f4d7e
+    <NodeName>k__BackingField: Talamus0
+    <Cost>k__BackingField: 2
+    <OutputConnections>k__BackingField:
+    - 66f7255d-2098-433a-806a-574e3887b945
+    - 50f63f77-d2ae-4c27-9aa9-5902c3bb8d5b
+    - 35f3f1aa-f41f-4974-810f-81e7472d324e
+    - 66e11e6a-0fd9-4d3e-91f3-8d7ce0dd4535
+    <Position>k__BackingField: {x: 776.8, y: 110.40001}
+    <CharacteristicName>k__BackingField: 4
+    <CharacteristicValue>k__BackingField: 3
+  <AstraNodes>k__BackingField:
+  - <ID>k__BackingField: 66e11e6a-0fd9-4d3e-91f3-8d7ce0dd4535
+    <NodeName>k__BackingField: Astra1
+    <Cost>k__BackingField: 3
+    <OutputConnections>k__BackingField: []
+    <Position>k__BackingField: {x: 424.8, y: 481.59998}
+    <Equipment>k__BackingField: 0
+  - <ID>k__BackingField: 35f3f1aa-f41f-4974-810f-81e7472d324e
+    <NodeName>k__BackingField: Astra2
+    <Cost>k__BackingField: 3
+    <OutputConnections>k__BackingField: []
+    <Position>k__BackingField: {x: 728, y: 492}
+    <Equipment>k__BackingField: 0
+  - <ID>k__BackingField: 66f7255d-2098-433a-806a-574e3887b945
+    <NodeName>k__BackingField: Astra3
+    <Cost>k__BackingField: 3
+    <OutputConnections>k__BackingField: []
+    <Position>k__BackingField: {x: 1042.4, y: 504.8}
+    <Equipment>k__BackingField: 0
+  - <ID>k__BackingField: 50f63f77-d2ae-4c27-9aa9-5902c3bb8d5b
+    <NodeName>k__BackingField: Astra4
+    <Cost>k__BackingField: 3
+    <OutputConnections>k__BackingField: []
+    <Position>k__BackingField: {x: 1354.4, y: 508}
+    <Equipment>k__BackingField: 0
   <Variables>k__BackingField: []
