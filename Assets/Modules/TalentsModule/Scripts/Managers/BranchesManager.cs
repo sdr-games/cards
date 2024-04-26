@@ -1,4 +1,5 @@
 using SDRGames.Whist.TalentsModule.ScriptableObjects;
+using SDRGames.Whist.TalentsModule.Views;
 using SDRGames.Whist.UserInputModule.Controller;
 
 using UnityEditor;
@@ -51,23 +52,23 @@ namespace SDRGames.Whist.TalentsModule.Managers
                 #endif
                 Application.Quit();
             }
-            transform.localScale = new Vector3(_startScale, _startScale);  
+            //transform.localScale = new Vector3(_startScale, _startScale);
 
             for (int i = 0; i < _talentBranchesSO.Length; i++)
             {
                 BranchManager branchManager = Instantiate(_branchManagerPrefab);
                 branchManager.Initialize(_userInputController, _talentBranchesSO[i]);
-                Vector2 position = CalculatePositionInRadius(i);
-                branchManager.SetPositionAndSize(position, new Vector2(50, 50));
+                Vector2 position = CalculatePositionInRadius(i, _startScale);
+                branchManager.BranchView.SetPositionAndSize(position, new Vector2(_startScale, _startScale));
                 branchManager.transform.SetParent(transform, false);
-                branchManager.SetRotation();
+                branchManager.BranchView.SetRotation();
             }
         }
 
-        private Vector2 CalculatePositionInRadius(int index)
+        private Vector2 CalculatePositionInRadius(int index, float scale)
         {
-            float radius = Screen.width;
-            float offsetY = Screen.height / 2 + 100;
+            float radius = Screen.width * scale;
+            float offsetY = (Screen.height / 2 + BranchView.PADDING.y / 2) * scale;
             float radiansOfSeparation = Mathf.PI / _talentBranchesSO.Length * (index + 0.5f);
             return new Vector2(Mathf.Cos(radiansOfSeparation) * radius, Mathf.Sin(radiansOfSeparation) * radius - offsetY);
         }
