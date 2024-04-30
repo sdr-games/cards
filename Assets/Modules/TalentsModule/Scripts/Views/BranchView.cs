@@ -42,7 +42,7 @@ namespace SDRGames.Whist.TalentsModule.Views
         public IEnumerator SetSizeSmoothlyCoroutine(float scale, float speed)
         {
             yield return null;
-            Vector3 scaleSpeedVector = Vector3.one * speed * Time.deltaTime;
+            Vector3 scaleSpeedVector = Vector3.one * (speed + 0.08f) * Time.deltaTime;
             Debug.Log(scaleSpeedVector);
             float direction = transform.localScale.x < scale ? 1 : -1;
             while(Math.Abs(transform.localScale.x - scale) > scaleSpeedVector.x && Math.Abs(transform.localScale.y - scale) > scaleSpeedVector.y) 
