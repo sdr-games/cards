@@ -177,7 +177,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc984c21227ba5f46a2505759bf8f30b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _startScale: 0.4
+  _speed: 0.8
   _branchManagerPrefab: {fileID: 4762212149026820521, guid: 1804f0fccb5dc3542a7e8d0e69d9b5a5,
     type: 3}
   _userInputController: {fileID: 2101908830}

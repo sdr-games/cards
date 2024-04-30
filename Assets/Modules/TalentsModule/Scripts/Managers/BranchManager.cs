@@ -20,7 +20,7 @@ namespace SDRGames.Whist.TalentsModule.Managers
 
         [field: SerializeField] public BranchView BranchView { get; private set; }
 
-        public void Initialize(UserInputController userInputController, TalentsBranchScriptableObject talentsBranchSO)
+        public void Initialize(UserInputController userInputController, TalentsBranchScriptableObject talentsBranchSO, Vector3 position, float startScale, Transform parent)
         {
             _userInputController = userInputController;
             _talentBranchSO = talentsBranchSO;
@@ -39,7 +39,7 @@ namespace SDRGames.Whist.TalentsModule.Managers
                     continue;
                 }
             }
-            BranchView.Initialize(userInputController);
+            BranchView.Initialize(userInputController, position, startScale, parent);
         }    
 
         private void OnEnable()

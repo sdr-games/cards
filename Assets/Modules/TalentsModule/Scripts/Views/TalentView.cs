@@ -105,12 +105,14 @@ namespace SDRGames.Whist.TalentsModule.Views
                     break;
                 }
             }
+
             if(IsBlocked)
             {
                 SetActive(false);
                 BlockChanged?.Invoke(this, EventArgs.Empty);
             }
             _button.interactable = !IsBlocked;
+            _currentPointsText.enabled = !IsBlocked;
         }
 
         private void OnEnable()
