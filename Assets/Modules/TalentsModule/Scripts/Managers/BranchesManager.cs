@@ -111,6 +111,10 @@ namespace SDRGames.Whist.TalentsModule.Managers
             Debug.Log(angle);
             float destinationAngle = angle != 0 ? 360 - transform.localEulerAngles.z - Math.Abs(angle) : 0;
             float direction = angle > 0 ? -1 : 1;
+            if(Math.Abs(angle) > 180)
+            {
+                angle = 360 - Math.Abs(angle);
+            }
             float speed = Math.Abs(angle / time);
             Debug.Log(speed);
             while(Math.Abs(transform.localEulerAngles.z - destinationAngle) > speed)

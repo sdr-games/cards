@@ -17,6 +17,7 @@ namespace SDRGames.Whist.TalentsModule.Views
         [SerializeField] private RectTransform _rectTransform;
         [SerializeField] private CanvasGroup _canvasGroup;
 
+        private bool _isMoving;
         private bool _isZoomed;
         private float _zoomedScale;
         private float _unzoomedScale;
@@ -58,20 +59,17 @@ namespace SDRGames.Whist.TalentsModule.Views
                 transform.localScale += speedVector;
             }
             transform.localScale = new Vector3(scale, scale, scale);
+            _isMoving = false;
         }
 
         public void Show()
         {
-            _canvasGroup.interactable = true;
-            _canvasGroup.blocksRaycasts = true;
-            _canvasGroup.alpha = 1;
+            StartCoroutine(SwitchVisibilitySmoothlyCoroutine(true));
         }
 
         public void Hide()
         {
-            _canvasGroup.interactable = false;
-            _canvasGroup.blocksRaycasts = false;
-            _canvasGroup.alpha = 0;
+            StartCoroutine(SwitchVisibilitySmoothlyCoroutine(false));
         }
 
         private static Vector2 GetBranchSize()
@@ -86,11 +84,39 @@ namespace SDRGames.Whist.TalentsModule.Views
             transform.RotateAround(transform.TransformPoint(_rectTransform.rect.center), Vector3.forward, 180 - angle);
         }
 
+        private IEnumerator SwitchVisibilitySmoothlyCoroutine(bool visibility)
+        {
+            yield return null;
+            if(visibility)
+            {
+                while(_canvasGroup.alpha < 1)
+                {
+                    yield return null;
+                    _canvasGroup.alpha += _speed * 2;
+                }
+                _canvasGroup.alpha = 1;
+                _canvasGroup.blocksRaycasts = true;
+                _canvasGroup.interactable = true;
+            }
+            else
+            {
+                _canvasGroup.blocksRaycasts = false;
+                _canvasGroup.interactable = false;
+                while (_canvasGroup.alpha > 0)
+                {
+                    yield return null;
+                    _canvasGroup.alpha -= _speed * 10;
+                }
+                _canvasGroup.alpha = 0;
+            }
+        }
+
         private void OnLeftMouseButtonClickedOnUI(object sender, LeftMouseButtonUIClickEventArgs e)
         {
-            if (e.GameObject == gameObject && !_isZoomed)
+            if (e.GameObject == gameObject && !_isZoomed && !_isMoving)
             {
                 _isZoomed = true;
+                _isMoving = true;
                 float direction = transform.localRotation.w > 0 ? 1 : -1;
                 float scalingTime = Math.Abs(transform.localScale.x - _zoomedScale) / _speed;
                 BranchZoomed?.Invoke(this, new BranchZoomedEventArgs(transform.localEulerAngles.z * direction, scalingTime));
@@ -102,6 +128,7 @@ namespace SDRGames.Whist.TalentsModule.Views
             if (e.GameObject == gameObject && _isZoomed)
             {
                 _isZoomed = false;
+                _isMoving = true;
                 float direction = transform.localRotation.w > 0 ? 1 : -1;
                 float scalingTime = Math.Abs(transform.localScale.x - _unzoomedScale) / _speed;
                 BranchUnzoomed?.Invoke(this, new BranchZoomedEventArgs(-transform.localEulerAngles.z * direction, scalingTime));
