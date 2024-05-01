@@ -8,7 +8,6 @@ using SDRGames.Whist.TalentsEditorModule.Managers;
 using SDRGames.Whist.TalentsEditorModule.Models;
 using SDRGames.Whist.TalentsEditorModule.Presenters;
 using SDRGames.Whist.TalentsEditorModule.Views;
-using SDRGames.Whist.TalentsModule.Models;
 using SDRGames.Whist.TalentsModule.ScriptableObjects;
 
 using UnityEditor;

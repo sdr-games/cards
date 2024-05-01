@@ -14,7 +14,6 @@ namespace SDRGames.Whist.TalentsModule.Managers
 {
     public class BranchesManager : MonoBehaviour
     {
-        [SerializeField] private float _speed = 0.5f;
         [SerializeField] private BranchManager _branchManagerPrefab;
         [SerializeField] private UserInputController _userInputController;
         [SerializeField] private TalentsBranchScriptableObject[] _talentBranchesSO;
@@ -70,31 +69,9 @@ namespace SDRGames.Whist.TalentsModule.Managers
             foreach (BranchManager branchManager in _createdBranches)
             {
                 branchManager.BranchView.BranchZoomed -= OnBranchZoomed;
+                branchManager.BranchView.BranchZoomed -= OnBranchUnzoomed;
                 StopAllCoroutines();
             }
-        }
-
-        private void OnBranchZoomed(object sender, BranchZoomedEventArgs e)
-        {
-            foreach(BranchManager branchManager in _createdBranches)
-            {
-                branchManager.BranchView.SetSizeSmoothly(1, _speed);
-                if(sender as BranchView != branchManager.BranchView)
-                {
-                    branchManager.BranchView.Hide();
-                } 
-            }
-            StartCoroutine(RotateSmoothlyCoroutine(e.Angle));
-        }
-
-        private void OnBranchUnzoomed(object sender, BranchZoomedEventArgs e)
-        {
-            foreach(BranchManager branchManager in _createdBranches)
-            {
-                branchManager.BranchView.SetSizeSmoothly(_startScale, _speed);
-                branchManager.BranchView.Show();
-            }
-            StartCoroutine(RotateSmoothlyCoroutine(360 - e.Angle));
         }
 
         private Vector2 CalculatePositionInRadius(int index, float scale)
@@ -105,14 +82,41 @@ namespace SDRGames.Whist.TalentsModule.Managers
             return new Vector2(Mathf.Cos(radiansOfSeparation) * radius, Mathf.Sin(radiansOfSeparation) * radius - offsetY);
         }
 
-        private IEnumerator RotateSmoothlyCoroutine(float angle)
+        private void OnBranchZoomed(object sender, BranchZoomedEventArgs e)
+        {
+            foreach (BranchManager branchManager in _createdBranches)
+            {
+                branchManager.BranchView.SetSizeSmoothly(1);
+                if(sender as BranchView != branchManager.BranchView)
+                {
+                    branchManager.BranchView.Hide();
+                } 
+            }
+            StartCoroutine(RotateSmoothlyCoroutine(e.Angle, e.Time));
+        }
+
+        private void OnBranchUnzoomed(object sender, BranchZoomedEventArgs e)
+        {
+            foreach (BranchManager branchManager in _createdBranches)
+            {
+                branchManager.BranchView.SetSizeSmoothly(_startScale);
+                branchManager.BranchView.Show();
+            }
+            StartCoroutine(RotateSmoothlyCoroutine(e.Angle, e.Time));
+        }
+
+        private IEnumerator RotateSmoothlyCoroutine(float angle, float time)
         {
             yield return null;
-            Vector3 direction = angle > 180 ? Vector3.forward : Vector3.back;
-            while(Math.Abs(transform.eulerAngles.z - (360 - angle)) > _speed)
+            Debug.Log(angle);
+            float destinationAngle = angle != 0 ? 360 - transform.localEulerAngles.z - Math.Abs(angle) : 0;
+            float direction = angle > 0 ? -1 : 1;
+            float speed = Math.Abs(angle / time);
+            Debug.Log(speed);
+            while(Math.Abs(transform.localEulerAngles.z - destinationAngle) > speed)
             {
                 yield return null;
-                transform.RotateAround(transform.TransformPoint(((RectTransform)transform).rect.center), direction, _speed);
+                transform.RotateAround(transform.TransformPoint(((RectTransform)transform).rect.center), Vector3.forward * direction, speed);
             } 
         }
     }

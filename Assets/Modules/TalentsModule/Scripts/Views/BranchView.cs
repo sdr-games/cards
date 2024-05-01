@@ -4,6 +4,7 @@ using System.Collections;
 using SDRGames.Whist.UserInputModule.Controller;
 
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace SDRGames.Whist.TalentsModule.Views
 {
@@ -12,10 +13,13 @@ namespace SDRGames.Whist.TalentsModule.Views
         public static readonly Vector2 PADDING = new Vector2(50, 50);
         public static Vector2 SIZE { get => GetBranchSize(); }
 
+        [SerializeField] private float _speed = 8f;
         [SerializeField] private RectTransform _rectTransform;
         [SerializeField] private CanvasGroup _canvasGroup;
 
         private bool _isZoomed;
+        private float _zoomedScale;
+        private float _unzoomedScale;
         private UserInputController _userInputController;
 
         public event EventHandler<BranchZoomedEventArgs> BranchZoomed;
@@ -27,35 +31,33 @@ namespace SDRGames.Whist.TalentsModule.Views
             _userInputController.LeftMouseButtonClickedOnUI += OnLeftMouseButtonClickedOnUI;
             _userInputController.RightMouseButtonClickedOnUI += OnRightMouseButtonClickedOnUI;
 
+            _speed /= 1000;
+            _zoomedScale = 1;
+            _unzoomedScale = startScale;
+
             transform.localPosition = position;
             _rectTransform.sizeDelta = SIZE;
-            transform.localScale = new Vector2(startScale, startScale);
+            transform.localScale = Vector2.one * startScale;
             transform.SetParent(parent, false);
             SetRotation();
         }
 
-        public void SetSizeSmoothly(float scale, float speed)
+        public void SetSizeSmoothly(float scale)
         {
-            StartCoroutine(SetSizeSmoothlyCoroutine(scale, speed));
+            StartCoroutine(SetSizeSmoothlyCoroutine(scale));
         }
 
-        public IEnumerator SetSizeSmoothlyCoroutine(float scale, float speed)
+        public IEnumerator SetSizeSmoothlyCoroutine(float scale)
         {
             yield return null;
-            Vector3 scaleSpeedVector = Vector3.one * (speed + 0.08f) * Time.deltaTime;
-            Debug.Log(scaleSpeedVector);
             float direction = transform.localScale.x < scale ? 1 : -1;
-            while(Math.Abs(transform.localScale.x - scale) > scaleSpeedVector.x && Math.Abs(transform.localScale.y - scale) > scaleSpeedVector.y) 
+            Vector3 speedVector = Vector3.one * _speed * direction;
+            while(Math.Abs(transform.localScale.x - scale) > _speed && Math.Abs(transform.localScale.y - scale) > _speed) 
             {
                 yield return null;
-                transform.localScale += scaleSpeedVector * direction;
-                Debug.Log(transform.localScale);
+                transform.localScale += speedVector;
             }
             transform.localScale = new Vector3(scale, scale, scale);
-
-
-            //0 -> 76 0.5f
-            //0.36 -> 1
         }
 
         public void Show()
@@ -89,7 +91,9 @@ namespace SDRGames.Whist.TalentsModule.Views
             if (e.GameObject == gameObject && !_isZoomed)
             {
                 _isZoomed = true;
-                BranchZoomed?.Invoke(this, new BranchZoomedEventArgs(transform.eulerAngles.z));
+                float direction = transform.localRotation.w > 0 ? 1 : -1;
+                float scalingTime = Math.Abs(transform.localScale.x - _zoomedScale) / _speed;
+                BranchZoomed?.Invoke(this, new BranchZoomedEventArgs(transform.localEulerAngles.z * direction, scalingTime));
             }
         }
 
@@ -98,7 +102,9 @@ namespace SDRGames.Whist.TalentsModule.Views
             if (e.GameObject == gameObject && _isZoomed)
             {
                 _isZoomed = false;
-                BranchUnzoomed?.Invoke(this, new BranchZoomedEventArgs(transform.eulerAngles.z));
+                float direction = transform.localRotation.w > 0 ? 1 : -1;
+                float scalingTime = Math.Abs(transform.localScale.x - _unzoomedScale) / _speed;
+                BranchUnzoomed?.Invoke(this, new BranchZoomedEventArgs(-transform.localEulerAngles.z * direction, scalingTime));
             }
         }
 
