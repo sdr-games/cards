@@ -40,7 +40,8 @@ namespace SDRGames.Whist.TalentsModule.Managers
                 }
             }
             BranchView.Initialize(userInputController, position, startScale, parent);
-        }    
+            BranchView.BranchVisibilityChanged += OnBranchVisibilityChanged;
+        }
 
         private void OnEnable()
         {
@@ -90,5 +91,19 @@ namespace SDRGames.Whist.TalentsModule.Managers
             _createdTalents.Add(astra.Name, astraManager);
             return astraManager;
         }
+
+        private void OnBranchVisibilityChanged(object sender, BranchVisibilityChangedEventArgs e)
+        {
+            foreach(TalentManager talentManager in _createdTalents.Values)
+            {
+                if(e.IsVisible && BranchView.IsZoomed)
+                {
+                    talentManager.TalentView.ChangeBlock();
+                    continue;
+                }
+                talentManager.TalentView.ChangeVisibility(false);
+            }
+        }
+
     }
 }

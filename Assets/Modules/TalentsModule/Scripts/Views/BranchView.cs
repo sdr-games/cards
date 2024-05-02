@@ -18,13 +18,15 @@ namespace SDRGames.Whist.TalentsModule.Views
         [SerializeField] private CanvasGroup _canvasGroup;
 
         private bool _isMoving;
-        private bool _isZoomed;
-        private float _zoomedScale;
-        private float _unzoomedScale;
+        private float _zoomInScale;
+        private float _zoomOutScale;
         private UserInputController _userInputController;
+        
+        public bool IsZoomed { get; private set; }
 
-        public event EventHandler<BranchZoomedEventArgs> BranchZoomed;
-        public event EventHandler<BranchZoomedEventArgs> BranchUnzoomed;
+        public event EventHandler<BranchZoomedEventArgs> BranchZoomInStarted;
+        public event EventHandler<BranchZoomedEventArgs> BranchZoomOutStarted;
+        public event EventHandler<BranchVisibilityChangedEventArgs> BranchVisibilityChanged;
 
         public void Initialize(UserInputController userInputController, Vector3 position, float startScale, Transform parent)
         {
@@ -33,8 +35,8 @@ namespace SDRGames.Whist.TalentsModule.Views
             _userInputController.RightMouseButtonClickedOnUI += OnRightMouseButtonClickedOnUI;
 
             _speed /= 1000;
-            _zoomedScale = 1;
-            _unzoomedScale = startScale;
+            _zoomInScale = 1;
+            _zoomOutScale = startScale;
 
             transform.localPosition = position;
             _rectTransform.sizeDelta = SIZE;
@@ -109,29 +111,30 @@ namespace SDRGames.Whist.TalentsModule.Views
                 }
                 _canvasGroup.alpha = 0;
             }
+            BranchVisibilityChanged?.Invoke(this, new BranchVisibilityChangedEventArgs(visibility));
         }
 
         private void OnLeftMouseButtonClickedOnUI(object sender, LeftMouseButtonUIClickEventArgs e)
         {
-            if (e.GameObject == gameObject && !_isZoomed && !_isMoving)
+            if (e.GameObject == gameObject && !IsZoomed && !_isMoving)
             {
-                _isZoomed = true;
+                IsZoomed = true;
                 _isMoving = true;
                 float direction = transform.localRotation.w > 0 ? 1 : -1;
-                float scalingTime = Math.Abs(transform.localScale.x - _zoomedScale) / _speed;
-                BranchZoomed?.Invoke(this, new BranchZoomedEventArgs(transform.localEulerAngles.z * direction, scalingTime));
+                float scalingTime = Math.Abs(transform.localScale.x - _zoomInScale) / _speed;
+                BranchZoomInStarted?.Invoke(this, new BranchZoomedEventArgs(transform.localEulerAngles.z * direction, scalingTime));
             }
         }
 
         private void OnRightMouseButtonClickedOnUI(object sender, RightMouseButtonUIClickEventArgs e)
         {
-            if (e.GameObject == gameObject && _isZoomed)
+            if (e.GameObject == gameObject && IsZoomed)
             {
-                _isZoomed = false;
+                IsZoomed = false;
                 _isMoving = true;
                 float direction = transform.localRotation.w > 0 ? 1 : -1;
-                float scalingTime = Math.Abs(transform.localScale.x - _unzoomedScale) / _speed;
-                BranchUnzoomed?.Invoke(this, new BranchZoomedEventArgs(-transform.localEulerAngles.z * direction, scalingTime));
+                float scalingTime = Math.Abs(transform.localScale.x - _zoomOutScale) / _speed;
+                BranchZoomOutStarted?.Invoke(this, new BranchZoomedEventArgs(-transform.localEulerAngles.z * direction, scalingTime));
             }
         }
 

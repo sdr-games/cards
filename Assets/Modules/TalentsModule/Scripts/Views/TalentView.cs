@@ -39,8 +39,8 @@ namespace SDRGames.Whist.TalentsModule.Views
             ((RectTransform)transform).anchoredPosition = position;
 
             IsActive = false;
-
             ChangeBlock();
+            ChangeVisibility(false);
         }
 
         public void SetDependencies(List<TalentView> dependencies)
@@ -53,16 +53,6 @@ namespace SDRGames.Whist.TalentsModule.Views
                 line.transform.SetAsFirstSibling();
                 line.Initialize(transform.InverseTransformPoint(transform.position), transform.InverseTransformPoint(dependency.transform.position));
             }
-        }
-
-        public void AddBlocker(TalentView blocker)
-        {
-            if(_blockers.Contains(blocker))
-            {
-                return;
-            }
-            _blockers.Add(blocker);
-            ChangeBlock();
         }
 
         public void ChangeActive()
@@ -89,30 +79,45 @@ namespace SDRGames.Whist.TalentsModule.Views
             }
         }
 
-        public void SetParent(Transform parent)
+        public void ChangeVisibility(bool visibility)
         {
-            transform.SetParent(parent, false);
+            _button.interactable = visibility;
+            _currentPointsText.enabled = visibility;
         }
 
-        private void ChangeBlock()
+        public void ChangeBlock()
         {
-            IsBlocked = false;
+            bool isBlocked = false;
             foreach (TalentView blocker in _blockers)
             {
                 if(!blocker.IsActive)
                 {
-                    IsBlocked = true;
+                    isBlocked = true;
                     break;
                 }
             }
+            SetBlock(isBlocked);
+        }
 
-            if(IsBlocked)
+        public void SetBlock(bool isBlocked)
+        {
+            IsBlocked = isBlocked;
+            if (IsBlocked)
             {
                 SetActive(false);
                 BlockChanged?.Invoke(this, EventArgs.Empty);
             }
-            _button.interactable = !IsBlocked;
-            _currentPointsText.enabled = !IsBlocked;
+            ChangeVisibility(!IsBlocked);
+        }
+
+        private void AddBlocker(TalentView blocker)
+        {
+            if(_blockers.Contains(blocker))
+            {
+                return;
+            }
+            _blockers.Add(blocker);
+            ChangeBlock();
         }
 
         private void OnEnable()

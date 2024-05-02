@@ -102,7 +102,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 439c2e2d69a01714fb3d49c2ba440eb3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 12
+  _speed: 8
   _rectTransform: {fileID: 4109599800829843283}
   _canvasGroup: {fileID: -1341961103603074712}
 --- !u!114 &4762212149026820521

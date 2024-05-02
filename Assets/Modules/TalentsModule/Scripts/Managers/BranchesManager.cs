@@ -58,8 +58,8 @@ namespace SDRGames.Whist.TalentsModule.Managers
                 BranchManager branchManager = Instantiate(_branchManagerPrefab);
                 Vector2 position = CalculatePositionInRadius(i, _startScale);
                 branchManager.Initialize(_userInputController, _talentBranchesSO[i], position, _startScale, transform);
-                branchManager.BranchView.BranchZoomed += OnBranchZoomed;
-                branchManager.BranchView.BranchUnzoomed += OnBranchUnzoomed;
+                branchManager.BranchView.BranchZoomInStarted += OnBranchZoomIn;
+                branchManager.BranchView.BranchZoomOutStarted += OnBranchZoomOut;
                 _createdBranches.Add(branchManager);
             }
         }
@@ -68,8 +68,8 @@ namespace SDRGames.Whist.TalentsModule.Managers
         {
             foreach (BranchManager branchManager in _createdBranches)
             {
-                branchManager.BranchView.BranchZoomed -= OnBranchZoomed;
-                branchManager.BranchView.BranchZoomed -= OnBranchUnzoomed;
+                branchManager.BranchView.BranchZoomInStarted -= OnBranchZoomIn;
+                branchManager.BranchView.BranchZoomOutStarted -= OnBranchZoomOut;
                 StopAllCoroutines();
             }
         }
@@ -82,20 +82,22 @@ namespace SDRGames.Whist.TalentsModule.Managers
             return new Vector2(Mathf.Cos(radiansOfSeparation) * radius, Mathf.Sin(radiansOfSeparation) * radius - offsetY);
         }
 
-        private void OnBranchZoomed(object sender, BranchZoomedEventArgs e)
+        private void OnBranchZoomIn(object sender, BranchZoomedEventArgs e)
         {
             foreach (BranchManager branchManager in _createdBranches)
             {
                 branchManager.BranchView.SetSizeSmoothly(1);
-                if(sender as BranchView != branchManager.BranchView)
+                if(sender as BranchView == branchManager.BranchView)
                 {
-                    branchManager.BranchView.Hide();
-                } 
+                    branchManager.BranchView.Show();
+                    continue;
+                }
+                branchManager.BranchView.Hide();
             }
             StartCoroutine(RotateSmoothlyCoroutine(e.Angle, e.Time));
         }
 
-        private void OnBranchUnzoomed(object sender, BranchZoomedEventArgs e)
+        private void OnBranchZoomOut(object sender, BranchZoomedEventArgs e)
         {
             foreach (BranchManager branchManager in _createdBranches)
             {
@@ -108,7 +110,6 @@ namespace SDRGames.Whist.TalentsModule.Managers
         private IEnumerator RotateSmoothlyCoroutine(float angle, float time)
         {
             yield return null;
-            Debug.Log(angle);
             float destinationAngle = angle != 0 ? 360 - transform.localEulerAngles.z - Math.Abs(angle) : 0;
             float direction = angle > 0 ? -1 : 1;
             if(Math.Abs(angle) > 180)
@@ -116,7 +117,6 @@ namespace SDRGames.Whist.TalentsModule.Managers
                 angle = 360 - Math.Abs(angle);
             }
             float speed = Math.Abs(angle / time);
-            Debug.Log(speed);
             while(Math.Abs(transform.localEulerAngles.z - destinationAngle) > speed)
             {
                 yield return null;
