@@ -21,7 +21,14 @@ namespace SDRGames.Whist.TalentsModule.Presenters
             _talamus = data;
 
             _talentView = talentView;
-            _talentView.Initialize(ACTIVE_COLOR, INACTIVE_COLOR, position);
+            _talentView.Initialize(ACTIVE_COLOR, INACTIVE_COLOR, data.TotalCost, position);
+
+            _talamus.CurrentPointsChanged += OnCurrentPointsChanged;
+        }
+
+        private void OnCurrentPointsChanged(object sender, CurrentPointsChangedEventArgs e)
+        {
+            _talentView.ChangeCurrentPoints($"{e.CurrentPoints}/{_talamus.TotalCost}");
         }
     }
 }

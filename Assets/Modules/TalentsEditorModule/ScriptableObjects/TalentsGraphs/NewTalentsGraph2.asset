@@ -12,62 +12,50 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50a8127899c311142a6d585424984797, type: 3}
   m_Name: NewTalentsGraph2
   m_EditorClassIdentifier: 
-  <FileName>k__BackingField: 
+  <FileName>k__BackingField: NewTalentsGraph2
   <TalamusNodes>k__BackingField:
-  - <ID>k__BackingField: 1eafc3ed-ce1a-4afd-a1b7-31d7687dc963
-    <NodeName>k__BackingField: Talamus1
+  - <ID>k__BackingField: f83bcf06-6135-452f-ae76-2580022bb2e2
+    <NodeName>k__BackingField: Talamus2
     <Cost>k__BackingField: 2
     <OutputConnections>k__BackingField:
-    - 4406013c-0a3b-444c-a435-fc9671bf2344
-    - ca4b7d10-4594-4770-86f8-e995958eb262
-    - ce7e4ce0-9a37-410d-a9de-55535048ed68
-    <Position>k__BackingField: {x: 708, y: 346.4}
-    <CharacteristicName>k__BackingField: 0
-    <CharacteristicValue>k__BackingField: 2
-  - <ID>k__BackingField: 4406013c-0a3b-444c-a435-fc9671bf2344
+    - fc3b3631-caea-49f4-b13d-c7ab7d50e6e1
+    - 34a9a5fa-7db4-42d9-b024-3c7f343461cc
+    - 7448c4c0-8917-475a-bd40-9c78f8f49ade
+    <Position>k__BackingField: {x: 588.8, y: 277.59998}
+    <CharacteristicName>k__BackingField: 2
+    <CharacteristicValue>k__BackingField: 3
+  - <ID>k__BackingField: fc3b3631-caea-49f4-b13d-c7ab7d50e6e1
     <NodeName>k__BackingField: Talamus3
     <Cost>k__BackingField: 2
     <OutputConnections>k__BackingField:
-    - e63b6da1-a9d5-4d3e-85ed-b43cc5dfff58
-    - d6f9dad7-48de-4f9f-8919-431ecb3012a6
-    <Position>k__BackingField: {x: 1035.2, y: 346.4}
-    <CharacteristicName>k__BackingField: 1
-    <CharacteristicValue>k__BackingField: 3
+    - 9241accf-b712-4d4a-829d-2b5bdb2e42dd
+    - f5e47143-aa0a-4743-b2ef-125fee446650
+    <Position>k__BackingField: {x: 864, y: 276.8}
+    <CharacteristicName>k__BackingField: 0
+    <CharacteristicValue>k__BackingField: 2
   <AstraNodes>k__BackingField:
-  - <ID>k__BackingField: ca4b7d10-4594-4770-86f8-e995958eb262
-    <NodeName>k__BackingField: Astra0
+  - <ID>k__BackingField: 7448c4c0-8917-475a-bd40-9c78f8f49ade
+    <NodeName>k__BackingField: Astra1
     <Cost>k__BackingField: 3
     <OutputConnections>k__BackingField: []
-    <Position>k__BackingField: {x: 340, y: 188}
+    <Position>k__BackingField: {x: 336.8, y: 358.4}
     <Equipment>k__BackingField: 0
-  - <ID>k__BackingField: ce7e4ce0-9a37-410d-a9de-55535048ed68
-    <NodeName>k__BackingField: Astra2
-    <Cost>k__BackingField: 3
-    <OutputConnections>k__BackingField: []
-    <Position>k__BackingField: {x: 340, y: 474.4}
-    <Equipment>k__BackingField: 0
-  - <ID>k__BackingField: e63b6da1-a9d5-4d3e-85ed-b43cc5dfff58
+  - <ID>k__BackingField: 9241accf-b712-4d4a-829d-2b5bdb2e42dd
     <NodeName>k__BackingField: Astra4
     <Cost>k__BackingField: 3
     <OutputConnections>k__BackingField: []
-    <Position>k__BackingField: {x: 1327.2, y: 188}
+    <Position>k__BackingField: {x: 1144.8, y: 166.40001}
     <Equipment>k__BackingField: 0
-  - <ID>k__BackingField: d6f9dad7-48de-4f9f-8919-431ecb3012a6
+  - <ID>k__BackingField: f5e47143-aa0a-4743-b2ef-125fee446650
     <NodeName>k__BackingField: Astra5
     <Cost>k__BackingField: 3
     <OutputConnections>k__BackingField: []
-    <Position>k__BackingField: {x: 1327.2, y: 474.4}
+    <Position>k__BackingField: {x: 1160.8, y: 406.4}
     <Equipment>k__BackingField: 0
-  <Variables>k__BackingField:
-  - <Name>k__BackingField: New HalfAstraB
-    <Value>k__BackingField: {fileID: 11400000, guid: 26c818cfce9db744082321003862ece5,
-      type: 2}
-    <Type>k__BackingField: 0
-  - <Name>k__BackingField: New FullAstraBonu
-    <Value>k__BackingField: {fileID: 11400000, guid: ee8fc9a5d42e6b04489a5e5daf1ab0fa,
-      type: 2}
-    <Type>k__BackingField: 1
-  - <Name>k__BackingField: New FullTalam
-    <Value>k__BackingField: {fileID: 11400000, guid: 173c9d125244aa645abf89cc72e2a77f,
-      type: 2}
-    <Type>k__BackingField: 2
+  - <ID>k__BackingField: 34a9a5fa-7db4-42d9-b024-3c7f343461cc
+    <NodeName>k__BackingField: Astra0
+    <Cost>k__BackingField: 3
+    <OutputConnections>k__BackingField: []
+    <Position>k__BackingField: {x: 326.4, y: 142.40001}
+    <Equipment>k__BackingField: 0
+  <Variables>k__BackingField: []

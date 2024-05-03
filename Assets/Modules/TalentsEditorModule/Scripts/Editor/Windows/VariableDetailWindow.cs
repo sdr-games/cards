@@ -9,6 +9,8 @@ using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
+using static SDRGames.Whist.TalentsModule.ScriptableObjects.BonusScriptableObject;
+
 namespace SDRGames.Whist.TalentsEditorModule
 {
     public class VariableDetailWindow : GraphElement
@@ -56,9 +58,9 @@ namespace SDRGames.Whist.TalentsEditorModule
 
             switch (variable.Type)
             {
-                case VariableData.VariableTypes.HalfAstraBonus:
-                case VariableData.VariableTypes.FullAstraBonus:
-                case VariableData.VariableTypes.FullTalamusBonus:
+                case VariableTypes.HalfAstraBonus:
+                case VariableTypes.FullAstraBonus:
+                case VariableTypes.FullTalamusBonus:
                     ObjectField valueObjectField = UtilityElement.CreateObjectField(
                         typeof(ScriptableObject),
                         variable.Value,

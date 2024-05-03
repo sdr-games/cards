@@ -12,15 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e27b5ac8de4c7949a7747223e0df75b, type: 3}
   m_Name: NewTalentsGraph2
   m_EditorClassIdentifier: 
-  <FileName>k__BackingField: 
+  <FileName>k__BackingField: NewTalentsGraph2
   <Talents>k__BackingField:
-  - {fileID: 11400000, guid: 23239fde90ffb9747ae7507ab101954c, type: 2}
-  - {fileID: 11400000, guid: a323090ef919af642920ae529fc9b75f, type: 2}
-  - {fileID: 11400000, guid: 19c127f44bd49d84f85556fb53c132d2, type: 2}
-  - {fileID: 11400000, guid: 72b2307f33c96fa468ff81bddbf7f604, type: 2}
-  - {fileID: 11400000, guid: 3810d20b3bb56624685c5e04e5a962a1, type: 2}
-  - {fileID: 11400000, guid: ccbe4018fa96cdc499babf61a120e9af, type: 2}
-  <Bonuses>k__BackingField:
-  - {fileID: 11400000, guid: 634650b405b74e449b9130b0d2a18e47, type: 2}
-  - {fileID: 11400000, guid: 95c5d80a2ab3978459d4babce8eefdb4, type: 2}
-  - {fileID: 11400000, guid: a7622bf315e371e45877d9d40986b008, type: 2}
+  - {fileID: 11400000, guid: e74a36e15b64b8344a47471ce6963a4a, type: 2}
+  - {fileID: 11400000, guid: e33f10f1dcdbc6f43b003127d8ae1803, type: 2}
+  - {fileID: 11400000, guid: a2d407215f1c410439968e03477a17b3, type: 2}
+  - {fileID: 11400000, guid: c3c54d06b3aa1e14bba81095cf1b3bd4, type: 2}
+  - {fileID: 11400000, guid: 3c4d0f199d2098f42abdc47453f931c5, type: 2}
+  - {fileID: 11400000, guid: 8713074404ad81a47842d6bc80424545, type: 2}
+  <Bonuses>k__BackingField: []

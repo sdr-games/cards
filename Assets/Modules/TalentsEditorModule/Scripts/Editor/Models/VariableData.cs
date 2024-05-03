@@ -4,6 +4,8 @@ using SDRGames.Whist.TalentsModule.ScriptableObjects;
 
 using UnityEngine;
 
+using static SDRGames.Whist.TalentsModule.ScriptableObjects.BonusScriptableObject;
+
 namespace SDRGames.Whist.TalentsEditorModule.Models
 {
     [Serializable]
@@ -11,7 +13,6 @@ namespace SDRGames.Whist.TalentsEditorModule.Models
     {
         [field: SerializeField] public string Name { get; private set; }
         [field: SerializeField] public ScriptableObject Value { get; private set; }
-        public enum VariableTypes { HalfAstraBonus, FullAstraBonus, FullTalamusBonus }
         [field: SerializeField] public VariableTypes Type { get; private set; }
 
         public VariableData(string name, ScriptableObject value, VariableTypes type)
@@ -36,7 +37,7 @@ namespace SDRGames.Whist.TalentsEditorModule.Models
             BonusScriptableObject bonusSO;
 
             bonusSO = UtilityIO.CreateAsset<BonusScriptableObject>($"{folderPath}/Talents", Name);
-            bonusSO.Initialize(Value);
+            bonusSO.Initialize(Type, Value);
             UtilityIO.SaveAsset(bonusSO);
             return bonusSO;
         }

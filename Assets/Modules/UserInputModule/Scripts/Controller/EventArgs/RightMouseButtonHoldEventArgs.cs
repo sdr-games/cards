@@ -3,11 +3,11 @@ using UnityEngine;
 
 namespace SDRGames.Whist.UserInputModule.Controller
 {
-    public class RightMouseButtonClickEventArgs : EventArgs
+    public class RightMouseButtonSceneClickEventArgs : EventArgs
     {
         public Vector2 MousePosition { get; }
 
-        public RightMouseButtonClickEventArgs(Vector2 mousePosition)
+        public RightMouseButtonSceneClickEventArgs(Vector2 mousePosition)
         {
             MousePosition = mousePosition;
         }

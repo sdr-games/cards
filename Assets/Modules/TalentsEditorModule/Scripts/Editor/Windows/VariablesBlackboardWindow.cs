@@ -12,6 +12,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 
 using static SDRGames.Whist.TalentsEditorModule.Models.VariableData;
+using static SDRGames.Whist.TalentsModule.ScriptableObjects.BonusScriptableObject;
 
 namespace SDRGames.Whist.TalentsEditorModule
 {

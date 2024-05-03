@@ -40,8 +40,8 @@ namespace SDRGames.Whist.UserInputModule
             _userInputController.LeftMouseButtonClickedOnScene += TestOnLeftMouseButtonClickedOnScene;
             _userInputController.LeftMouseButtonReleasedOnScene += TestOnLeftMouseButtonReleasedOnScene;
 
-            _userInputController.RightMouseButtonClicked += TestOnRightMouseButtonClicked;
-            _userInputController.RightMouseButtonReleased += TestOnRightMouseButtonReleased;
+            _userInputController.RightMouseButtonClickedOnScene += TestOnRightMouseButtonClicked;
+            _userInputController.RightMouseButtonReleasedOnScene += TestOnRightMouseButtonReleased;
 
             _userInputController.MiddleMouseButtonScrollStarted += TestOnMiddleMouseButtonScrollStarted;
             _userInputController.MiddleMouseButtonScrollEnded += TestOnMiddleMouseButtonScrollEnded;
@@ -56,8 +56,8 @@ namespace SDRGames.Whist.UserInputModule
             _userInputController.LeftMouseButtonClickedOnScene -= TestOnLeftMouseButtonClickedOnScene;
             _userInputController.LeftMouseButtonReleasedOnScene -= TestOnLeftMouseButtonReleasedOnScene;
 
-            _userInputController.RightMouseButtonClicked -= TestOnRightMouseButtonClicked;
-            _userInputController.RightMouseButtonReleased -= TestOnRightMouseButtonReleased;
+            _userInputController.RightMouseButtonClickedOnScene -= TestOnRightMouseButtonClicked;
+            _userInputController.RightMouseButtonReleasedOnScene -= TestOnRightMouseButtonReleased;
 
             _userInputController.MiddleMouseButtonScrollStarted -= TestOnMiddleMouseButtonScrollStarted;
             _userInputController.MiddleMouseButtonScrollEnded -= TestOnMiddleMouseButtonScrollEnded;
@@ -73,12 +73,12 @@ namespace SDRGames.Whist.UserInputModule
             Debug.Log($"TestLog: Scroll ended on Scroll.x: {e.ScrollPosition.x}, Scroll.y: {e.ScrollPosition.y}");
         }
 
-        private void TestOnRightMouseButtonClicked(object sender, RightMouseButtonClickEventArgs e)
+        private void TestOnRightMouseButtonClicked(object sender, RightMouseButtonSceneClickEventArgs e)
         {
             Debug.Log($"TestLog: RMB was pressed on MousePosition.x: {e.MousePosition.x}, MousePosition.y: {e.MousePosition.y}");
         }
 
-        private void TestOnRightMouseButtonReleased(object sender, RightMouseButtonClickEventArgs e)
+        private void TestOnRightMouseButtonReleased(object sender, RightMouseButtonSceneClickEventArgs e)
         {
             Debug.Log($"TestLog: RMB was released on MousePosition.x: {e.MousePosition.x}, MousePosition.y: {e.MousePosition.y}");
         }

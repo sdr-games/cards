@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50a8127899c311142a6d585424984797, type: 3}
+  m_Name: NewTalentsGraph3
+  m_EditorClassIdentifier: 
+  <FileName>k__BackingField: 
+  <TalamusNodes>k__BackingField:
+  - <ID>k__BackingField: 4df7eb0e-9d84-41a9-9998-7ec1190f3cff
+    <NodeName>k__BackingField: Talamus2
+    <Cost>k__BackingField: 2
+    <OutputConnections>k__BackingField:
+    - 49fa95fb-d97b-40fc-8f85-5fcb016449e0
+    - d1bd033b-3afc-474c-8846-ea2c708eceeb
+    <Position>k__BackingField: {x: 559.2, y: 174.40001}
+    <CharacteristicName>k__BackingField: 3
+    <CharacteristicValue>k__BackingField: 3
+  <AstraNodes>k__BackingField:
+  - <ID>k__BackingField: d1bd033b-3afc-474c-8846-ea2c708eceeb
+    <NodeName>k__BackingField: Astra1
+    <Cost>k__BackingField: 3
+    <OutputConnections>k__BackingField: []
+    <Position>k__BackingField: {x: 322.4, y: 297.59998}
+    <Equipment>k__BackingField: 0
+  - <ID>k__BackingField: 49fa95fb-d97b-40fc-8f85-5fcb016449e0
+    <NodeName>k__BackingField: Astra0
+    <Cost>k__BackingField: 3
+    <OutputConnections>k__BackingField: []
+    <Position>k__BackingField: {x: 241.6, y: 70.399994}
+    <Equipment>k__BackingField: 0
+  <Variables>k__BackingField: []

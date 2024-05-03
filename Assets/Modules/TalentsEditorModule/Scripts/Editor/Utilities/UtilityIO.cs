@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 using SDRGames.Whist.TalentsEditorModule.Managers;
@@ -115,12 +116,12 @@ namespace SDRGames.Whist.TalentsEditorModule
         {
             List<string> nodeNames = new List<string>();
             Dictionary<string, TalentScriptableObject> createdTalents = new Dictionary<string, TalentScriptableObject>();
-            Vector2 graphSize = _graphView.GetGraphSize();
+            Rect graphRect = _graphView.GetGraphRect();
 
             foreach (BaseNodeView node in _nodes)
             {
                 node.SaveToGraph(graphData);
-                TalentScriptableObject talentSO = node.SaveToSO(_containerFolderPath, graphSize);
+                TalentScriptableObject talentSO = node.SaveToSO(_containerFolderPath, graphRect);
                 createdTalents.Add(node.ID, talentSO);
 
                 talentsBranch.Talents.Add(talentSO);
@@ -128,6 +129,9 @@ namespace SDRGames.Whist.TalentsEditorModule
             }
 
             UpdateDialoguesChoicesConnections(createdTalents);
+
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh();
         }
 
         private static void SaveVariables(GraphSaveDataScriptableObject graphData, TalentsBranchScriptableObject talentsBranch)
@@ -151,6 +155,8 @@ namespace SDRGames.Whist.TalentsEditorModule
                         string inputNodeID = ((BaseNodeView)edge.input.node).ID;
                         createdTalents[node.ID].Dependencies.Add(createdTalents[inputNodeID]);
                         createdTalents[inputNodeID].Blockers.Add(createdTalents[node.ID]);
+                        SaveAsset(createdTalents[node.ID]);
+                        SaveAsset(createdTalents[inputNodeID]);
                     }
                 }
             }

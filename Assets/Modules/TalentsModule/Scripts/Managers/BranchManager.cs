@@ -1,39 +1,31 @@
+using System;
 using System.Collections.Generic;
 
 using SDRGames.Whist.TalentsModule.ScriptableObjects;
 using SDRGames.Whist.TalentsModule.Views;
 using SDRGames.Whist.UserInputModule.Controller;
 
-using UnityEditor;
-
 using UnityEngine;
 
 namespace SDRGames.Whist.TalentsModule.Managers
 {
-
     public class BranchManager : MonoBehaviour
     {
-        [SerializeField] private TalentsBranchScriptableObject _talentBranch;
         [SerializeField] private AstraManager _astraPrefab;
         [SerializeField] private TalamusManager _talamusPrefab;
-        [SerializeField] private UserInputController _userInputController;
 
+        private UserInputController _userInputController;
+        private TalentsBranchScriptableObject _talentBranchSO;
         private Dictionary<string, TalentManager> _createdTalents;
 
-        private void OnEnable()
+        [field: SerializeField] public BranchView BranchView { get; private set; }
+
+        public void Initialize(UserInputController userInputController, TalentsBranchScriptableObject talentsBranchSO, Vector3 position, float startScale, Transform parent)
         {
-            if(_talentBranch == null)
-            {
-                Debug.LogError("Talent Branch не был назначен");
-                #if UNITY_EDITOR
-                    EditorApplication.isPlaying = false;
-                #endif
-                Application.Quit();
-            }
+            _userInputController = userInputController;
+            _talentBranchSO = talentsBranchSO;
 
-            _createdTalents =  new Dictionary<string, TalentManager>();
-
-            foreach (TalentScriptableObject talent in _talentBranch.StartTalents)
+            foreach (TalentScriptableObject talent in _talentBranchSO.StartTalents)
             {
                 if (talent is AstraScriptableObject astraTalent)
                 {
@@ -47,6 +39,13 @@ namespace SDRGames.Whist.TalentsModule.Managers
                     continue;
                 }
             }
+            BranchView.Initialize(userInputController, position, startScale, parent);
+            BranchView.BranchVisibilityChanged += OnBranchVisibilityChanged;
+        }
+
+        private void OnEnable()
+        {
+            _createdTalents =  new Dictionary<string, TalentManager>();
         }
 
         private List<TalentView> CreateDependencies(List<TalentScriptableObject> talents)
@@ -92,5 +91,19 @@ namespace SDRGames.Whist.TalentsModule.Managers
             _createdTalents.Add(astra.Name, astraManager);
             return astraManager;
         }
+
+        private void OnBranchVisibilityChanged(object sender, BranchVisibilityChangedEventArgs e)
+        {
+            foreach(TalentManager talentManager in _createdTalents.Values)
+            {
+                if(e.IsVisible && BranchView.IsZoomed)
+                {
+                    talentManager.TalentView.ChangeBlock();
+                    continue;
+                }
+                talentManager.TalentView.ChangeVisibility(false);
+            }
+        }
+
     }
 }

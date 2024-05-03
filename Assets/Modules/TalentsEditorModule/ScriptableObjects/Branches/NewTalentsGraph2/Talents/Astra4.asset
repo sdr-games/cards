@@ -15,7 +15,8 @@ MonoBehaviour:
   <Name>k__BackingField: Astra4
   <Cost>k__BackingField: 3
   <TalentType>k__BackingField: 1
-  <PositionPercentages>k__BackingField: {x: 86.271454, y: 30.440416}
-  <Blockers>k__BackingField: []
+  <PositionPercentages>k__BackingField: {x: 98.08246, y: 9.09091}
+  <Blockers>k__BackingField:
+  - {fileID: 11400000, guid: 8713074404ad81a47842d6bc80424545, type: 2}
   <Dependencies>k__BackingField: []
   <Equipment>k__BackingField: Weapon

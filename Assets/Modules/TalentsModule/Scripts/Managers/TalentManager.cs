@@ -1,3 +1,4 @@
+using SDRGames.Whist.TalentsModule.Models;
 using SDRGames.Whist.TalentsModule.ScriptableObjects;
 using SDRGames.Whist.TalentsModule.Views;
 using SDRGames.Whist.UserInputModule.Controller;
@@ -10,11 +11,13 @@ namespace SDRGames.Whist.TalentsModule.Managers
 {
     public class TalentManager : MonoBehaviour
     {
+        private Talent _talent;
+        private UserInputController _userInputController;
+
         [field: SerializeField] public TalentView TalentView { get; protected set; }
 
-        protected UserInputController _userInputController;
 
-        public void Initialize(UserInputController userInputController, TalentScriptableObject talentScriptableObject)
+        public void Initialize(UserInputController userInputController, Talent talent)
         {
             if (TalentView == null)
             {
@@ -24,15 +27,45 @@ namespace SDRGames.Whist.TalentsModule.Managers
                 #endif
             }
 
+            _talent = talent;
+
+            TalentView.BlockChanged += OnBlockChanged;
+
             _userInputController = userInputController;
             _userInputController.LeftMouseButtonClickedOnUI += OnLeftMouseButtonClickedOnUI;
+            _userInputController.RightMouseButtonClickedOnUI += OnRightMouseButtonClickedOnUI;
+        }
+
+        private void OnBlockChanged(object sender, System.EventArgs e)
+        {
+            _talent.ResetCurrentPoints();
         }
 
         private void OnLeftMouseButtonClickedOnUI(object sender, LeftMouseButtonUIClickEventArgs e)
         {
-            if (e.GameObject == gameObject)
+            if(e.GameObject != gameObject || _talent.CurrentPoints == _talent.TotalCost || TalentView.IsBlocked)
+            {
+                return;
+            }
+
+            _talent.IncreaseCurrentPoints();
+            if (_talent.CurrentPoints == _talent.TotalCost)
             {
                 TalentView.ChangeActive();
+            }
+        }
+
+        private void OnRightMouseButtonClickedOnUI(object sender, RightMouseButtonUIClickEventArgs e)
+        {
+            if (e.GameObject != gameObject || _talent.CurrentPoints == 0 || TalentView.IsBlocked)
+            {
+                return;
+            }
+
+            _talent.DecreaseCurrentPoints();
+            if (_talent.CurrentPoints < _talent.TotalCost)
+            {
+                TalentView.SetActive(false);
             }
         }
 
@@ -41,6 +74,7 @@ namespace SDRGames.Whist.TalentsModule.Managers
             if (_userInputController != null)
             {
                 _userInputController.LeftMouseButtonClickedOnUI -= OnLeftMouseButtonClickedOnUI;
+                _userInputController.RightMouseButtonClickedOnUI -= OnRightMouseButtonClickedOnUI;
             }
         }
     }

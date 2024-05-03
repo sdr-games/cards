@@ -12,10 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09a3027e02023dc4da8fa65f361653a1, type: 3}
   m_Name: Astra1
   m_EditorClassIdentifier: 
-  <Name>k__BackingField: Astra15
-  <Cost>k__BackingField: 0
+  <Name>k__BackingField: Astra1
+  <Cost>k__BackingField: 3
   <TalentType>k__BackingField: 1
-  <Position>k__BackingField: {x: 379.2, y: 616.8}
-  <Blockers>k__BackingField: []
+  <PositionPercentages>k__BackingField: {x: 0, y: 93.36016}
+  <Blockers>k__BackingField:
+  - {fileID: 11400000, guid: b7dff49ebff330540ba800da2facbcb9, type: 2}
   <Dependencies>k__BackingField: []
   <Equipment>k__BackingField: Weapon

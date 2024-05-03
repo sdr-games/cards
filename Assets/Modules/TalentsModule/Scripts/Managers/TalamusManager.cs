@@ -12,10 +12,10 @@ namespace SDRGames.Whist.TalentsModule.Managers
 
         public void Initialize(UserInputController userInputController, TalamusScriptableObject talamusScriptableObject)
         {
-            base.Initialize(userInputController, talamusScriptableObject);
             _talamus = new Talamus(talamusScriptableObject);
+            base.Initialize(userInputController, _talamus);
 
-            _talamusPresenter = new TalamusPresenter(_talamus, TalentView, talamusScriptableObject.PositionPercentages);
+            _talamusPresenter = new TalamusPresenter(_talamus, TalentView, talamusScriptableObject.CalculatePositionInContainer());
         }
     }
 }
