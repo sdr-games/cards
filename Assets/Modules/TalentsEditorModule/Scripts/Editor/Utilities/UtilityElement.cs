@@ -2,11 +2,16 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
+using SDRGames.Whist.LocalizationModule.Models;
 using SDRGames.Whist.TalentsEditorModule.Views;
 
 using UnityEditor.Experimental.GraphView;
+using UnityEditor.Localization;
+using UnityEditor.TestTools.TestRunner.Api;
 using UnityEditor.UIElements;
 
+using UnityEngine.Localization.Settings;
+using UnityEngine.Localization.Tables;
 using UnityEngine.UIElements;
 
 namespace SDRGames.Whist.TalentsEditorModule
@@ -45,7 +50,7 @@ namespace SDRGames.Whist.TalentsEditorModule
             {
                 value = value,
                 label = label,
-                maxLength = 20,
+                maxLength = 50,
                 isReadOnly = isReadOnly
             };
 
@@ -110,6 +115,53 @@ namespace SDRGames.Whist.TalentsEditorModule
             return dropdownField;
         }
 
+        public static Box CreateLocalizationBox(LocalizationData localizationSaveData, string uss_class = "", EventHandler<LocalizationDataChangedEventArgs> onValueChangedEvent = null)
+        {
+            List<string> stringTablesNames = new List<string>();
+            Box box = new Box();
+
+            foreach (var stringTable in LocalizationEditorSettings.GetStringTableCollections())
+            {
+                //if (stringTable.name.Contains("Dialogue"))
+                //{
+                stringTablesNames.Add(stringTable.name);
+                //}
+            }
+            if (stringTablesNames.Count > 0)
+            {
+                if (string.IsNullOrEmpty(localizationSaveData.SelectedLocalizationTable))
+                {
+                    localizationSaveData.SetLocalizationTable(stringTablesNames[0]);
+                }
+                Box subBox = new Box();
+
+                DropdownField localizationTableDropdown = CreateDropdownField
+                (
+                    stringTablesNames,
+                    localizationSaveData.SelectedLocalizationTable,
+                    null,
+                    callback =>
+                    {
+                        localizationSaveData.SetLocalizationTable(callback.newValue);
+                        OnLocalizationDropdownChange(localizationSaveData, subBox, uss_class, onValueChangedEvent);                        
+                    }
+                );
+                localizationTableDropdown.AddClasses(uss_class);
+
+                DropdownField localizationTextDropdown = CreateLocalizationEntriesDropdown(localizationSaveData, subBox, uss_class, onValueChangedEvent);
+                TextField localizationText = CreateTextArea(localizationSaveData.LocalizedTextPreview, isReadOnly: true);
+
+                box.Add(localizationTableDropdown);
+                if (localizationTextDropdown != null)
+                {
+                    subBox.Add(localizationTextDropdown);
+                    subBox.Add(localizationText);
+                }
+                box.Add(subBox);
+            }
+            return box;
+        }
+
         public static ObjectField CreateObjectField(Type objectType, UnityEngine.Object value = null, string label = null, EventCallback<ChangeEvent<UnityEngine.Object>> onValueChanged = null)
         {
             ObjectField objectField = new ObjectField()
@@ -124,6 +176,54 @@ namespace SDRGames.Whist.TalentsEditorModule
                 objectField.RegisterCallback(onValueChanged);
             }
             return objectField;
+        }
+
+        private static void OnLocalizationDropdownChange(LocalizationData localizationSaveData, Box box, string uss_class, EventHandler<LocalizationDataChangedEventArgs> onValueChangedEvent)
+{
+            box.Clear();
+            DropdownField localizationTextDropdown = CreateLocalizationEntriesDropdown(localizationSaveData, box, uss_class, onValueChangedEvent);
+            TextField localizationText = CreateTextArea(localizationSaveData.LocalizedTextPreview, isReadOnly: true);
+            onValueChangedEvent?.Invoke(null, new LocalizationDataChangedEventArgs(localizationSaveData));
+            if (localizationTextDropdown != null)
+            {
+                box.Add(localizationTextDropdown);
+                box.Add(localizationText);
+            }
+        }
+        private static DropdownField CreateLocalizationEntriesDropdown(LocalizationData localizationSaveData, Box box, string uss_class, EventHandler<LocalizationDataChangedEventArgs> onValueChangedEvent)
+        {
+            Dictionary<string, string> localizationEntries = new Dictionary<string, string>();
+            var currentLocale = LocalizationSettings.ProjectLocale.Formatter.ToString();
+            var collection = LocalizationEditorSettings.GetStringTableCollection(localizationSaveData.SelectedLocalizationTable);
+            var table = collection.GetTable(currentLocale) as StringTable;
+
+            foreach (var entry in table.Values)
+            {
+                localizationEntries.Add(entry.SharedEntry.Key, entry.Value);
+            }
+            if (localizationEntries.Count > 0)
+            {
+                if (string.IsNullOrEmpty(localizationSaveData.SelectedEntryKey) || !localizationEntries.ContainsKey(localizationSaveData.SelectedEntryKey))
+                {
+                    localizationSaveData.SetEntryKey(localizationEntries.Keys.First());
+                }
+                localizationSaveData.SetPreviewText(localizationEntries[localizationSaveData.SelectedEntryKey]);
+                DropdownField localizationTextDropdown = CreateDropdownField
+                (
+                    localizationEntries.Keys.ToList(),
+                    localizationSaveData.SelectedEntryKey,
+                    null,
+                    callback =>
+                    {
+                        localizationSaveData.SetEntryKey(callback.newValue);
+                        localizationSaveData.SetPreviewText(localizationEntries[localizationSaveData.SelectedEntryKey]);
+                        OnLocalizationDropdownChange(localizationSaveData, box, uss_class, onValueChangedEvent);
+                    }
+                );
+                localizationTextDropdown.AddClasses(uss_class);
+                return localizationTextDropdown;
+            }
+            return null;
         }
     }
 }

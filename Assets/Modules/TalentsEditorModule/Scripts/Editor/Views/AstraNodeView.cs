@@ -20,7 +20,7 @@ namespace SDRGames.Whist.TalentsEditorModule.Views
         public event EventHandler<AstraLoadedEventArgs> Loaded;
         public event EventHandler<EquipmentChangedEventArgs> EquipmentChanged;
 
-        public void Initialize(string id, string nodeName, Vector2 position)
+        public override void Initialize(string id, string nodeName, Vector2 position)
         {
             base.Initialize(id, nodeName, position);
 
@@ -51,6 +51,10 @@ namespace SDRGames.Whist.TalentsEditorModule.Views
                 }
             );
 
+            Foldout textFoldout = UtilityElement.CreateFoldout("Description");
+            Box localizationBox = UtilityElement.CreateLocalizationBox(DescriptionLocalization, "", DescriptionLocalizationFieldChanged);
+            textFoldout.Add(localizationBox);
+
             DropdownField equipmentDropdown = UtilityElement.CreateDropdownField
             (
                 typeof(EquipmentNames),
@@ -71,6 +75,7 @@ namespace SDRGames.Whist.TalentsEditorModule.Views
             //characterFoldout.Add(characterObjectField);
 
             customDataContainer.Add(costTextField);
+            customDataContainer.Add(textFoldout);
             customDataContainer.Add(equipmentDropdown);
             extensionContainer.Add(customDataContainer);
 
@@ -99,7 +104,7 @@ namespace SDRGames.Whist.TalentsEditorModule.Views
         {
             base.Load(node);
             Equipment = node.Equipment;
-            Loaded?.Invoke(this, new AstraLoadedEventArgs(ID, NodeName, Cost, Equipment));
+            Loaded?.Invoke(this, new AstraLoadedEventArgs(ID, NodeName, Cost, DescriptionLocalization, Equipment));
         }
 
         protected override Port CreateInputPort()

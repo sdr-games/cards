@@ -1,6 +1,6 @@
 using System;
 
-using SDRGames.Whist.TalentsModule.ScriptableObjects;
+using SDRGames.Whist.LocalizationModule.Models;
 
 using UnityEngine;
 
@@ -13,6 +13,7 @@ namespace SDRGames.Whist.TalentsEditorModule.Models
     {
         [field: SerializeField] public string ID { get; protected set; }
         [field: SerializeField] public string NodeName { get; protected set; }
+        [field: SerializeField] public LocalizationData DescriptionLocalization { get; protected set; }
         [field: SerializeField] public int Cost { get; protected set; }
         [field: SerializeField] public NodeTypes NodeType { get; protected set; }
 
@@ -30,6 +31,11 @@ namespace SDRGames.Whist.TalentsEditorModule.Models
         public virtual void SetCost(int cost)
         {
             Cost = cost;
+        }
+
+        public virtual void SetDescription(LocalizationData descriptionLocalization)
+        {
+            DescriptionLocalization = descriptionLocalization;
         }
 
         public void SetNodeType(NodeTypes nodeType)

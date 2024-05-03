@@ -25,6 +25,7 @@ namespace SDRGames.Whist.TalentsEditorModule.Models
         {
             ID = data.ID;
             NodeName = data.NodeName;
+            DescriptionLocalization = data.DescriptionLocalization;
             Cost = data.Cost;
             Equipment = data.EquipmentName;
         }
@@ -39,6 +40,7 @@ namespace SDRGames.Whist.TalentsEditorModule.Models
             astraSO.Initialize(
                 NodeName,
                 Cost,
+                DescriptionLocalization,
                 NodeType,
                 Equipment.ToString()
             );

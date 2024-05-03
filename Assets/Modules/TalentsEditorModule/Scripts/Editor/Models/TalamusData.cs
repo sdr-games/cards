@@ -32,6 +32,7 @@ namespace SDRGames.Whist.TalentsEditorModule.Models
             ID = data.ID;
             NodeName = data.NodeName;
             Cost = data.Cost;
+            DescriptionLocalization = data.DescriptionLocalization;
             CharacteristicName = data.CharacteristicName;
             CharacteristicValue = data.CharacteristicValue;
         }
@@ -56,6 +57,7 @@ namespace SDRGames.Whist.TalentsEditorModule.Models
             talamusSO.Initialize(
                 NodeName,
                 Cost,
+                DescriptionLocalization,
                 NodeType,
                 CharacteristicName.ToString(),
                 CharacteristicValue

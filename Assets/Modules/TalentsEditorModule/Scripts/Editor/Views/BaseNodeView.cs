@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 
 using SDRGames.Whist.HelpersModule;
+using SDRGames.Whist.LocalizationModule.Models;
 using SDRGames.Whist.TalentsModule.ScriptableObjects;
 
 using UnityEditor.Experimental.GraphView;
@@ -18,6 +19,7 @@ namespace SDRGames.Whist.TalentsEditorModule.Views
 
         [field: SerializeField] public string ID { get; protected set; }
         [field: SerializeField] public string NodeName { get; protected set; }
+        [field: SerializeField] public LocalizationData DescriptionLocalization { get; protected set; }
         [field: SerializeField] public int Cost { get; protected set; }
         [field: SerializeField] public List<Port> InputPorts { get; protected set; }
         [field: SerializeField] public List<Port> OutputPorts { get; protected set; }
@@ -25,6 +27,7 @@ namespace SDRGames.Whist.TalentsEditorModule.Views
         [field: SerializeField] public Vector2 Position { get; protected set; }
 
         public event EventHandler<NodeNameChangedEventArgs> NodeNameTextFieldChanged;
+        public EventHandler<LocalizationDataChangedEventArgs> DescriptionLocalizationFieldChanged;
         public event EventHandler<CostChangedEventArgs> CostTextFieldChanged;
         public event EventHandler PortDisconnected;
 
@@ -50,6 +53,7 @@ namespace SDRGames.Whist.TalentsEditorModule.Views
             ID = id;
             NodeName = nodeName;
 
+            DescriptionLocalization = new LocalizationData("", "", "");
             InputPorts = new List<Port>();
             OutputPorts = new List<Port>();
 
@@ -130,6 +134,7 @@ namespace SDRGames.Whist.TalentsEditorModule.Views
         {
             ID = node.ID;
             NodeName = node.NodeName;
+            DescriptionLocalization = node.DescriptionLocalization;
             Cost = node.Cost;
             OutputConnections = node.OutputConnections;
         }
@@ -147,6 +152,11 @@ namespace SDRGames.Whist.TalentsEditorModule.Views
         protected virtual void CostChanged(CostChangedEventArgs e)
         {
             CostTextFieldChanged?.Invoke(this, e);
+        }
+
+        protected virtual void DescriptionChanged(LocalizationDataChangedEventArgs e)
+        {
+            DescriptionLocalizationFieldChanged?.Invoke(this, e);
         }
 
         protected Vector2 CalculateLocalPositionPercentages(Rect graphRect)

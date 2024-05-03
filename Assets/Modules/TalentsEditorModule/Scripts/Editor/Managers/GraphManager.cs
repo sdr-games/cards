@@ -58,7 +58,7 @@ namespace SDRGames.Whist.TalentsEditorModule.Managers
             AddGridBackground();
             AddMiniMap();
             AddSearchWindow();
-            AddBlackboard();
+            //AddBlackboard();
 
             OnElementsDeleted();
 
