@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: NewTalentsGraph4
   m_EditorClassIdentifier: 
   <FileName>k__BackingField: 
+  <Background>k__BackingField: {fileID: 0}
   <Talents>k__BackingField:
-  - {fileID: 11400000, guid: 3f500b1752c53f549b8735b4ceef9b9e, type: 2}
   - {fileID: 11400000, guid: 599ee928cb582aa45b5ad37a10bbc14b, type: 2}
+  - {fileID: 11400000, guid: 3f500b1752c53f549b8735b4ceef9b9e, type: 2}
   <Bonuses>k__BackingField: []

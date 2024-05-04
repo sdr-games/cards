@@ -12,17 +12,23 @@ namespace SDRGames.Whist.TalentsEditorModule
     public class GraphSaveDataScriptableObject : ScriptableObject
     {
         [field: SerializeField] public string FileName { get; private set; }
+        [field: SerializeField] public Texture2D Background { get; private set; }
         [field: SerializeField] public List<TalamusNodeView> TalamusNodes { get; private set; }
         [field: SerializeField] public List<AstraNodeView> AstraNodes { get; private set; }
-        [field: SerializeField] public List<VariableData> Variables { get; private set; }
+        [field: SerializeField] public List<BonusData> Variables { get; private set; }
 
-        public void Initialize(string fileName)
+        public void Initialize(string fileName, Texture2D backgroundImage)
         {
             FileName = fileName;
-
+            Background = backgroundImage;
             TalamusNodes = new List<TalamusNodeView>();
             AstraNodes = new List<AstraNodeView>();
-            Variables = new List<VariableData>();
+            Variables = new List<BonusData>();
+        }
+
+        public void SetBackgroundImage(Texture2D backgroundImage)
+        {
+            Background = backgroundImage;
         }
 
         public void AddTalamusNode(TalamusNodeView talamusNodeView)
@@ -41,7 +47,7 @@ namespace SDRGames.Whist.TalentsEditorModule
             }
         }
 
-        public void AddVariable(VariableData variable)
+        public void AddVariable(BonusData variable)
         {
             if (!Variables.Contains(variable))
             {

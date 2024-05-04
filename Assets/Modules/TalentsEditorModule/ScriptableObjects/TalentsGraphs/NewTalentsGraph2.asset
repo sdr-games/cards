@@ -13,15 +13,15 @@ MonoBehaviour:
   m_Name: NewTalentsGraph2
   m_EditorClassIdentifier: 
   <FileName>k__BackingField: NewTalentsGraph2
+  <Background>k__BackingField: {fileID: 2800000, guid: 8fb7d9ccdfae0b5438098f7990b0ace3,
+    type: 3}
   <TalamusNodes>k__BackingField:
   - <ID>k__BackingField: f83bcf06-6135-452f-ae76-2580022bb2e2
     <NodeName>k__BackingField: Talamus2
     <DescriptionLocalization>k__BackingField:
       <SelectedLocalizationTable>k__BackingField: CharacterDescriptions
       <SelectedEntryKey>k__BackingField: Slime
-      <LocalizedTextPreview>k__BackingField: "\u0416\u0443\u0442\u043A\u0430\u044F
-        \u0431\u043E\u043B\u0435\u0437\u043D\u044C, \u0441\u043B\u0438\u0437\u044C,
-        \u0431\u043B\u0430-\u0431\u043B\u0430-\u0431\u043B\u0430"
+      <LocalizedTextPreview>k__BackingField: Blah-blah-blah
     <Cost>k__BackingField: 2
     <OutputConnections>k__BackingField:
     - fc3b3631-caea-49f4-b13d-c7ab7d50e6e1
@@ -35,9 +35,7 @@ MonoBehaviour:
     <DescriptionLocalization>k__BackingField:
       <SelectedLocalizationTable>k__BackingField: CharacterDescriptions
       <SelectedEntryKey>k__BackingField: Slime
-      <LocalizedTextPreview>k__BackingField: "\u0416\u0443\u0442\u043A\u0430\u044F
-        \u0431\u043E\u043B\u0435\u0437\u043D\u044C, \u0441\u043B\u0438\u0437\u044C,
-        \u0431\u043B\u0430-\u0431\u043B\u0430-\u0431\u043B\u0430"
+      <LocalizedTextPreview>k__BackingField: Blah-blah-blah
     <Cost>k__BackingField: 2
     <OutputConnections>k__BackingField:
     - 9241accf-b712-4d4a-829d-2b5bdb2e42dd
@@ -51,9 +49,7 @@ MonoBehaviour:
     <DescriptionLocalization>k__BackingField:
       <SelectedLocalizationTable>k__BackingField: CharacterDescriptions
       <SelectedEntryKey>k__BackingField: Slime
-      <LocalizedTextPreview>k__BackingField: "\u0416\u0443\u0442\u043A\u0430\u044F
-        \u0431\u043E\u043B\u0435\u0437\u043D\u044C, \u0441\u043B\u0438\u0437\u044C,
-        \u0431\u043B\u0430-\u0431\u043B\u0430-\u0431\u043B\u0430"
+      <LocalizedTextPreview>k__BackingField: Blah-blah-blah
     <Cost>k__BackingField: 3
     <OutputConnections>k__BackingField: []
     <Position>k__BackingField: {x: 336.80002, y: 358.4}
@@ -63,9 +59,7 @@ MonoBehaviour:
     <DescriptionLocalization>k__BackingField:
       <SelectedLocalizationTable>k__BackingField: CharacterDescriptions
       <SelectedEntryKey>k__BackingField: Slime
-      <LocalizedTextPreview>k__BackingField: "\u0416\u0443\u0442\u043A\u0430\u044F
-        \u0431\u043E\u043B\u0435\u0437\u043D\u044C, \u0441\u043B\u0438\u0437\u044C,
-        \u0431\u043B\u0430-\u0431\u043B\u0430-\u0431\u043B\u0430"
+      <LocalizedTextPreview>k__BackingField: Blah-blah-blah
     <Cost>k__BackingField: 3
     <OutputConnections>k__BackingField: []
     <Position>k__BackingField: {x: 1144.7999, y: 166.40001}
@@ -75,9 +69,7 @@ MonoBehaviour:
     <DescriptionLocalization>k__BackingField:
       <SelectedLocalizationTable>k__BackingField: CharacterDescriptions
       <SelectedEntryKey>k__BackingField: Slime
-      <LocalizedTextPreview>k__BackingField: "\u0416\u0443\u0442\u043A\u0430\u044F
-        \u0431\u043E\u043B\u0435\u0437\u043D\u044C, \u0441\u043B\u0438\u0437\u044C,
-        \u0431\u043B\u0430-\u0431\u043B\u0430-\u0431\u043B\u0430"
+      <LocalizedTextPreview>k__BackingField: Blah-blah-blah
     <Cost>k__BackingField: 3
     <OutputConnections>k__BackingField: []
     <Position>k__BackingField: {x: 1160.7999, y: 406.4}
@@ -87,9 +79,7 @@ MonoBehaviour:
     <DescriptionLocalization>k__BackingField:
       <SelectedLocalizationTable>k__BackingField: CharacterDescriptions
       <SelectedEntryKey>k__BackingField: Slime
-      <LocalizedTextPreview>k__BackingField: "\u0416\u0443\u0442\u043A\u0430\u044F
-        \u0431\u043E\u043B\u0435\u0437\u043D\u044C, \u0441\u043B\u0438\u0437\u044C,
-        \u0431\u043B\u0430-\u0431\u043B\u0430-\u0431\u043B\u0430"
+      <LocalizedTextPreview>k__BackingField: Blah-blah-blah
     <Cost>k__BackingField: 3
     <OutputConnections>k__BackingField: []
     <Position>k__BackingField: {x: 326.40002, y: 142.40001}

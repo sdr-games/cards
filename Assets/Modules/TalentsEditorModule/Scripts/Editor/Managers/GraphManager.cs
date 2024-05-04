@@ -19,12 +19,13 @@ namespace SDRGames.Whist.TalentsEditorModule.Managers
     {
         private TalentsEditorWindow _editorWindow;
         private NodesSearchWindow _searchWindow;
+        private ParametersWindow _parametersWindow;
         private MiniMap _miniMap;
         private SerializableDictionary<string, NodeErrorData> _nodes;
         private SerializableDictionary<BaseNodeView, BaseNodePresenter> _nodesPresenters;
         private int _nameErrorsAmount;
 
-        public VariablesBlackboardWindow BlackboardWindow { get; private set; }
+        public BonusesBlackboardWindow BlackboardWindow { get; private set; }
 
         public int NameErrorsAmount
         {
@@ -59,6 +60,7 @@ namespace SDRGames.Whist.TalentsEditorModule.Managers
             AddMiniMap();
             AddSearchWindow();
             //AddBlackboard();
+            AddParametersWindow();
 
             OnElementsDeleted();
 
@@ -105,7 +107,8 @@ namespace SDRGames.Whist.TalentsEditorModule.Managers
         {
             graphElements.ForEach(graphElement => RemoveElement(graphElement));
             _nodes.Clear();
-            BlackboardWindow.Clear();
+            //BlackboardWindow.Clear();
+            _parametersWindow.ClearParameters();
             NameErrorsAmount = 0;
         }
 
@@ -128,6 +131,15 @@ namespace SDRGames.Whist.TalentsEditorModule.Managers
             return CalculateRectToFitAll(contentContainer);
         }
 
+        public Texture2D GetBackgroundImage()
+        {
+            return _parametersWindow.GetBackgroundImageFieldValue();
+        }
+
+        public void SetBackgroundImage(Texture2D backgroundImage)
+        {
+            _parametersWindow.SetBackgroundImageFieldValue(backgroundImage);
+        }
         private void AddNode(string nodeName, BaseNodeView node)
         {
             if (!_nodes.ContainsKey(nodeName))
@@ -337,8 +349,14 @@ namespace SDRGames.Whist.TalentsEditorModule.Managers
 
         private void AddBlackboard()
         {
-            BlackboardWindow = new VariablesBlackboardWindow(this);
+            BlackboardWindow = new BonusesBlackboardWindow(this);
             Add(BlackboardWindow);
+        }
+
+        private void AddParametersWindow()
+        {
+            _parametersWindow = new ParametersWindow();
+            Add(_parametersWindow);
         }
 
         private void OnNodeNameTextFieldChanged(object sender, NodeNameChangedEventArgs args)

@@ -57,7 +57,6 @@ namespace SDRGames.Whist.TalentsEditorModule
             _graphView = new GraphManager(this);
 
             rootVisualElement.Add(_graphView);
-            //rootVisualElement.Add(new Pill());
         }
 
         private void AddToolbar()

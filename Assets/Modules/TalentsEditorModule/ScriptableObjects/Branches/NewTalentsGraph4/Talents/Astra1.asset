@@ -26,6 +26,7 @@ MonoBehaviour:
       anim id est laborum.
   <TalentType>k__BackingField: 1
   <PositionPercentages>k__BackingField: {x: 100, y: 0}
-  <Blockers>k__BackingField: []
+  <Blockers>k__BackingField:
+  - {fileID: 11400000, guid: 599ee928cb582aa45b5ad37a10bbc14b, type: 2}
   <Dependencies>k__BackingField: []
   <Equipment>k__BackingField: Weapon

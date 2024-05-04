@@ -115,6 +115,22 @@ namespace SDRGames.Whist.TalentsEditorModule
             return dropdownField;
         }
 
+        public static ObjectField CreateObjectField(Type objectType, UnityEngine.Object value = null, string label = null, EventCallback<ChangeEvent<UnityEngine.Object>> onValueChanged = null)
+        {
+            ObjectField objectField = new ObjectField()
+            {
+                value = value,
+                label = label,
+                objectType = objectType,
+            };
+
+            if (onValueChanged != null)
+            {
+                objectField.RegisterCallback(onValueChanged);
+            }
+            return objectField;
+        }
+
         public static Box CreateLocalizationBox(LocalizationData localizationSaveData, string uss_class = "", EventHandler<LocalizationDataChangedEventArgs> onValueChangedEvent = null)
         {
             List<string> stringTablesNames = new List<string>();
@@ -160,22 +176,6 @@ namespace SDRGames.Whist.TalentsEditorModule
                 box.Add(subBox);
             }
             return box;
-        }
-
-        public static ObjectField CreateObjectField(Type objectType, UnityEngine.Object value = null, string label = null, EventCallback<ChangeEvent<UnityEngine.Object>> onValueChanged = null)
-        {
-            ObjectField objectField = new ObjectField()
-            {
-                value = value,
-                label = label,
-                objectType = objectType,
-            };
-
-            if (onValueChanged != null)
-            {
-                objectField.RegisterCallback(onValueChanged);
-            }
-            return objectField;
         }
 
         private static void OnLocalizationDropdownChange(LocalizationData localizationSaveData, Box box, string uss_class, EventHandler<LocalizationDataChangedEventArgs> onValueChangedEvent)

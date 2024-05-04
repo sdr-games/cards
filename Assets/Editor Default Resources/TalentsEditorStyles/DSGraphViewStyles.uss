@@ -44,6 +44,6 @@ GridBackground
 }
 
 .main-container > * {
-    flex-direction: row;
+    /*flex-direction: row;*/
     margin: 2px 0;
 }
