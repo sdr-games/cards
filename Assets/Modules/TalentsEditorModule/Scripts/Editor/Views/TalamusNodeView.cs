@@ -1,11 +1,9 @@
 using System;
-using System.Linq;
 
 using SDRGames.Whist.HelpersModule;
 using SDRGames.Whist.TalentsModule.ScriptableObjects;
 
 using UnityEditor.Experimental.GraphView;
-using UnityEditor.UIElements;
 
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -25,7 +23,7 @@ namespace SDRGames.Whist.TalentsEditorModule.Views
         public event EventHandler<CharacteristicNameChangedEventArgs> CharactersticNameChanged;
         public event EventHandler<CharacteristicValueChangedEventArgs> CharactersticValueChanged;
 
-        public void Initialize(string id, string nodeName, Vector2 position)
+        public override void Initialize(string id, string nodeName, Vector2 position)
         {
             base.Initialize(id, nodeName, position);
             CharacteristicName = default;
@@ -66,6 +64,10 @@ namespace SDRGames.Whist.TalentsEditorModule.Views
                 }
             );
 
+            Foldout textFoldout = UtilityElement.CreateFoldout("Description");
+            Box localizationBox = UtilityElement.CreateLocalizationBox(DescriptionLocalization, "", DescriptionLocalizationFieldChanged);
+            textFoldout.Add(localizationBox);
+
             DropdownField characteristicDropdown = UtilityElement.CreateDropdownField
             (
                 typeof(CharacteristicNames),
@@ -94,6 +96,7 @@ namespace SDRGames.Whist.TalentsEditorModule.Views
             //characterFoldout.Add(characterObjectField);
 
             customDataContainer.Add(costTextField);
+            customDataContainer.Add(textFoldout);
             customDataContainer.Add(characteristicDropdown);
             customDataContainer.Add(characteristicValueTextField);
             extensionContainer.Add(customDataContainer);
@@ -124,7 +127,7 @@ namespace SDRGames.Whist.TalentsEditorModule.Views
             base.Load(node);
             CharacteristicName = node.CharacteristicName;
             CharacteristicValue = node.CharacteristicValue;
-            Loaded?.Invoke(this, new TalamusLoadedEventArgs(ID, NodeName, Cost, CharacteristicName, CharacteristicValue));
+            Loaded?.Invoke(this, new TalamusLoadedEventArgs(ID, NodeName, DescriptionLocalization, Cost, CharacteristicName, CharacteristicValue));
         }
 
         protected override Port CreateInputPort()

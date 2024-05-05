@@ -14,8 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Name>k__BackingField: Talamus3
   <Cost>k__BackingField: 2
+  <DescriptionLocalization>k__BackingField:
+    <SelectedLocalizationTable>k__BackingField: CharacterDescriptions
+    <SelectedEntryKey>k__BackingField: Slime
+    <LocalizedTextPreview>k__BackingField: Blah-blah-blah
   <TalentType>k__BackingField: 0
-  <PositionPercentages>k__BackingField: {x: 64.42953, y: 54.545452}
+  <PositionPercentages>k__BackingField: {x: 64.42953, y: 54.54545}
   <Blockers>k__BackingField:
   - {fileID: 11400000, guid: e33f10f1dcdbc6f43b003127d8ae1803, type: 2}
   <Dependencies>k__BackingField:

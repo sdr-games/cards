@@ -3,7 +3,10 @@
     "rootNamespace": "SDRGames.Whist.TalentsEditorModule",
     "references": [
         "GUID:e41ff2de5c626d64f9b1425803813a35",
-        "GUID:ff0d9ac25f698134b888e2e15ca3127f"
+        "GUID:ff0d9ac25f698134b888e2e15ca3127f",
+        "GUID:df3e9bc81cfaeb44aac86061400f6ae1",
+        "GUID:eec0964c48f6f4e40bc3ec2257ccf8c5",
+        "GUID:2e77701fe0ceda44fb763f03ee704c37"
     ],
     "includePlatforms": [
         "Editor"

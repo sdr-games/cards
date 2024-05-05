@@ -13,12 +13,12 @@ using static SDRGames.Whist.TalentsModule.ScriptableObjects.BonusScriptableObjec
 
 namespace SDRGames.Whist.TalentsEditorModule
 {
-    public class VariableDetailWindow : GraphElement
+    public class BonusDetailWindow : GraphElement
     {
         public event EventHandler<NameFieldValueChangedEventArgs> NameFieldValueChanged;
         public event EventHandler<ValueFieldValueChangedEventArgs> ValueFieldValueChanged;
 
-        public VariableDetailWindow(VariableData variable, Vector2 position)
+        public BonusDetailWindow(BonusData bonus, Vector2 position)
         {
             capabilities |= (Capabilities.Resizable | Capabilities.Movable);
             Dragger dragger = new Dragger
@@ -43,7 +43,7 @@ namespace SDRGames.Whist.TalentsEditorModule
             mainContainer.AddToClassList("main-container");
 
             TextField nameTextField = UtilityElement.CreateTextField(
-                variable.Name,
+                bonus.Name,
                 "Name",
                 callback =>
                 {
@@ -56,14 +56,14 @@ namespace SDRGames.Whist.TalentsEditorModule
 
             mainContainer.Add(nameTextField);
 
-            switch (variable.Type)
+            switch (bonus.Type)
             {
-                case VariableTypes.HalfAstraBonus:
-                case VariableTypes.FullAstraBonus:
-                case VariableTypes.FullTalamusBonus:
+                case BonusTypes.HalfAstraBonus:
+                case BonusTypes.FullAstraBonus:
+                case BonusTypes.FullTalamusBonus:
                     ObjectField valueObjectField = UtilityElement.CreateObjectField(
                         typeof(ScriptableObject),
-                        variable.Value,
+                        bonus.Value,
                         "Value",
                         callback =>
                         {

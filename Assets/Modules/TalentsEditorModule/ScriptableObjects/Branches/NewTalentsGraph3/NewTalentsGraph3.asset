@@ -12,9 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e27b5ac8de4c7949a7747223e0df75b, type: 3}
   m_Name: NewTalentsGraph3
   m_EditorClassIdentifier: 
-  <FileName>k__BackingField: 
+  <FileName>k__BackingField: NewTalentsGraph3
+  <Background>k__BackingField: {fileID: 28684132378477856, guid: 8f586378b4e144a9851e7b34d9b748ee,
+    type: 2}
   <Talents>k__BackingField:
+  - {fileID: 11400000, guid: fc840aa16fc7151488fb1cc0c991bc91, type: 2}
   - {fileID: 11400000, guid: 38b48cbb0bc98644b969f0050127f907, type: 2}
   - {fileID: 11400000, guid: dfebace416bafe74191060b90c241600, type: 2}
-  - {fileID: 11400000, guid: fc840aa16fc7151488fb1cc0c991bc91, type: 2}
   <Bonuses>k__BackingField: []

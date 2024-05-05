@@ -14,8 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Name>k__BackingField: Astra4
   <Cost>k__BackingField: 3
+  <DescriptionLocalization>k__BackingField:
+    <SelectedLocalizationTable>k__BackingField: CharacterDescriptions
+    <SelectedEntryKey>k__BackingField: Slime
+    <LocalizedTextPreview>k__BackingField: Blah-blah-blah
   <TalentType>k__BackingField: 1
-  <PositionPercentages>k__BackingField: {x: 98.08246, y: 9.09091}
+  <PositionPercentages>k__BackingField: {x: 98.08245, y: 9.090904}
   <Blockers>k__BackingField:
   - {fileID: 11400000, guid: 8713074404ad81a47842d6bc80424545, type: 2}
   <Dependencies>k__BackingField: []

@@ -12,10 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50a8127899c311142a6d585424984797, type: 3}
   m_Name: NewTalentsGraph3
   m_EditorClassIdentifier: 
-  <FileName>k__BackingField: 
+  <FileName>k__BackingField: NewTalentsGraph3
+  <Background>k__BackingField: {fileID: 28684132378477856, guid: 8f586378b4e144a9851e7b34d9b748ee,
+    type: 2}
   <TalamusNodes>k__BackingField:
   - <ID>k__BackingField: 4df7eb0e-9d84-41a9-9998-7ec1190f3cff
     <NodeName>k__BackingField: Talamus2
+    <DescriptionLocalization>k__BackingField:
+      <SelectedLocalizationTable>k__BackingField: CharacterDescriptions
+      <SelectedEntryKey>k__BackingField: Slime
+      <LocalizedTextPreview>k__BackingField: Blah-blah-blah
     <Cost>k__BackingField: 2
     <OutputConnections>k__BackingField:
     - 49fa95fb-d97b-40fc-8f85-5fcb016449e0
@@ -26,14 +32,22 @@ MonoBehaviour:
   <AstraNodes>k__BackingField:
   - <ID>k__BackingField: d1bd033b-3afc-474c-8846-ea2c708eceeb
     <NodeName>k__BackingField: Astra1
+    <DescriptionLocalization>k__BackingField:
+      <SelectedLocalizationTable>k__BackingField: CharacterDescriptions
+      <SelectedEntryKey>k__BackingField: Slime
+      <LocalizedTextPreview>k__BackingField: Blah-blah-blah
     <Cost>k__BackingField: 3
     <OutputConnections>k__BackingField: []
-    <Position>k__BackingField: {x: 322.4, y: 297.59998}
+    <Position>k__BackingField: {x: 322.40002, y: 297.59998}
     <Equipment>k__BackingField: 0
   - <ID>k__BackingField: 49fa95fb-d97b-40fc-8f85-5fcb016449e0
     <NodeName>k__BackingField: Astra0
+    <DescriptionLocalization>k__BackingField:
+      <SelectedLocalizationTable>k__BackingField: CharacterDescriptions
+      <SelectedEntryKey>k__BackingField: Slime
+      <LocalizedTextPreview>k__BackingField: Blah-blah-blah
     <Cost>k__BackingField: 3
     <OutputConnections>k__BackingField: []
-    <Position>k__BackingField: {x: 241.6, y: 70.399994}
+    <Position>k__BackingField: {x: 241.59999, y: 70.399994}
     <Equipment>k__BackingField: 0
   <Variables>k__BackingField: []

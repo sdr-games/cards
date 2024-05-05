@@ -1,5 +1,6 @@
 using System;
 
+using SDRGames.Whist.LocalizationModule.Models;
 using SDRGames.Whist.TalentsEditorModule.Models;
 using SDRGames.Whist.TalentsEditorModule.Views;
 using SDRGames.Whist.TalentsModule.ScriptableObjects;
@@ -29,6 +30,7 @@ namespace SDRGames.Whist.TalentsEditorModule.Presenters
             _nodeView.Initialize(_data.ID, _data.NodeName, position);
             _nodeView.SavedToSO += OnSavedToSO;
             _nodeView.Loaded += OnLoaded;
+            _nodeView.DescriptionLocalizationFieldChanged += OnDescriptionLocalizationFieldChanged;
             _nodeView.CostTextFieldChanged += OnCostTextFieldChanged;
             _nodeView.CharactersticNameChanged += OnCharactersticNameChanged;
             _nodeView.CharactersticValueChanged += OnCharactersticValueChanged;
@@ -42,6 +44,11 @@ namespace SDRGames.Whist.TalentsEditorModule.Presenters
         protected override void OnNodeNameTextFieldChanged(object sender, NodeNameChangedEventArgs e)
         {
             _data.SetNodeName(e.NewNode.NodeName);
+        }
+
+        protected override void OnDescriptionLocalizationFieldChanged(object sender, LocalizationDataChangedEventArgs e)
+        {
+            _data.SetDescription(e.DescriptionLocalization);
         }
 
         protected override void OnCostTextFieldChanged(object sender, CostChangedEventArgs e)

@@ -9,13 +9,13 @@ using static SDRGames.Whist.TalentsModule.ScriptableObjects.BonusScriptableObjec
 namespace SDRGames.Whist.TalentsEditorModule.Models
 {
     [Serializable]
-    public class VariableData
+    public class BonusData
     {
         [field: SerializeField] public string Name { get; private set; }
         [field: SerializeField] public ScriptableObject Value { get; private set; }
-        [field: SerializeField] public VariableTypes Type { get; private set; }
+        [field: SerializeField] public BonusTypes Type { get; private set; }
 
-        public VariableData(string name, ScriptableObject value, VariableTypes type)
+        public BonusData(string name, ScriptableObject value, BonusTypes type)
         {
             Name = name;
             Value = value;

@@ -46,13 +46,13 @@ namespace SDRGames.Whist.TalentsEditorModule
 
             GetElementsFromGraphView();
             GraphSaveDataScriptableObject graphData = CreateAsset<GraphSaveDataScriptableObject>(path);
-            graphData.Initialize(_graphFileName);
+            graphData.Initialize(_graphFileName, _graphView.GetBackgroundImage());
 
             TalentsBranchScriptableObject talentsBranch = CreateAsset<TalentsBranchScriptableObject>(_containerFolderPath, _graphFileName);
-            talentsBranch.Initialize(_graphFileName);
+            talentsBranch.Initialize(_graphFileName, _graphView.GetBackgroundImage());
 
             SaveNodes(graphData, talentsBranch);
-            SaveVariables(graphData, talentsBranch);
+            //SaveVariables(graphData, talentsBranch);
 
             SaveAsset(graphData);
             SaveAsset(talentsBranch);
@@ -106,9 +106,10 @@ namespace SDRGames.Whist.TalentsEditorModule
             TalentsEditorWindow.UpdateFileName(graphData.FileName);
 
             _graphView.ClearGraph();
+            _graphView.SetBackgroundImage(graphData.Background);
             LoadNodes(graphData.TalamusNodes);
             LoadNodes(graphData.AstraNodes);
-            LoadVariables(graphData.Variables);
+            //LoadVariables(graphData.Variables);
             LoadNodesConnections();
         }
 
@@ -136,7 +137,7 @@ namespace SDRGames.Whist.TalentsEditorModule
 
         private static void SaveVariables(GraphSaveDataScriptableObject graphData, TalentsBranchScriptableObject talentsBranch)
         {
-            foreach(VariableData variable in _graphView.BlackboardWindow.Variables)
+            foreach(BonusData variable in _graphView.BlackboardWindow.Bonuses)
             {
                 graphData.AddVariable(variable);
                 BonusScriptableObject bonusSO = variable.SaveToSO(_containerFolderPath);
@@ -186,11 +187,11 @@ namespace SDRGames.Whist.TalentsEditorModule
             }
         }
 
-        private static void LoadVariables(List<VariableData> variables)
+        private static void LoadVariables(List<BonusData> variables)
         {
-            foreach(VariableData variable in variables)
+            foreach(BonusData variable in variables)
             {
-                _graphView.BlackboardWindow.CreateVariable(variable);
+                _graphView.BlackboardWindow.CreateBonus(variable);
             }
         }
 
