@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: NewTalentsGraph4
   m_EditorClassIdentifier: 
   <FileName>k__BackingField: NewTalentsGraph4
-  <Background>k__BackingField: {fileID: 2800000, guid: dffef66376be4fa480fb02b19edbe903,
+  <Background>k__BackingField: {fileID: 21300000, guid: 8fb7d9ccdfae0b5438098f7990b0ace3,
     type: 3}
   <TalamusNodes>k__BackingField:
   - <ID>k__BackingField: 9584ce10-6a05-42e7-bb94-6e9a90f5ecff

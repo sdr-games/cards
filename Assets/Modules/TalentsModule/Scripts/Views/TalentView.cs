@@ -6,11 +6,12 @@ using TMPro;
 using UnityEditor;
 
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace SDRGames.Whist.TalentsModule.Views
 {
-    public class TalentView : MonoBehaviour
+    public class TalentView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
         private Color _activeColor;
         private Color _inactiveColor;
@@ -23,18 +24,23 @@ namespace SDRGames.Whist.TalentsModule.Views
         [SerializeField] private TextMeshProUGUI _currentPointsText;
         [SerializeField] private LineView _lineViewPrefab;
 
+        [Header("Tooltip")]
+        [SerializeField] private CanvasGroup _tooltipCanvasGroup;
+        [SerializeField] private TextMeshProUGUI _tooltipText;
+
         public event EventHandler BlockChanged;
 
         public bool IsActive { get; private set; }
         public bool IsBlocked { get; private set; }
 
-        public void Initialize(Color activeColor, Color inactiveColor, int cost, Vector2 position)
+        public void Initialize(Color activeColor, Color inactiveColor, int cost, string description, Vector2 position)
         {
             _activeColor = activeColor;
             _inactiveColor = inactiveColor;
 
             _image.color = _inactiveColor;
             _currentPointsText.text = $"0/{cost}";
+            _tooltipText.text = description;
 
             ((RectTransform)transform).anchoredPosition = position;
 
@@ -108,6 +114,24 @@ namespace SDRGames.Whist.TalentsModule.Views
                 BlockChanged?.Invoke(this, EventArgs.Empty);
             }
             ChangeVisibility(!IsBlocked);
+        }
+
+        public void OnPointerEnter(PointerEventData eventData)
+        {
+            if(IsBlocked)
+            {
+                return;
+            }
+            _tooltipCanvasGroup.alpha = 1;
+        }
+
+        public void OnPointerExit(PointerEventData eventData)
+        {
+            if (IsBlocked)
+            {
+                return;
+            }
+            _tooltipCanvasGroup.alpha = 0;
         }
 
         private void AddBlocker(TalentView blocker)

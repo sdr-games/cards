@@ -131,12 +131,12 @@ namespace SDRGames.Whist.TalentsEditorModule.Managers
             return CalculateRectToFitAll(contentContainer);
         }
 
-        public Texture2D GetBackgroundImage()
+        public Sprite GetBackgroundImage()
         {
             return _parametersWindow.GetBackgroundImageFieldValue();
         }
 
-        public void SetBackgroundImage(Texture2D backgroundImage)
+        public void SetBackgroundImage(Sprite backgroundImage)
         {
             _parametersWindow.SetBackgroundImageFieldValue(backgroundImage);
         }

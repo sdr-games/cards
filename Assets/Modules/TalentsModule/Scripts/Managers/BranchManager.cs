@@ -40,6 +40,7 @@ namespace SDRGames.Whist.TalentsModule.Managers
                 }
             }
             BranchView.Initialize(userInputController, position, startScale, parent);
+            BranchView.SetBackground(talentsBranchSO.Background);
             BranchView.BranchVisibilityChanged += OnBranchVisibilityChanged;
         }
 

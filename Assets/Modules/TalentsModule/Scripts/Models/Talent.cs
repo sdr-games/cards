@@ -6,13 +6,15 @@ namespace SDRGames.Whist.TalentsModule.Models
     {
         public int CurrentPoints { get; private set; }
         public int TotalCost { get; private set; }
+        public string Description { get; private set; }
 
         public event EventHandler<CurrentPointsChangedEventArgs> CurrentPointsChanged;
 
-        public Talent(int totalCost)
+        public Talent(int totalCost, string description)
         {
             CurrentPoints = 0;
             TotalCost = totalCost;
+            Description = description;
         }
 
         public void ResetCurrentPoints()

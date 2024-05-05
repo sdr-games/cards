@@ -127,7 +127,7 @@ namespace SDRGames.Whist.UserInputModule.Controller
             {
                 return;
             }
-
+            
             // сначала ищем UI элемент, т.к. он должен срабатывать раньше, чем объекты сцены.
             GameObject? uiElement = TryToFindInteractibleUIElement();
 
