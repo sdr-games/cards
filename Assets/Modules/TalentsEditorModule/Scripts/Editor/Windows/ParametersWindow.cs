@@ -34,10 +34,10 @@ namespace SDRGames.Whist.TalentsEditorModule
             Box backgroundImagePreview = new Box();
             previewFoldout.Add(backgroundImagePreview);
 
-            _backgroundObjectField = UtilityElement.CreateObjectField(typeof(Texture2D), null, "Background image:", callback =>
+            _backgroundObjectField = UtilityElement.CreateObjectField(typeof(Sprite), null, "Background image:", callback =>
             {
                 ((ObjectField)callback.target).value = callback.newValue;
-                Background background = Background.FromTexture2D((Texture2D)callback.newValue);
+                Background background = Background.FromSprite((Sprite)callback.newValue);
                 backgroundImagePreview.style.backgroundImage = background;
 
                 if(background == null)
@@ -47,11 +47,11 @@ namespace SDRGames.Whist.TalentsEditorModule
                     return;
                 }
 
-                backgroundImagePreview.style.width = background.texture.width > previewFoldout.contentContainer.layout.width ? previewFoldout.contentContainer.layout.width : background.texture.width;
-                float height = background.texture.height;
-                if(background.texture.width > previewFoldout.contentContainer.layout.width)
+                backgroundImagePreview.style.width = background.sprite.rect.width > previewFoldout.contentContainer.layout.width ? previewFoldout.contentContainer.layout.width : background.sprite.rect.width;
+                float height = background.sprite.rect.height;
+                if(background.sprite.rect.width > previewFoldout.contentContainer.layout.width)
                 {
-                    height = (height > background.texture.width) ? height / background.texture.width : background.texture.width / height;
+                    height = (height > background.sprite.rect.width) ? height / background.sprite.rect.width : background.sprite.rect.width / height;
                     height *= previewFoldout.contentContainer.layout.width;
                 }
                 backgroundImagePreview.style.height = height;
@@ -73,12 +73,12 @@ namespace SDRGames.Whist.TalentsEditorModule
             _backgroundObjectField.value = null;
         }
 
-        public Texture2D GetBackgroundImageFieldValue()
+        public Sprite GetBackgroundImageFieldValue()
         {
-            return _backgroundObjectField.value as Texture2D;
+            return _backgroundObjectField.value as Sprite;
         }
 
-        public void SetBackgroundImageFieldValue(Texture2D backgroundImage)
+        public void SetBackgroundImageFieldValue(Sprite backgroundImage)
         {
             _backgroundObjectField.value = backgroundImage;
         }

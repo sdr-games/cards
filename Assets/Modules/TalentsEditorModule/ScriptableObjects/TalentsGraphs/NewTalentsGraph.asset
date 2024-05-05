@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: NewTalentsGraph
   m_EditorClassIdentifier: 
   <FileName>k__BackingField: NewTalentsGraph
-  <Background>k__BackingField: {fileID: 2800000, guid: dffef66376be4fa480fb02b19edbe903,
+  <Background>k__BackingField: {fileID: 21300000, guid: ff26c8119a049334e90354bf02ae7cc4,
     type: 3}
   <TalamusNodes>k__BackingField:
   - <ID>k__BackingField: 92068f75-da3b-448c-9c1a-8699098f4d7e
@@ -21,7 +21,9 @@ MonoBehaviour:
     <DescriptionLocalization>k__BackingField:
       <SelectedLocalizationTable>k__BackingField: CharacterDescriptions
       <SelectedEntryKey>k__BackingField: Slime
-      <LocalizedTextPreview>k__BackingField: Blah-blah-blah
+      <LocalizedTextPreview>k__BackingField: "\u0416\u0443\u0442\u043A\u0430\u044F
+        \u0431\u043E\u043B\u0435\u0437\u043D\u044C, \u0441\u043B\u0438\u0437\u044C,
+        \u0431\u043B\u0430-\u0431\u043B\u0430-\u0431\u043B\u0430"
     <Cost>k__BackingField: 2
     <OutputConnections>k__BackingField:
     - 66f7255d-2098-433a-806a-574e3887b945
@@ -37,7 +39,9 @@ MonoBehaviour:
     <DescriptionLocalization>k__BackingField:
       <SelectedLocalizationTable>k__BackingField: CharacterDescriptions
       <SelectedEntryKey>k__BackingField: Slime
-      <LocalizedTextPreview>k__BackingField: Blah-blah-blah
+      <LocalizedTextPreview>k__BackingField: "\u0416\u0443\u0442\u043A\u0430\u044F
+        \u0431\u043E\u043B\u0435\u0437\u043D\u044C, \u0441\u043B\u0438\u0437\u044C,
+        \u0431\u043B\u0430-\u0431\u043B\u0430-\u0431\u043B\u0430"
     <Cost>k__BackingField: 3
     <OutputConnections>k__BackingField: []
     <Position>k__BackingField: {x: 424.80002, y: 481.59998}
@@ -47,7 +51,9 @@ MonoBehaviour:
     <DescriptionLocalization>k__BackingField:
       <SelectedLocalizationTable>k__BackingField: CharacterDescriptions
       <SelectedEntryKey>k__BackingField: Slime
-      <LocalizedTextPreview>k__BackingField: Blah-blah-blah
+      <LocalizedTextPreview>k__BackingField: "\u0416\u0443\u0442\u043A\u0430\u044F
+        \u0431\u043E\u043B\u0435\u0437\u043D\u044C, \u0441\u043B\u0438\u0437\u044C,
+        \u0431\u043B\u0430-\u0431\u043B\u0430-\u0431\u043B\u0430"
     <Cost>k__BackingField: 3
     <OutputConnections>k__BackingField: []
     <Position>k__BackingField: {x: 728, y: 492}
@@ -57,7 +63,9 @@ MonoBehaviour:
     <DescriptionLocalization>k__BackingField:
       <SelectedLocalizationTable>k__BackingField: CharacterDescriptions
       <SelectedEntryKey>k__BackingField: Slime
-      <LocalizedTextPreview>k__BackingField: Blah-blah-blah
+      <LocalizedTextPreview>k__BackingField: "\u0416\u0443\u0442\u043A\u0430\u044F
+        \u0431\u043E\u043B\u0435\u0437\u043D\u044C, \u0441\u043B\u0438\u0437\u044C,
+        \u0431\u043B\u0430-\u0431\u043B\u0430-\u0431\u043B\u0430"
     <Cost>k__BackingField: 3
     <OutputConnections>k__BackingField: []
     <Position>k__BackingField: {x: 1042.3999, y: 504.8}
@@ -67,7 +75,9 @@ MonoBehaviour:
     <DescriptionLocalization>k__BackingField:
       <SelectedLocalizationTable>k__BackingField: CharacterDescriptions
       <SelectedEntryKey>k__BackingField: Slime
-      <LocalizedTextPreview>k__BackingField: Blah-blah-blah
+      <LocalizedTextPreview>k__BackingField: "\u0416\u0443\u0442\u043A\u0430\u044F
+        \u0431\u043E\u043B\u0435\u0437\u043D\u044C, \u0441\u043B\u0438\u0437\u044C,
+        \u0431\u043B\u0430-\u0431\u043B\u0430-\u0431\u043B\u0430"
     <Cost>k__BackingField: 3
     <OutputConnections>k__BackingField: []
     <Position>k__BackingField: {x: 1354.3999, y: 508}

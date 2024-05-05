@@ -73,7 +73,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.3529412}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -105,6 +105,7 @@ MonoBehaviour:
   _speed: 8
   _rectTransform: {fileID: 4109599800829843283}
   _canvasGroup: {fileID: -1341961103603074712}
+  _backgroundImage: {fileID: 3132378548958706415}
 --- !u!114 &4762212149026820521
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -3,19 +3,26 @@ using System.Collections;
 
 using SDRGames.Whist.UserInputModule.Controller;
 
+using UnityEditor;
+
 using UnityEngine;
-using UnityEngine.UIElements;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 namespace SDRGames.Whist.TalentsModule.Views
 {
-    public class BranchView : MonoBehaviour
+    public class BranchView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
+        private readonly float DEFAULT_ALPHA = 0.35f; // 90/255
+        private readonly float HIGHLIGHTED_ALPHA = 0.85f; // 217/255
+
         public static readonly Vector2 PADDING = new Vector2(50, 50);
         public static Vector2 SIZE { get => GetBranchSize(); }
 
         [SerializeField] private float _speed = 8f;
         [SerializeField] private RectTransform _rectTransform;
         [SerializeField] private CanvasGroup _canvasGroup;
+        [SerializeField] private Image _backgroundImage;
 
         private bool _isMoving;
         private float _zoomInScale;
@@ -45,6 +52,11 @@ namespace SDRGames.Whist.TalentsModule.Views
             SetRotation();
         }
 
+        public void SetBackground(Sprite backgroundImage)
+        {
+            _backgroundImage.sprite = backgroundImage;
+        }
+
         public void SetSizeSmoothly(float scale)
         {
             StartCoroutine(SetSizeSmoothlyCoroutine(scale));
@@ -72,6 +84,24 @@ namespace SDRGames.Whist.TalentsModule.Views
         public void Hide()
         {
             StartCoroutine(SwitchVisibilitySmoothlyCoroutine(false));
+        }
+
+        public void OnPointerEnter(PointerEventData eventData)
+        {
+            if(IsZoomed)
+            {
+                return;
+            }
+            _backgroundImage.color = new Color(_backgroundImage.color.r, _backgroundImage.color.g, _backgroundImage.color.b, HIGHLIGHTED_ALPHA);
+        }
+
+        public void OnPointerExit(PointerEventData eventData)
+        {
+            if (IsZoomed)
+            {
+                return;
+            }
+            _backgroundImage.color = new Color(_backgroundImage.color.r, _backgroundImage.color.g, _backgroundImage.color.b, DEFAULT_ALPHA);
         }
 
         private static Vector2 GetBranchSize()
@@ -120,6 +150,7 @@ namespace SDRGames.Whist.TalentsModule.Views
             {
                 IsZoomed = true;
                 _isMoving = true;
+                _backgroundImage.color = new Color(_backgroundImage.color.r, _backgroundImage.color.g, _backgroundImage.color.b, HIGHLIGHTED_ALPHA);
                 float direction = transform.localRotation.w > 0 ? 1 : -1;
                 float scalingTime = Math.Abs(transform.localScale.x - _zoomInScale) / _speed;
                 BranchZoomInStarted?.Invoke(this, new BranchZoomedEventArgs(transform.localEulerAngles.z * direction, scalingTime));
@@ -132,9 +163,40 @@ namespace SDRGames.Whist.TalentsModule.Views
             {
                 IsZoomed = false;
                 _isMoving = true;
+                _backgroundImage.color = new Color(_backgroundImage.color.r, _backgroundImage.color.g, _backgroundImage.color.b, DEFAULT_ALPHA);
                 float direction = transform.localRotation.w > 0 ? 1 : -1;
                 float scalingTime = Math.Abs(transform.localScale.x - _zoomOutScale) / _speed;
                 BranchZoomOutStarted?.Invoke(this, new BranchZoomedEventArgs(-transform.localEulerAngles.z * direction, scalingTime));
+            }
+        }
+
+        private void OnEnable()
+        {
+            if(_backgroundImage == null)
+            {
+                Debug.LogError("Background Image не был назначен");
+                #if UNITY_EDITOR
+                    EditorApplication.isPlaying = false;
+                #endif
+                Application.Quit();
+            }
+
+            if (_canvasGroup == null)
+            {
+                Debug.LogError("Canvas Group не был назначен");
+                #if UNITY_EDITOR
+                    EditorApplication.isPlaying = false;
+                #endif
+                Application.Quit();
+            }
+
+            if (_rectTransform == null)
+            {
+                Debug.LogError("Rect Transform не был назначен");
+                #if UNITY_EDITOR
+                    EditorApplication.isPlaying = false;
+                #endif
+                Application.Quit();
             }
         }
 

@@ -12,12 +12,12 @@ namespace SDRGames.Whist.TalentsEditorModule
     public class GraphSaveDataScriptableObject : ScriptableObject
     {
         [field: SerializeField] public string FileName { get; private set; }
-        [field: SerializeField] public Texture2D Background { get; private set; }
+        [field: SerializeField] public Sprite Background { get; private set; }
         [field: SerializeField] public List<TalamusNodeView> TalamusNodes { get; private set; }
         [field: SerializeField] public List<AstraNodeView> AstraNodes { get; private set; }
         [field: SerializeField] public List<BonusData> Variables { get; private set; }
 
-        public void Initialize(string fileName, Texture2D backgroundImage)
+        public void Initialize(string fileName, Sprite backgroundImage)
         {
             FileName = fileName;
             Background = backgroundImage;
@@ -26,7 +26,7 @@ namespace SDRGames.Whist.TalentsEditorModule
             Variables = new List<BonusData>();
         }
 
-        public void SetBackgroundImage(Texture2D backgroundImage)
+        public void SetBackgroundImage(Sprite backgroundImage)
         {
             Background = backgroundImage;
         }
