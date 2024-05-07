@@ -1,7 +1,6 @@
 using System;
 
 using UnityEngine;
-using UnityEngine.Localization;
 
 namespace SDRGames.Whist.LocalizationModule.Models
 {
@@ -36,7 +35,7 @@ namespace SDRGames.Whist.LocalizationModule.Models
 
         public string GetLocalizedText()
         {
-            LocalizedString localizedString = new LocalizedString(SelectedLocalizationTable, SelectedEntryKey);
+            UnityEngine.Localization.LocalizedString localizedString = new UnityEngine.Localization.LocalizedString(SelectedLocalizationTable, SelectedEntryKey);
             return localizedString.GetLocalizedString();
         }
     }
