@@ -1,0 +1,51 @@
+using System;
+
+using SDRGames.Whist.UserInputModule.Controller;
+
+using UnityEngine.UI;
+
+namespace SDRGames.Whist.MeleeCombatModule.Views
+{
+    public class AbilityQueueButtonView : Button
+    {
+        private UserInputController _userInputController;
+
+        public event EventHandler ButtonClicked;
+
+        public void Initialize(UserInputController userInputController)
+        {
+            _userInputController = userInputController;
+            interactable = false;
+        }
+
+        public void Activate()
+        {
+            interactable = true;
+            _userInputController.LeftMouseButtonClickedOnUI += OnLeftMouseButtonClickedOnUI;
+        }
+
+        public void Deactivate()
+        {
+            interactable = false;
+            _userInputController.LeftMouseButtonClickedOnUI -= OnLeftMouseButtonClickedOnUI;
+        }
+
+        private void OnLeftMouseButtonClickedOnUI(object sender, LeftMouseButtonUIClickEventArgs e)
+        {
+            if(e.GameObject == gameObject && interactable)
+            {
+                ButtonClicked?.Invoke(this, EventArgs.Empty);
+            }
+        }
+
+        protected override void OnDisable()
+        {
+            base.OnDisable();
+            if (_userInputController == null)
+            {
+                return;
+            }
+            _userInputController.LeftMouseButtonClickedOnUI -= OnLeftMouseButtonClickedOnUI;
+        }
+    }
+}
