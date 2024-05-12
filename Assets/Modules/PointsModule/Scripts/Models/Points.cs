@@ -16,28 +16,27 @@ namespace SDRGames.Whist.PointsModule.Models
         [field: SerializeField] public float RegenerationPower { get; private set; }
 
         public float CurrentValue { get; private set; }
+        public float ReservedValue { get; private set; }
         public float MaxValue { get; private set; }
 
         public event EventHandler BonusChanged;
         public event EventHandler RegenerationPowerChanged;
-        public event EventHandler<CurrentValueChangedEventArgs> CurrentValueChanged;
+        public event EventHandler<ValueChangedEventArgs> CurrentValueChanged;
+        public event EventHandler<ValueChangedEventArgs> ReservedValueChanged;
         public event EventHandler MaxValueChanged;
 
-        public Points(string name, float baseValue, float bonus, RelatedBonus[] relatedBonuses, float regenerationSpeed, float regenerationPower)
+        public void Reset()
         {
-            Name = name;
-            BaseValue = baseValue;
-            Bonus = bonus;
-            RelatedBonuses = relatedBonuses;
-            RegenerationSpeed = regenerationSpeed;
-            RegenerationPower = regenerationPower;
+            CurrentValue = MaxValue;
+            CalculateValues();
         }
 
         public void CalculateValues()
         {
-            float currentValueInPercents = GetCurrentValueInPercents();
+            float currentValueInPercents = GetValueInPercents(CurrentValue);
             CalculateMaxValue();
             CalculateCurrentValue(currentValueInPercents);
+            ReservedValue = 0;
         }
 
         public void IncreaseBonus(float bonus)
@@ -75,13 +74,26 @@ namespace SDRGames.Whist.PointsModule.Models
             {
                 CurrentValue = MaxValue;
             }
-            CurrentValueChanged?.Invoke(this, new CurrentValueChangedEventArgs(CurrentValue, GetCurrentValueInPercents()));
+            CurrentValueChanged?.Invoke(this, new ValueChangedEventArgs(CurrentValue, GetValueInPercents(CurrentValue), MaxValue));
         }
 
-        public void DecreaseCurrentValue(float value)
+        public void DecreaseCurrentValue()
         {
-            CurrentValue -= value;
-            CurrentValueChanged?.Invoke(this, new CurrentValueChangedEventArgs(CurrentValue, GetCurrentValueInPercents()));
+            CurrentValue -= ReservedValue;
+            ReservedValue = 0;
+            CurrentValueChanged?.Invoke(this, new ValueChangedEventArgs(CurrentValue, GetValueInPercents(CurrentValue), MaxValue));
+        }
+
+        public void DecreaseReservedValue(float value)
+        {
+            ReservedValue += value;
+            ReservedValueChanged?.Invoke(this, new ValueChangedEventArgs(ReservedValue, GetValueInPercents(CurrentValue - ReservedValue), MaxValue));
+        }
+
+        public void ResetReservedValue(float reverseAmount)
+        {
+            ReservedValue -= reverseAmount;
+            ReservedValueChanged?.Invoke(this, new ValueChangedEventArgs(ReservedValue, GetValueInPercents(CurrentValue - ReservedValue), MaxValue));
         }
 
         public IEnumerator Regenerate(float regenerationPower = 0, float regenerationSpeed = 0, float length = 0)
@@ -107,13 +119,13 @@ namespace SDRGames.Whist.PointsModule.Models
             }
         }
 
-        private float GetCurrentValueInPercents()
+        private float GetValueInPercents(float value)
         {
             if(MaxValue == 0)
             {
                 return 100;
             }
-            return CurrentValue * 100 / MaxValue;
+            return value * 100 / MaxValue;
         }
 
         private void CalculateMaxValue()
@@ -135,7 +147,7 @@ namespace SDRGames.Whist.PointsModule.Models
         private void CalculateCurrentValue(float currentValueInPercents)
         {
             CurrentValue = MaxValue * currentValueInPercents / 100;
-            CurrentValueChanged?.Invoke(this, new CurrentValueChangedEventArgs(CurrentValue, GetCurrentValueInPercents()));
+            CurrentValueChanged?.Invoke(this, new ValueChangedEventArgs(CurrentValue, GetValueInPercents(CurrentValue), MaxValue));
         }
     }
 }

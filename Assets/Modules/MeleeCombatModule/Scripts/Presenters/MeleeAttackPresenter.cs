@@ -2,6 +2,7 @@ using SDRGames.Whist.MeleeCombatModule.Views;
 using SDRGames.Whist.MeleeCombatModule.ScriptableObjects;
 
 using SDRGames.Whist.UserInputModule.Controller;
+using System;
 
 namespace SDRGames.Whist.MeleeCombatModule.Presenters
 {
@@ -16,12 +17,6 @@ namespace SDRGames.Whist.MeleeCombatModule.Presenters
 
             _meleeAttackView = meleeAttackView;
             _meleeAttackView.Initialize(userInputController, _meleeAttackScriptableObject);
-            _meleeAttackView.MeleeAttackClicked += OnMeleeAttackClicked;
-        }
-
-        private void OnMeleeAttackClicked(object sender, System.EventArgs e)
-        {
-            throw new System.NotImplementedException();
         }
     }
 }

@@ -22,20 +22,25 @@ namespace SDRGames.Whist.MeleeCombatModule.Views
         public void SetIconSprite(Sprite sprite = null)
         {
             image.sprite = sprite;
-            interactable = image.sprite != null;
+            interactable = sprite != null;
             if(interactable)
             {
                 _userInputController.LeftMouseButtonClickedOnUI += OnLeftMouseButtonClickedOnUI;
             }
         }
 
+        public void Unbind()
+        {
+            SetIconSprite();
+            _userInputController.LeftMouseButtonClickedOnUI -= OnLeftMouseButtonClickedOnUI;
+            AbilitySlotUnbound?.Invoke(this, EventArgs.Empty);
+        }
+
         private void OnLeftMouseButtonClickedOnUI(object sender, LeftMouseButtonUIClickEventArgs e)
         {
             if(e.GameObject == gameObject && interactable)
             {
-                SetIconSprite();
-                _userInputController.LeftMouseButtonClickedOnUI -= OnLeftMouseButtonClickedOnUI;
-                AbilitySlotUnbound?.Invoke(this, EventArgs.Empty);
+                Unbind();
             }
         }
 

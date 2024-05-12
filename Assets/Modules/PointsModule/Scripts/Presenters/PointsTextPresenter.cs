@@ -19,7 +19,7 @@ namespace SDRGames.Whist.PointsModule.Presenters
             _points.CurrentValueChanged += OnPointsCurrentValueChanged;
         }
 
-        private void OnPointsCurrentValueChanged(object sender, CurrentValueChangedEventArgs e)
+        private void OnPointsCurrentValueChanged(object sender, ValueChangedEventArgs e)
         {
             _pointsView.SetPointsText(e.CurrentValue);
         }

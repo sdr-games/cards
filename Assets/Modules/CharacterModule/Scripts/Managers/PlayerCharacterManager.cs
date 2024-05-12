@@ -14,7 +14,7 @@ namespace SDRGames.Whist.CharacterModule.Managers
 
         [SerializeField] private PlayerCharacterParamsModel _playerCharacterParamsModel;
         [SerializeField] private PlayerCharacterParamsView _playerCharacterParamsView;
-        [SerializeField] private CombatPlayerCharacterParamsView _combatPlayerCharacterParamsView;
+        [SerializeField] private PlayerCharacterCombatParamsView _combatPlayerCharacterParamsView;
 
         private PlayerCharacterParamsPresenter _playerCharacterParamsPresenter;
 
@@ -57,7 +57,7 @@ namespace SDRGames.Whist.CharacterModule.Managers
 
         public void InitializeCombatPlayerCharacterParamsPresenter()
         {
-            new CombatPlayerCharacterParamsPresenter(_playerCharacterParamsModel, _combatPlayerCharacterParamsView);
+            new PlayerCharacterCombatParamsPresenter(_playerCharacterParamsModel, _combatPlayerCharacterParamsView);
         }
     }
 }

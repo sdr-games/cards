@@ -27,6 +27,12 @@ namespace SDRGames.Whist.MeleeCombatModule.Managers
             _abilitySlotView.AbilitySlotUnbound += OnAbilitySlotCleared;
         }
 
+        public void Unbind()
+        {
+            _meleeAbilityScriptableObject = null;
+            _abilitySlotView.Unbind();
+        }
+
         private void OnAbilitySlotCleared(object sender, EventArgs e)
         {
             _abilitySlotView.AbilitySlotUnbound -= OnAbilitySlotCleared;
