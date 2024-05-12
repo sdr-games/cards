@@ -81,7 +81,7 @@ namespace SDRGames.Whist.DomainModule.Managers
                 }
                 //Do damage
             }
-            _playerCharacterCombatManager.SpendStaminaPoints();
+            _playerCharacterCombatManager.SpendStaminaPoints(e.TotalCost);
         }
 
         private void OnAbilityQueueCleared(object sender, AbilityQueueClearedEventArgs e)

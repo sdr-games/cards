@@ -77,10 +77,10 @@ namespace SDRGames.Whist.PointsModule.Models
             CurrentValueChanged?.Invoke(this, new ValueChangedEventArgs(CurrentValue, GetValueInPercents(CurrentValue), MaxValue));
         }
 
-        public void DecreaseCurrentValue()
+        public void DecreaseCurrentValue(float cost)
         {
-            CurrentValue -= ReservedValue;
-            ReservedValue = 0;
+            CurrentValue -= cost;
+            ResetReservedValue(ReservedValue);
             CurrentValueChanged?.Invoke(this, new ValueChangedEventArgs(CurrentValue, GetValueInPercents(CurrentValue), MaxValue));
         }
 
