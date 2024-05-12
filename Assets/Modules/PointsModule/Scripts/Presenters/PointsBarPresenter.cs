@@ -17,12 +17,44 @@ namespace SDRGames.Whist.PointsModule.Presenters
             _pointsView.Initialize(points.MaxValue);
 
             _points.CurrentValueChanged += OnPointsCurrentValueChanged;
+            _points.ReservedValueChanged += OnReservedValueChanged;
         }
 
-        private void OnPointsCurrentValueChanged(object sender, CurrentValueChangedEventArgs e)
+        public void ReservePoints(float cost)
         {
-            _pointsView.ChangeFillerValue(e.CurrentValueInPercents);
-            _pointsView.SetPointsText(e.CurrentValue);
+            if(_points.CurrentValue < cost)
+            {
+                return;
+            }
+            _points.DecreaseReservedValue(cost);
+        }
+
+        public void SpendPoints()
+        {
+            _points.DecreaseCurrentValue();
+        }
+
+        public void ResetReservedPoints(float reverseAmount)
+        {
+            _points.ResetReservedValue(reverseAmount);
+        }
+
+        public string GetErrorMessage()
+        {
+            return _pointsView.ErrorMessage.GetLocalizedText();
+        }
+
+        private void OnPointsCurrentValueChanged(object sender, ValueChangedEventArgs e)
+        {
+            _pointsView.ChangeSpentFillerValue(e.CurrentValueInPercents);
+            _pointsView.SetPointsText(e.CurrentValue, e.MaxValue);
+        }
+
+        private void OnReservedValueChanged(object sender, ValueChangedEventArgs e)
+        {
+            float currentValue = e.CurrentValueInPercents / 100 * e.MaxValue;
+            _pointsView.ChangeReservedFillerValue(e.CurrentValueInPercents);
+            _pointsView.SetPointsText(currentValue, e.MaxValue);
         }
     }
 }

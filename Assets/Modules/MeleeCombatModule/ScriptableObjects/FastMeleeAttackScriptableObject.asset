@@ -33,7 +33,7 @@ MonoBehaviour:
       m_WaitForCompletion: 0
       m_LocalVariables: []
   <Icon>k__BackingField: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
-  <Cost>k__BackingField: 2
+  <Cost>k__BackingField: 4
   references:
     version: 2
     RefIds: []

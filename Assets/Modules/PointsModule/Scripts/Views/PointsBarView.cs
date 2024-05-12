@@ -1,3 +1,5 @@
+using SDRGames.Whist.LocalizationModule.Models;
+
 using TMPro;
 
 using UnityEditor;
@@ -9,41 +11,46 @@ namespace SDRGames.Whist.PointsModule.Views
 {
     public class PointsBarView : MonoBehaviour
     {
+        private readonly Color BACKGROUND_COLOR = Color.black;
+
         [SerializeField] private CanvasGroup _canvasGroup;
-
         [SerializeField] private Image _background;
-        [SerializeField] private Image _filler;
-
-        [SerializeField] private Color _backgroundColor;
-        [SerializeField] private Color _fillerColor;
-
+        [SerializeField] private Image _reservedFiller;
+        [SerializeField] private Image _spentFiller;
         [SerializeField] private TextMeshProUGUI _pointsValueText;
 
-        private float _maxPointsValue;
+        [SerializeField] private Color _reservedFillerColor;
+        [SerializeField] private Color _spentFillerColor;
+
+        [field: SerializeField] public LocalizedString ErrorMessage { get; private set; }
 
         public void Initialize(float maxPointsValue)
         {            
-            _background.color = _backgroundColor;
-            _filler.color = _fillerColor;
-            _maxPointsValue = maxPointsValue;
-            SetPointsText(maxPointsValue);
+            _background.color = BACKGROUND_COLOR;
+            _reservedFiller.color = _reservedFillerColor;
+            _spentFiller.color = _spentFillerColor;
+            SetMaxPointsText(maxPointsValue, 100);
         }
 
-        public void ChangeFillerValue(float currentValuePercent)
+        public void ChangeSpentFillerValue(float currentValuePercent)
         {
-            _filler.fillAmount = currentValuePercent / 100;
+            _spentFiller.fillAmount = currentValuePercent / 100;
+        }
+
+        public void ChangeReservedFillerValue(float currentValuePercent)
+        {
+            _reservedFiller.fillAmount = currentValuePercent / 100;
         }
 
         public void SetMaxPointsText(float maxPointsValue, float currentValuePercent)
         {
-            _maxPointsValue = maxPointsValue;
-            float currentValue = _maxPointsValue * currentValuePercent / 100;
-            SetPointsText(currentValue);
+            float currentValue = maxPointsValue * currentValuePercent / 100;
+            SetPointsText(currentValue, maxPointsValue);
         }
 
-        public void SetPointsText(float currentPointsValue)
+        public void SetPointsText(float currentPointsValue, float maxPointsValue)
         {
-            _pointsValueText.text = $"{currentPointsValue} / {_maxPointsValue}";
+            _pointsValueText.text = $"{currentPointsValue} / {maxPointsValue}";
         }
 
         #region MonoBehaviour methods
@@ -57,7 +64,7 @@ namespace SDRGames.Whist.PointsModule.Views
                 #endif
             }
 
-            if (_filler == null)
+            if (_spentFiller == null)
             {
                 Debug.LogError("Filler image не был назначен");
                 #if UNITY_EDITOR

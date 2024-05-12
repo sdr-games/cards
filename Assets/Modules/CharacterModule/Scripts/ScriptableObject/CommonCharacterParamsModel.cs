@@ -33,5 +33,14 @@ namespace SDRGames.Whist.CharacterModule.ScriptableObjects
             PhysicalDamage = physicalDamage;
             MagicDamageMultiplier = magicDamageMultiplier;
         }
+
+        private void OnEnable()
+        {
+            HealthPoints.Reset();
+            StaminaPoints.Reset();
+            BreathPoints.Reset();
+            Armor.Reset();
+            Barrier.Reset();
+        }
     }
 }

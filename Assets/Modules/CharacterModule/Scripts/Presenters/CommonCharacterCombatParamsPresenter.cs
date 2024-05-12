@@ -4,9 +4,9 @@ using SDRGames.Whist.CharacterModule.Views;
 
 namespace SDRGames.Whist.CharacterModule.Presenters
 {
-    public class CombatCommonCharacterParamsPresenter
+    public class CommonCharacterCombatParamsPresenter
     {
-        public CombatCommonCharacterParamsPresenter(CommonCharacterParamsModel commonCharacterParamsModel, CombatCommonCharacterParamsView combatCommonCharacterParamsView)
+        public CommonCharacterCombatParamsPresenter(CommonCharacterParamsModel commonCharacterParamsModel, CombatCommonCharacterParamsView combatCommonCharacterParamsView)
         {
             new PointsBarPresenter(commonCharacterParamsModel.HealthPoints, combatCommonCharacterParamsView.HealthPointsBarView);
             new PointsBarPresenter(commonCharacterParamsModel.Armor, combatCommonCharacterParamsView.ArmorPointsBarView);

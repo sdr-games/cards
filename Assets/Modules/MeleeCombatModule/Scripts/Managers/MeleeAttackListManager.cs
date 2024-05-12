@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -15,7 +16,27 @@ namespace SDRGames.Whist.MeleeCombatModule.Managers
         [SerializeField] private MeleeAttackScriptableObject[] _meleeAttackScriptableObjects;
         [SerializeField] private MeleeAttackManager _meleeAttackPrefab;
         [SerializeField] private RectTransform _contentRectTransform;
-        [SerializeField] private UserInputController _userInputController;
+
+        private List<MeleeAttackManager> _createdManagers;
+
+        public event EventHandler<MeleeAttackClickedEventArgs> MeleeAttackClicked;
+
+        public void Initialize(UserInputController userInputController)
+        {
+            _createdManagers = new List<MeleeAttackManager>();
+            foreach (MeleeAttackScriptableObject meleeAttackScriptableObject in _meleeAttackScriptableObjects)
+            {
+                MeleeAttackManager meleeAttackManager = Instantiate(_meleeAttackPrefab, _contentRectTransform);
+                meleeAttackManager.Initialize(userInputController, meleeAttackScriptableObject);
+                meleeAttackManager.MeleeAttackClicked += OnMeleeAttackClicked;
+                _createdManagers.Add(meleeAttackManager);
+            }
+        }
+
+        private void OnMeleeAttackClicked(object sender, MeleeAttackClickedEventArgs e)
+        {
+            MeleeAttackClicked?.Invoke(this, e);
+        }
 
         private void OnEnable()
         {
@@ -36,20 +57,13 @@ namespace SDRGames.Whist.MeleeCombatModule.Managers
                 #endif
                 Application.Quit();
             }
+        }
 
-            if (_userInputController == null)
+        private void OnDisable()
+        {
+            foreach(MeleeAttackManager meleeAttackManager in _createdManagers)
             {
-                Debug.LogError("User Input Controller не был назначен");
-                #if UNITY_EDITOR
-                    EditorApplication.isPlaying = false;
-                #endif
-                Application.Quit();
-            }
-
-            foreach (MeleeAttackScriptableObject meleeAttackScriptableObject in _meleeAttackScriptableObjects)
-            {
-                MeleeAttackManager meleeAttackManager = Instantiate(_meleeAttackPrefab, _contentRectTransform);
-                meleeAttackManager.Initialize(_userInputController, meleeAttackScriptableObject);
+                meleeAttackManager.MeleeAttackClicked -= OnMeleeAttackClicked;
             }
         }
     }

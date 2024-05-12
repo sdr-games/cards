@@ -15,7 +15,7 @@ namespace SDRGames.Whist.CharacterModule.Managers
 
         public void Initialize()
         {
-            new CombatCommonCharacterParamsPresenter(_commonCharacterParamsModel, _combatCommonCharacterParamsView);
+            new CommonCharacterCombatParamsPresenter(_commonCharacterParamsModel, _combatCommonCharacterParamsView);
         }
 
         private void OnEnable()

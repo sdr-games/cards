@@ -103,7 +103,7 @@ namespace SDRGames.Whist.PointsModule
             }
 
             Debug.Log($"PreviousValue:  {_points.CurrentValue}");
-            _points.DecreaseCurrentValue(Convert.ToSingle(_currentPointsDecreaseValue));
+            //_points.DecreaseCurrentValue(Convert.ToSingle(_currentPointsDecreaseValue));
             Debug.Log($"CurrentValue:  {_points.CurrentValue}");
         }
     }

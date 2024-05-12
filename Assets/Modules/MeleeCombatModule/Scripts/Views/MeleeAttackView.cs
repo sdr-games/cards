@@ -21,15 +21,8 @@ namespace SDRGames.Whist.MeleeCombatModule.Views
         [SerializeField] private Image _iconImage;
         [SerializeField] private CanvasGroup _tooltipCanvasGroup;
 
-        private UserInputController _userInputController;
-
-        public event EventHandler MeleeAttackClicked; 
-
         public void Initialize(UserInputController userInputController, MeleeAttackScriptableObject meleeAttackScriptableObject)
         {
-            _userInputController = userInputController;
-            _userInputController.LeftMouseButtonClickedOnUI += OnLeftMouseButtonClickedOnUI;
-
             _nameText.text = meleeAttackScriptableObject.Name.GetLocalizedText();
             _descriptionText.text = meleeAttackScriptableObject.Description.GetLocalizedText();
             _costText.text = $"Cost :{meleeAttackScriptableObject.Cost}";
@@ -44,16 +37,6 @@ namespace SDRGames.Whist.MeleeCombatModule.Views
         public void OnPointerExit(PointerEventData eventData)
         {
             _tooltipCanvasGroup.alpha = 0;
-        }
-
-        private void OnLeftMouseButtonClickedOnUI(object sender, LeftMouseButtonUIClickEventArgs e)
-        {
-            if(e.GameObject == gameObject)
-            {
-                //Do something
-                Debug.Log($"{name} clicked");
-                MeleeAttackClicked?.Invoke(this, e);
-            }
         }
 
         private void OnEnable()
@@ -104,9 +87,5 @@ namespace SDRGames.Whist.MeleeCombatModule.Views
             }
         }
 
-        private void OnDisable()
-        {
-            _userInputController.LeftMouseButtonClickedOnUI -= OnLeftMouseButtonClickedOnUI;
-        }
     }
 }
