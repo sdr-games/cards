@@ -55,9 +55,9 @@ namespace SDRGames.Whist.CharacterModule.Managers
             _playerCharacterCombatParamsPresenter.ReserveStaminaPoints(cost);
         }
 
-        public void SpendStaminaPoints()
+        public void SpendStaminaPoints(float totalCost)
         {
-            _playerCharacterCombatParamsPresenter.SpendStaminaPoints();
+            _playerCharacterCombatParamsPresenter.SpendStaminaPoints(totalCost);
         }
 
         public void ResetReservedPoints(float reverseAmount)

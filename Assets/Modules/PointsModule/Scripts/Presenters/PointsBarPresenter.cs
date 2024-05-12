@@ -29,9 +29,9 @@ namespace SDRGames.Whist.PointsModule.Presenters
             _points.DecreaseReservedValue(cost);
         }
 
-        public void SpendPoints()
+        public void SpendPoints(float cost)
         {
-            _points.DecreaseCurrentValue();
+            _points.DecreaseCurrentValue(cost);
         }
 
         public void ResetReservedPoints(float reverseAmount)

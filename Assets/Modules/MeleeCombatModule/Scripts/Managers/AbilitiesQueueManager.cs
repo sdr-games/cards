@@ -92,8 +92,9 @@ namespace SDRGames.Whist.MeleeCombatModule.Managers
         private void OnApplyButtonClicked(object sender, EventArgs e)
         {
             Dictionary<AbilitySlotManager, MeleeAttackScriptableObject> bindedAbilities = new Dictionary<AbilitySlotManager, MeleeAttackScriptableObject>(_bindedAbilities);
+            float totalCost = bindedAbilities.Values.Where(item => item != null).Sum(item => item.Cost);
             ClearBindedAbilities(bindedAbilities);
-            ApplyButtonClicked?.Invoke(this, new ApplyButtonClickedEventArgs(bindedAbilities.Values.ToList()));
+            ApplyButtonClicked?.Invoke(this, new ApplyButtonClickedEventArgs(totalCost, bindedAbilities.Values.ToList()));
         }
 
         private void OnCancelButtonClicked(object sender, EventArgs e)
