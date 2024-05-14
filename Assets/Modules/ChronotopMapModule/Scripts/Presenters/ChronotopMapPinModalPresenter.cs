@@ -13,7 +13,7 @@ namespace SDRGames.Whist.ChronotopMapModule.Presenters
         public event EventHandler FightButtonClicked;
         public event EventHandler Disposed;
 
-        public ChronotopMapPinModalPresenter(CommonCharacterParamsModel enemyParams, ChronotopMapPinModalView modalView, UserInputController userInputController)
+        public ChronotopMapPinModalPresenter(CharacterParamsModel enemyParams, ChronotopMapPinModalView modalView, UserInputController userInputController)
         {
             _modalView = modalView;
             _modalView.Initialize(

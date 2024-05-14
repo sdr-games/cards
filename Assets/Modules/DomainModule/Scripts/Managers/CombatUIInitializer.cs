@@ -14,6 +14,7 @@ namespace SDRGames.Whist.DomainModule.Managers
         [Header("ABILITIES")][SerializeField] private AbilitiesQueueManager _abilitiesQueueManager;
         [SerializeField] private MeleeAttackListManager _meleeAttackListManager;
         [Header("PLAYER")][SerializeField] private PlayerCharacterCombatManager _playerCharacterCombatManager;
+        [Header("ENEMY")][SerializeField] private EnemyCharacterCombatManager _enemyCharacterCombatManager;
 
         private void OnEnable()
         {
@@ -53,10 +54,21 @@ namespace SDRGames.Whist.DomainModule.Managers
                 Application.Quit();
             }
 
+            if (_enemyCharacterCombatManager == null)
+            {
+                Debug.LogError("Enemy Character Combat Manager не был назначен");
+                #if UNITY_EDITOR
+                    EditorApplication.isPlaying = false;
+                #endif
+                Application.Quit();
+            }
+
+            _playerCharacterCombatManager.Initialize();
+            _enemyCharacterCombatManager.Initialize();
+
             _abilitiesQueueManager.Initialize(_userInputController);
             _abilitiesQueueManager.ApplyButtonClicked += OnApplyButtonClicked;
             _abilitiesQueueManager.AbilityQueueCleared += OnAbilityQueueCleared;
-            _playerCharacterCombatManager.Initialize();
             _meleeAttackListManager.Initialize(_userInputController);
             _meleeAttackListManager.MeleeAttackClicked += OnMeleeAttackClicked;
         }
@@ -79,7 +91,7 @@ namespace SDRGames.Whist.DomainModule.Managers
                 {
                     continue;
                 }
-                //Do damage
+                _enemyCharacterCombatManager.TakeDamage(ability.Damage);
             }
             _playerCharacterCombatManager.SpendStaminaPoints(e.TotalCost);
         }

@@ -11,5 +11,6 @@ namespace SDRGames.Whist.MeleeCombatModule.ScriptableObjects
         [field: SerializeField] public LocalizedString Description { get; private set; }
         [field: SerializeField] public Sprite Icon { get; private set; }
         [field: SerializeField] public int Cost { get; private set; }
+        [field: SerializeField] public int Damage { get; private set; }
     }
 }
