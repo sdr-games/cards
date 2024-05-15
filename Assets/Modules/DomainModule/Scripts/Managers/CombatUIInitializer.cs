@@ -89,11 +89,12 @@ namespace SDRGames.Whist.DomainModule.Managers
             {
                 if(ability == null)
                 {
+                    _playerCharacterCombatManager.RestoreStaminaPoints();
                     continue;
                 }
+                _playerCharacterCombatManager.SpendStaminaPoints(ability.Cost);
                 _enemyCharacterCombatManager.TakeDamage(ability.Damage);
             }
-            _playerCharacterCombatManager.SpendStaminaPoints(e.TotalCost);
         }
 
         private void OnAbilityQueueCleared(object sender, AbilityQueueClearedEventArgs e)

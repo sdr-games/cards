@@ -74,6 +74,7 @@ namespace SDRGames.Whist.PointsModule.Models
             {
                 CurrentValue = MaxValue;
             }
+            ResetReservedValue(ReservedValue);
             CurrentValueChanged?.Invoke(this, new ValueChangedEventArgs(CurrentValue, GetValueInPercents(CurrentValue), MaxValue));
         }
 

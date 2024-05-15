@@ -34,6 +34,11 @@ namespace SDRGames.Whist.PointsModule.Presenters
             _points.DecreaseCurrentValue(cost);
         }
 
+        public void RestorePoints()
+        {
+            _points.IncreaseCurrentValue(_points.MaxValue * 0.1f);
+        }
+
         public void ResetReservedPoints(float reverseAmount)
         {
             _points.ResetReservedValue(reverseAmount);
