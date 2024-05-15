@@ -9,7 +9,7 @@ namespace SDRGames.Whist.CharacterModule.ScriptableObjects
 {
     [Serializable]
     [CreateAssetMenu(fileName = "PlayerParameters", menuName = "SDRGames/Characters/Player Parameters")]
-    public class PlayerCharacterParamsModel : CommonCharacterParamsModel
+    public class PlayerCharacterParamsModel : CharacterParamsModel
     {
         private const int DEFAULT_BASE_LEVEL = 1;
 

@@ -79,6 +79,10 @@ namespace SDRGames.Whist.PointsModule.Models
 
         public void DecreaseCurrentValue(float cost)
         {
+            if(cost > CurrentValue)
+            {
+                cost = CurrentValue;
+            }
             CurrentValue -= cost;
             ResetReservedValue(ReservedValue);
             CurrentValueChanged?.Invoke(this, new ValueChangedEventArgs(CurrentValue, GetValueInPercents(CurrentValue), MaxValue));

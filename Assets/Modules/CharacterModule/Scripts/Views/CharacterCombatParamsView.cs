@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace SDRGames.Whist.CharacterModule.Views
 {
-    public class CombatCommonCharacterParamsView : MonoBehaviour
+    public class CharacterCombatParamsView : MonoBehaviour
     {
         [field: SerializeField] public PointsBarView ArmorPointsBarView { get; protected set; }
         [field: SerializeField] public PointsBarView BarrierPointsBarView { get; protected set; }

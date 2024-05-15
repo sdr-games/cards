@@ -4,14 +4,14 @@ using SDRGames.Whist.CharacterModule.Views;
 
 namespace SDRGames.Whist.CharacterModule.Presenters
 {
-    public class PlayerCharacterCombatParamsPresenter : CommonCharacterCombatParamsPresenter
+    public class PlayerCharacterCombatParamsPresenter : CharacterCombatParamsPresenter
     {
         private PointsBarPresenter _staminaPointsBarPresenter;
 
-        public PlayerCharacterCombatParamsPresenter(CommonCharacterParamsModel commonCharacterParamsModel, PlayerCharacterCombatParamsView playerCharacterCombatParamsView) : base(commonCharacterParamsModel, playerCharacterCombatParamsView)
+        public PlayerCharacterCombatParamsPresenter(CharacterParamsModel characterParamsModel, PlayerCharacterCombatParamsView playerCharacterCombatParamsView) : base(characterParamsModel, playerCharacterCombatParamsView)
         {
-            _staminaPointsBarPresenter = new PointsBarPresenter(commonCharacterParamsModel.StaminaPoints, playerCharacterCombatParamsView.StaminaPointsBarView);
-            new PointsBarPresenter(commonCharacterParamsModel.BreathPoints, playerCharacterCombatParamsView.BreathPointsBarView);
+            _staminaPointsBarPresenter = new PointsBarPresenter(characterParamsModel.StaminaPoints, playerCharacterCombatParamsView.StaminaPointsBarView);
+            new PointsBarPresenter(characterParamsModel.BreathPoints, playerCharacterCombatParamsView.BreathPointsBarView);
         }
 
         public void ReserveStaminaPoints(float cost)

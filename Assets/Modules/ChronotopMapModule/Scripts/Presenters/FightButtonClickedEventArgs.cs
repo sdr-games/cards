@@ -4,9 +4,9 @@ namespace SDRGames.Whist.ChronotopMapModule.Presenters
 {
     public class FightButtonClickedEventArgs
     {
-        public CommonCharacterParamsModel EnemyParams { get; private set; }
+        public CharacterParamsModel EnemyParams { get; private set; }
 
-        public FightButtonClickedEventArgs(CommonCharacterParamsModel enemyParams)
+        public FightButtonClickedEventArgs(CharacterParamsModel enemyParams)
         {
             EnemyParams = enemyParams;
         }

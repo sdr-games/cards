@@ -9,7 +9,7 @@ namespace SDRGames.Whist.CharacterModule.ScriptableObjects
 {
     [Serializable]
     [CreateAssetMenu(fileName = "CharacterParameters", menuName = "SDRGames/Characters/Character Parameters")]
-    public class CommonCharacterParamsModel : ScriptableObject
+    public class CharacterParamsModel : ScriptableObject
     {
         [field: SerializeField] public CharacterInfoScriptableObject CharacterInfo { get; protected set; }
         [field: SerializeField] public int Level { get; protected set; }
@@ -21,7 +21,7 @@ namespace SDRGames.Whist.CharacterModule.ScriptableObjects
         [field: SerializeField] public Dice PhysicalDamage { get; protected set; }
         [field: SerializeField] public float MagicDamageMultiplier { get; protected set; }
 
-        public CommonCharacterParamsModel(CharacterInfoScriptableObject characterInfo, int level, Points healthPoints, Points staminaPoints, Points breathPoints, Points physicalArmor, Points magicShield, Dice physicalDamage, float magicDamageMultiplier)
+        public CharacterParamsModel(CharacterInfoScriptableObject characterInfo, int level, Points healthPoints, Points staminaPoints, Points breathPoints, Points physicalArmor, Points magicShield, Dice physicalDamage, float magicDamageMultiplier)
         {
             CharacterInfo = characterInfo;
             Level = level;
@@ -32,6 +32,17 @@ namespace SDRGames.Whist.CharacterModule.ScriptableObjects
             Barrier = magicShield;
             PhysicalDamage = physicalDamage;
             MagicDamageMultiplier = magicDamageMultiplier;
+        }
+
+        public void TakeDamage(int damage)
+        {
+            float trueDamage = damage - Armor.CurrentValue;
+            Armor.DecreaseCurrentValue(damage);
+            if(trueDamage <= 0)
+            {
+                return;
+            }
+            HealthPoints.DecreaseCurrentValue(trueDamage);
         }
 
         private void OnEnable()
