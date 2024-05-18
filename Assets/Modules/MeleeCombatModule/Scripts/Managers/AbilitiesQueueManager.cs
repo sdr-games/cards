@@ -40,6 +40,9 @@ namespace SDRGames.Whist.MeleeCombatModule.Managers
             }
             _applyButton.Initialize(userInputController);
             _cancelButton.Initialize(userInputController);
+
+            _applyButton.ButtonClicked += OnApplyButtonClicked;
+            _cancelButton.ButtonClicked += OnCancelButtonClicked;
         }
 
         public void AddAbilityToQueue(MeleeAttackScriptableObject meleeAttackScriptableObject)
@@ -79,14 +82,10 @@ namespace SDRGames.Whist.MeleeCombatModule.Managers
             {
                 _applyButton.Activate();
                 _cancelButton.Activate();
-                _applyButton.ButtonClicked += OnApplyButtonClicked;
-                _cancelButton.ButtonClicked += OnCancelButtonClicked;
                 return;
             }
             _applyButton.Deactivate();
             _cancelButton.Deactivate();
-            _applyButton.ButtonClicked -= OnApplyButtonClicked;
-            _cancelButton.ButtonClicked -= OnCancelButtonClicked;
         }
 
         private void OnApplyButtonClicked(object sender, EventArgs e)
@@ -148,6 +147,9 @@ namespace SDRGames.Whist.MeleeCombatModule.Managers
             {
                 abilitySlotManager.AbilitySlotUnbound -= OnAbilitySlotCleared;
             }
+
+            _applyButton.ButtonClicked -= OnApplyButtonClicked;
+            _cancelButton.ButtonClicked -= OnCancelButtonClicked;
         }
     }
 }

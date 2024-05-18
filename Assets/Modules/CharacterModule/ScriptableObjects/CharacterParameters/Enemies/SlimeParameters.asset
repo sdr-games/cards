@@ -38,7 +38,7 @@ MonoBehaviour:
     <RegenerationPower>k__BackingField: 0
   <Armor>k__BackingField:
     <Name>k__BackingField: 
-    <BaseValue>k__BackingField: 0
+    <BaseValue>k__BackingField: 10
     <Bonus>k__BackingField: 0
     <RelatedBonuses>k__BackingField: []
     <RegenerationSpeed>k__BackingField: 0
