@@ -34,6 +34,7 @@ MonoBehaviour:
       m_LocalVariables: []
   <Icon>k__BackingField: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
   <Cost>k__BackingField: 2
+  <Damage>k__BackingField: 3
   references:
     version: 2
     RefIds: []
