@@ -1,3 +1,6 @@
+using System;
+
+using SDRGames.Whist.CardsCombatModule.ScriptableObjects;
 using SDRGames.Whist.UserInputModule.Controller;
 
 using UnityEditor;
@@ -9,7 +12,7 @@ namespace SDRGames.Whist.CardsCombatModule.Managers
 {
     public class DecksPreviewWindowManager : MonoBehaviour
     {
-        [SerializeField] private ScriptableObject[] _decks;
+        [SerializeField] private DeckScriptableObject[] _decks;
         [SerializeField] private CardsListManager _cardsListManager;
         [SerializeField] private DecksListManager _decksListManager;
         [SerializeField] private CanvasGroup _canvasGroup;
@@ -17,6 +20,8 @@ namespace SDRGames.Whist.CardsCombatModule.Managers
 
         private UserInputController _userInputController;
 
+        public event EventHandler<DeckPreviewClickedEventArgs> DeckSelected;
+ 
         public void Initialize(UserInputController userInputController)
         {
             _userInputController = userInputController;
@@ -28,6 +33,7 @@ namespace SDRGames.Whist.CardsCombatModule.Managers
         {
             if(e.GameObject == _selectButton.gameObject)
             {
+                DeckSelected?.Invoke(this, new DeckPreviewClickedEventArgs(_decksListManager.SelectedDeck));
                 Hide();
             }
         }

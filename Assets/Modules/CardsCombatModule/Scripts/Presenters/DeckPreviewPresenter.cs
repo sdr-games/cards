@@ -1,8 +1,5 @@
-using System;
-
+using SDRGames.Whist.CardsCombatModule.ScriptableObjects;
 using SDRGames.Whist.CardsCombatModule.Views;
-
-using UnityEngine;
 
 namespace SDRGames.Whist.CardsCombatModule.Presenters
 {
@@ -10,10 +7,10 @@ namespace SDRGames.Whist.CardsCombatModule.Presenters
     {
         private DeckPreviewView _deckPreviewView;
 
-        public DeckPreviewPresenter(DeckPreviewView deckPreviewView, ScriptableObject deck)
+        public DeckPreviewPresenter(DeckPreviewView deckPreviewView, DeckScriptableObject deck)
         {
             _deckPreviewView = deckPreviewView;
-            _deckPreviewView.Initialize(null);
+            _deckPreviewView.Initialize(deck.Backside);
         }
     }
 }

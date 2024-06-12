@@ -1,6 +1,7 @@
 using System;
 
 using SDRGames.Whist.CardsCombatModule.Presenters;
+using SDRGames.Whist.CardsCombatModule.ScriptableObjects;
 using SDRGames.Whist.CardsCombatModule.Views;
 using SDRGames.Whist.UserInputModule.Controller;
 
@@ -15,8 +16,10 @@ namespace SDRGames.Whist.CardsCombatModule.Managers
         [SerializeField] private SelectedDeckView _selectedDeckView;
 
         private UserInputController _userInputController;
+        private DeckScriptableObject _deckScriptableObject;
+        private SelectedDeckPresenter _selectedDeckPresenter;
 
-        private bool IsEmpty { get; }
+        private bool IsEmpty => _deckScriptableObject == null;
 
         public event EventHandler EmptyDeckViewClicked;
         public event EventHandler SelectedDeckViewClicked;
@@ -26,14 +29,20 @@ namespace SDRGames.Whist.CardsCombatModule.Managers
             _userInputController = userInputController;
             _userInputController.LeftMouseButtonClickedOnUI += OnLeftMouseButtonClickedOnUI;
 
-            new SelectedDeckPresenter(_selectedDeckView);
+            _selectedDeckPresenter = new SelectedDeckPresenter(_selectedDeckView);
+        }
+
+        public void SetSelectedDeck(DeckScriptableObject deckScriptableObject)
+        {
+            _deckScriptableObject = deckScriptableObject;
+            _selectedDeckPresenter.SetSelectedDeck(deckScriptableObject);
         }
 
         private void OnLeftMouseButtonClickedOnUI(object sender, LeftMouseButtonUIClickEventArgs e)
         {
             if (e.GameObject == gameObject)
             {
-                if (!IsEmpty)
+                if (IsEmpty)
                 {
                     EmptyDeckViewClicked?.Invoke(this, EventArgs.Empty);
                     return;
