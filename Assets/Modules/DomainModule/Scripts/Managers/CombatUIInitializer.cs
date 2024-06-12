@@ -1,3 +1,6 @@
+using System;
+
+using SDRGames.Whist.CardsCombatModule.Managers;
 using SDRGames.Whist.CharacterModule.Managers;
 using SDRGames.Whist.MeleeCombatModule.Managers;
 using SDRGames.Whist.UserInputModule.Controller;
@@ -13,6 +16,8 @@ namespace SDRGames.Whist.DomainModule.Managers
         [SerializeField] private UserInputController _userInputController;
         [Header("ABILITIES")][SerializeField] private AbilitiesQueueManager _abilitiesQueueManager;
         [SerializeField] private MeleeAttackListManager _meleeAttackListManager;
+        [SerializeField] private SelectedDeckManager _selectedDeckManager;
+        [SerializeField] private DecksPreviewWindowManager _decksPreviewWindowManager;
         [Header("PLAYER")][SerializeField] private PlayerCharacterCombatManager _playerCharacterCombatManager;
         [Header("ENEMY")][SerializeField] private EnemyCharacterCombatManager _enemyCharacterCombatManager;
 
@@ -45,6 +50,25 @@ namespace SDRGames.Whist.DomainModule.Managers
                 Application.Quit();
             }
 
+            if (_selectedDeckManager == null)
+            {
+                Debug.LogError("Selected Deck Manager не был назначен");
+                #if UNITY_EDITOR
+                    EditorApplication.isPlaying = false;
+                #endif
+                Application.Quit();
+            }
+
+
+            if (_decksPreviewWindowManager == null)
+            {
+                Debug.LogError("Decks Preview Window Manager не был назначен");
+                #if UNITY_EDITOR
+                    EditorApplication.isPlaying = false;
+                #endif
+                Application.Quit();
+            }
+
             if (_playerCharacterCombatManager == null)
             {
                 Debug.LogError("Player Character Combat Manager не был назначен");
@@ -69,8 +93,15 @@ namespace SDRGames.Whist.DomainModule.Managers
             _abilitiesQueueManager.Initialize(_userInputController);
             _abilitiesQueueManager.ApplyButtonClicked += OnApplyButtonClicked;
             _abilitiesQueueManager.AbilityQueueCleared += OnAbilityQueueCleared;
+
             _meleeAttackListManager.Initialize(_userInputController);
             _meleeAttackListManager.MeleeAttackClicked += OnMeleeAttackClicked;
+
+            _selectedDeckManager.Initialize(_userInputController);
+            _selectedDeckManager.EmptyDeckViewClicked += OnEmptyDeckViewClicked;
+            _selectedDeckManager.SelectedDeckViewClicked += OnSelectedDeckViewClicked;
+
+            _decksPreviewWindowManager.Initialize(_userInputController);
         }
 
         private void OnMeleeAttackClicked(object sender, MeleeAttackClickedEventArgs e)
@@ -99,6 +130,16 @@ namespace SDRGames.Whist.DomainModule.Managers
         private void OnAbilityQueueCleared(object sender, AbilityQueueClearedEventArgs e)
         {
             _playerCharacterCombatManager.ResetReservedPoints(e.ReverseAmount);
+        }
+
+        private void OnSelectedDeckViewClicked(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void OnEmptyDeckViewClicked(object sender, EventArgs e)
+        {
+            _decksPreviewWindowManager.Show();
         }
     }
 }
