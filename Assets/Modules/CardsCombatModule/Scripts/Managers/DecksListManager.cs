@@ -1,5 +1,6 @@
 using System;
 
+using SDRGames.Whist.CardsCombatModule.ScriptableObjects;
 using SDRGames.Whist.UserInputModule.Controller;
 
 using UnityEditor;
@@ -13,11 +14,13 @@ namespace SDRGames.Whist.CardsCombatModule.Managers
         [SerializeField] private DeckPreviewManager[] _deckPreviewManagers;
         
         private CardsListManager _cardsListManager;
-        private ScriptableObject[] _decks;
+        private DeckScriptableObject[] _decks;
+
+        public DeckScriptableObject SelectedDeck { get; private set; }
 
         public event EventHandler DeckPreviewClicked;
 
-        public void Initialize(UserInputController userInputController, CardsListManager cardsListManager, ScriptableObject[] decks)
+        public void Initialize(UserInputController userInputController, CardsListManager cardsListManager, DeckScriptableObject[] decks)
         {
             _decks = decks;
             _cardsListManager = cardsListManager;
@@ -26,12 +29,13 @@ namespace SDRGames.Whist.CardsCombatModule.Managers
                 _deckPreviewManagers[i].Initialize(userInputController, _decks[i]);
                 _deckPreviewManagers[i].DeckPreviewClicked += OnDeckPreviewClicked;
             }
-            _cardsListManager.Initialize(_decks); //probably _deck[0].cards
+            _cardsListManager.Initialize(_decks[0].Cards);
         }
 
-        private void OnDeckPreviewClicked(object sender, EventArgs e)
+        private void OnDeckPreviewClicked(object sender, DeckPreviewClickedEventArgs e)
         {
-            _cardsListManager.Initialize(_decks); //probably e.cards
+            SelectedDeck = e.DeckScriptableObject;
+            _cardsListManager.Initialize(e.DeckScriptableObject.Cards);
         }
 
         private void OnEnable()

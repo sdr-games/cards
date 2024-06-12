@@ -102,6 +102,7 @@ namespace SDRGames.Whist.DomainModule.Managers
             _selectedDeckManager.SelectedDeckViewClicked += OnSelectedDeckViewClicked;
 
             _decksPreviewWindowManager.Initialize(_userInputController);
+            _decksPreviewWindowManager.DeckSelected += OnDeckSelected;
         }
 
         private void OnMeleeAttackClicked(object sender, MeleeAttackClickedEventArgs e)
@@ -140,6 +141,11 @@ namespace SDRGames.Whist.DomainModule.Managers
         private void OnEmptyDeckViewClicked(object sender, EventArgs e)
         {
             _decksPreviewWindowManager.Show();
+        }
+
+        private void OnDeckSelected(object sender, DeckPreviewClickedEventArgs e)
+        {
+            _selectedDeckManager.SetSelectedDeck(e.DeckScriptableObject);
         }
     }
 }

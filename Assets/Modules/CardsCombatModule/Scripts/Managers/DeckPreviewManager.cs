@@ -1,6 +1,7 @@
 using System;
 
 using SDRGames.Whist.CardsCombatModule.Presenters;
+using SDRGames.Whist.CardsCombatModule.ScriptableObjects;
 using SDRGames.Whist.CardsCombatModule.Views;
 using SDRGames.Whist.UserInputModule.Controller;
 
@@ -14,14 +15,17 @@ namespace SDRGames.Whist.CardsCombatModule.Managers
     {
         [SerializeField] private DeckPreviewView _deckPreviewView;
 
+        private DeckScriptableObject _deck;
         private UserInputController _userInputController;
 
-        public event EventHandler DeckPreviewClicked;
+        public event EventHandler<DeckPreviewClickedEventArgs> DeckPreviewClicked;
 
-        public void Initialize(UserInputController userInputController, ScriptableObject deck)
+        public void Initialize(UserInputController userInputController, DeckScriptableObject deck)
         {
             _userInputController = userInputController;
             _userInputController.LeftMouseButtonClickedOnUI += OnLeftMouseButtonClickedOnUI;
+
+            _deck = deck;
 
             new DeckPreviewPresenter(_deckPreviewView, deck);
         }
@@ -30,7 +34,7 @@ namespace SDRGames.Whist.CardsCombatModule.Managers
         {
             if (e.GameObject == gameObject)
             {
-                DeckPreviewClicked?.Invoke(this, EventArgs.Empty);
+                DeckPreviewClicked?.Invoke(this, new DeckPreviewClickedEventArgs(_deck));
             }
         }
 

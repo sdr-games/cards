@@ -225,7 +225,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _decks:
-  - {fileID: 11400000, guid: ab477d19baf151d4ebc0aea121f62ca4, type: 2}
+  - {fileID: 11400000, guid: b53221eca4f4a244eaeb72ca64e7dbe5, type: 2}
+  - {fileID: 11400000, guid: 133861e3e3c99e148a54e0d0c16dbf95, type: 2}
   _cardsListManager: {fileID: 1366035642}
   _decksListManager: {fileID: 1797287280}
   _canvasGroup: {fileID: 54196805}
@@ -2794,6 +2795,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _rectTransform: {fileID: 914351968}
+  _backsideImage: {fileID: 914351970}
   _hoverOffset: 40
   _hoverOffsetSpeed: 3
 --- !u!114 &914351970

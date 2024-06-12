@@ -12,7 +12,7 @@ namespace SDRGames.Whist.CardsCombatModule.Views
         [SerializeField] private Image _illustrationImage;
         [SerializeField] private TextMeshProUGUI _descriptionText;
 
-        public void Initialize(Sprite illustrationSprite, string descriptionText)
+        public void Initialize(string nameText, string descriptionText, Sprite illustrationSprite)
         {
             _illustrationImage.sprite = illustrationSprite;
             _descriptionText.text = descriptionText;

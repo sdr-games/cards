@@ -5,12 +5,14 @@ using UnityEditor;
 
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 namespace SDRGames.Whist.CardsCombatModule.Views
 {
     public class SelectedDeckView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
         [SerializeField] private RectTransform _rectTransform;
+        [SerializeField] private Image _backsideImage;
         [SerializeField] private float _hoverOffset;
         [SerializeField] private float _hoverOffsetSpeed;
         private Vector3 _middlePosition;
@@ -18,6 +20,11 @@ namespace SDRGames.Whist.CardsCombatModule.Views
         public void Initialize()
         {
             _middlePosition = new Vector3(_rectTransform.anchoredPosition.x, _rectTransform.anchoredPosition.y + _hoverOffset / 2, 0);
+        }
+
+        public void SetBacksideImage(Sprite backsideSprite)
+        {
+            _backsideImage.sprite = backsideSprite;
         }
 
         public void OnPointerEnter(PointerEventData eventData)
@@ -53,6 +60,16 @@ namespace SDRGames.Whist.CardsCombatModule.Views
                 #endif
                 Application.Quit();
             }
+
+            if (_backsideImage == null)
+            {
+                Debug.LogError("Backside Image не был назначен");
+                #if UNITY_EDITOR
+                    EditorApplication.isPlaying = false;
+                #endif
+                Application.Quit();
+            }
+
             _middlePosition = new Vector3(_rectTransform.anchoredPosition.x, _rectTransform.anchoredPosition.y + _hoverOffset / 2, 0);
         }
     }
