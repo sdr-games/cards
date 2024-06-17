@@ -11,6 +11,7 @@ namespace SDRGames.Whist.CardsCombatModule.ScriptableObjects
         [field: SerializeField] public string Description { get; private set; }
         [field: SerializeField] public Sprite Illustration { get; private set; }
         [field: SerializeField] public ScriptableObject[] AbilityLogics { get; private set; }
+        [field: SerializeField] public int Cost { get; private set; }
 
         private void OnEnable()
         {
