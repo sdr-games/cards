@@ -1,38 +1,126 @@
-using System.Collections;
 using System.Collections.Generic;
+using System;
+
 using SDRGames.Whist.CardsCombatModule.ScriptableObjects;
+using SDRGames.Whist.HelpersModule.Views;
+using SDRGames.Whist.UserInputModule.Controller;
+
+using UnityEditor;
 
 using UnityEngine;
+using System.Linq;
 
 namespace SDRGames.Whist.CardsCombatModule.Managers
 {
     public class DeckOnHandsManager : MonoBehaviour
     {
+        [SerializeField] private CanvasGroup _canvasGroup;
         [SerializeField] private RectTransform _rectTransform;
         [SerializeField] private CardManager _cardManagerPrefab;
+        [SerializeField] private ButtonView _applyButton;
+        [SerializeField] private int _maxCardsOnHandsCount = 4;
 
         [SerializeField] private DeckScriptableObject _deck;
+        [SerializeField]
+        UserInputController _userInputController;
 
-        public void Initialize(DeckScriptableObject deck)
+        private List<CardManager> _cards;
+        private List<CardManager> _selectedCards;
+
+        public event EventHandler<CardClickedEventArgs> CardClicked;
+        public event EventHandler<ApplyButtonClickedEventArgs> ApplyButtonClicked;
+
+        public void Initialize(UserInputController userInputController)
         {
-            _deck = deck;
-            for(int i = 0; i < _deck.Cards.Length; i++)
+            _cards = new List<CardManager>();
+            _selectedCards = new List<CardManager>();
+
+            _userInputController = userInputController;
+
+            _applyButton.Initialize(userInputController);
+            _applyButton.ButtonClicked += OnApplyButtonClicked;
+        }
+
+        public void SetSelectedDeck(DeckScriptableObject deckScriptableObject)
+        {
+            _deck = deckScriptableObject;
+            for (int i = 0; i < _maxCardsOnHandsCount; i++)
             {
+                int index = UnityEngine.Random.Range(0, _deck.Cards.Length - 1);
                 Vector2 position = CalculatePositionInRadius(i);
                 CardManager cardManager = Instantiate(_cardManagerPrefab, transform, false);
-                cardManager.Initialize(position, _deck.Cards[i]);
+                cardManager.Initialize(_userInputController, position, _deck.Cards[index], _deck.Cards.Length - i - 1);
+                cardManager.CardClicked += OnCardClicked;
+                _cards.Add(cardManager);
             }
+        }
+
+        public void Show()
+        {
+            _canvasGroup.alpha = 1;
+            _canvasGroup.interactable = true;
+            _canvasGroup.blocksRaycasts = true;
+        }
+
+        public void Hide()
+        {
+            _canvasGroup.alpha = 0;
+            _canvasGroup.interactable = false;
+            _canvasGroup.blocksRaycasts = false;
         }
 
         private Vector2 CalculatePositionInRadius(int index)
         {
-            float radiansOfSeparation = Mathf.PI / 2 / _deck.Cards.Length * (index + 0.5f);
+            float radiansOfSeparation = Mathf.PI / 2 / _maxCardsOnHandsCount * (index + 0.5f);
             return new Vector2(Mathf.Cos(radiansOfSeparation) * _rectTransform.sizeDelta.x, Mathf.Sin(radiansOfSeparation) * _rectTransform.sizeDelta.x);
         }
 
-        private void Start()
+        private void OnApplyButtonClicked(object sender, EventArgs e)
         {
-            Initialize(_deck);
+            List<CardManager> selectedCards = new List<CardManager>(_selectedCards);
+            float totalCost = _selectedCards.Where(item => item != null).Sum(item => item.CardScriptableObject.Cost);
+            ApplyButtonClicked?.Invoke(this, new ApplyButtonClickedEventArgs(totalCost, selectedCards));
+        }
+
+        private void OnCardClicked(object sender, CardClickedEventArgs e)
+        {
+            if(e.IsSelected && !_selectedCards.Contains(e.CardManager))
+            {
+                _selectedCards.Add(e.CardManager);
+                return;
+            } 
+            else if (_selectedCards.Contains(e.CardManager))
+            {
+                _selectedCards.Remove(e.CardManager);
+            }
+            CardClicked?.Invoke(this, new CardClickedEventArgs(e.CardManager, e.IsSelected));
+        }
+
+        private void OnEnable()
+        {
+            if (_canvasGroup == null)
+            {
+                Debug.LogError("Canvas Group не был назначен");
+                #if UNITY_EDITOR
+                    EditorApplication.isPlaying = false;
+                #endif
+            }
+
+            if (_rectTransform == null)
+            {
+                Debug.LogError("Rect Transform не был назначен");
+                #if UNITY_EDITOR
+                    EditorApplication.isPlaying = false;
+                #endif
+            }
+
+            if (_cardManagerPrefab == null)
+            {
+                Debug.LogError("Card Manager Prefab не был назначен");
+                #if UNITY_EDITOR
+                    EditorApplication.isPlaying = false;
+                #endif
+            }
         }
     }
 }

@@ -3,17 +3,13 @@ using TMPro;
 using UnityEditor;
 
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 namespace SDRGames.Whist.CardsCombatModule.Views
 {
-    public class CardView : CardPreviewView, IPointerEnterHandler, IPointerExitHandler
+    public class CardView : CardPreviewView
     {
         [SerializeField] private RectTransform _rectTransform;
         [SerializeField] private TextMeshProUGUI _costText;
-        [SerializeField] private float _hoverOffset;
-
-        private int _siblingIndex;
 
         public void Initialize(Vector3 position, string nameText, string descriptionText, Sprite illustrationSprite, string costText)
         {
@@ -22,19 +18,6 @@ namespace SDRGames.Whist.CardsCombatModule.Views
             transform.SetAsFirstSibling();
             base.Initialize(nameText, descriptionText, illustrationSprite);
             _costText.text = costText;
-            _siblingIndex = transform.GetSiblingIndex();
-        }
-
-        public void OnPointerEnter(PointerEventData eventData)
-        {
-            _rectTransform.SetAsLastSibling();
-            _rectTransform.Translate(Vector3.up * _hoverOffset);
-        }
-
-        public void OnPointerExit(PointerEventData eventData)
-        {
-            _rectTransform.SetSiblingIndex(_siblingIndex);
-            _rectTransform.Translate(-Vector3.up * _hoverOffset);
         }
 
         private void SetRotation()

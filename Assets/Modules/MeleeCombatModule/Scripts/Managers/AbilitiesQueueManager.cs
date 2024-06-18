@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
+using SDRGames.Whist.HelpersModule.Views;
 using SDRGames.Whist.LocalizationModule.Models;
 using SDRGames.Whist.MeleeCombatModule.ScriptableObjects;
 using SDRGames.Whist.MeleeCombatModule.Views;
@@ -16,9 +17,10 @@ namespace SDRGames.Whist.MeleeCombatModule.Managers
 {
     public class AbilitiesQueueManager : MonoBehaviour
     {
+        [SerializeField] private CanvasGroup _canvasGroup;
         [SerializeField] private AbilitySlotManager[] _abilitySlotManagers;
-        [SerializeField] private AbilityQueueButtonView _applyButton;
-        [SerializeField] private AbilityQueueButtonView _cancelButton;
+        [SerializeField] private ButtonView _applyButton;
+        [SerializeField] private ButtonView _cancelButton;
         [SerializeField] private LocalizedString _errorMessage;
 
         public bool IsFull => FindFirstEmptySlot() == null;
@@ -51,6 +53,20 @@ namespace SDRGames.Whist.MeleeCombatModule.Managers
             abilitySlotManager.Bind(meleeAttackScriptableObject);
             _bindedAbilities[abilitySlotManager] = meleeAttackScriptableObject;
             SwitchButtonsActivity();
+        }
+
+        public void Show()
+        {
+            _canvasGroup.alpha = 1;
+            _canvasGroup.interactable = true;
+            _canvasGroup.blocksRaycasts = true;
+        }
+
+        public void Hide()
+        {
+            _canvasGroup.alpha = 0;
+            _canvasGroup.interactable = false;
+            _canvasGroup.blocksRaycasts = false;
         }
 
         private AbilitySlotManager FindFirstEmptySlot()
@@ -135,6 +151,14 @@ namespace SDRGames.Whist.MeleeCombatModule.Managers
             if (_cancelButton == null)
             {
                 Debug.LogError("Cancel Button не был назначен");
+                #if UNITY_EDITOR
+                    EditorApplication.isPlaying = false;
+                #endif
+            }
+
+            if (_canvasGroup == null)
+            {
+                Debug.LogError("Canvas Group не был назначен");
                 #if UNITY_EDITOR
                     EditorApplication.isPlaying = false;
                 #endif

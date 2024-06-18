@@ -4,9 +4,9 @@ using SDRGames.Whist.UserInputModule.Controller;
 
 using UnityEngine.UI;
 
-namespace SDRGames.Whist.MeleeCombatModule.Views
+namespace SDRGames.Whist.HelpersModule.Views
 {
-    public class AbilityQueueButtonView : Button
+    public class ButtonView : Button
     {
         private UserInputController _userInputController;
 
