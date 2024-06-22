@@ -65,9 +65,39 @@ namespace SDRGames.Whist.CharacterModule.Managers
             _playerCharacterCombatParamsPresenter.RestoreStaminaPoints();
         }
 
-        public void ResetReservedPoints(float reverseAmount)
+        public void ResetStaminaReservedPoints(float reverseAmount)
         {
-            _playerCharacterCombatParamsPresenter.ResetReservedPoints(reverseAmount);
+            _playerCharacterCombatParamsPresenter.ResetStaminaReservedPoints(reverseAmount);
+        }
+
+        public bool HasEnoughBreathPoints(float cost)
+        {
+            if (_playerCharacterParamsModel.BreathPoints.CurrentValue < _playerCharacterParamsModel.BreathPoints.ReservedValue + cost)
+            {
+                Notification.Show(_playerCharacterCombatParamsPresenter.GetNotEnoughBreathErrorMessage());
+                return false;
+            }
+            return true;
+        }
+
+        public void ReserveBreathPoints(float cost)
+        {
+            _playerCharacterCombatParamsPresenter.ReserveBreathPoints(cost);
+        }
+
+        public void SpendBreathPoints(float totalCost)
+        {
+            _playerCharacterCombatParamsPresenter.SpendBreathPoints(totalCost);
+        }
+
+        public void RestoreBreathPoints()
+        {
+            _playerCharacterCombatParamsPresenter.RestoreBreathPoints();
+        }
+
+        public void ResetBreathReservedPoints(float reverseAmount)
+        {
+            _playerCharacterCombatParamsPresenter.ResetBreathReservedPoints(reverseAmount);
         }
     }
 }

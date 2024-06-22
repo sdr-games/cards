@@ -13,6 +13,7 @@ namespace SDRGames.Whist.CardsCombatModule.Managers
 {
     public class SelectedDeckManager : MonoBehaviour
     {
+        [SerializeField] private CanvasGroup _canvasGroup;
         [SerializeField] private SelectedDeckView _selectedDeckView;
 
         private UserInputController _userInputController;
@@ -38,6 +39,20 @@ namespace SDRGames.Whist.CardsCombatModule.Managers
             _selectedDeckPresenter.SetSelectedDeck(deckScriptableObject);
         }
 
+        public void Show()
+        {
+            _canvasGroup.alpha = 1;
+            _canvasGroup.interactable = true;
+            _canvasGroup.blocksRaycasts = true;
+        }
+
+        public void Hide()
+        {
+            _canvasGroup.alpha = 0;
+            _canvasGroup.interactable = false;
+            _canvasGroup.blocksRaycasts = false;
+        }
+
         private void OnLeftMouseButtonClickedOnUI(object sender, LeftMouseButtonUIClickEventArgs e)
         {
             if (e.GameObject == gameObject)
@@ -56,6 +71,15 @@ namespace SDRGames.Whist.CardsCombatModule.Managers
             if (_selectedDeckView == null)
             {
                 Debug.LogError("Selected Deck View не был назначен");
+                #if UNITY_EDITOR
+                    EditorApplication.isPlaying = false;
+                #endif
+                Application.Quit();
+            }
+
+            if (_canvasGroup == null)
+            {
+                Debug.LogError("Canvas Group не был назначен");
                 #if UNITY_EDITOR
                     EditorApplication.isPlaying = false;
                 #endif

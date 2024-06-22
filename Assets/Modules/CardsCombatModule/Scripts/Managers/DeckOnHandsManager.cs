@@ -21,11 +21,10 @@ namespace SDRGames.Whist.CardsCombatModule.Managers
         [SerializeField] private int _maxCardsOnHandsCount = 4;
 
         [SerializeField] private DeckScriptableObject _deck;
-        [SerializeField]
-        UserInputController _userInputController;
 
+        private UserInputController _userInputController;
         private List<CardManager> _cards;
-        private List<CardManager> _selectedCards;
+        [SerializeField] private List<CardManager> _selectedCards;
 
         public event EventHandler<CardClickedEventArgs> CardClicked;
         public event EventHandler<ApplyButtonClickedEventArgs> ApplyButtonClicked;
@@ -69,6 +68,29 @@ namespace SDRGames.Whist.CardsCombatModule.Managers
             _canvasGroup.blocksRaycasts = false;
         }
 
+        public void AddSelectedCards(CardManager cardManager)
+        {
+            if (_selectedCards.Contains(cardManager))
+            {
+                return;
+            }
+            _selectedCards.Add(cardManager);
+            cardManager.Select();
+            SwitchButtonsActivity();
+        }
+
+        public bool RemoveSelectedCard(CardManager cardManager)
+        {
+            if (!_selectedCards.Contains(cardManager))
+            {
+                return false;
+            }
+            _selectedCards.Remove(cardManager);
+            cardManager.Deselect();
+            SwitchButtonsActivity();
+            return true;
+        }
+
         private Vector2 CalculatePositionInRadius(int index)
         {
             float radiansOfSeparation = Mathf.PI / 2 / _maxCardsOnHandsCount * (index + 0.5f);
@@ -84,16 +106,17 @@ namespace SDRGames.Whist.CardsCombatModule.Managers
 
         private void OnCardClicked(object sender, CardClickedEventArgs e)
         {
-            if(e.IsSelected && !_selectedCards.Contains(e.CardManager))
-            {
-                _selectedCards.Add(e.CardManager);
-                return;
-            } 
-            else if (_selectedCards.Contains(e.CardManager))
-            {
-                _selectedCards.Remove(e.CardManager);
-            }
             CardClicked?.Invoke(this, new CardClickedEventArgs(e.CardManager, e.IsSelected));
+        }
+
+        private void SwitchButtonsActivity()
+        {
+            if (_selectedCards.FirstOrDefault(item => item != null))
+            {
+                _applyButton.Activate();
+                return;
+            }
+            _applyButton.Deactivate();
         }
 
         private void OnEnable()

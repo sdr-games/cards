@@ -1,4 +1,6 @@
-﻿namespace SDRGames.Whist.CardsCombatModule.Managers
+﻿using SDRGames.Whist.CardsCombatModule.ScriptableObjects;
+
+namespace SDRGames.Whist.CardsCombatModule.Managers
 {
     public class CardClickedEventArgs
     {

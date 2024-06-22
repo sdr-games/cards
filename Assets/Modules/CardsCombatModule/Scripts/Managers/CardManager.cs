@@ -56,12 +56,21 @@ namespace SDRGames.Whist.CardsCombatModule.Managers
             }
         }
 
+        public void Select()
+        {
+            _isSelected = true;
+        }
+
+        public void Deselect()
+        {
+            _rectTransform.SetSiblingIndex(_siblingIndex);
+            _isSelected = false;
+        }
+
         private void OnLeftMouseButtonClickedOnUI(object sender, LeftMouseButtonUIClickEventArgs e)
         {
             if(e.GameObject == gameObject)
             {
-                _rectTransform.SetSiblingIndex(_siblingIndex);
-                _isSelected = !_isSelected;
                 CardClicked?.Invoke(this, new CardClickedEventArgs(this, _isSelected));
             }
         }

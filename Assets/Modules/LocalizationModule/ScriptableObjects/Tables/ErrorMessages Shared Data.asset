@@ -23,6 +23,10 @@ MonoBehaviour:
     m_Key: QueueIsFull
     m_Metadata:
       m_Items: []
+  - m_Id: 15246926453825536
+    m_Key: NotEnoughBreath
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

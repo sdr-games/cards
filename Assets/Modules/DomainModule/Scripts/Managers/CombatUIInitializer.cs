@@ -22,7 +22,10 @@ namespace SDRGames.Whist.DomainModule.Managers
         [SerializeField] private DeckOnHandsManager _deckOnHandsManager;
 
         [Header("PLAYER")][SerializeField] private PlayerCharacterCombatManager _playerCharacterCombatManager;
+        [SerializeField] private CanvasGroup _playerSwitchableUI;
+
         [Header("ENEMY")][SerializeField] private EnemyCharacterCombatManager _enemyCharacterCombatManager;
+        //[SerializeField] private CanvasGroup _enemySwitchableUI;
 
         private void OnEnable()
         {
@@ -89,6 +92,15 @@ namespace SDRGames.Whist.DomainModule.Managers
                 Application.Quit();
             }
 
+            if (_playerSwitchableUI == null)
+            {
+                Debug.LogError("Player Switchable UI не был назначен");
+                #if UNITY_EDITOR
+                    EditorApplication.isPlaying = false;
+                #endif
+                Application.Quit();
+            }
+
             if (_enemyCharacterCombatManager == null)
             {
                 Debug.LogError("Enemy Character Combat Manager не был назначен");
@@ -120,9 +132,25 @@ namespace SDRGames.Whist.DomainModule.Managers
             _deckOnHandsManager.ApplyButtonClicked += OnDeckApplyButtonClicked;
         }
 
+        private void EndPlayerTurn()
+        {
+            _playerSwitchableUI.alpha = 0;
+            _playerSwitchableUI.interactable = false;
+            _playerSwitchableUI.blocksRaycasts = false;
+        }
+
         private void OnCardClicked(object sender, CardClickedEventArgs e)
         {
-            throw new NotImplementedException();
+            if(!e.IsSelected && _playerCharacterCombatManager.HasEnoughBreathPoints(e.CardManager.CardScriptableObject.Cost))
+            {
+                _deckOnHandsManager.AddSelectedCards(e.CardManager);
+                _playerCharacterCombatManager.ReserveBreathPoints(e.CardManager.CardScriptableObject.Cost);
+                return;
+            }
+            if (_deckOnHandsManager.RemoveSelectedCard(e.CardManager))
+            {
+                _playerCharacterCombatManager.ResetBreathReservedPoints(e.CardManager.CardScriptableObject.Cost);
+            }
         }
 
         private void OnMeleeAttackClicked(object sender, MeleeAttackClickedEventArgs e)
@@ -146,6 +174,7 @@ namespace SDRGames.Whist.DomainModule.Managers
                 _enemyCharacterCombatManager.TakeDamage(ability.Damage);
             }
             _playerCharacterCombatManager.SpendStaminaPoints(e.TotalCost);
+            EndPlayerTurn();
         }
 
         private void OnDeckApplyButtonClicked(object sender, CardsCombatModule.Managers.ApplyButtonClickedEventArgs e)
@@ -156,14 +185,16 @@ namespace SDRGames.Whist.DomainModule.Managers
                 {
                     continue;
                 }
+                _deckOnHandsManager.RemoveSelectedCard(card);
                 //TODO: Apply card behavior
             }
-            _playerCharacterCombatManager.SpendStaminaPoints(e.TotalCost);
+            _playerCharacterCombatManager.SpendBreathPoints(e.TotalCost);
+            EndPlayerTurn();
         }
 
         private void OnAbilityQueueCleared(object sender, AbilityQueueClearedEventArgs e)
         {
-            _playerCharacterCombatManager.ResetReservedPoints(e.ReverseAmount);
+            _playerCharacterCombatManager.ResetStaminaReservedPoints(e.ReverseAmount);
         }
 
         private void OnSelectedDeckViewClicked(object sender, EventArgs e)
