@@ -7,11 +7,12 @@ namespace SDRGames.Whist.CharacterModule.Presenters
     public class PlayerCharacterCombatParamsPresenter : CharacterCombatParamsPresenter
     {
         private PointsBarPresenter _staminaPointsBarPresenter;
+        private PointsBarPresenter _breathPointsBarPresenter;
 
         public PlayerCharacterCombatParamsPresenter(CharacterParamsModel characterParamsModel, PlayerCharacterCombatParamsView playerCharacterCombatParamsView) : base(characterParamsModel, playerCharacterCombatParamsView)
         {
             _staminaPointsBarPresenter = new PointsBarPresenter(characterParamsModel.StaminaPoints, playerCharacterCombatParamsView.StaminaPointsBarView);
-            new PointsBarPresenter(characterParamsModel.BreathPoints, playerCharacterCombatParamsView.BreathPointsBarView);
+            _breathPointsBarPresenter = new PointsBarPresenter(characterParamsModel.BreathPoints, playerCharacterCombatParamsView.BreathPointsBarView);
         }
 
         public void ReserveStaminaPoints(float cost)
@@ -29,7 +30,7 @@ namespace SDRGames.Whist.CharacterModule.Presenters
             _staminaPointsBarPresenter.RestorePoints();
         }
 
-        public void ResetReservedPoints(float reverseAmount)
+        public void ResetStaminaReservedPoints(float reverseAmount)
         {
             _staminaPointsBarPresenter.ResetReservedPoints(reverseAmount);
         }
@@ -37,6 +38,31 @@ namespace SDRGames.Whist.CharacterModule.Presenters
         public string GetNotEnoughStaminaErrorMessage()
         {
             return _staminaPointsBarPresenter.GetErrorMessage();
+        }
+
+        public void ReserveBreathPoints(float cost)
+        {
+            _breathPointsBarPresenter.ReservePoints(cost);
+        }
+
+        public void SpendBreathPoints(float totalCost)
+        {
+            _breathPointsBarPresenter.SpendPoints(totalCost);
+        }
+
+        public void RestoreBreathPoints()
+        {
+            _breathPointsBarPresenter.RestorePoints();
+        }
+
+        public void ResetBreathReservedPoints(float reverseAmount)
+        {
+            _breathPointsBarPresenter.ResetReservedPoints(reverseAmount);
+        }
+
+        public string GetNotEnoughBreathErrorMessage()
+        {
+            return _breathPointsBarPresenter.GetErrorMessage();
         }
     }
 }

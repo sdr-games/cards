@@ -26,6 +26,10 @@ MonoBehaviour:
     m_Localized: Ability's queue is full!
     m_Metadata:
       m_Items: []
+  - m_Id: 15246926453825536
+    m_Localized: Not enough breath points!
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

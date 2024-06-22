@@ -9,10 +9,10 @@ namespace SDRGames.Whist.CardsCombatModule.Views
 {
     public class CardPreviewView : MonoBehaviour
     {
-        [SerializeField] private Image _illustrationImage;
-        [SerializeField] private TextMeshProUGUI _descriptionText;
+        [SerializeField] protected Image _illustrationImage;
+        [SerializeField] protected TextMeshProUGUI _descriptionText;
 
-        public void Initialize(string nameText, string descriptionText, Sprite illustrationSprite)
+        public virtual void Initialize(string nameText, string descriptionText, Sprite illustrationSprite)
         {
             _illustrationImage.sprite = illustrationSprite;
             _descriptionText.text = descriptionText;

@@ -14,12 +14,18 @@ namespace SDRGames.Whist.DomainModule.Managers
     public class CombatUIInitializer : MonoBehaviour
     {
         [SerializeField] private UserInputController _userInputController;
-        [Header("ABILITIES")][SerializeField] private AbilitiesQueueManager _abilitiesQueueManager;
+        [Header("MELEE ABILITIES")][SerializeField] private AbilitiesQueueManager _abilitiesQueueManager;
         [SerializeField] private MeleeAttackListManager _meleeAttackListManager;
-        [SerializeField] private SelectedDeckManager _selectedDeckManager;
+
+        [Header("CARDS")][SerializeField] private SelectedDeckManager _selectedDeckManager;
         [SerializeField] private DecksPreviewWindowManager _decksPreviewWindowManager;
+        [SerializeField] private DeckOnHandsManager _deckOnHandsManager;
+
         [Header("PLAYER")][SerializeField] private PlayerCharacterCombatManager _playerCharacterCombatManager;
+        [SerializeField] private CanvasGroup _playerSwitchableUI;
+
         [Header("ENEMY")][SerializeField] private EnemyCharacterCombatManager _enemyCharacterCombatManager;
+        //[SerializeField] private CanvasGroup _enemySwitchableUI;
 
         private void OnEnable()
         {
@@ -59,7 +65,6 @@ namespace SDRGames.Whist.DomainModule.Managers
                 Application.Quit();
             }
 
-
             if (_decksPreviewWindowManager == null)
             {
                 Debug.LogError("Decks Preview Window Manager не был назначен");
@@ -69,9 +74,27 @@ namespace SDRGames.Whist.DomainModule.Managers
                 Application.Quit();
             }
 
+            if (_deckOnHandsManager == null)
+            {
+                Debug.LogError("Deck On Hands Manager не был назначен");
+                #if UNITY_EDITOR
+                    EditorApplication.isPlaying = false;
+                #endif
+                Application.Quit();
+            }
+
             if (_playerCharacterCombatManager == null)
             {
                 Debug.LogError("Player Character Combat Manager не был назначен");
+                #if UNITY_EDITOR
+                    EditorApplication.isPlaying = false;
+                #endif
+                Application.Quit();
+            }
+
+            if (_playerSwitchableUI == null)
+            {
+                Debug.LogError("Player Switchable UI не был назначен");
                 #if UNITY_EDITOR
                     EditorApplication.isPlaying = false;
                 #endif
@@ -91,7 +114,7 @@ namespace SDRGames.Whist.DomainModule.Managers
             _enemyCharacterCombatManager.Initialize();
 
             _abilitiesQueueManager.Initialize(_userInputController);
-            _abilitiesQueueManager.ApplyButtonClicked += OnApplyButtonClicked;
+            _abilitiesQueueManager.ApplyButtonClicked += OnQueueApplyButtonClicked;
             _abilitiesQueueManager.AbilityQueueCleared += OnAbilityQueueCleared;
 
             _meleeAttackListManager.Initialize(_userInputController);
@@ -103,6 +126,31 @@ namespace SDRGames.Whist.DomainModule.Managers
 
             _decksPreviewWindowManager.Initialize(_userInputController);
             _decksPreviewWindowManager.DeckSelected += OnDeckSelected;
+
+            _deckOnHandsManager.Initialize(_userInputController);
+            _deckOnHandsManager.CardClicked += OnCardClicked;
+            _deckOnHandsManager.ApplyButtonClicked += OnDeckApplyButtonClicked;
+        }
+
+        private void EndPlayerTurn()
+        {
+            _playerSwitchableUI.alpha = 0;
+            _playerSwitchableUI.interactable = false;
+            _playerSwitchableUI.blocksRaycasts = false;
+        }
+
+        private void OnCardClicked(object sender, CardClickedEventArgs e)
+        {
+            if(!e.IsSelected && _playerCharacterCombatManager.HasEnoughBreathPoints(e.CardManager.CardScriptableObject.Cost))
+            {
+                _deckOnHandsManager.AddSelectedCards(e.CardManager);
+                _playerCharacterCombatManager.ReserveBreathPoints(e.CardManager.CardScriptableObject.Cost);
+                return;
+            }
+            if (_deckOnHandsManager.RemoveSelectedCard(e.CardManager))
+            {
+                _playerCharacterCombatManager.ResetBreathReservedPoints(e.CardManager.CardScriptableObject.Cost);
+            }
         }
 
         private void OnMeleeAttackClicked(object sender, MeleeAttackClickedEventArgs e)
@@ -115,7 +163,7 @@ namespace SDRGames.Whist.DomainModule.Managers
             _abilitiesQueueManager.AddAbilityToQueue(e.MeleeAttackScriptableObject);
         }
 
-        private void OnApplyButtonClicked(object sender, ApplyButtonClickedEventArgs e)
+        private void OnQueueApplyButtonClicked(object sender, MeleeCombatModule.Managers.ApplyButtonClickedEventArgs e)
         {
             foreach(var ability in e.MeleeAttackScriptableObjects)
             {
@@ -126,26 +174,50 @@ namespace SDRGames.Whist.DomainModule.Managers
                 _enemyCharacterCombatManager.TakeDamage(ability.Damage);
             }
             _playerCharacterCombatManager.SpendStaminaPoints(e.TotalCost);
+            EndPlayerTurn();
+        }
+
+        private void OnDeckApplyButtonClicked(object sender, CardsCombatModule.Managers.ApplyButtonClickedEventArgs e)
+        {
+            foreach (var card in e.Cards)
+            {
+                if (card == null)
+                {
+                    continue;
+                }
+                _deckOnHandsManager.RemoveSelectedCard(card);
+                //TODO: Apply card behavior
+            }
+            _playerCharacterCombatManager.SpendBreathPoints(e.TotalCost);
+            EndPlayerTurn();
         }
 
         private void OnAbilityQueueCleared(object sender, AbilityQueueClearedEventArgs e)
         {
-            _playerCharacterCombatManager.ResetReservedPoints(e.ReverseAmount);
+            _playerCharacterCombatManager.ResetStaminaReservedPoints(e.ReverseAmount);
         }
 
         private void OnSelectedDeckViewClicked(object sender, EventArgs e)
         {
-            
+            _abilitiesQueueManager.Hide();
+            _meleeAttackListManager.Hide();
+            _deckOnHandsManager.Show();
         }
 
         private void OnEmptyDeckViewClicked(object sender, EventArgs e)
         {
+            _abilitiesQueueManager.Hide();
+            _meleeAttackListManager.Hide();
             _decksPreviewWindowManager.Show();
         }
 
         private void OnDeckSelected(object sender, DeckPreviewClickedEventArgs e)
         {
+            _abilitiesQueueManager.Show();
+            _meleeAttackListManager.Show();
+            _decksPreviewWindowManager.Hide();
             _selectedDeckManager.SetSelectedDeck(e.DeckScriptableObject);
+            _deckOnHandsManager.SetSelectedDeck(e.DeckScriptableObject);
         }
     }
 }

@@ -1,7 +1,9 @@
 {
     "name": "HelpersModule",
     "rootNamespace": "SDRGames.Whist.HelpersModule",
-    "references": [],
+    "references": [
+        "GUID:551a70427e35b9c418cd828bf7b236b9"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
