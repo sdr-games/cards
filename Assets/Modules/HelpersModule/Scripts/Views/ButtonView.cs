@@ -2,6 +2,9 @@ using System;
 
 using SDRGames.Whist.UserInputModule.Controller;
 
+using TMPro;
+
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace SDRGames.Whist.HelpersModule.Views
