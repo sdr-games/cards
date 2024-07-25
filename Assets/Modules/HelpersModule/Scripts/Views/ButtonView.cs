@@ -15,10 +15,15 @@ namespace SDRGames.Whist.HelpersModule.Views
 
         public event EventHandler ButtonClicked;
 
-        public void Initialize(UserInputController userInputController)
+        public void Initialize(UserInputController userInputController, bool interactable = false)
         {
             _userInputController = userInputController;
-            interactable = false;
+            if(interactable)
+            {
+                Activate();
+                return;
+            }
+            Deactivate();
         }
 
         public void Activate()

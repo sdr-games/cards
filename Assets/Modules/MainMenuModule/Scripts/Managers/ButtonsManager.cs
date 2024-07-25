@@ -11,21 +11,6 @@ namespace SDRGames.Whist.MainMenuModule.Managers
             
         }
 
-        public void LoadGameButtonClicked()
-        {
-
-        }
-
-        public void SettingsButtonClicked()
-        {
-
-        }
-
-        public void CreditsButtonClicked()
-        {
-
-        }
-
         public void ExitGameButtonClicked()
         {
             #if UNITY_EDITOR
