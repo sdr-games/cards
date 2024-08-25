@@ -8,7 +8,7 @@ using UnityEngine.InputSystem;
 namespace SDRGames.Whist.UserInputModule.ScriptableObjects
 {
     [Serializable]
-    [CreateAssetMenu(fileName = "PlayerRotationBindings", menuName = "SDRGames/Movement Controls/Rotation Bindings")]
+    [CreateAssetMenu(fileName = "PlayerRotationBindings", menuName = "SDRGames/Controls/Rotation Bindings")]
     public class RotationBindings : KeyBindings
     {
         [field: SerializeField] public Key RotateLeftKey { get; private set; }
@@ -26,9 +26,10 @@ namespace SDRGames.Whist.UserInputModule.ScriptableObjects
             }
         }
 
-        public override Key[] GetKeys()
+        public override string[] GetKeys()
         {
-            return new Key[] { RotateLeftKey, RotateRightKey, RotateToCenterKey };
+            return new string[0];
+            //return new Key[] { RotateLeftKey, RotateRightKey, RotateToCenterKey };
         }
     }
 }

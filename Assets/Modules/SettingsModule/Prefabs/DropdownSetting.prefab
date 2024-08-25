@@ -507,6 +507,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7966675242245681012}
   - component: {fileID: 7786801632132214266}
+  - component: {fileID: 8614411019997506247}
   m_Layer: 5
   m_Name: DropdownSetting
   m_TagString: Untagged
@@ -547,11 +548,46 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c7fffb8c8cac0243b3d9ab047efe08b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _dropdown: {fileID: 890041149784767247}
   _caption: {fileID: 3386509328231069735}
-  _options:
-  - m_Text: ABC
-    m_Image: {fileID: 0}
+  _dropdown: {fileID: 890041149784767247}
+--- !u!114 &8614411019997506247
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4196723411872425984}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9aedac1e012abe43833970f7221ec49, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _dropdownSettingModel:
+    <Name>k__BackingField: Window mode
+    <Values>k__BackingField:
+    - m_Text: Fullscreen
+      m_Image: {fileID: 0}
+    - m_Text: Fullscreen Windowed
+      m_Image: {fileID: 0}
+    - m_Text: Windowed
+      m_Image: {fileID: 0}
+  _dropdownSettingView: {fileID: 7786801632132214266}
+  _updateSettingEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: SDRGames.Whist.SettingsModule.VideoSettingsManager,
+          SettingsModule
+        m_MethodName: ChangeWindowMode
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &4222049294486826124
 GameObject:
   m_ObjectHideFlags: 0

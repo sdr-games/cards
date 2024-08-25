@@ -7,6 +7,6 @@ namespace SDRGames.Whist.UserInputModule.ScriptableObjects
 {
     public abstract class KeyBindings : ScriptableObject
     {
-        public abstract Key[] GetKeys(); 
+        public abstract string[] GetKeys(); 
     }
 }

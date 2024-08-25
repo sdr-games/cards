@@ -1,6 +1,7 @@
 using UnityEditor;
 
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace SDRGames.Whist.MainMenuModule.Managers
 {
@@ -8,7 +9,7 @@ namespace SDRGames.Whist.MainMenuModule.Managers
     {
         public void NewGameButtonClicked()
         {
-            
+            SceneManager.LoadSceneAsync("LocationMapScene");
         }
 
         public void ExitGameButtonClicked()

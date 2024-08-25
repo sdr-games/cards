@@ -8,7 +8,7 @@ using UnityEngine.InputSystem;
 namespace SDRGames.Whist.UserInputModule.ScriptableObjects
 {
     [Serializable]
-    [CreateAssetMenu(fileName = "PlayerMovementBindings", menuName = "SDRGames/Movement Controls/Movement Bindings")]
+    [CreateAssetMenu(fileName = "PlayerMovementBindings", menuName = "SDRGames/Controls/Movement Bindings")]
     public class MovementBindings : KeyBindings
     {
         [field: SerializeField] public Key AccelerateKey { get; private set; }
@@ -26,9 +26,10 @@ namespace SDRGames.Whist.UserInputModule.ScriptableObjects
             }
         }
 
-        public override Key[] GetKeys()
+        public override string[] GetKeys()
         {
-            return new Key[] { AccelerateKey, BrakeKey, SprintKey };
+            return new string[0];
+            //return new Key[] { AccelerateKey, BrakeKey, SprintKey };
         }
     }
 }
