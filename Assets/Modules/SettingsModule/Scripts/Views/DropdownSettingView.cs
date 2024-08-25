@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 
+using SDRGames.Whist.SettingsModule.Managers;
+
 using TMPro;
 
 using UnityEditor;
@@ -16,21 +18,19 @@ namespace SDRGames.Whist.SettingsModule.Views
         [SerializeField] private TextMeshProUGUI _caption;
         [SerializeField] private TMP_Dropdown _dropdown;
 
-        [SerializeField] private List<OptionData> _options;
+        public event EventHandler<DropdownChangeSettingsEventArgs> OnValueChanged;
 
-        public event EventHandler<int> OnValueChanged;
-
-        public void Initialize(string caption = "ABC", List<OptionData> options = null, int currentIndex = 0)
+        public void Initialize(string caption, List<OptionData> options, int currentIndex = 0)
         {
             _caption.text = caption;
-            _dropdown.options = _options;
+            _dropdown.options = options;
             _dropdown.SetValueWithoutNotify(currentIndex);
             _dropdown.onValueChanged.AddListener(ValueChanged);
         }
 
         private void ValueChanged(int index)
         {
-            OnValueChanged?.Invoke(this, index);
+            OnValueChanged?.Invoke(this, new DropdownChangeSettingsEventArgs(index, _dropdown.options[index].text));
         }
 
         private void OnEnable()
@@ -52,7 +52,6 @@ namespace SDRGames.Whist.SettingsModule.Views
                 #endif
                 Application.Quit();
             }
-            Initialize();
         }
     }
 }

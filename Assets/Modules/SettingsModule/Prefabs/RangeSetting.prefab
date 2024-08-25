@@ -472,6 +472,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6688596434154409263}
   - component: {fileID: 6009977480632915394}
+  - component: {fileID: 2360537190434589952}
   m_Layer: 5
   m_Name: RangeSetting
   m_TagString: Untagged
@@ -515,6 +516,35 @@ MonoBehaviour:
   _caption: {fileID: 226654469152993526}
   _slider: {fileID: 4641886965647613400}
   _currentValue: {fileID: 4385460644087173199}
+--- !u!114 &2360537190434589952
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7185159878333012390}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab1650a1ea6c0e240a62e2f72efc66ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _rangeSettingModel: {fileID: 0}
+  _rangeSettingView: {fileID: 6009977480632915394}
+  _updateSettingEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: 
+        m_MethodName: 
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &7723013015653532387
 GameObject:
   m_ObjectHideFlags: 0

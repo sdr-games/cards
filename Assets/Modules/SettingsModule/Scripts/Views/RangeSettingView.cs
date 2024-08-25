@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 
 using UnityEditor;
@@ -16,21 +14,22 @@ namespace SDRGames.Whist.SettingsModule.Views
         [SerializeField] private Slider _slider;
         [SerializeField] private TextMeshProUGUI _currentValue;
 
-        public event EventHandler<float> OnValueChanged;
+        public event EventHandler<RangeChangeSettingsEventArgs> OnValueChanged;
 
-        public void Initialize(string caption = "ABC", float currentValue = 0, float maxValue = 100)
+        public void Initialize(string caption, float currentValue, float minValue, float maxValue)
         {
             _caption.text = caption;
+            _slider.minValue = minValue;
             _slider.maxValue = maxValue;
-            _slider.value = currentValue;
-            _currentValue.text = currentValue.ToString();
             _slider.onValueChanged.AddListener(ValueChanged);
+            _slider.value = currentValue;
+            _currentValue.text = Mathf.RoundToInt(currentValue + Math.Abs(minValue) * 2.5f).ToString();
         }
 
         private void ValueChanged(float value)
         {
-            _currentValue.text = value.ToString();
-            OnValueChanged?.Invoke(this, value);
+            _currentValue.text = Mathf.RoundToInt((value + 40) * 2.5f).ToString();
+            OnValueChanged?.Invoke(this, new RangeChangeSettingsEventArgs(value));
         }
 
         private void OnEnable()
@@ -61,7 +60,6 @@ namespace SDRGames.Whist.SettingsModule.Views
                 #endif
                 Application.Quit();
             }
-            Initialize();
         }
     }
 }

@@ -95,14 +95,14 @@ namespace SDRGames.Whist.UserInputModule
 
         private void TestOnKeyHold(object sender, EventArgs e)
         {
-            if ((sender as UserInputController).KeyIsPressed(_testKeyCode))
-            {
-                Debug.Log($"{_testKeyCode} Key was hold");
-            }
-            else
-            {
-                Debug.LogError($"{_testKeyCode} Key was not hold");
-            }
+            //if ((sender as UserInputController).KeyIsPressed(_testKeyCode))
+            //{
+            //    Debug.Log($"{_testKeyCode} Key was hold");
+            //}
+            //else
+            //{
+            //    Debug.LogError($"{_testKeyCode} Key was not hold");
+            //}
         }
 
         private void TestOnKeyPressed(object sender, EventArgs e)

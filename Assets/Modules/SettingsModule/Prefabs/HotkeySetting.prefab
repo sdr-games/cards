@@ -396,7 +396,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 16
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -456,6 +456,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3330735480150545640}
   - component: {fileID: 3293467942211847106}
+  - component: {fileID: 3757441916559579808}
   m_Layer: 5
   m_Name: HotkeySetting
   m_TagString: Untagged
@@ -499,3 +500,33 @@ MonoBehaviour:
   _caption: {fileID: 1191204370763965854}
   _hotkey: {fileID: 3103773768311038343}
   _hotkeyValue: {fileID: 8284260151295874521}
+--- !u!114 &3757441916559579808
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8605832538553724499}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b5548699c236864eb4177bbd8c8bce2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _hotkeySettingModel: {fileID: 0}
+  _hotkeySettingView: {fileID: 3293467942211847106}
+  _clickWaiterView: {fileID: 0}
+  _updateSettingEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: 
+        m_MethodName: 
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2

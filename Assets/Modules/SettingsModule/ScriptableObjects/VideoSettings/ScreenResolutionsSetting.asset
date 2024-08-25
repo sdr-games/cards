@@ -1,0 +1,63 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45d3dc3c513f9b149a862be680e2e577, type: 3}
+  m_Name: ScreenResolutionsSetting
+  m_EditorClassIdentifier: 
+  <Name>k__BackingField: Screen Resolutions
+  <Values>k__BackingField:
+  - m_Text: 640x480
+    m_Image: {fileID: 0}
+  - m_Text: 800x600
+    m_Image: {fileID: 0}
+  - m_Text: 1024x768
+    m_Image: {fileID: 0}
+  - m_Text: 1152x864
+    m_Image: {fileID: 0}
+  - m_Text: 1280x720
+    m_Image: {fileID: 0}
+  - m_Text: 1280x768
+    m_Image: {fileID: 0}
+  - m_Text: 1280x800
+    m_Image: {fileID: 0}
+  - m_Text: 1280x960
+    m_Image: {fileID: 0}
+  - m_Text: 1280x1024
+    m_Image: {fileID: 0}
+  - m_Text: 1360x768
+    m_Image: {fileID: 0}
+  - m_Text: 1366x768
+    m_Image: {fileID: 0}
+  - m_Text: 1400x1050
+    m_Image: {fileID: 0}
+  - m_Text: 1440x900
+    m_Image: {fileID: 0}
+  - m_Text: 1600x900
+    m_Image: {fileID: 0}
+  - m_Text: 1600x1200
+    m_Image: {fileID: 0}
+  - m_Text: 1680x1050
+    m_Image: {fileID: 0}
+  - m_Text: 1792x1344
+    m_Image: {fileID: 0}
+  - m_Text: 1856x1392
+    m_Image: {fileID: 0}
+  - m_Text: 1920x1080
+    m_Image: {fileID: 0}
+  - m_Text: 1920x1200
+    m_Image: {fileID: 0}
+  - m_Text: 1920x1440
+    m_Image: {fileID: 0}
+  - m_Text: 2048x1152
+    m_Image: {fileID: 0}
+  - m_Text: 2560x1440
+    m_Image: {fileID: 0}
+  _predefinedOption: 1

@@ -39,23 +39,42 @@ namespace SDRGames.Whist.UserInputModule.Controller
 
         public event EventHandler<MiddleMouseButtonScrollEventArgs>? MiddleMouseButtonScrollStarted;
         public event EventHandler<MiddleMouseButtonScrollEventArgs>? MiddleMouseButtonScrollEnded;
+        
+        public static string LastPressedKey { get; private set; }
 
-        public bool KeyIsPressed(Key keyCode)
+        public static bool KeyIsPressed(string keyCode)
         {
-            return FindKey(keyCode.ToString()).isPressed;
+            return FindKey(keyCode).isPressed;
         }
 
-        public bool KeyWasPressedThisFrame(Key keyCode)
+        public static bool KeyWasPressedThisFrame(string keyCode)
         {
-            return FindKey(keyCode.ToString()).wasPressedThisFrame;
+            return FindKey(keyCode).wasPressedThisFrame;
         }
 
-        public bool KeyWasReleasedThisFrame(Key keyCode)
+        public static bool KeyWasReleasedThisFrame(string keyCode)
         {
-            return FindKey(keyCode.ToString()).wasReleasedThisFrame;
+            return FindKey(keyCode).wasReleasedThisFrame;
+        }
+
+        public static void AddLastKeyPressedListener()
+        {
+            LastPressedKey = null;
+            Keyboard.current.onTextInput += OnTextInput;
+        }
+
+        public static void RemoveLastPressedKeyListener()
+        {
+            Keyboard.current.onTextInput -= OnTextInput;
+            LastPressedKey = null;
         }
 
         #region MonoBehaviours methods
+
+        private void Start()
+        {
+            LastPressedKey = null;
+        }
 
         private void Update()
         {
@@ -80,7 +99,7 @@ namespace SDRGames.Whist.UserInputModule.Controller
         {
             foreach(KeyBindings keyBindings in _keyBindings)
             {
-                foreach(Key key in keyBindings.GetKeys())
+                foreach(string key in keyBindings.GetKeys())
                 {
                     if(KeyIsPressed(key))
                     {
@@ -94,7 +113,7 @@ namespace SDRGames.Whist.UserInputModule.Controller
         {
             foreach (KeyBindings keyBindings in _keyBindings)
             {
-                foreach (Key key in keyBindings.GetKeys())
+                foreach (string key in keyBindings.GetKeys())
                 {
                     if (KeyWasPressedThisFrame(key))
                     {
@@ -108,7 +127,7 @@ namespace SDRGames.Whist.UserInputModule.Controller
         {
             foreach (KeyBindings keyBindings in _keyBindings)
             {
-                foreach (Key key in keyBindings.GetKeys())
+                foreach (string key in keyBindings.GetKeys())
                 {
                     if (KeyWasReleasedThisFrame(key))
                     {
@@ -262,7 +281,7 @@ namespace SDRGames.Whist.UserInputModule.Controller
         }
         #endregion
 
-        private KeyControl FindKey(string keyCode)
+        private static KeyControl FindKey(string keyCode)
         {
             ReadOnlyArray<KeyControl> allKeys = Keyboard.current.allKeys;
             for (int i = 0; i < allKeys.Count; i++)
@@ -323,6 +342,11 @@ namespace SDRGames.Whist.UserInputModule.Controller
                 return hit;
             }
             return new RaycastHit();
+        }
+
+        private static void OnTextInput(char enteredChar)
+        {
+            LastPressedKey = enteredChar.ToString();
         }
     }
 }
