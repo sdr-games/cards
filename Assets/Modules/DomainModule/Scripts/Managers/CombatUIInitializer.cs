@@ -3,6 +3,7 @@ using System;
 using SDRGames.Whist.CardsCombatModule.Managers;
 using SDRGames.Whist.CharacterModule.Managers;
 using SDRGames.Whist.MeleeCombatModule.Managers;
+using SDRGames.Whist.TurnSwitchModule.Managers;
 using SDRGames.Whist.UserInputModule.Controller;
 
 using UnityEditor;
@@ -14,6 +15,8 @@ namespace SDRGames.Whist.DomainModule.Managers
     public class CombatUIInitializer : MonoBehaviour
     {
         [SerializeField] private UserInputController _userInputController;
+        [SerializeField] private TimerManager _timerManager;
+
         [Header("MELEE ABILITIES")][SerializeField] private AbilitiesQueueManager _abilitiesQueueManager;
         [SerializeField] private MeleeAttackListManager _meleeAttackListManager;
 
@@ -32,6 +35,15 @@ namespace SDRGames.Whist.DomainModule.Managers
             if (_userInputController == null)
             {
                 Debug.LogError("User Input Controller не был назначен");
+                #if UNITY_EDITOR
+                    EditorApplication.isPlaying = false;
+                #endif
+                Application.Quit();
+            }
+
+            if (_timerManager == null)
+            {
+                Debug.LogError("Timer Manager не был назначен");
                 #if UNITY_EDITOR
                     EditorApplication.isPlaying = false;
                 #endif
@@ -110,6 +122,9 @@ namespace SDRGames.Whist.DomainModule.Managers
                 Application.Quit();
             }
 
+            _timerManager.Initialize();
+            _timerManager.TimeOver += OnTimeOver;
+
             _playerCharacterCombatManager.Initialize();
             _enemyCharacterCombatManager.Initialize();
 
@@ -130,6 +145,8 @@ namespace SDRGames.Whist.DomainModule.Managers
             _deckOnHandsManager.Initialize(_userInputController);
             _deckOnHandsManager.CardClicked += OnCardClicked;
             _deckOnHandsManager.ApplyButtonClicked += OnDeckApplyButtonClicked;
+
+            _timerManager.StartTimer(30); //TODO: Get time from game settings
         }
 
         private void EndPlayerTurn()
@@ -137,6 +154,7 @@ namespace SDRGames.Whist.DomainModule.Managers
             _playerSwitchableUI.alpha = 0;
             _playerSwitchableUI.interactable = false;
             _playerSwitchableUI.blocksRaycasts = false;
+            _timerManager.StopTimer();
         }
 
         private void OnCardClicked(object sender, CardClickedEventArgs e)
@@ -218,6 +236,11 @@ namespace SDRGames.Whist.DomainModule.Managers
             _decksPreviewWindowManager.Hide();
             _selectedDeckManager.SetSelectedDeck(e.DeckScriptableObject);
             _deckOnHandsManager.SetSelectedDeck(e.DeckScriptableObject);
+        }
+
+        private void OnTimeOver(object sender, EventArgs e)
+        {
+            EndPlayerTurn();
         }
     }
 }
