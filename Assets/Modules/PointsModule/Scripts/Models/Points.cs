@@ -124,6 +124,12 @@ namespace SDRGames.Whist.PointsModule.Models
             }
         }
 
+        public void SetBaseValue(float baseValue)
+        {
+            BaseValue = baseValue;
+            CalculateValues();
+        }
+
         private float GetValueInPercents(float value)
         {
             if(MaxValue == 0)

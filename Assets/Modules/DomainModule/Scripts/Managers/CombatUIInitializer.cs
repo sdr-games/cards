@@ -1,8 +1,11 @@
 using System;
+using System.Collections.Generic;
 
 using SDRGames.Whist.CardsCombatModule.Managers;
 using SDRGames.Whist.CharacterModule.Managers;
+using SDRGames.Whist.CharacterModule.ScriptableObjects;
 using SDRGames.Whist.MeleeCombatModule.Managers;
+using SDRGames.Whist.TurnSwitchModule.Managers;
 using SDRGames.Whist.UserInputModule.Controller;
 
 using UnityEditor;
@@ -14,6 +17,9 @@ namespace SDRGames.Whist.DomainModule.Managers
     public class CombatUIInitializer : MonoBehaviour
     {
         [SerializeField] private UserInputController _userInputController;
+        [SerializeField] private TurnsQueueManager _turnsQueueManager;
+        [SerializeField] private List<CharacterInfoScriptableObject> _characterInfoScriptableObjects;
+
         [Header("MELEE ABILITIES")][SerializeField] private AbilitiesQueueManager _abilitiesQueueManager;
         [SerializeField] private MeleeAttackListManager _meleeAttackListManager;
 
@@ -32,6 +38,15 @@ namespace SDRGames.Whist.DomainModule.Managers
             if (_userInputController == null)
             {
                 Debug.LogError("User Input Controller не был назначен");
+                #if UNITY_EDITOR
+                    EditorApplication.isPlaying = false;
+                #endif
+                Application.Quit();
+            }
+
+            if (_turnsQueueManager == null)
+            {
+                Debug.LogError("Turns Queue Manager не был назначен");
                 #if UNITY_EDITOR
                     EditorApplication.isPlaying = false;
                 #endif
@@ -130,9 +145,19 @@ namespace SDRGames.Whist.DomainModule.Managers
             _deckOnHandsManager.Initialize(_userInputController);
             _deckOnHandsManager.CardClicked += OnCardClicked;
             _deckOnHandsManager.ApplyButtonClicked += OnDeckApplyButtonClicked;
+
+            _turnsQueueManager.TurnSwitched += OnTurnSwitched;
+            _turnsQueueManager.Initialize(_characterInfoScriptableObjects);
         }
 
-        private void EndPlayerTurn()
+        private void ShowPlayerUI()
+        {
+            _playerSwitchableUI.alpha = 1;
+            _playerSwitchableUI.interactable = true;
+            _playerSwitchableUI.blocksRaycasts = true;
+        }
+
+        private void HidePlayerUI()
         {
             _playerSwitchableUI.alpha = 0;
             _playerSwitchableUI.interactable = false;
@@ -165,6 +190,11 @@ namespace SDRGames.Whist.DomainModule.Managers
 
         private void OnQueueApplyButtonClicked(object sender, MeleeCombatModule.Managers.ApplyButtonClickedEventArgs e)
         {
+            if(e.MeleeAttackScriptableObjects.Count == 0)
+            {
+                return;
+            }
+
             foreach(var ability in e.MeleeAttackScriptableObjects)
             {
                 if(ability == null)
@@ -174,11 +204,16 @@ namespace SDRGames.Whist.DomainModule.Managers
                 _enemyCharacterCombatManager.TakeDamage(ability.Damage);
             }
             _playerCharacterCombatManager.SpendStaminaPoints(e.TotalCost);
-            EndPlayerTurn();
+            _turnsQueueManager.SwitchTurn();
         }
 
         private void OnDeckApplyButtonClicked(object sender, CardsCombatModule.Managers.ApplyButtonClickedEventArgs e)
         {
+            if(e.Cards.Count == 0)
+            {
+                return;
+            }
+
             foreach (var card in e.Cards)
             {
                 if (card == null)
@@ -189,7 +224,7 @@ namespace SDRGames.Whist.DomainModule.Managers
                 //TODO: Apply card behavior
             }
             _playerCharacterCombatManager.SpendBreathPoints(e.TotalCost);
-            EndPlayerTurn();
+            _turnsQueueManager.SwitchTurn();
         }
 
         private void OnAbilityQueueCleared(object sender, AbilityQueueClearedEventArgs e)
@@ -218,6 +253,16 @@ namespace SDRGames.Whist.DomainModule.Managers
             _decksPreviewWindowManager.Hide();
             _selectedDeckManager.SetSelectedDeck(e.DeckScriptableObject);
             _deckOnHandsManager.SetSelectedDeck(e.DeckScriptableObject);
+        }
+
+        private void OnTurnSwitched(object sender, TurnSwitchedEventArgs e)
+        {
+            if (e.IsPlayerTurn)
+            {
+                ShowPlayerUI();
+                return;
+            }
+            HidePlayerUI();
         }
     }
 }
