@@ -40,6 +40,11 @@ namespace SDRGames.Whist.CharacterModule.Managers
             _playerCharacterCombatParamsPresenter = new PlayerCharacterCombatParamsPresenter(_playerCharacterParamsModel, _playerCharacterCombatParamsView);
         }
 
+        public CharacterParamsModel GetParams()
+        {
+            return _playerCharacterParamsModel;
+        }
+
         public bool HasEnoughStaminaPoints(float cost)
         {
             if(_playerCharacterParamsModel.StaminaPoints.CurrentValue < _playerCharacterParamsModel.StaminaPoints.ReservedValue + cost)

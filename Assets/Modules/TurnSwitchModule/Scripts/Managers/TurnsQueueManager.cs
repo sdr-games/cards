@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 using SDRGames.Whist.CharacterModule.ScriptableObjects;
 
@@ -20,11 +21,11 @@ namespace SDRGames.Whist.TurnSwitchModule.Managers
 
         public event EventHandler<TurnSwitchedEventArgs> TurnSwitched;
 
-        public void Initialize(List<CharacterInfoScriptableObject> characterInfoScriptableObjects)
+        public void Initialize(List<CharacterParamsModel> characterParamsModels)
         {
             _isCombatTurn = true;
-            _characterInfoScriptableObjects = characterInfoScriptableObjects;
-            _turnsQueueView.Initialize(characterInfoScriptableObjects);
+            _characterInfoScriptableObjects = OrderByInitiative(characterParamsModels);
+            _turnsQueueView.Initialize(_characterInfoScriptableObjects);
             for (int i = 0; i < _portraitsLimit; i++)
             {
                 _turnsQueueView.AddPortraitToQueue();
@@ -42,6 +43,17 @@ namespace SDRGames.Whist.TurnSwitchModule.Managers
         {
             _timerManager.StopTimer();
             _turnsQueueView.NaturalShiftQueue();
+        }
+
+        private List<CharacterInfoScriptableObject> OrderByInitiative(List<CharacterParamsModel> characterParamsModels)
+        {
+            List<CharacterInfoScriptableObject> result = new List<CharacterInfoScriptableObject>();
+            List<CharacterParamsModel> sortedParams = characterParamsModels.OrderByDescending(x => x.Initiative).ToList();
+            foreach (CharacterParamsModel characterParamsModel in sortedParams)
+            {
+                result.Add(characterParamsModel.CharacterInfo);
+            }
+            return result;
         }
 
         private void OnShiftDone(object sender, ShiftDoneEventArgs e)

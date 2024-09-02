@@ -13,6 +13,7 @@ namespace SDRGames.Whist.CharacterModule.ScriptableObjects
     {
         [field: SerializeField] public CharacterInfoScriptableObject CharacterInfo { get; protected set; }
         [field: SerializeField] public int Level { get; protected set; }
+        [field: SerializeField] public int Initiative { get; protected set; }
         [field: SerializeField] public Points HealthPoints { get; protected set; }
         [field: SerializeField] public Points StaminaPoints { get; protected set; }
         [field: SerializeField] public Points BreathPoints { get; protected set; }
