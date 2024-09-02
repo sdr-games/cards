@@ -20,6 +20,11 @@ namespace SDRGames.Whist.CharacterModule.Managers
             _characterCombatParamsPresenter = new CharacterCombatParamsPresenter(_characterParamsModel, _characterCombatParamsView);
         }
 
+        public CharacterParamsModel GetParams()
+        {
+            return _characterParamsModel;
+        }
+
         public void TakeDamage(int damage)
         {
             _characterCombatParamsPresenter.TakeDamage(damage);

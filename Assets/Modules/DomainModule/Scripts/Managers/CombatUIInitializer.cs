@@ -18,7 +18,6 @@ namespace SDRGames.Whist.DomainModule.Managers
     {
         [SerializeField] private UserInputController _userInputController;
         [SerializeField] private TurnsQueueManager _turnsQueueManager;
-        [SerializeField] private List<CharacterInfoScriptableObject> _characterInfoScriptableObjects;
 
         [Header("MELEE ABILITIES")][SerializeField] private AbilitiesQueueManager _abilitiesQueueManager;
         [SerializeField] private MeleeAttackListManager _meleeAttackListManager;
@@ -146,8 +145,11 @@ namespace SDRGames.Whist.DomainModule.Managers
             _deckOnHandsManager.CardClicked += OnCardClicked;
             _deckOnHandsManager.ApplyButtonClicked += OnDeckApplyButtonClicked;
 
+            List<CharacterParamsModel> characterInfoScriptableObjects = new List<CharacterParamsModel>();
+            characterInfoScriptableObjects.Add(_playerCharacterCombatManager.GetParams());
+            characterInfoScriptableObjects.Add(_enemyCharacterCombatManager.GetParams());
             _turnsQueueManager.TurnSwitched += OnTurnSwitched;
-            _turnsQueueManager.Initialize(_characterInfoScriptableObjects);
+            _turnsQueueManager.Initialize(characterInfoScriptableObjects);
         }
 
         private void ShowPlayerUI()

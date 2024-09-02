@@ -15,6 +15,7 @@ MonoBehaviour:
   <CharacterInfo>k__BackingField: {fileID: 11400000, guid: 2138c702e452a7846b480e13bc6087ab,
     type: 2}
   <Level>k__BackingField: 1
+  <Initiative>k__BackingField: 50
   <HealthPoints>k__BackingField:
     <Name>k__BackingField: 
     <BaseValue>k__BackingField: 10
