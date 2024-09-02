@@ -946,9 +946,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _userInputController: {fileID: 1847108587}
   _turnsQueueManager: {fileID: 675783145}
-  _characterInfoScriptableObjects:
-  - {fileID: 11400000, guid: 2138c702e452a7846b480e13bc6087ab, type: 2}
-  - {fileID: 11400000, guid: c474431b8bbfc0d42a0688abb1ab4a68, type: 2}
   _abilitiesQueueManager: {fileID: 962776987}
   _meleeAttackListManager: {fileID: 589486334}
   _selectedDeckManager: {fileID: 914351972}
@@ -2617,6 +2614,39 @@ MonoBehaviour:
   _portraitsLimit: 8
   _turnsQueueView: {fileID: 675783146}
   _timerManager: {fileID: 9124436272384688783}
+  _playerTurnSwitchMessage:
+    <Entity>k__BackingField:
+      m_TableReference:
+        m_TableCollectionName: GUID:e0012e027048d954b801012a48d3103d
+      m_TableEntryReference:
+        m_KeyId: 65888227328
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+  _enemyTurnSwitchMessage:
+    <Entity>k__BackingField:
+      m_TableReference:
+        m_TableCollectionName: GUID:e0012e027048d954b801012a48d3103d
+      m_TableEntryReference:
+        m_KeyId: 346503942144
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+  _restorationTurnSwitchMessage:
+    <Entity>k__BackingField:
+      m_TableReference:
+        m_TableCollectionName: GUID:e0012e027048d954b801012a48d3103d
+      m_TableEntryReference:
+        m_KeyId: 628214370304
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+  references:
+    version: 2
+    RefIds: []
 --- !u!114 &675783146
 MonoBehaviour:
   m_ObjectHideFlags: 0
