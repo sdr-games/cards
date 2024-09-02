@@ -8,6 +8,8 @@ namespace SDRGames.Whist.TurnSwitchModule.Managers
 {
     public class TimerManager : MonoBehaviour
     {
+        [SerializeField] private int _combatTurnTime = 30;
+        [SerializeField] private int _restorationTurnTime = 120;
         [SerializeField] private TimerView _timerView;
 
         public event EventHandler TimeOver;
@@ -18,9 +20,14 @@ namespace SDRGames.Whist.TurnSwitchModule.Managers
             _timerView.TimeOver += OnTimeOver;
         }
 
-        public void StartTimer(int time)
+        public void StartCombatTimer()
         {
-            _timerView.StartTimer(time);
+            _timerView.StartTimer(_combatTurnTime);
+        }
+
+        public void StartRestorationTimer()
+        {
+            _timerView.StartTimer(_restorationTurnTime);
         }
 
         public void StopTimer()

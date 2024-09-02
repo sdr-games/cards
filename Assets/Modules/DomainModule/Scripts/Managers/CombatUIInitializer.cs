@@ -15,7 +15,7 @@ namespace SDRGames.Whist.DomainModule.Managers
     public class CombatUIInitializer : MonoBehaviour
     {
         [SerializeField] private UserInputController _userInputController;
-        [SerializeField] private TimerManager _timerManager;
+        [SerializeField] private TurnsQueueManager _turnsQueueManager;
 
         [Header("MELEE ABILITIES")][SerializeField] private AbilitiesQueueManager _abilitiesQueueManager;
         [SerializeField] private MeleeAttackListManager _meleeAttackListManager;
@@ -41,9 +41,9 @@ namespace SDRGames.Whist.DomainModule.Managers
                 Application.Quit();
             }
 
-            if (_timerManager == null)
+            if (_turnsQueueManager == null)
             {
-                Debug.LogError("Timer Manager не был назначен");
+                Debug.LogError("Turns Queue Manager не был назначен");
                 #if UNITY_EDITOR
                     EditorApplication.isPlaying = false;
                 #endif
@@ -122,9 +122,6 @@ namespace SDRGames.Whist.DomainModule.Managers
                 Application.Quit();
             }
 
-            _timerManager.Initialize();
-            _timerManager.TimeOver += OnTimeOver;
-
             _playerCharacterCombatManager.Initialize();
             _enemyCharacterCombatManager.Initialize();
 
@@ -146,15 +143,22 @@ namespace SDRGames.Whist.DomainModule.Managers
             _deckOnHandsManager.CardClicked += OnCardClicked;
             _deckOnHandsManager.ApplyButtonClicked += OnDeckApplyButtonClicked;
 
-            _timerManager.StartTimer(30); //TODO: Get time from game settings
+            _turnsQueueManager.TurnSwitched += OnTurnSwitched;
+            _turnsQueueManager.Initialize();
         }
 
-        private void EndPlayerTurn()
+        private void ShowPlayerUI()
+        {
+            _playerSwitchableUI.alpha = 1;
+            _playerSwitchableUI.interactable = true;
+            _playerSwitchableUI.blocksRaycasts = true;
+        }
+
+        private void HidePlayerUI()
         {
             _playerSwitchableUI.alpha = 0;
             _playerSwitchableUI.interactable = false;
             _playerSwitchableUI.blocksRaycasts = false;
-            _timerManager.StopTimer();
         }
 
         private void OnCardClicked(object sender, CardClickedEventArgs e)
@@ -183,6 +187,11 @@ namespace SDRGames.Whist.DomainModule.Managers
 
         private void OnQueueApplyButtonClicked(object sender, MeleeCombatModule.Managers.ApplyButtonClickedEventArgs e)
         {
+            if(e.MeleeAttackScriptableObjects.Count == 0)
+            {
+                return;
+            }
+
             foreach(var ability in e.MeleeAttackScriptableObjects)
             {
                 if(ability == null)
@@ -192,11 +201,16 @@ namespace SDRGames.Whist.DomainModule.Managers
                 _enemyCharacterCombatManager.TakeDamage(ability.Damage);
             }
             _playerCharacterCombatManager.SpendStaminaPoints(e.TotalCost);
-            EndPlayerTurn();
+            _turnsQueueManager.SwitchTurn();
         }
 
         private void OnDeckApplyButtonClicked(object sender, CardsCombatModule.Managers.ApplyButtonClickedEventArgs e)
         {
+            if(e.Cards.Count == 0)
+            {
+                return;
+            }
+
             foreach (var card in e.Cards)
             {
                 if (card == null)
@@ -207,7 +221,7 @@ namespace SDRGames.Whist.DomainModule.Managers
                 //TODO: Apply card behavior
             }
             _playerCharacterCombatManager.SpendBreathPoints(e.TotalCost);
-            EndPlayerTurn();
+            _turnsQueueManager.SwitchTurn();
         }
 
         private void OnAbilityQueueCleared(object sender, AbilityQueueClearedEventArgs e)
@@ -238,9 +252,14 @@ namespace SDRGames.Whist.DomainModule.Managers
             _deckOnHandsManager.SetSelectedDeck(e.DeckScriptableObject);
         }
 
-        private void OnTimeOver(object sender, EventArgs e)
+        private void OnTurnSwitched(object sender, TurnSwitchedEventArgs e)
         {
-            EndPlayerTurn();
+            if (e.IsPlayerTurn)
+            {
+                ShowPlayerUI();
+                return;
+            }
+            HidePlayerUI();
         }
     }
 }
