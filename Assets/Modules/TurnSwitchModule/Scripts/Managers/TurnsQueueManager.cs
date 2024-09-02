@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 
 using SDRGames.Whist.CharacterModule.ScriptableObjects;
+using SDRGames.Whist.LocalizationModule.Models;
+using SDRGames.Whist.NotificationsModule;
 
 using UnityEditor;
 
@@ -15,6 +17,9 @@ namespace SDRGames.Whist.TurnSwitchModule.Managers
         [SerializeField] private int _portraitsLimit = 8;
         [SerializeField] private TurnsQueueView _turnsQueueView;
         [SerializeField] private TimerManager _timerManager;
+        [SerializeField] private LocalizedString _playerTurnSwitchMessage;
+        [SerializeField] private LocalizedString _enemyTurnSwitchMessage;
+        [SerializeField] private LocalizedString _restorationTurnSwitchMessage;
 
         private bool _isCombatTurn;
         private List<CharacterInfoScriptableObject> _characterInfoScriptableObjects;
@@ -36,6 +41,8 @@ namespace SDRGames.Whist.TurnSwitchModule.Managers
             _timerManager.TimeOver += OnTimeOver;
             _timerManager.StartCombatTimer();
 
+            string turnSwitchMessage = _characterInfoScriptableObjects[0].IsPlayer ? _playerTurnSwitchMessage.GetLocalizedText() : _enemyTurnSwitchMessage.GetLocalizedText();
+            Notification.Show(turnSwitchMessage);
             TurnSwitched?.Invoke(this, new TurnSwitchedEventArgs(_characterInfoScriptableObjects[0].IsPlayer, true));
         }
 
@@ -70,6 +77,8 @@ namespace SDRGames.Whist.TurnSwitchModule.Managers
                 _timerManager.StartRestorationTimer();
             }
             //}
+            string turnSwitchMessage = isPlayerTurn ? _playerTurnSwitchMessage.GetLocalizedText() : _enemyTurnSwitchMessage.GetLocalizedText();
+            Notification.Show(turnSwitchMessage);
             TurnSwitched?.Invoke(this, new TurnSwitchedEventArgs(isPlayerTurn, true));
         }
 
