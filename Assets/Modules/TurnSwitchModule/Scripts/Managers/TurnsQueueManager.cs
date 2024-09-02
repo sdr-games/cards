@@ -15,16 +15,15 @@ namespace SDRGames.Whist.TurnSwitchModule.Managers
         [SerializeField] private TurnsQueueView _turnsQueueView;
         [SerializeField] private TimerManager _timerManager;
 
-        [SerializeField] private List<CharacterInfoScriptableObject> _characterInfoScriptableObjects;
-        
         private bool _isCombatTurn;
+        private List<CharacterInfoScriptableObject> _characterInfoScriptableObjects;
 
         public event EventHandler<TurnSwitchedEventArgs> TurnSwitched;
 
-        public void Initialize(List<CharacterInfoScriptableObject> characterInfoScriptableObjects = null)
+        public void Initialize(List<CharacterInfoScriptableObject> characterInfoScriptableObjects)
         {
             _isCombatTurn = true;
-            characterInfoScriptableObjects = _characterInfoScriptableObjects;
+            _characterInfoScriptableObjects = characterInfoScriptableObjects;
             _turnsQueueView.Initialize(characterInfoScriptableObjects);
             for (int i = 0; i < _portraitsLimit; i++)
             {
@@ -51,13 +50,13 @@ namespace SDRGames.Whist.TurnSwitchModule.Managers
             //if (isPlayerTurn)
             //{
             if (_isCombatTurn)
-                {
-                    _timerManager.StartCombatTimer();
-                }
-                else
-                {
-                    _timerManager.StartRestorationTimer();
-                }
+            {
+                _timerManager.StartCombatTimer();
+            }
+            else
+            {
+                _timerManager.StartRestorationTimer();
+            }
             //}
             TurnSwitched?.Invoke(this, new TurnSwitchedEventArgs(isPlayerTurn, true));
         }
