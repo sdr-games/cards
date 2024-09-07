@@ -1,16 +1,14 @@
 using System;
 
-using SDRGames.Whist.MeleeCombatModule.ScriptableObjects;
-using SDRGames.Whist.MeleeCombatModule.Views;
+using SDRGames.Whist.AbilitiesQueueModule.Views;
 using SDRGames.Whist.UserInputModule.Controller;
 
 using UnityEngine;
 
-namespace SDRGames.Whist.MeleeCombatModule.Managers
+namespace SDRGames.Whist.AbilitiesQueueModule.Managers
 {
     public class AbilitySlotManager : MonoBehaviour
     {
-        private MeleeAttackScriptableObject _meleeAbilityScriptableObject;
         [SerializeField] private AbilitySlotView _abilitySlotView;
 
         public event EventHandler AbilitySlotUnbound;
@@ -20,16 +18,14 @@ namespace SDRGames.Whist.MeleeCombatModule.Managers
             _abilitySlotView.Initialize(userInputController);
         }
 
-        public void Bind(MeleeAttackScriptableObject meleeAttackScriptableObject)
+        public void Bind(Sprite icon)
         {
-            _meleeAbilityScriptableObject = meleeAttackScriptableObject;
-            _abilitySlotView.SetIconSprite(_meleeAbilityScriptableObject.Icon);
+            _abilitySlotView.SetIconSprite(icon);
             _abilitySlotView.AbilitySlotUnbound += OnAbilitySlotCleared;
         }
 
         public void Unbind()
         {
-            _meleeAbilityScriptableObject = null;
             _abilitySlotView.Unbind();
         }
 
