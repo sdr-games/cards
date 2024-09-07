@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
 
+using SDRGames.Whist.AbilitiesQueueModule.Managers;
 using SDRGames.Whist.CardsCombatModule.Managers;
 using SDRGames.Whist.CharacterModule.Managers;
 using SDRGames.Whist.CharacterModule.ScriptableObjects;
 using SDRGames.Whist.MeleeCombatModule.Managers;
+using SDRGames.Whist.RestorationModule.Managers;
 using SDRGames.Whist.TurnSwitchModule.Managers;
 using SDRGames.Whist.UserInputModule.Controller;
 
@@ -25,6 +27,8 @@ namespace SDRGames.Whist.DomainModule.Managers
         [Header("CARDS")][SerializeField] private SelectedDeckManager _selectedDeckManager;
         [SerializeField] private DecksPreviewWindowManager _decksPreviewWindowManager;
         [SerializeField] private DeckOnHandsManager _deckOnHandsManager;
+
+        [Header("RESTORATION")][SerializeField] private PotionListManager _potionListManager;
 
         [Header("PLAYER")][SerializeField] private PlayerCharacterCombatManager _playerCharacterCombatManager;
         [SerializeField] private CanvasGroup _playerSwitchableUI;
@@ -97,6 +101,15 @@ namespace SDRGames.Whist.DomainModule.Managers
                 Application.Quit();
             }
 
+            if (_potionListManager == null)
+            {
+                Debug.LogError("Potion List Manager не был назначен");
+                #if UNITY_EDITOR
+                    EditorApplication.isPlaying = false;
+                #endif
+                Application.Quit();
+            }
+
             if (_playerCharacterCombatManager == null)
             {
                 Debug.LogError("Player Character Combat Manager не был назначен");
@@ -133,6 +146,9 @@ namespace SDRGames.Whist.DomainModule.Managers
 
             _meleeAttackListManager.Initialize(_userInputController);
             _meleeAttackListManager.MeleeAttackClicked += OnMeleeAttackClicked;
+
+            _potionListManager.Initialize(_userInputController);
+            _potionListManager.PotionClicked += OnPotionClicked;
 
             _selectedDeckManager.Initialize(_userInputController);
             _selectedDeckManager.EmptyDeckViewClicked += OnEmptyDeckViewClicked;
@@ -190,20 +206,30 @@ namespace SDRGames.Whist.DomainModule.Managers
             _abilitiesQueueManager.AddAbilityToQueue(e.MeleeAttackScriptableObject);
         }
 
-        private void OnQueueApplyButtonClicked(object sender, MeleeCombatModule.Managers.ApplyButtonClickedEventArgs e)
+        private void OnPotionClicked(object sender, PotionClickedEventArgs e)
         {
-            if(e.MeleeAttackScriptableObjects.Count == 0)
+            if (_abilitiesQueueManager.IsFull)
+            {
+                return;
+            }
+            //_playerCharacterCombatManager.ReserveStaminaPoints(e.PotionScriptableObject.Cost);
+            _abilitiesQueueManager.AddAbilityToQueue(e.PotionScriptableObject);
+        }
+
+        private void OnQueueApplyButtonClicked(object sender, AbilitiesQueueModule.Managers.ApplyButtonClickedEventArgs e)
+        {
+            if(e.AbilityScriptableObjects.Count == 0)
             {
                 return;
             }
 
-            foreach(var ability in e.MeleeAttackScriptableObjects)
+            foreach(var ability in e.AbilityScriptableObjects)
             {
                 if(ability == null)
                 {
                     continue;
                 }
-                _enemyCharacterCombatManager.TakeDamage(ability.Damage);
+                //_enemyCharacterCombatManager.TakeDamage(ability.Damage);
             }
             _playerCharacterCombatManager.SpendStaminaPoints(e.TotalCost);
             _turnsQueueManager.SwitchTurn();

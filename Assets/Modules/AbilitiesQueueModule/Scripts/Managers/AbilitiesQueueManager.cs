@@ -2,10 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
+using SDRGames.Whist.AbilitiesQueueModule.ScriptableObjects;
 using SDRGames.Whist.HelpersModule.Views;
 using SDRGames.Whist.LocalizationModule.Models;
-using SDRGames.Whist.MeleeCombatModule.ScriptableObjects;
-using SDRGames.Whist.MeleeCombatModule.Views;
 using SDRGames.Whist.NotificationsModule;
 using SDRGames.Whist.UserInputModule.Controller;
 
@@ -13,9 +12,9 @@ using UnityEditor;
 
 using UnityEngine;
 
-namespace SDRGames.Whist.MeleeCombatModule.Managers
+namespace SDRGames.Whist.AbilitiesQueueModule.Managers
 {
-    public class AbilitiesQueueManager : MonoBehaviour
+    public class AbilitiesQueueManager : HideableUIView
     {
         [SerializeField] private CanvasGroup _canvasGroup;
         [SerializeField] private AbilitySlotManager[] _abilitySlotManagers;
@@ -25,14 +24,14 @@ namespace SDRGames.Whist.MeleeCombatModule.Managers
 
         public bool IsFull => FindFirstEmptySlot() == null;
 
-        private Dictionary<AbilitySlotManager, MeleeAttackScriptableObject> _bindedAbilities;
+        private Dictionary<AbilitySlotManager, AbilityScriptableObject> _bindedAbilities;
 
         public event EventHandler<ApplyButtonClickedEventArgs> ApplyButtonClicked;
         public event EventHandler<AbilityQueueClearedEventArgs> AbilityQueueCleared;
 
         public void Initialize(UserInputController userInputController)
         {
-            _bindedAbilities = new Dictionary<AbilitySlotManager, MeleeAttackScriptableObject>();
+            _bindedAbilities = new Dictionary<AbilitySlotManager, AbilityScriptableObject>();
 
             foreach (var abilitySlotManager in _abilitySlotManagers)
             {
@@ -41,32 +40,18 @@ namespace SDRGames.Whist.MeleeCombatModule.Managers
                 _bindedAbilities.Add(abilitySlotManager, null);
             }
             _applyButton.Initialize(userInputController);
-            _cancelButton.Initialize(userInputController);
-
             _applyButton.ButtonClicked += OnApplyButtonClicked;
+
+            _cancelButton.Initialize(userInputController);
             _cancelButton.ButtonClicked += OnCancelButtonClicked;
         }
 
-        public void AddAbilityToQueue(MeleeAttackScriptableObject meleeAttackScriptableObject)
+        public void AddAbilityToQueue(AbilityScriptableObject abilityScriptableObject)
         {
             AbilitySlotManager abilitySlotManager = FindFirstEmptySlot();
-            abilitySlotManager.Bind(meleeAttackScriptableObject);
-            _bindedAbilities[abilitySlotManager] = meleeAttackScriptableObject;
+            abilitySlotManager.Bind(abilityScriptableObject.Icon);
+            _bindedAbilities[abilitySlotManager] = abilityScriptableObject;
             SwitchButtonsActivity();
-        }
-
-        public void Show()
-        {
-            _canvasGroup.alpha = 1;
-            _canvasGroup.interactable = true;
-            _canvasGroup.blocksRaycasts = true;
-        }
-
-        public void Hide()
-        {
-            _canvasGroup.alpha = 0;
-            _canvasGroup.interactable = false;
-            _canvasGroup.blocksRaycasts = false;
         }
 
         private AbilitySlotManager FindFirstEmptySlot()
@@ -106,7 +91,7 @@ namespace SDRGames.Whist.MeleeCombatModule.Managers
 
         private void OnApplyButtonClicked(object sender, EventArgs e)
         {
-            Dictionary<AbilitySlotManager, MeleeAttackScriptableObject> bindedAbilities = new Dictionary<AbilitySlotManager, MeleeAttackScriptableObject>(_bindedAbilities);
+            Dictionary<AbilitySlotManager, AbilityScriptableObject> bindedAbilities = new Dictionary<AbilitySlotManager, AbilityScriptableObject>(_bindedAbilities);
             float totalCost = bindedAbilities.Values.Where(item => item != null).Sum(item => item.Cost);
             ClearBindedAbilities(bindedAbilities);
             ApplyButtonClicked?.Invoke(this, new ApplyButtonClickedEventArgs(totalCost, bindedAbilities.Values.ToList()));
@@ -114,13 +99,13 @@ namespace SDRGames.Whist.MeleeCombatModule.Managers
 
         private void OnCancelButtonClicked(object sender, EventArgs e)
         {
-            Dictionary<AbilitySlotManager, MeleeAttackScriptableObject> bindedAbilities = new Dictionary<AbilitySlotManager, MeleeAttackScriptableObject>(_bindedAbilities);
+            Dictionary<AbilitySlotManager, AbilityScriptableObject> bindedAbilities = new Dictionary<AbilitySlotManager, AbilityScriptableObject>(_bindedAbilities);
             ClearBindedAbilities(bindedAbilities);
         }
 
-        private void ClearBindedAbilities(Dictionary<AbilitySlotManager, MeleeAttackScriptableObject> bindedAbilities)
+        private void ClearBindedAbilities(Dictionary<AbilitySlotManager, AbilityScriptableObject> bindedAbilities)
         {
-            foreach (KeyValuePair<AbilitySlotManager, MeleeAttackScriptableObject> item in bindedAbilities)
+            foreach (KeyValuePair<AbilitySlotManager, AbilityScriptableObject> item in bindedAbilities)
             {
                 if (item.Value == null)
                 {

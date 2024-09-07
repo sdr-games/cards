@@ -1,4 +1,4 @@
-﻿namespace SDRGames.Whist.MeleeCombatModule.Managers
+﻿namespace SDRGames.Whist.AbilitiesQueueModule.Managers
 {
     public class AbilityQueueClearedEventArgs
     {

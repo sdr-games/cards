@@ -1,16 +1,12 @@
-using SDRGames.Whist.LocalizationModule.Models;
+using SDRGames.Whist.AbilitiesQueueModule.ScriptableObjects;
 
 using UnityEngine;
 
 namespace SDRGames.Whist.MeleeCombatModule.ScriptableObjects
 {
     [CreateAssetMenu(fileName = "MeleeAttackScriptableObject", menuName = "SDRGames/Combat/Melee Attack")]
-    public class MeleeAttackScriptableObject : ScriptableObject
+    public class MeleeAttackScriptableObject : AbilityScriptableObject
     {
-        [field: SerializeField] public LocalizedString Name { get; private set; }
-        [field: SerializeField] public LocalizedString Description { get; private set; }
-        [field: SerializeField] public Sprite Icon { get; private set; }
-        [field: SerializeField] public int Cost { get; private set; }
         [field: SerializeField] public int Damage { get; private set; }
     }
 }
