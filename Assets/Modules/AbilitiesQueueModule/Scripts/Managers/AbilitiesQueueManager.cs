@@ -16,7 +16,6 @@ namespace SDRGames.Whist.AbilitiesQueueModule.Managers
 {
     public class AbilitiesQueueManager : HideableUIView
     {
-        [SerializeField] private CanvasGroup _canvasGroup;
         [SerializeField] private AbilitySlotManager[] _abilitySlotManagers;
         [SerializeField] private ButtonView _applyButton;
         [SerializeField] private ButtonView _cancelButton;
@@ -136,14 +135,6 @@ namespace SDRGames.Whist.AbilitiesQueueModule.Managers
             if (_cancelButton == null)
             {
                 Debug.LogError("Cancel Button не был назначен");
-                #if UNITY_EDITOR
-                    EditorApplication.isPlaying = false;
-                #endif
-            }
-
-            if (_canvasGroup == null)
-            {
-                Debug.LogError("Canvas Group не был назначен");
                 #if UNITY_EDITOR
                     EditorApplication.isPlaying = false;
                 #endif
