@@ -21,13 +21,6 @@ namespace SDRGames.Whist.CharacterModule.ScriptableObjects
         public event EventHandler<GloryChangedEventArgs> GloryChanged;
         public event EventHandler<MagicDamageMultiplierChangedEventArgs> MagicDamageMultiplierChanged;
 
-        public PlayerCharacterParamsModel(CharacterInfoScriptableObject characterInfo, int level, Points healthPoints, Points staminaPoints, Points breathPoints, Points physicalArmor, Points magicShield, Dice physicalDamage, float magicDamageMultiplier, int experience, int glory) : base(characterInfo, level, healthPoints, staminaPoints, breathPoints, physicalArmor, magicShield, physicalDamage, magicDamageMultiplier)
-        {
-            Level = DEFAULT_BASE_LEVEL;
-            Experience = experience;
-            Glory = glory;
-        }
-
         public void IncreaseLevel(int level)
         {
             Level += level;

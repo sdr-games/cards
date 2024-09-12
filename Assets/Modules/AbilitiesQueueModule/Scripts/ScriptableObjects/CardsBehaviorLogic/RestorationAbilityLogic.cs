@@ -5,7 +5,7 @@ using SDRGames.Whist.CharacterModule.Managers;
 
 using UnityEngine;
 
-namespace SDRGames.Whist.CardsCombatModule.ScriptableObjects
+namespace SDRGames.Whist.AbilitiesQueueModule.ScriptableObjects
 {
     [Serializable]
     [CreateAssetMenu(fileName = "RestorationAbilityLogic", menuName = "SDRGames/Combat/Cards/Restoration Ability Logic")]
