@@ -58,9 +58,19 @@ namespace SDRGames.Whist.CharacterModule.Managers
             _playerCharacterCombatParamsPresenter.RestoreHealth(restoration);
         }
 
+        public override void RestoreStamina(int restoration)
+        {
+            _playerCharacterCombatParamsPresenter.RestoreStamina(restoration);
+        }
+
+        public override void RestoreBreath(int restoration)
+        {
+            _playerCharacterCombatParamsPresenter.RestoreBreath(restoration);
+        }
+
         public bool HasEnoughStaminaPoints(float cost)
         {
-            if(_playerCharacterParamsModel.StaminaPoints.CurrentValue < _playerCharacterParamsModel.StaminaPoints.ReservedValue + cost)
+            if(_playerCharacterParamsModel.Stamina.CurrentValue < _playerCharacterParamsModel.Stamina.ReservedValue + cost)
             {
                 Notification.Show(_playerCharacterCombatParamsPresenter.GetNotEnoughStaminaErrorMessage());
                 return false;
@@ -90,7 +100,7 @@ namespace SDRGames.Whist.CharacterModule.Managers
 
         public bool HasEnoughBreathPoints(float cost)
         {
-            if (_playerCharacterParamsModel.BreathPoints.CurrentValue < _playerCharacterParamsModel.BreathPoints.ReservedValue + cost)
+            if (_playerCharacterParamsModel.Breath.CurrentValue < _playerCharacterParamsModel.Breath.ReservedValue + cost)
             {
                 Notification.Show(_playerCharacterCombatParamsPresenter.GetNotEnoughBreathErrorMessage());
                 return false;

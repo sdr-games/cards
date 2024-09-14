@@ -212,7 +212,6 @@ namespace SDRGames.Whist.DomainModule.Managers
             {
                 return;
             }
-            //_playerCharacterCombatManager.ReserveStaminaPoints(e.PotionScriptableObject.Cost);
             _abilitiesQueueManager.AddAbilityToQueue(e.PotionScriptableObject);
         }
 
@@ -229,7 +228,7 @@ namespace SDRGames.Whist.DomainModule.Managers
                 {
                     continue;
                 }
-                //_enemyCharacterCombatManager.TakeDamage(ability.Damage);
+                ability.ApplyLogics(_playerCharacterCombatManager, new List<CharacterCombatManager>() { _enemyCharacterCombatManager }, new List<int>() { 0 });
             }
             _playerCharacterCombatManager.SpendStaminaPoints(e.TotalCost);
             _turnsQueueManager.SwitchTurn();

@@ -55,6 +55,16 @@ namespace SDRGames.Whist.CharacterModule.Managers
             throw new System.NotImplementedException();
         }
 
+        public override void RestoreStamina(int restoration)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override void RestoreBreath(int restoration)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public void ApplyPeriodicalEffects()
         {
             foreach(var item in PeriodicalHealthChanges)

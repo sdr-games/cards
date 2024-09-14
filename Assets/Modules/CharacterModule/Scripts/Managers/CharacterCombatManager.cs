@@ -18,6 +18,8 @@ namespace SDRGames.Whist.CharacterModule.Managers
         public abstract void RestoreArmor(int restoration);
         public abstract void RestoreBarrier(int restoration);
         public abstract void RestoreHealth(int restoration);
+        public abstract void RestoreStamina(int restoration);
+        public abstract void RestoreBreath(int restoration);
 
         public void SetPeriodicalChanges(int valuePerRound, int roundsCount, Action changingAction)
         {

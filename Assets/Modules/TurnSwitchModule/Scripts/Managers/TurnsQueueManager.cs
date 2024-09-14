@@ -5,6 +5,7 @@ using System.Linq;
 using SDRGames.Whist.CharacterModule.ScriptableObjects;
 using SDRGames.Whist.LocalizationModule.Models;
 using SDRGames.Whist.NotificationsModule;
+using SDRGames.Whist.PointsModule.Models;
 
 using UnityEditor;
 
@@ -20,7 +21,10 @@ namespace SDRGames.Whist.TurnSwitchModule.Managers
         [SerializeField] private LocalizedString _playerTurnSwitchMessage;
         [SerializeField] private LocalizedString _enemyTurnSwitchMessage;
         [SerializeField] private LocalizedString _restorationTurnSwitchMessage;
+        [SerializeField] private int _restorationTurnCooldown = 10;
 
+        private float _currentRestorationTurnChance = 0;
+        private int _currentRestorationTurnCooldown = 0;
         private bool _isCombatTurn;
         private List<CharacterInfoScriptableObject> _characterInfoScriptableObjects;
 
@@ -41,6 +45,13 @@ namespace SDRGames.Whist.TurnSwitchModule.Managers
             _timerManager.TimeOver += OnTimeOver;
             _timerManager.StartCombatTimer();
 
+            foreach(CharacterParamsModel characterParamsModel in characterParamsModels)
+            {
+                characterParamsModel.Armor.CurrentValueChanged += ChangeRestorationTurnChance;
+                characterParamsModel.Barrier.CurrentValueChanged += ChangeRestorationTurnChance;
+                characterParamsModel.HealthPoints.CurrentValueChanged += ChangeRestorationTurnChance;
+            }
+
             string turnSwitchMessage = _characterInfoScriptableObjects[0].IsPlayer ? _playerTurnSwitchMessage.GetLocalizedText() : _enemyTurnSwitchMessage.GetLocalizedText();
             Notification.Show(turnSwitchMessage);
             TurnSwitched?.Invoke(this, new TurnSwitchedEventArgs(_characterInfoScriptableObjects[0].IsPlayer, true));
@@ -49,7 +60,50 @@ namespace SDRGames.Whist.TurnSwitchModule.Managers
         public void SwitchTurn()
         {
             _timerManager.StopTimer();
-            _turnsQueueView.NaturalShiftQueue();
+            if(_currentRestorationTurnCooldown < _restorationTurnCooldown)
+            {
+                _currentRestorationTurnCooldown++;
+                _turnsQueueView.NaturalShiftQueue();
+                return;
+            }
+
+            if(_currentRestorationTurnChance >= UnityEngine.Random.Range(0, 100))
+            {
+                _currentRestorationTurnChance = 0;
+                _currentRestorationTurnCooldown = 0;
+                Notification.Show(_restorationTurnSwitchMessage.GetLocalizedText());
+            }
+        }
+
+        public void ChangeRestorationTurnChance(object sender, ValueChangedEventArgs e)
+        {
+            string pointsName = (sender as Points).Name;
+            switch (pointsName)
+            {
+                case "Armor":
+                case "Barrier":
+                    if(e.CurrentValue == 0)
+                    {
+                        _currentRestorationTurnChance += 12.5f;
+                    }
+                    else
+                    {
+                        _currentRestorationTurnChance -= 12.5f;
+                    }
+                    break;
+                case "HealthPoints":
+                    if(e.CurrentValueInPercents < 50)
+                    {
+                        _currentRestorationTurnChance += 25;
+                    }
+                    else
+                    {
+                        _currentRestorationTurnChance -= 25;
+                    }
+                    break;
+                default:
+                    break;
+            }
         }
 
         private List<CharacterInfoScriptableObject> OrderByInitiative(List<CharacterParamsModel> characterParamsModels)

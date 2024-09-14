@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-using SDRGames.Whist.MeleeCombatModule.ScriptableObjects;
+using SDRGames.Whist.AbilitiesQueueModule.ScriptableObjects;
 using SDRGames.Whist.UserInputModule.Controller;
 
 using UnityEditor;

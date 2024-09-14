@@ -46,5 +46,15 @@ namespace SDRGames.Whist.CharacterModule.Presenters
         {
             _characterParamsModel.RestoreHealth(restoration);
         }
+
+        public void RestoreStamina(int restoration)
+        {
+            _characterParamsModel.RestoreStamina(restoration);
+        }
+
+        public void RestoreBreath(int restoration)
+        {
+            _characterParamsModel.RestoreBreath(restoration);
+        }
     }
 }

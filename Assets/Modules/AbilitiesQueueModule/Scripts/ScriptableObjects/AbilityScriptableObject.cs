@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+
+using SDRGames.Whist.CharacterModule.Managers;
 using SDRGames.Whist.LocalizationModule.Models;
 
 using UnityEditor;
@@ -12,6 +15,23 @@ namespace SDRGames.Whist.AbilitiesQueueModule.ScriptableObjects
         [field: SerializeField] public LocalizedString Description { get; private set; }
         [field: SerializeField] public Sprite Icon { get; private set; }
         [field: SerializeField] public int Cost { get; private set; }
+        [field: SerializeField] public AbilityLogicScriptableObject[] AbilityLogics { get; private set; }
+
+        public void ApplyLogics(CharacterCombatManager playerCombatManager, List<CharacterCombatManager> enemiesCombatManager, List<int> selectedEnemiesIndexes)
+        {
+            foreach (var logic in AbilityLogics)
+            {
+                if(logic.SelfUsable)
+                {
+                    logic.Apply(playerCombatManager);
+                    continue;
+                }
+                foreach(int index in selectedEnemiesIndexes)
+                {
+                    logic.Apply(enemiesCombatManager[index]);
+                }
+            }
+        }
 
         private void OnEnable()
         {

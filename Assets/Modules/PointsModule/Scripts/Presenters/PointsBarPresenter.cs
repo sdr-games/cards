@@ -1,6 +1,8 @@
 using SDRGames.Whist.PointsModule.Models;
 using SDRGames.Whist.PointsModule.Views;
 
+using UnityEngine;
+
 namespace SDRGames.Whist.PointsModule.Presenters
 {
     public class PointsBarPresenter

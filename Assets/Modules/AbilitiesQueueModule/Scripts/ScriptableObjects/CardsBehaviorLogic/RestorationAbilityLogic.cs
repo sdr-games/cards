@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using SDRGames.Whist.CharacterModule.Managers;
 
 using UnityEngine;
@@ -11,7 +9,7 @@ namespace SDRGames.Whist.AbilitiesQueueModule.ScriptableObjects
     [CreateAssetMenu(fileName = "RestorationAbilityLogic", menuName = "SDRGames/Combat/Cards/Restoration Ability Logic")]
     public class RestorationAbilityLogic : AbilityLogicScriptableObject
     {
-        private enum RestorationType { Armor, Barrier, Health };
+        private enum RestorationType { Armor, Barrier, Health, Stamina, Breath };
         [field: SerializeField] private RestorationType _restorationType;
 
         [field: SerializeField] public int RestorationValue { get; private set; }
@@ -45,6 +43,22 @@ namespace SDRGames.Whist.AbilitiesQueueModule.ScriptableObjects
                         break;
                     }
                     characterCombatManager.RestoreHealth(RestorationValue);
+                    break;
+                case RestorationType.Stamina:
+                    if (RoundsCount > 1)
+                    {
+                        characterCombatManager.SetPeriodicalChanges(RestorationValue, RoundsCount, () => characterCombatManager.RestoreStamina(RestorationValue));
+                        break;
+                    }
+                    characterCombatManager.RestoreStamina(RestorationValue);
+                    break;
+                case RestorationType.Breath:
+                    if (RoundsCount > 1)
+                    {
+                        characterCombatManager.SetPeriodicalChanges(RestorationValue, RoundsCount, () => characterCombatManager.RestoreBreath(RestorationValue));
+                        break;
+                    }
+                    characterCombatManager.RestoreBreath(RestorationValue);
                     break;
             }
         }

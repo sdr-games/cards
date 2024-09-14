@@ -1,6 +1,6 @@
 ﻿using System;
 
-using SDRGames.Whist.MeleeCombatModule.ScriptableObjects;
+using SDRGames.Whist.AbilitiesQueueModule.ScriptableObjects;
 
 namespace SDRGames.Whist.MeleeCombatModule.Managers
 {

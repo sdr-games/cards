@@ -16,8 +16,8 @@ namespace SDRGames.Whist.CharacterModule.ScriptableObjects
         [field: SerializeField] public int Level { get; protected set; }
         [field: SerializeField] public int Initiative { get; protected set; }
         [field: SerializeField] public Points HealthPoints { get; protected set; }
-        [field: SerializeField] public Points StaminaPoints { get; protected set; }
-        [field: SerializeField] public Points BreathPoints { get; protected set; }
+        [field: SerializeField] public Points Stamina { get; protected set; }
+        [field: SerializeField] public Points Breath { get; protected set; }
         [field: SerializeField] public Points Armor { get; protected set; }
         [field: SerializeField] public Points Barrier { get; protected set; }
         [field: SerializeField] public Dice PhysicalDamage { get; protected set; }
@@ -65,11 +65,27 @@ namespace SDRGames.Whist.CharacterModule.ScriptableObjects
             HealthPoints.IncreaseCurrentValue(restoration);
         }
 
+        public void RestoreStamina(int restoration)
+        {
+            Stamina.IncreaseCurrentValue(restoration);
+        }
+
+        public void RestoreBreath(int restoration)
+        {
+            Breath.IncreaseCurrentValue(restoration);
+        }
+
         private void OnEnable()
         {
+            HealthPoints.SetName(nameof(HealthPoints));
+            Stamina.SetName(nameof(Stamina));
+            Breath.SetName(nameof(Breath));
+            Armor.SetName(nameof(Armor));
+            Barrier.SetName(nameof(Barrier));
+
             HealthPoints.Reset();
-            StaminaPoints.Reset();
-            BreathPoints.Reset();
+            Stamina.Reset();
+            Breath.Reset();
             Armor.Reset();
             Barrier.Reset();
         }

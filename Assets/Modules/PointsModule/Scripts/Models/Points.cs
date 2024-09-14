@@ -8,7 +8,7 @@ namespace SDRGames.Whist.PointsModule.Models
     [Serializable]
     public class Points
     {
-        [field: SerializeField] public string Name { get; private set; }
+        public string Name { get; private set; }
         [field: SerializeField] public float BaseValue { get; private set; }
         [field: SerializeField] public float Bonus { get; private set;  }
         [field: SerializeField] public RelatedBonus[] RelatedBonuses { get; private set; }
@@ -24,6 +24,11 @@ namespace SDRGames.Whist.PointsModule.Models
         public event EventHandler<ValueChangedEventArgs> CurrentValueChanged;
         public event EventHandler<ValueChangedEventArgs> ReservedValueChanged;
         public event EventHandler MaxValueChanged;
+
+        public void SetName(string name)
+        {
+            Name = name;
+        }
 
         public void Reset()
         {
