@@ -7,7 +7,7 @@ using UnityEngine;
 namespace SDRGames.Whist.AbilitiesQueueModule.ScriptableObjects
 {
     [Serializable]
-    [CreateAssetMenu(fileName = "DamageAbilityLogic", menuName = "SDRGames/Combat/Cards/Damage Ability Logic")]
+    [CreateAssetMenu(fileName = "DamageAbilityLogic", menuName = "SDRGames/Combat/Logics/Damage Ability Logic")]
     public class DamageAbilityLogic : AbilityLogicScriptableObject
     {
         private enum DamageType { Physical, Magical, True };

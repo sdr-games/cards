@@ -1,7 +1,7 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 
+using SDRGames.Whist.HelpersModule.Views;
 using SDRGames.Whist.RestorationModule.ScriptableObjects;
 using SDRGames.Whist.UserInputModule.Controller;
 
@@ -11,9 +11,8 @@ using UnityEngine;
 
 namespace SDRGames.Whist.RestorationModule.Managers
 {
-    public class PotionListManager : MonoBehaviour
+    public class PotionListManager : HideableUIView
     {
-        [SerializeField] private CanvasGroup _canvasGroup;
         [SerializeField] private PotionScriptableObject[] _potionScriptableObjects;
         [SerializeField] private PotionManager _potionPrefab;
         [SerializeField] private RectTransform _contentRectTransform;
@@ -32,20 +31,6 @@ namespace SDRGames.Whist.RestorationModule.Managers
                 PotionManager.PotionClicked += OnMeleeAttackClicked;
                 _createdManagers.Add(PotionManager);
             }
-        }
-
-        public void Show()
-        {
-            _canvasGroup.alpha = 1;
-            _canvasGroup.interactable = true;
-            _canvasGroup.blocksRaycasts = true;
-        }
-
-        public void Hide()
-        {
-            _canvasGroup.alpha = 0;
-            _canvasGroup.interactable = false;
-            _canvasGroup.blocksRaycasts = false;
         }
 
         private void OnMeleeAttackClicked(object sender, PotionClickedEventArgs e)
@@ -67,15 +52,6 @@ namespace SDRGames.Whist.RestorationModule.Managers
             if (_contentRectTransform == null)
             {
                 Debug.LogError("Content Rect Transform не был назначен");
-                #if UNITY_EDITOR
-                    EditorApplication.isPlaying = false;
-                #endif
-                Application.Quit();
-            }
-
-            if (_canvasGroup == null)
-            {
-                Debug.LogError("Canvas Group не был назначен");
                 #if UNITY_EDITOR
                     EditorApplication.isPlaying = false;
                 #endif

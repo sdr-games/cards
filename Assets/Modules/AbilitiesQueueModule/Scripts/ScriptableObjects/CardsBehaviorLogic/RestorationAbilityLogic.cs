@@ -6,7 +6,7 @@ using UnityEngine;
 namespace SDRGames.Whist.AbilitiesQueueModule.ScriptableObjects
 {
     [Serializable]
-    [CreateAssetMenu(fileName = "RestorationAbilityLogic", menuName = "SDRGames/Combat/Cards/Restoration Ability Logic")]
+    [CreateAssetMenu(fileName = "RestorationAbilityLogic", menuName = "SDRGames/Combat/Logics/Restoration Ability Logic")]
     public class RestorationAbilityLogic : AbilityLogicScriptableObject
     {
         private enum RestorationType { Armor, Barrier, Health, Stamina, Breath };

@@ -5,6 +5,7 @@ using SDRGames.Whist.AbilitiesQueueModule.Managers;
 using SDRGames.Whist.CardsCombatModule.Managers;
 using SDRGames.Whist.CharacterModule.Managers;
 using SDRGames.Whist.CharacterModule.ScriptableObjects;
+using SDRGames.Whist.HelpersModule.Views;
 using SDRGames.Whist.MeleeCombatModule.Managers;
 using SDRGames.Whist.RestorationModule.Managers;
 using SDRGames.Whist.TurnSwitchModule.Managers;
@@ -31,7 +32,7 @@ namespace SDRGames.Whist.DomainModule.Managers
         [Header("RESTORATION")][SerializeField] private PotionListManager _potionListManager;
 
         [Header("PLAYER")][SerializeField] private PlayerCharacterCombatManager _playerCharacterCombatManager;
-        [SerializeField] private CanvasGroup _playerSwitchableUI;
+        [SerializeField] private HideableUIView _playerSwitchableUI;
 
         [Header("ENEMY")][SerializeField] private EnemyCharacterCombatManager _enemyCharacterCombatManager;
         //[SerializeField] private CanvasGroup _enemySwitchableUI;
@@ -166,20 +167,30 @@ namespace SDRGames.Whist.DomainModule.Managers
             characterInfoScriptableObjects.Add(_enemyCharacterCombatManager.GetParams());
             _turnsQueueManager.TurnSwitched += OnTurnSwitched;
             _turnsQueueManager.Initialize(characterInfoScriptableObjects);
+
+            _playerCharacterCombatManager.TakePhysicalDamage(16);
         }
 
-        private void ShowPlayerUI()
+        private void ShowPlayerUI(bool isCombatTurn)
         {
-            _playerSwitchableUI.alpha = 1;
-            _playerSwitchableUI.interactable = true;
-            _playerSwitchableUI.blocksRaycasts = true;
+            if(isCombatTurn)
+            {
+                _meleeAttackListManager.Show();
+                _potionListManager.Hide();
+            }
+            else
+            {
+                _meleeAttackListManager.Hide();
+                _potionListManager.Show();
+            }
+            _playerSwitchableUI.Show();
         }
 
         private void HidePlayerUI()
         {
-            _playerSwitchableUI.alpha = 0;
-            _playerSwitchableUI.interactable = false;
-            _playerSwitchableUI.blocksRaycasts = false;
+            _playerSwitchableUI.Hide();
+            _meleeAttackListManager.Hide();
+            _potionListManager.Hide();
         }
 
         private void OnCardClicked(object sender, CardClickedEventArgs e)
@@ -222,15 +233,21 @@ namespace SDRGames.Whist.DomainModule.Managers
                 return;
             }
 
-            foreach(var ability in e.AbilityScriptableObjects)
+            List<CharacterCombatManager> enemyCharacterCombatManagers = new List<CharacterCombatManager>() { _enemyCharacterCombatManager };
+
+            foreach (var ability in e.AbilityScriptableObjects)
             {
                 if(ability == null)
                 {
                     continue;
                 }
-                ability.ApplyLogics(_playerCharacterCombatManager, new List<CharacterCombatManager>() { _enemyCharacterCombatManager }, new List<int>() { 0 });
+                ability.ApplyLogics(
+                    _playerCharacterCombatManager,
+                    enemyCharacterCombatManagers, 
+                    new List<int>() { 0 });
             }
             _playerCharacterCombatManager.SpendStaminaPoints(e.TotalCost);
+            HidePlayerUI();
             _turnsQueueManager.SwitchTurn();
         }
 
@@ -251,6 +268,7 @@ namespace SDRGames.Whist.DomainModule.Managers
                 //TODO: Apply card behavior
             }
             _playerCharacterCombatManager.SpendBreathPoints(e.TotalCost);
+            HidePlayerUI();
             _turnsQueueManager.SwitchTurn();
         }
 
@@ -263,6 +281,7 @@ namespace SDRGames.Whist.DomainModule.Managers
         {
             _abilitiesQueueManager.Hide();
             _meleeAttackListManager.Hide();
+            _potionListManager.Hide();
             _deckOnHandsManager.Show();
         }
 
@@ -270,6 +289,7 @@ namespace SDRGames.Whist.DomainModule.Managers
         {
             _abilitiesQueueManager.Hide();
             _meleeAttackListManager.Hide();
+            _potionListManager.Hide();
             _decksPreviewWindowManager.Show();
         }
 
@@ -286,10 +306,9 @@ namespace SDRGames.Whist.DomainModule.Managers
         {
             if (e.IsPlayerTurn)
             {
-                ShowPlayerUI();
+                ShowPlayerUI(e.IsCombatTurn);
                 return;
             }
-            HidePlayerUI();
         }
     }
 }

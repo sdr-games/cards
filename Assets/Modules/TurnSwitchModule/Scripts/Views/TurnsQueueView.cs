@@ -17,6 +17,8 @@ namespace SDRGames.Whist.TurnSwitchModule
         [SerializeField] private HorizontalLayoutGroup _horizontalLayoutGroup;
         [SerializeField] private TurnsQueuePortraitView _turnsQueuePortraitViewPrefab;
         [SerializeField] private int _shiftingSpeed = 2;
+        [SerializeField] private int _portraitsLimit = 8;
+        [SerializeField] private Sprite _restorationTurnIcon;
 
         private int _defaultLeftPadding;
         private int _shiftedLeftPadding = -50;
@@ -32,27 +34,45 @@ namespace SDRGames.Whist.TurnSwitchModule
             _defaultLeftPadding = _horizontalLayoutGroup.padding.left;
             _turnsQueuePortraitViewList = new LinkedList<TurnsQueuePortraitView>();
             _queueTemplate = characterInfoScriptableObjects;
+            for(int i = 0; i < _portraitsLimit; i++)
+            {
+                Sprite portrait = _queueTemplate[_currentTemplateIndex].CharacterPortrait;
+                AddPortraitToQueue(portrait);
+                _currentTemplateIndex = (_currentTemplateIndex + 1) % _queueTemplate.Count;
+            }
         }
 
         public void NaturalShiftQueue()
         {
-            StartCoroutine(NaturalShiftQueueCoroutine());
+            Sprite portrait = _queueTemplate[_currentTemplateIndex].CharacterPortrait;
+            _currentTemplateIndex = (_currentTemplateIndex + 1) % _queueTemplate.Count;
+            StartCoroutine(NaturalShiftQueueCoroutine(portrait));
         }
 
-        public void ForceShiftQueue()
+        public void ForceShiftQueue(Sprite portrait)
         {
-
+            StartCoroutine(NaturalShiftQueueCoroutine(portrait));
         }
 
-        public void AddPortraitToQueue()
+        public void RestorationTurnShiftQueue()
+        {
+            StartCoroutine(ForceShiftQueueCoroutine(_restorationTurnIcon));
+        }
+
+        public void AddPortraitToQueue(Sprite portrait, bool force = false)
         {
             TurnsQueuePortraitView turnsQueuePortraitView = Instantiate(_turnsQueuePortraitViewPrefab, transform, false);
-            turnsQueuePortraitView.Initialize(_queueTemplate[_currentTemplateIndex].CharacterPortrait);
+            turnsQueuePortraitView.Initialize(portrait);
+            if (force)
+            {
+                turnsQueuePortraitView.transform.SetAsFirstSibling();
+                _turnsQueuePortraitViewList.AddFirst(turnsQueuePortraitView);
+                return;
+            }
             _turnsQueuePortraitViewList.AddLast(turnsQueuePortraitView);
-            _currentTemplateIndex = (_currentTemplateIndex + 1) % _queueTemplate.Count;
         }
 
-        private IEnumerator NaturalShiftQueueCoroutine()
+        private IEnumerator NaturalShiftQueueCoroutine(Sprite portrait)
         {
             while (_horizontalLayoutGroup.padding.left > _shiftedLeftPadding)
             {
@@ -63,7 +83,27 @@ namespace SDRGames.Whist.TurnSwitchModule
             Destroy(turnsQueuePortraitView.gameObject);
             _turnsQueuePortraitViewList.RemoveFirst();
             SetRectOffsetLeftPadding(_defaultLeftPadding);
-            AddPortraitToQueue();
+            AddPortraitToQueue(portrait);
+            ShiftDone?.Invoke(this, new ShiftDoneEventArgs(_currentTemplateIndex));
+        }
+
+        private IEnumerator ForceShiftQueueCoroutine(Sprite portrait)
+        {
+            while (_horizontalLayoutGroup.padding.left > _shiftedLeftPadding)
+            {
+                yield return null;
+                SetRectOffsetLeftPadding(_horizontalLayoutGroup.padding.left - _shiftingSpeed);
+            }
+            TurnsQueuePortraitView turnsQueuePortraitView = _turnsQueuePortraitViewList.First.Value;
+            Destroy(turnsQueuePortraitView.gameObject);
+            _turnsQueuePortraitViewList.RemoveFirst();
+            AddPortraitToQueue(portrait, true);
+            yield return new WaitForSeconds(0.5f);
+            while (_horizontalLayoutGroup.padding.left < _defaultLeftPadding)
+            {
+                yield return null;
+                SetRectOffsetLeftPadding(_horizontalLayoutGroup.padding.left + _shiftingSpeed);
+            }
             ShiftDone?.Invoke(this, new ShiftDoneEventArgs(_currentTemplateIndex));
         }
 
