@@ -953,7 +953,7 @@ MonoBehaviour:
   _deckOnHandsManager: {fileID: 417953863}
   _potionListManager: {fileID: 2135899561}
   _playerCharacterCombatManager: {fileID: 1174818902}
-  _playerSwitchableUI: {fileID: 1770557660}
+  _playerSwitchableUI: {fileID: 1770557661}
   _enemyCharacterCombatManager: {fileID: 1490765128}
 --- !u!1 &354583934
 GameObject:
@@ -2702,7 +2702,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61c4270597462b14e8fde6f44856a4a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _portraitsLimit: 8
   _turnsQueueView: {fileID: 675783146}
   _timerManager: {fileID: 9124436272384688783}
   _playerTurnSwitchMessage:
@@ -2735,6 +2734,7 @@ MonoBehaviour:
       m_FallbackState: 0
       m_WaitForCompletion: 0
       m_LocalVariables: []
+  _restorationTurnCooldown: 10
   references:
     version: 2
     RefIds: []
@@ -2753,7 +2753,10 @@ MonoBehaviour:
   _horizontalLayoutGroup: {fileID: 675783142}
   _turnsQueuePortraitViewPrefab: {fileID: 3620447030956070986, guid: cb37ee53d1c1332448de0c0c0eaf3232,
     type: 3}
-  _shiftingSpeed: 3
+  _shiftingSpeed: 2
+  _portraitsLimit: 8
+  _restorationTurnIcon: {fileID: 21300000, guid: e420a4bc55733be408ccd18a1b60d720,
+    type: 3}
 --- !u!114 &675783147
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2969,8 +2972,8 @@ MonoBehaviour:
   m_Padding:
     m_Left: 0
     m_Right: 0
-    m_Top: 10
-    m_Bottom: 10
+    m_Top: 0
+    m_Bottom: 0
   m_ChildAlignment: 4
   m_Spacing: 10
   m_ChildForceExpandWidth: 1
@@ -3360,7 +3363,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25da9458d9efc3d47b0f8a69e692886c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _canvasGroup: {fileID: 962776988}
   _canvasGroup: {fileID: 962776988}
   _abilitySlotManagers:
   - {fileID: 375714904939269537}
@@ -5625,6 +5627,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1770557659}
   - component: {fileID: 1770557660}
+  - component: {fileID: 1770557661}
   m_Layer: 5
   m_Name: PlayerSwitchableUI
   m_TagString: Untagged
@@ -5669,6 +5672,19 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!114 &1770557661
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1770557658}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1ae349880896f4459b4daf31eecaa6f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _canvasGroup: {fileID: 1770557660}
 --- !u!1 &1795418936
 GameObject:
   m_ObjectHideFlags: 0
@@ -7096,7 +7112,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2135899554}
   m_Enabled: 1
-  m_Alpha: 0
+  m_Alpha: 0.97
   m_Interactable: 0
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0

@@ -1,7 +1,7 @@
 using System;
 
 using SDRGames.Whist.MeleeCombatModule.Presenters;
-using SDRGames.Whist.MeleeCombatModule.ScriptableObjects;
+using SDRGames.Whist.AbilitiesQueueModule.ScriptableObjects;
 using SDRGames.Whist.MeleeCombatModule.Views;
 using SDRGames.Whist.UserInputModule.Controller;
 

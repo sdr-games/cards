@@ -17,9 +17,44 @@ namespace SDRGames.Whist.CharacterModule.Presenters
             new PointsBarPresenter(_characterParamsModel.Barrier, characterCombatParamsView.BarrierPointsBarView);
         }
 
-        public void TakeDamage(int damage)
+        public void TakePhysicalDamage(int damage)
         {
-            _characterParamsModel.TakeDamage(damage);
+            _characterParamsModel.TakePhysicalDamage(damage);
+        }
+
+        public void TakeMagicalDamage(int damage)
+        {
+            _characterParamsModel.TakeMagicalDamage(damage);
+        }
+
+        public void TakeTrueDamage(int damage)
+        {
+            _characterParamsModel.TakeTrueDamage(damage);
+        }
+
+        public void RestoreArmor(int restoration)
+        {
+            _characterParamsModel.RestoreArmor(restoration);
+        }
+
+        public void RestoreBarrier(int restoration)
+        {
+            _characterParamsModel.RestoreBarrier(restoration);
+        }
+
+        public void RestoreHealth(int restoration)
+        {
+            _characterParamsModel.RestoreHealth(restoration);
+        }
+
+        public void RestoreStamina(int restoration)
+        {
+            _characterParamsModel.RestoreStamina(restoration);
+        }
+
+        public void RestoreBreath(int restoration)
+        {
+            _characterParamsModel.RestoreBreath(restoration);
         }
     }
 }

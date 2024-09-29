@@ -2,7 +2,7 @@ using SDRGames.Whist.AbilitiesQueueModule.ScriptableObjects;
 
 using UnityEngine;
 
-namespace SDRGames.Whist.MeleeCombatModule.ScriptableObjects
+namespace SDRGames.Whist.AbilitiesQueueModule.ScriptableObjects
 {
     [CreateAssetMenu(fileName = "MeleeAttackScriptableObject", menuName = "SDRGames/Combat/Melee Attack")]
     public class MeleeAttackScriptableObject : AbilityScriptableObject

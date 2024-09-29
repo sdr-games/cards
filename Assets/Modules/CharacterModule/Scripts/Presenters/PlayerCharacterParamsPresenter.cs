@@ -24,8 +24,8 @@ namespace SDRGames.Whist.CharacterModule.Presenters
             );
 
             new PointsTextPresenter(_playerCharacterParams.HealthPoints, _playerCharacterParamsView.HealthPointsView);
-            new PointsTextPresenter(_playerCharacterParams.StaminaPoints, _playerCharacterParamsView.StaminaPointsView);
-            new PointsTextPresenter(_playerCharacterParams.BreathPoints, _playerCharacterParamsView.BreathPointsView);
+            new PointsTextPresenter(_playerCharacterParams.Stamina, _playerCharacterParamsView.StaminaPointsView);
+            new PointsTextPresenter(_playerCharacterParams.Breath, _playerCharacterParamsView.BreathPointsView);
             new PointsTextPresenter(_playerCharacterParams.Armor, _playerCharacterParamsView.PhysicalArmorPointsView);
             new PointsTextPresenter(_playerCharacterParams.Barrier, _playerCharacterParamsView.MagicShieldPointsView);
             new DicePresenter(_playerCharacterParams.PhysicalDamage, _playerCharacterParamsView.PhysicalDamageDiceView);

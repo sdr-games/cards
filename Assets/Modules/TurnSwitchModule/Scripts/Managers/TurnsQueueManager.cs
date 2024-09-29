@@ -5,6 +5,7 @@ using System.Linq;
 using SDRGames.Whist.CharacterModule.ScriptableObjects;
 using SDRGames.Whist.LocalizationModule.Models;
 using SDRGames.Whist.NotificationsModule;
+using SDRGames.Whist.PointsModule.Models;
 
 using UnityEditor;
 
@@ -14,14 +15,17 @@ namespace SDRGames.Whist.TurnSwitchModule.Managers
 {
     public class TurnsQueueManager : MonoBehaviour
     {
-        [SerializeField] private int _portraitsLimit = 8;
         [SerializeField] private TurnsQueueView _turnsQueueView;
         [SerializeField] private TimerManager _timerManager;
         [SerializeField] private LocalizedString _playerTurnSwitchMessage;
         [SerializeField] private LocalizedString _enemyTurnSwitchMessage;
         [SerializeField] private LocalizedString _restorationTurnSwitchMessage;
+        [SerializeField] private int _restorationTurnCooldown = 10;
 
+        private float _currentRestorationTurnChance = 0;
+        private uint _currentRestorationTurnCooldown = 0;
         private bool _isCombatTurn;
+        private List<Points> _charactersPoints;
         private List<CharacterInfoScriptableObject> _characterInfoScriptableObjects;
 
         public event EventHandler<TurnSwitchedEventArgs> TurnSwitched;
@@ -30,11 +34,8 @@ namespace SDRGames.Whist.TurnSwitchModule.Managers
         {
             _isCombatTurn = true;
             _characterInfoScriptableObjects = OrderByInitiative(characterParamsModels);
+            _charactersPoints = GetPointsFromParams(characterParamsModels);
             _turnsQueueView.Initialize(_characterInfoScriptableObjects);
-            for (int i = 0; i < _portraitsLimit; i++)
-            {
-                _turnsQueueView.AddPortraitToQueue();
-            }
             _turnsQueueView.ShiftDone += OnShiftDone;
 
             _timerManager.Initialize();
@@ -49,7 +50,49 @@ namespace SDRGames.Whist.TurnSwitchModule.Managers
         public void SwitchTurn()
         {
             _timerManager.StopTimer();
-            _turnsQueueView.NaturalShiftQueue();
+            CalculateRestorationTurnChance();
+            if(_currentRestorationTurnCooldown >= _restorationTurnCooldown && _currentRestorationTurnChance < UnityEngine.Random.Range(0, 100))
+            {
+                _isCombatTurn = true;
+                _currentRestorationTurnCooldown--;
+                _turnsQueueView.NaturalShiftQueue();
+                return;
+            }
+            _isCombatTurn = false;
+            _turnsQueueView.RestorationTurnShiftQueue();
+            _currentRestorationTurnChance = 0;
+        }
+
+        public void CalculateRestorationTurnChance()
+        {
+            _currentRestorationTurnChance = 0;
+            foreach (Points points in _charactersPoints)
+            {
+                switch (points.Name)
+                {
+                    case "Armor":
+                    case "Barrier":
+                        if (points.CurrentValue == 0)
+                        {
+                            _currentRestorationTurnChance += 12.5f;
+                        }
+                        break;
+                    case "HealthPoints":
+                        _currentRestorationTurnChance += (points.MaxValue - points.CurrentValue) / points.MaxValue * 100;
+                        break;
+                    default:
+                        break;
+                }
+            }
+            if(_currentRestorationTurnChance < 0)
+            {
+                _currentRestorationTurnChance = 0;
+                return;
+            }
+            if(_currentRestorationTurnChance > 50)
+            {
+                _currentRestorationTurnChance = 50;
+            }
         }
 
         private List<CharacterInfoScriptableObject> OrderByInitiative(List<CharacterParamsModel> characterParamsModels)
@@ -63,6 +106,18 @@ namespace SDRGames.Whist.TurnSwitchModule.Managers
             return result;
         }
 
+        private List<Points> GetPointsFromParams(List<CharacterParamsModel> characterParamsModels)
+        {
+            List<Points> result = new List<Points>();
+            foreach (CharacterParamsModel characterParamsModel in characterParamsModels)
+            {
+                result.Add(characterParamsModel.Armor);
+                result.Add(characterParamsModel.Barrier);
+                result.Add(characterParamsModel.HealthPoints);
+            }
+            return result;
+        }
+
         private void OnShiftDone(object sender, ShiftDoneEventArgs e)
         {
             bool isPlayerTurn = _characterInfoScriptableObjects[e.CurrentIndex].IsPlayer;
@@ -71,15 +126,16 @@ namespace SDRGames.Whist.TurnSwitchModule.Managers
             if (_isCombatTurn)
             {
                 _timerManager.StartCombatTimer();
+                string turnSwitchMessage = isPlayerTurn ? _playerTurnSwitchMessage.GetLocalizedText() : _enemyTurnSwitchMessage.GetLocalizedText();
+                Notification.Show(turnSwitchMessage);
             }
             else
             {
                 _timerManager.StartRestorationTimer();
+                Notification.Show(_restorationTurnSwitchMessage.GetLocalizedText());
             }
             //}
-            string turnSwitchMessage = isPlayerTurn ? _playerTurnSwitchMessage.GetLocalizedText() : _enemyTurnSwitchMessage.GetLocalizedText();
-            Notification.Show(turnSwitchMessage);
-            TurnSwitched?.Invoke(this, new TurnSwitchedEventArgs(isPlayerTurn, true));
+            TurnSwitched?.Invoke(this, new TurnSwitchedEventArgs(isPlayerTurn, _isCombatTurn));
         }
 
         private void OnTimeOver(object sender, EventArgs e)
