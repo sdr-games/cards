@@ -1,6 +1,7 @@
 using System;
 
 using SDRGames.Whist.CardsCombatModule.ScriptableObjects;
+using SDRGames.Whist.HelpersModule.Views;
 using SDRGames.Whist.UserInputModule.Controller;
 
 using UnityEditor;
@@ -10,12 +11,11 @@ using UnityEngine.UI;
 
 namespace SDRGames.Whist.CardsCombatModule.Managers
 {
-    public class DecksPreviewWindowManager : MonoBehaviour
+    public class DecksPreviewWindowManager : HideableUIView
     {
         [SerializeField] private DeckScriptableObject[] _decks;
         [SerializeField] private CardsListManager _cardsListManager;
         [SerializeField] private DecksListManager _decksListManager;
-        [SerializeField] private CanvasGroup _canvasGroup;
         [SerializeField] private Button _selectButton;
 
         private UserInputController _userInputController;
@@ -38,18 +38,10 @@ namespace SDRGames.Whist.CardsCombatModule.Managers
             }
         }
 
-        public void Show()
+        public override void Show()
         {
-            _canvasGroup.alpha = 1;
-            _canvasGroup.interactable = true;
-            _canvasGroup.blocksRaycasts = true;
-        }
-
-        public void Hide()
-        {
-            _canvasGroup.alpha = 0;
-            _canvasGroup.interactable = false;
-            _canvasGroup.blocksRaycasts = false;
+            _decksListManager.ResetSelection();
+            base.Show();
         }
 
         private void OnEnable()
@@ -73,14 +65,6 @@ namespace SDRGames.Whist.CardsCombatModule.Managers
             if (_decks.Length == 0)
             {
                 Debug.LogError("Decks не были назначены");
-                #if UNITY_EDITOR
-                    EditorApplication.isPlaying = false;
-                #endif
-            }
-
-            if (_canvasGroup == null)
-            {
-                Debug.LogError("Canvas Group не был назначен");
                 #if UNITY_EDITOR
                     EditorApplication.isPlaying = false;
                 #endif
