@@ -168,12 +168,12 @@ namespace SDRGames.Whist.DomainModule.Managers
             _turnsQueueManager.TurnSwitched += OnTurnSwitched;
             _turnsQueueManager.Initialize(characterInfoScriptableObjects);
 
-            _playerCharacterCombatManager.TakePhysicalDamage(16);
+            //_playerCharacterCombatManager.TakePhysicalDamage(16);
         }
 
         private void ShowPlayerUI(bool isCombatTurn)
         {
-            if(isCombatTurn)
+            if (isCombatTurn)
             {
                 _meleeAttackListManager.Show();
                 _potionListManager.Hide();
@@ -189,8 +189,9 @@ namespace SDRGames.Whist.DomainModule.Managers
         private void HidePlayerUI()
         {
             _playerSwitchableUI.Hide();
-            _meleeAttackListManager.Hide();
+            _deckOnHandsManager.Hide();
             _potionListManager.Hide();
+            _decksPreviewWindowManager.Hide();
         }
 
         private void OnCardClicked(object sender, CardClickedEventArgs e)
@@ -289,7 +290,6 @@ namespace SDRGames.Whist.DomainModule.Managers
         {
             _abilitiesQueueManager.Hide();
             _meleeAttackListManager.Hide();
-            _potionListManager.Hide();
             _decksPreviewWindowManager.Show();
         }
 
@@ -304,6 +304,7 @@ namespace SDRGames.Whist.DomainModule.Managers
 
         private void OnTurnSwitched(object sender, TurnSwitchedEventArgs e)
         {
+            HidePlayerUI();
             if (e.IsPlayerTurn)
             {
                 ShowPlayerUI(e.IsCombatTurn);

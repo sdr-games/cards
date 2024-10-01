@@ -29,6 +29,11 @@ namespace SDRGames.Whist.CardsCombatModule.Managers
                 _deckPreviewManagers[i].Initialize(userInputController, _decks[i]);
                 _deckPreviewManagers[i].DeckPreviewClicked += OnDeckPreviewClicked;
             }
+            ResetSelection();
+        }
+
+        public void ResetSelection()
+        {
             SelectedDeck = _decks[0];
             _cardsListManager.Initialize(SelectedDeck.Cards);
         }

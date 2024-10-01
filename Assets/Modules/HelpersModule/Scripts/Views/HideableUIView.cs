@@ -9,14 +9,14 @@ namespace SDRGames.Whist.HelpersModule.Views
     {
         [SerializeField] private CanvasGroup _canvasGroup;
 
-        public void Show()
+        public virtual void Show()
         {
             _canvasGroup.alpha = 1;
             _canvasGroup.interactable = true;
             _canvasGroup.blocksRaycasts = true;
         }
 
-        public void Hide()
+        public virtual void Hide()
         {
             _canvasGroup.alpha = 0;
             _canvasGroup.interactable = false;

@@ -23,7 +23,7 @@ namespace SDRGames.Whist.TurnSwitchModule.Managers
         [SerializeField] private int _restorationTurnCooldown = 10;
 
         private float _currentRestorationTurnChance = 0;
-        private uint _currentRestorationTurnCooldown = 0;
+        private int _currentRestorationTurnCooldown = 0;
         private bool _isCombatTurn;
         private List<Points> _charactersPoints;
         private List<CharacterInfoScriptableObject> _characterInfoScriptableObjects;
@@ -51,10 +51,14 @@ namespace SDRGames.Whist.TurnSwitchModule.Managers
         {
             _timerManager.StopTimer();
             CalculateRestorationTurnChance();
-            if(_currentRestorationTurnCooldown >= _restorationTurnCooldown && _currentRestorationTurnChance < UnityEngine.Random.Range(0, 100))
+            if(_currentRestorationTurnCooldown < _restorationTurnCooldown && _currentRestorationTurnChance < UnityEngine.Random.Range(0, 100))
             {
                 _isCombatTurn = true;
                 _currentRestorationTurnCooldown--;
+                if(_currentRestorationTurnChance < 0)
+                {
+                    _currentRestorationTurnChance = 0;
+                }
                 _turnsQueueView.NaturalShiftQueue();
                 return;
             }
@@ -72,7 +76,7 @@ namespace SDRGames.Whist.TurnSwitchModule.Managers
                 {
                     case "Armor":
                     case "Barrier":
-                        if (points.CurrentValue == 0)
+                        if (points.CurrentValue == 0 && points.MaxValue > 0)
                         {
                             _currentRestorationTurnChance += 12.5f;
                         }
