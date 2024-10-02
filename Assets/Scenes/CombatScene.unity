@@ -224,12 +224,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a03053f8d148cc64bbc46e06ec59848c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _canvasGroup: {fileID: 54196805}
   _decks:
   - {fileID: 11400000, guid: b53221eca4f4a244eaeb72ca64e7dbe5, type: 2}
   - {fileID: 11400000, guid: 133861e3e3c99e148a54e0d0c16dbf95, type: 2}
   _cardsListManager: {fileID: 1366035642}
   _decksListManager: {fileID: 1797287280}
-  _canvasGroup: {fileID: 54196805}
   _selectButton: {fileID: 1133765732}
 --- !u!1 &58664046
 GameObject:

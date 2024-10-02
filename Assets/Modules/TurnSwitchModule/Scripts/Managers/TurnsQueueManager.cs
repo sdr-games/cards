@@ -51,20 +51,15 @@ namespace SDRGames.Whist.TurnSwitchModule.Managers
         {
             _timerManager.StopTimer();
             CalculateRestorationTurnChance();
-            if(_currentRestorationTurnCooldown < _restorationTurnCooldown && _currentRestorationTurnChance < UnityEngine.Random.Range(0, 100))
+            _isCombatTurn = _currentRestorationTurnCooldown > 0 || _currentRestorationTurnChance < UnityEngine.Random.Range(0, 100);
+            if (_isCombatTurn)
             {
-                _isCombatTurn = true;
                 _currentRestorationTurnCooldown--;
-                if(_currentRestorationTurnChance < 0)
-                {
-                    _currentRestorationTurnChance = 0;
-                }
                 _turnsQueueView.NaturalShiftQueue();
                 return;
             }
-            _isCombatTurn = false;
             _turnsQueueView.RestorationTurnShiftQueue();
-            _currentRestorationTurnChance = 0;
+            _currentRestorationTurnCooldown = _restorationTurnCooldown;
         }
 
         public void CalculateRestorationTurnChance()
@@ -124,17 +119,19 @@ namespace SDRGames.Whist.TurnSwitchModule.Managers
 
         private void OnShiftDone(object sender, ShiftDoneEventArgs e)
         {
-            bool isPlayerTurn = _characterInfoScriptableObjects[e.CurrentIndex].IsPlayer;
+            bool isPlayerTurn;
             //if (isPlayerTurn)
             //{
             if (_isCombatTurn)
             {
+                isPlayerTurn = _characterInfoScriptableObjects[e.CurrentIndex].IsPlayer;
                 _timerManager.StartCombatTimer();
                 string turnSwitchMessage = isPlayerTurn ? _playerTurnSwitchMessage.GetLocalizedText() : _enemyTurnSwitchMessage.GetLocalizedText();
                 Notification.Show(turnSwitchMessage);
             }
             else
             {
+                isPlayerTurn = true;
                 _timerManager.StartRestorationTimer();
                 Notification.Show(_restorationTurnSwitchMessage.GetLocalizedText());
             }
