@@ -168,7 +168,7 @@ namespace SDRGames.Whist.DomainModule.Managers
             _turnsQueueManager.TurnSwitched += OnTurnSwitched;
             _turnsQueueManager.Initialize(characterInfoScriptableObjects);
 
-            //_playerCharacterCombatManager.TakePhysicalDamage(16);
+            _playerCharacterCombatManager.TakePhysicalDamage(16);
         }
 
         private void ShowPlayerUI(bool isCombatTurn)
