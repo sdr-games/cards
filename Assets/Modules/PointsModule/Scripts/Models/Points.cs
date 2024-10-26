@@ -16,6 +16,7 @@ namespace SDRGames.Whist.PointsModule.Models
         [field: SerializeField] public float RegenerationPower { get; private set; }
 
         public float CurrentValue { get; private set; }
+        public float CurrentValueInPercents { get; private set; }
         public float ReservedValue { get; private set; }
         public float MaxValue { get; private set; }
 
@@ -38,9 +39,9 @@ namespace SDRGames.Whist.PointsModule.Models
 
         public void CalculateValues()
         {
-            float currentValueInPercents = GetValueInPercents(CurrentValue);
+            CurrentValueInPercents = GetValueInPercents(CurrentValue);
             CalculateMaxValue();
-            CalculateCurrentValue(currentValueInPercents);
+            CalculateCurrentValue(CurrentValueInPercents);
             ReservedValue = 0;
         }
 
@@ -80,7 +81,8 @@ namespace SDRGames.Whist.PointsModule.Models
                 CurrentValue = MaxValue;
             }
             ResetReservedValue(ReservedValue);
-            CurrentValueChanged?.Invoke(this, new ValueChangedEventArgs(CurrentValue, GetValueInPercents(CurrentValue), MaxValue));
+            CurrentValueInPercents = GetValueInPercents(CurrentValue);
+            CurrentValueChanged?.Invoke(this, new ValueChangedEventArgs(CurrentValue, CurrentValueInPercents, MaxValue));
         }
 
         public void DecreaseCurrentValue(float cost)
@@ -91,7 +93,8 @@ namespace SDRGames.Whist.PointsModule.Models
             }
             CurrentValue -= cost;
             ResetReservedValue(ReservedValue);
-            CurrentValueChanged?.Invoke(this, new ValueChangedEventArgs(CurrentValue, GetValueInPercents(CurrentValue), MaxValue));
+            CurrentValueInPercents = GetValueInPercents(CurrentValue);
+            CurrentValueChanged?.Invoke(this, new ValueChangedEventArgs(CurrentValue, CurrentValueInPercents, MaxValue));
         }
 
         public void DecreaseReservedValue(float value)
@@ -163,7 +166,8 @@ namespace SDRGames.Whist.PointsModule.Models
         private void CalculateCurrentValue(float currentValueInPercents)
         {
             CurrentValue = MaxValue * currentValueInPercents / 100;
-            CurrentValueChanged?.Invoke(this, new ValueChangedEventArgs(CurrentValue, GetValueInPercents(CurrentValue), MaxValue));
+            CurrentValueInPercents = GetValueInPercents(CurrentValue);
+            CurrentValueChanged?.Invoke(this, new ValueChangedEventArgs(CurrentValue, CurrentValueInPercents, MaxValue));
         }
     }
 }
