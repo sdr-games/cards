@@ -6,6 +6,7 @@ using SDRGames.Whist.CardsCombatModule.Managers;
 using SDRGames.Whist.CharacterModule.Managers;
 using SDRGames.Whist.CharacterModule.ScriptableObjects;
 using SDRGames.Whist.HelpersModule.Views;
+using SDRGames.Whist.MeleeCombatModule.AI.Managers;
 using SDRGames.Whist.MeleeCombatModule.Managers;
 using SDRGames.Whist.RestorationModule.Managers;
 using SDRGames.Whist.TurnSwitchModule.Managers;
@@ -17,7 +18,7 @@ using UnityEngine;
 
 namespace SDRGames.Whist.DomainModule.Managers
 {
-    public class CombatUIInitializer : MonoBehaviour
+    public class CombatSceneInitializer : MonoBehaviour
     {
         [SerializeField] private UserInputController _userInputController;
         [SerializeField] private TurnsQueueManager _turnsQueueManager;
@@ -35,6 +36,7 @@ namespace SDRGames.Whist.DomainModule.Managers
         [SerializeField] private HideableUIView _playerSwitchableUI;
 
         [Header("ENEMY")][SerializeField] private EnemyCharacterCombatManager _enemyCharacterCombatManager;
+        [SerializeField] private EnemyMeleeBehaviorManager _enemyMeleeBehaviorManager;
         //[SerializeField] private CanvasGroup _enemySwitchableUI;
 
         private void OnEnable()
@@ -138,8 +140,19 @@ namespace SDRGames.Whist.DomainModule.Managers
                 Application.Quit();
             }
 
+            if (_enemyMeleeBehaviorManager == null)
+            {
+                Debug.LogError("Enemy Melee Behavior Manager не был назначен");
+                #if UNITY_EDITOR
+                    EditorApplication.isPlaying = false;
+                #endif
+                Application.Quit();
+            }
+
             _playerCharacterCombatManager.Initialize();
             _enemyCharacterCombatManager.Initialize();
+
+            _enemyMeleeBehaviorManager.Initialize(_enemyCharacterCombatManager, _playerCharacterCombatManager);
 
             _abilitiesQueueManager.Initialize(_userInputController);
             _abilitiesQueueManager.ApplyButtonClicked += OnQueueApplyButtonClicked;
@@ -167,8 +180,6 @@ namespace SDRGames.Whist.DomainModule.Managers
             characterInfoScriptableObjects.Add(_enemyCharacterCombatManager.GetParams());
             _turnsQueueManager.TurnSwitched += OnTurnSwitched;
             _turnsQueueManager.Initialize(characterInfoScriptableObjects);
-
-            _playerCharacterCombatManager.TakePhysicalDamage(16);
         }
 
         private void ShowPlayerUI(bool isCombatTurn)
@@ -310,6 +321,8 @@ namespace SDRGames.Whist.DomainModule.Managers
                 ShowPlayerUI(e.IsCombatTurn);
                 return;
             }
+            _enemyMeleeBehaviorManager.ChooseAndAppyAbilities();
+            _turnsQueueManager.SwitchTurn();
         }
     }
 }

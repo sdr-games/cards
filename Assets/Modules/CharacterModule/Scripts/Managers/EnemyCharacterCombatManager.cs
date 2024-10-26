@@ -25,45 +25,93 @@ namespace SDRGames.Whist.CharacterModule.Managers
             return _characterParamsModel;
         }
 
-        public override void TakeMagicalDamage(int damage)
-        {
-            throw new System.NotImplementedException();
-        }
-
         public override void TakePhysicalDamage(int damage)
         {
             _characterCombatParamsPresenter.TakePhysicalDamage(damage);
         }
 
+        public override void TakeMagicalDamage(int damage)
+        {
+            _characterCombatParamsPresenter.TakeMagicalDamage(damage);
+        }
+
         public override void TakeTrueDamage(int damage)
         {
-            throw new System.NotImplementedException();
+            _characterCombatParamsPresenter.TakeTrueDamage(damage);
         }
 
         public override void RestoreArmor(int restoration)
         {
-            throw new System.NotImplementedException();
+            _characterCombatParamsPresenter.RestoreArmor(restoration);
         }
 
         public override void RestoreBarrier(int restoration)
         {
-            throw new System.NotImplementedException();
+            _characterCombatParamsPresenter.RestoreBarrier(restoration);
         }
 
         public override void RestoreHealth(int restoration)
         {
-            throw new System.NotImplementedException();
+            _characterCombatParamsPresenter.RestoreHealth(restoration);
         }
 
         public override void RestoreStamina(int restoration)
         {
-            throw new System.NotImplementedException();
+            _characterCombatParamsPresenter.RestoreStamina(restoration);
         }
 
         public override void RestoreBreath(int restoration)
         {
-            throw new System.NotImplementedException();
+            _characterCombatParamsPresenter.RestoreBreath(restoration);
         }
+
+        public bool HasEnoughStaminaPoints(float cost)
+        {
+            if (_characterParamsModel.Stamina.CurrentValue < _characterParamsModel.Stamina.ReservedValue + cost)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public void SpendStaminaPoints(float totalCost)
+        {
+            _characterParamsModel.Stamina.DecreaseCurrentValue(totalCost);
+        }
+
+        //public void RestoreStaminaPoints()
+        //{
+        //    _characterCombatParamsPresenter.RestoreStaminaPoints();
+        //}
+
+        //public void ResetStaminaReservedPoints(float reverseAmount)
+        //{
+        //    _characterCombatParamsPresenter.ResetStaminaReservedPoints(reverseAmount);
+        //}
+
+        public bool HasEnoughBreathPoints(float cost)
+        {
+            if (_characterParamsModel.Breath.CurrentValue < _characterParamsModel.Breath.ReservedValue + cost)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        //public void SpendBreathPoints(float totalCost)
+        //{
+        //    _characterCombatParamsPresenter.SpendBreathPoints(totalCost);
+        //}
+
+        //public void RestoreBreathPoints()
+        //{
+        //    _characterCombatParamsPresenter.RestoreBreathPoints();
+        //}
+
+        //public void ResetBreathReservedPoints(float reverseAmount)
+        //{
+        //    _characterCombatParamsPresenter.ResetBreathReservedPoints(reverseAmount);
+        //}
 
         public void ApplyPeriodicalEffects()
         {

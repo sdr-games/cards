@@ -17,18 +17,31 @@ namespace SDRGames.Whist.AbilitiesQueueModule.ScriptableObjects
         [field: SerializeField] public int Cost { get; private set; }
         [field: SerializeField] public AbilityLogicScriptableObject[] AbilityLogics { get; private set; }
 
-        public void ApplyLogics(CharacterCombatManager playerCombatManager, List<CharacterCombatManager> enemiesCombatManager, List<int> selectedEnemiesIndexes)
+        public void ApplyLogics(CharacterCombatManager casterCombatManager, CharacterCombatManager targetCombatManager)
         {
-            foreach (var logic in AbilityLogics)
+            foreach (AbilityLogicScriptableObject logic in AbilityLogics)
+            {
+                if (logic.SelfUsable)
+                {
+                    logic.Apply(casterCombatManager);
+                    continue;
+                }
+                logic.Apply(targetCombatManager);
+            }
+        }
+
+        public void ApplyLogics(CharacterCombatManager casterCombatManager, List<CharacterCombatManager> targetsCombatManager, List<int> selectedTargetsIndexes)
+        {
+            foreach (AbilityLogicScriptableObject logic in AbilityLogics)
             {
                 if(logic.SelfUsable)
                 {
-                    logic.Apply(playerCombatManager);
+                    logic.Apply(casterCombatManager);
                     continue;
                 }
-                foreach(int index in selectedEnemiesIndexes)
+                foreach(int index in selectedTargetsIndexes)
                 {
-                    logic.Apply(enemiesCombatManager[index]);
+                    logic.Apply(targetsCombatManager[index]);
                 }
             }
         }

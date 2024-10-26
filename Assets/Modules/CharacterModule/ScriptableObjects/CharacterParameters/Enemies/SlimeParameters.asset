@@ -17,35 +17,30 @@ MonoBehaviour:
   <Level>k__BackingField: 0
   <Initiative>k__BackingField: 40
   <HealthPoints>k__BackingField:
-    <Name>k__BackingField: 
     <BaseValue>k__BackingField: 10
     <Bonus>k__BackingField: 0
     <RelatedBonuses>k__BackingField: []
     <RegenerationSpeed>k__BackingField: 0
     <RegenerationPower>k__BackingField: 0
-  <StaminaPoints>k__BackingField:
-    <Name>k__BackingField: 
-    <BaseValue>k__BackingField: 0
+  <Stamina>k__BackingField:
+    <BaseValue>k__BackingField: 10
     <Bonus>k__BackingField: 0
     <RelatedBonuses>k__BackingField: []
     <RegenerationSpeed>k__BackingField: 0
     <RegenerationPower>k__BackingField: 0
-  <BreathPoints>k__BackingField:
-    <Name>k__BackingField: 
+  <Breath>k__BackingField:
     <BaseValue>k__BackingField: 0
     <Bonus>k__BackingField: 0
     <RelatedBonuses>k__BackingField: []
     <RegenerationSpeed>k__BackingField: 0
     <RegenerationPower>k__BackingField: 0
   <Armor>k__BackingField:
-    <Name>k__BackingField: 
     <BaseValue>k__BackingField: 10
     <Bonus>k__BackingField: 0
     <RelatedBonuses>k__BackingField: []
     <RegenerationSpeed>k__BackingField: 0
     <RegenerationPower>k__BackingField: 0
   <Barrier>k__BackingField:
-    <Name>k__BackingField: 
     <BaseValue>k__BackingField: 0
     <Bonus>k__BackingField: 0
     <RelatedBonuses>k__BackingField: []
