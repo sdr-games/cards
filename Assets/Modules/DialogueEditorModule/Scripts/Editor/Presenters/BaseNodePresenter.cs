@@ -1,4 +1,5 @@
 using SDRGames.Whist.DialogueEditorModule.Views;
+using SDRGames.Whist.LocalizationModule.Models;
 
 using UnityEngine;
 

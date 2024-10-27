@@ -11,6 +11,8 @@ namespace SDRGames.Whist.DialogueEditorModule
 {
     public class DialogueEditorWindow : EditorWindow
     {
+        public static readonly string MODULE_ROOT = "Assets/Modules/DialogueModule";
+
         private GraphManager _graphView;
 
         private readonly string _defaultFileName = "";
@@ -97,7 +99,7 @@ namespace SDRGames.Whist.DialogueEditorModule
                 _fileNameTextField.value = "NewDialogueGraph";
             }
 
-            var path = EditorUtility.SaveFilePanel("Save dialogue graph", "", $"{_fileNameTextField.value}.asset", "asset");
+            var path = EditorUtility.SaveFilePanel("Save dialogue graph", $"{MODULE_ROOT}/ScriptableObjects/DialogueGraphs", $"{_fileNameTextField.value}.asset", "asset");
 
             if (string.IsNullOrEmpty(path))
             {
@@ -112,7 +114,7 @@ namespace SDRGames.Whist.DialogueEditorModule
 
         private void Load()
         {
-            string filepath = EditorUtility.OpenFilePanel("Dialogue Graphs", "Assets/Modules/DialogueModule/ScriptableObjects/DialogueGraphs", "asset");
+            string filepath = EditorUtility.OpenFilePanel("Dialogue Graphs", $"{MODULE_ROOT}/ScriptableObjects/DialogueGraphs", "asset");
 
             if (string.IsNullOrEmpty(filepath))
             {

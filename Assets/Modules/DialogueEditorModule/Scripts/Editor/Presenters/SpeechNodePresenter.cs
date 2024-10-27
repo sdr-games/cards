@@ -3,6 +3,7 @@ using System;
 using SDRGames.Whist.DialogueEditorModule.Models;
 using SDRGames.Whist.DialogueEditorModule.Views;
 using SDRGames.Whist.DialogueModule.ScriptableObjects;
+using SDRGames.Whist.LocalizationModule.Models;
 
 using UnityEngine;
 
@@ -37,6 +38,11 @@ namespace SDRGames.Whist.DialogueEditorModule.Presenters
         protected override void OnNodeNameTextFieldChanged(object sender, NodeNameChangedEventArgs e)
         {
             _data.SetNodeName(e.NewNode.NodeName);
+        }
+
+        private void OnTextLocalizationFieldChanged(object sender, LocalizationDataChangedEventArgs e)
+        {
+            _data.SetTextLocalization(e.TextLocalization);
         }
 
         protected void OnSavedToSO(object sender, SavedToSOEventArgs<DialogueSpeechScriptableObject> e)

@@ -47,7 +47,7 @@ namespace SDRGames.Whist.TalentsEditorModule.Presenters
 
         protected override void OnDescriptionLocalizationFieldChanged(object sender, LocalizationDataChangedEventArgs e)
         {
-            _data.SetDescription(e.DescriptionLocalization);
+            _data.SetDescription(e.TextLocalization);
         }
 
         protected override void OnCostTextFieldChanged(object sender, CostChangedEventArgs e)

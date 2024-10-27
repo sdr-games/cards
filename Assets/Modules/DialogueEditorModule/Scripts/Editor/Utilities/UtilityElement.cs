@@ -114,53 +114,6 @@ namespace SDRGames.Whist.DialogueEditorModule
             return dropdownField;
         }
 
-        public static Box CreateLocalizationBox(LocalizationData localizationSaveData, string uss_class = "")
-        {
-            List<string> stringTablesNames = new List<string>();
-            Box box = new Box();
-
-            foreach (var stringTable in LocalizationEditorSettings.GetStringTableCollections())
-            {
-                //if (stringTable.name.Contains("Dialogue"))
-                //{
-                stringTablesNames.Add(stringTable.name);
-                //}
-            }
-            if (stringTablesNames.Count > 0)
-            {
-                if (string.IsNullOrEmpty(localizationSaveData.SelectedLocalizationTable))
-                {
-                    localizationSaveData.SetLocalizationTable(stringTablesNames[0]);
-                }
-                Box subBox = new Box();
-
-                DropdownField localizationTableDropdown = CreateDropdownField
-                (
-                    stringTablesNames,
-                    localizationSaveData.SelectedLocalizationTable,
-                    null,
-                    callback =>
-                    {
-                        localizationSaveData.SetLocalizationTable(callback.newValue);
-                        OnLocalizationDropdownChange(localizationSaveData, subBox, uss_class);
-                    }
-                );
-                localizationTableDropdown.AddClasses(uss_class);
-
-                DropdownField localizationTextDropdown = CreateLocalizationEntriesDropdown(localizationSaveData, subBox, uss_class);
-                TextField localizationText = CreateTextArea(localizationSaveData.LocalizedTextPreview, isReadOnly: true);
-
-                box.Add(localizationTableDropdown);
-                if (localizationTextDropdown != null)
-                {
-                    subBox.Add(localizationTextDropdown);
-                    subBox.Add(localizationText);
-                }
-                box.Add(subBox);
-            }
-            return box;
-        }
-
         public static ObjectField CreateObjectField(Type objectType, UnityEngine.Object value = null, string label = null, EventCallback<ChangeEvent<UnityEngine.Object>> onValueChanged = null)
         {
             ObjectField objectField = new ObjectField()
@@ -259,18 +212,66 @@ namespace SDRGames.Whist.DialogueEditorModule
         //    return box;
         //}
 
-        private static void OnLocalizationDropdownChange(LocalizationData localizationSaveData, Box box, string uss_class = "")
+        public static Box CreateLocalizationBox(LocalizationData localizationSaveData, string uss_class = "", EventHandler<LocalizationDataChangedEventArgs> onValueChangedEvent = null)
+        {
+            List<string> stringTablesNames = new List<string>();
+            Box box = new Box();
+
+            foreach (var stringTable in LocalizationEditorSettings.GetStringTableCollections())
+            {
+                //if (stringTable.name.Contains("Dialogue"))
+                //{
+                stringTablesNames.Add(stringTable.name);
+                //}
+            }
+            if (stringTablesNames.Count > 0)
+            {
+                if (string.IsNullOrEmpty(localizationSaveData.SelectedLocalizationTable))
+                {
+                    localizationSaveData.SetLocalizationTable(stringTablesNames[0]);
+                }
+                Box subBox = new Box();
+
+                DropdownField localizationTableDropdown = CreateDropdownField
+                (
+                    stringTablesNames,
+                    localizationSaveData.SelectedLocalizationTable,
+                    null,
+                    callback =>
+                    {
+                        localizationSaveData.SetLocalizationTable(callback.newValue);
+                        OnLocalizationDropdownChange(localizationSaveData, subBox, uss_class, onValueChangedEvent);
+                    }
+                );
+                localizationTableDropdown.AddClasses(uss_class);
+
+                DropdownField localizationTextDropdown = CreateLocalizationEntriesDropdown(localizationSaveData, subBox, uss_class, onValueChangedEvent);
+                TextField localizationText = CreateTextArea(localizationSaveData.LocalizedTextPreview, isReadOnly: true);
+
+                box.Add(localizationTableDropdown);
+                if (localizationTextDropdown != null)
+                {
+                    subBox.Add(localizationTextDropdown);
+                    subBox.Add(localizationText);
+                }
+                box.Add(subBox);
+            }
+            return box;
+        }
+
+        private static void OnLocalizationDropdownChange(LocalizationData localizationSaveData, Box box, string uss_class, EventHandler<LocalizationDataChangedEventArgs> onValueChangedEvent)
         {
             box.Clear();
-            DropdownField localizationTextDropdown = CreateLocalizationEntriesDropdown(localizationSaveData, box, uss_class);
+            DropdownField localizationTextDropdown = CreateLocalizationEntriesDropdown(localizationSaveData, box, uss_class, onValueChangedEvent);
             TextField localizationText = CreateTextArea(localizationSaveData.LocalizedTextPreview, isReadOnly: true);
+            onValueChangedEvent?.Invoke(null, new LocalizationDataChangedEventArgs(localizationSaveData));
             if (localizationTextDropdown != null)
             {
                 box.Add(localizationTextDropdown);
                 box.Add(localizationText);
             }
         }
-        private static DropdownField CreateLocalizationEntriesDropdown(LocalizationData localizationSaveData, Box box, string uss_class)
+        private static DropdownField CreateLocalizationEntriesDropdown(LocalizationData localizationSaveData, Box box, string uss_class, EventHandler<LocalizationDataChangedEventArgs> onValueChangedEvent)
         {
             Dictionary<string, string> localizationEntries = new Dictionary<string, string>();
             var currentLocale = LocalizationSettings.ProjectLocale.Formatter.ToString();
@@ -297,7 +298,7 @@ namespace SDRGames.Whist.DialogueEditorModule
                     {
                         localizationSaveData.SetEntryKey(callback.newValue);
                         localizationSaveData.SetPreviewText(localizationEntries[localizationSaveData.SelectedEntryKey]);
-                        OnLocalizationDropdownChange(localizationSaveData, box, uss_class);
+                        OnLocalizationDropdownChange(localizationSaveData, box, uss_class, onValueChangedEvent);
                     }
                 );
                 localizationTextDropdown.AddClasses(uss_class);

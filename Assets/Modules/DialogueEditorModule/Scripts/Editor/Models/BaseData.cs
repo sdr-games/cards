@@ -2,6 +2,8 @@ using System;
 
 using SDRGames.Whist.DialogueModule.ScriptableObjects;
 
+using UnityEditor;
+
 using UnityEngine;
 
 using static SDRGames.Whist.DialogueModule.ScriptableObjects.DialogueScriptableObject;
@@ -37,6 +39,8 @@ namespace SDRGames.Whist.DialogueEditorModule.Models
                 NodeName,
                 NodeType
             );
+            UtilityIO.SaveAsset(dialogueSO);
+            EditorUtility.SetDirty(dialogueSO);
             return dialogueSO;
         }
     }
