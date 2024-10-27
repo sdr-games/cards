@@ -4,6 +4,8 @@ using SDRGames.Whist.CharacterModule.ScriptableObjects;
 using SDRGames.Whist.DialogueModule.ScriptableObjects;
 using SDRGames.Whist.LocalizationModule.Models;
 
+using UnityEditor;
+
 using UnityEngine;
 
 using static SDRGames.Whist.DialogueModule.ScriptableObjects.DialogueScriptableObject;
@@ -38,6 +40,11 @@ namespace SDRGames.Whist.DialogueEditorModule.Models
             Character = character;
         }
 
+        public void SetTextLocalization(LocalizationData textLocalization)
+        {
+            TextLocalization = textLocalization;
+        }
+
         public DialogueAnswerScriptableObject SaveToSO(DialogueAnswerScriptableObject dialogueSO)
         {
             dialogueSO.Initialize(
@@ -46,6 +53,8 @@ namespace SDRGames.Whist.DialogueEditorModule.Models
                 Character,
                 TextLocalization
             );
+            UtilityIO.SaveAsset(dialogueSO);
+            EditorUtility.SetDirty(dialogueSO);
             return dialogueSO;
         }
     }

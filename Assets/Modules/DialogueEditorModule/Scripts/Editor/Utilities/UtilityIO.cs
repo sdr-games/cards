@@ -127,6 +127,9 @@ namespace SDRGames.Whist.DialogueEditorModule
             }
 
             UpdateDialoguesChoicesConnections(createdDialogues);
+
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh();
         }
 
         private static void UpdateDialoguesChoicesConnections(Dictionary<string, DialogueScriptableObject> createdDialogues)
@@ -150,6 +153,8 @@ namespace SDRGames.Whist.DialogueEditorModule
                         {
                             dialogueAnswer.SetNextSpech(createdDialogues[inputNodeID] as DialogueSpeechScriptableObject);
                         }
+                        SaveAsset(createdDialogues[node.ID]);
+                        SaveAsset(createdDialogues[inputNodeID]);
                     }
                 }
             }

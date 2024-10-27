@@ -6,11 +6,11 @@ namespace SDRGames.Whist.LocalizationModule.Models
 {
     public class LocalizationDataChangedEventArgs : EventArgs
     {
-        public LocalizationData DescriptionLocalization { get; private set; }
+        public LocalizationData TextLocalization { get; private set; }
 
-        public LocalizationDataChangedEventArgs(LocalizationData descriptionLocalization)
+        public LocalizationDataChangedEventArgs(LocalizationData textLocalization)
         {
-            DescriptionLocalization = descriptionLocalization;
+            TextLocalization = textLocalization;
         }
     }
 }

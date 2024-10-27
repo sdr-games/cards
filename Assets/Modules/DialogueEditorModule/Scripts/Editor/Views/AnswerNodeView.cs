@@ -62,8 +62,7 @@ namespace SDRGames.Whist.DialogueEditorModule.Views
             characterFoldout.Add(characterObjectField);
 
             Foldout textFoldout = UtilityElement.CreateFoldout("Answer Text");
-
-            Box localizationBox = UtilityElement.CreateLocalizationBox(TextLocalization);
+            Box localizationBox = UtilityElement.CreateLocalizationBox(TextLocalization, "", TextLocalizationFieldChanged);
             textFoldout.Add(localizationBox);
 
             customDataContainer.Add(characterFoldout);

@@ -8,6 +8,7 @@ using UnityEditor.Experimental.GraphView;
 
 using UnityEngine;
 using UnityEngine.UIElements;
+using SDRGames.Whist.LocalizationModule.Models;
 
 namespace SDRGames.Whist.DialogueEditorModule.Views
 {
@@ -24,6 +25,7 @@ namespace SDRGames.Whist.DialogueEditorModule.Views
         [field: SerializeField] public Vector2 Position { get; protected set; }
 
         public event EventHandler<NodeNameChangedEventArgs> NodeNameTextFieldChanged;
+        public EventHandler<LocalizationDataChangedEventArgs> TextLocalizationFieldChanged;
         public event EventHandler PortDisconnected;
 
         public event EventHandler<SavedToSOEventArgs<DialogueScriptableObject>> SavedToSO;
