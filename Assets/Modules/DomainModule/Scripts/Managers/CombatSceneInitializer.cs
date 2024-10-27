@@ -187,11 +187,14 @@ namespace SDRGames.Whist.DomainModule.Managers
             if (isCombatTurn)
             {
                 _meleeAttackListManager.Show();
+                _selectedDeckManager.Show();
                 _potionListManager.Hide();
             }
             else
             {
                 _meleeAttackListManager.Hide();
+                _deckOnHandsManager.Hide();
+                _selectedDeckManager.Hide();
                 _potionListManager.Show();
             }
             _playerSwitchableUI.Show();
