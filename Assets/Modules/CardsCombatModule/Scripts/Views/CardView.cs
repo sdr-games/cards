@@ -1,3 +1,5 @@
+using SDRGames.Whist.LocalizationModule.Models;
+
 using TMPro;
 
 using UnityEditor;
@@ -11,7 +13,7 @@ namespace SDRGames.Whist.CardsCombatModule.Views
         [SerializeField] private RectTransform _rectTransform;
         [SerializeField] private TextMeshProUGUI _costText;
 
-        public void Initialize(Vector3 position, string nameText, string descriptionText, Sprite illustrationSprite, string costText)
+        public void Initialize(Vector3 position, LocalizedString nameText, LocalizedString descriptionText, Sprite illustrationSprite, string costText)
         {
             transform.localPosition = position;
             SetRotation();

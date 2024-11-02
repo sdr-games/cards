@@ -7,6 +7,8 @@ namespace SDRGames.Whist.CharacterModule.Models
         public int Duration { get; private set; }
         public Action Action { get; private set; }
 
+        public event EventHandler<DurationChangedEventArgs> DurationChanged;
+
         public PeriodicalEffect(int duration, Action action)
         {
             Duration = duration;
@@ -16,6 +18,13 @@ namespace SDRGames.Whist.CharacterModule.Models
         public void IncreaseDuration(int additionalDuration)
         {
             Duration += additionalDuration;
+            DurationChanged?.Invoke(this, new DurationChangedEventArgs(Duration));
+        }
+
+        public void DecreaseDuration(int duration)
+        {
+            Duration -= duration;
+            DurationChanged?.Invoke(this, new DurationChangedEventArgs(Duration));
         }
     }
 }

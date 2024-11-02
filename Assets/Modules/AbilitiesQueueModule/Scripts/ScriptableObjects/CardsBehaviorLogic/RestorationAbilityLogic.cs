@@ -22,7 +22,7 @@ namespace SDRGames.Whist.AbilitiesQueueModule.ScriptableObjects
                 case RestorationType.Armor:
                     if (RoundsCount > 1)
                     {
-                        characterCombatManager.SetPeriodicalChanges(RestorationValue, RoundsCount, () => characterCombatManager.RestoreArmor(RestorationValue));
+                        characterCombatManager.SetPeriodicalChanges(RestorationValue, RoundsCount, EffectIcon, () => characterCombatManager.RestoreArmor(RestorationValue));
                         break;
                     }
                     characterCombatManager.RestoreArmor(RestorationValue);
@@ -31,7 +31,7 @@ namespace SDRGames.Whist.AbilitiesQueueModule.ScriptableObjects
                 default:
                     if (RoundsCount > 1)
                     {
-                        characterCombatManager.SetPeriodicalChanges(RestorationValue, RoundsCount, () => characterCombatManager.RestoreBarrier(RestorationValue));
+                        characterCombatManager.SetPeriodicalChanges(RestorationValue, RoundsCount, EffectIcon, () => characterCombatManager.RestoreBarrier(RestorationValue));
                         break;
                     }
                     characterCombatManager.RestoreBarrier(RestorationValue);
@@ -39,7 +39,7 @@ namespace SDRGames.Whist.AbilitiesQueueModule.ScriptableObjects
                 case RestorationType.Health:
                     if (RoundsCount > 1)
                     {
-                        characterCombatManager.SetPeriodicalChanges(RestorationValue, RoundsCount, () => characterCombatManager.RestoreHealth(RestorationValue));
+                        characterCombatManager.SetPeriodicalChanges(RestorationValue, RoundsCount, EffectIcon, () => characterCombatManager.RestoreHealth(RestorationValue));
                         break;
                     }
                     characterCombatManager.RestoreHealth(RestorationValue);
@@ -47,7 +47,7 @@ namespace SDRGames.Whist.AbilitiesQueueModule.ScriptableObjects
                 case RestorationType.Stamina:
                     if (RoundsCount > 1)
                     {
-                        characterCombatManager.SetPeriodicalChanges(RestorationValue, RoundsCount, () => characterCombatManager.RestoreStamina(RestorationValue));
+                        characterCombatManager.SetPeriodicalChanges(RestorationValue, RoundsCount, EffectIcon, () => characterCombatManager.RestoreStamina(RestorationValue));
                         break;
                     }
                     characterCombatManager.RestoreStamina(RestorationValue);
@@ -55,7 +55,7 @@ namespace SDRGames.Whist.AbilitiesQueueModule.ScriptableObjects
                 case RestorationType.Breath:
                     if (RoundsCount > 1)
                     {
-                        characterCombatManager.SetPeriodicalChanges(RestorationValue, RoundsCount, () => characterCombatManager.RestoreBreath(RestorationValue));
+                        characterCombatManager.SetPeriodicalChanges(RestorationValue, RoundsCount, EffectIcon, () => characterCombatManager.RestoreBreath(RestorationValue));
                         break;
                     }
                     characterCombatManager.RestoreBreath(RestorationValue);

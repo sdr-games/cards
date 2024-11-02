@@ -50,7 +50,7 @@ namespace SDRGames.Whist.AbilitiesQueueModule.ScriptableObjects
         {
             if (Name == null)
             {
-                Debug.LogError("Name не был назначен");
+                Debug.LogError($"Name не был назначен у {name}");
                 #if UNITY_EDITOR
                     EditorApplication.isPlaying = false;
                 #endif
@@ -58,7 +58,7 @@ namespace SDRGames.Whist.AbilitiesQueueModule.ScriptableObjects
 
             if (Description == null)
             {
-                Debug.LogError("Description не был назначен");
+                Debug.LogError($"Description не был назначен у {name}");
                 #if UNITY_EDITOR
                     EditorApplication.isPlaying = false;
                 #endif
@@ -66,7 +66,7 @@ namespace SDRGames.Whist.AbilitiesQueueModule.ScriptableObjects
 
             if (Icon == null)
             {
-                Debug.LogError("Icon не был назначен");
+                Debug.LogError($"Icon не был назначен у {name}");
                 #if UNITY_EDITOR
                     EditorApplication.isPlaying = false;
                 #endif

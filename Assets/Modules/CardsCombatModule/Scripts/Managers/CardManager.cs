@@ -1,7 +1,7 @@
 using System;
 
+using SDRGames.Whist.AbilitiesQueueModule.ScriptableObjects;
 using SDRGames.Whist.CardsCombatModule.Presenters;
-using SDRGames.Whist.CardsCombatModule.ScriptableObjects;
 using SDRGames.Whist.CardsCombatModule.Views;
 using SDRGames.Whist.UserInputModule.Controller;
 

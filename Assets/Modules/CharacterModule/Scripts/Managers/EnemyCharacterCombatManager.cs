@@ -5,6 +5,8 @@ using SDRGames.Whist.CharacterModule.Views;
 using UnityEditor;
 
 using UnityEngine;
+using System;
+using System.Collections.Generic;
 
 namespace SDRGames.Whist.CharacterModule.Managers
 {
@@ -65,6 +67,17 @@ namespace SDRGames.Whist.CharacterModule.Managers
             _characterCombatParamsPresenter.RestoreBreath(restoration);
         }
 
+        public override void SetPeriodicalChanges(int valuePerRound, int roundsCount, Sprite effectIcon, Action changingAction)
+        {
+            if (_periodicalHealthChanges.ContainsKey(valuePerRound))
+            {
+                _periodicalHealthChanges[valuePerRound].IncreaseDuration(roundsCount);
+                return;
+            }
+            PeriodicalEffectView periodicalEffectView = Instantiate(_periodicalEffectViewPrefab, _characterCombatParamsView.EffectsBar.transform, false);
+            _periodicalHealthChanges.Add(valuePerRound, new PeriodicalEffectPresenter(roundsCount, changingAction, effectIcon, periodicalEffectView));
+        }
+
         public bool HasEnoughStaminaPoints(float cost)
         {
             if (_characterParamsModel.Stamina.CurrentValue < _characterParamsModel.Stamina.ReservedValue + cost)
@@ -115,9 +128,16 @@ namespace SDRGames.Whist.CharacterModule.Managers
 
         public void ApplyPeriodicalEffects()
         {
-            foreach(var item in PeriodicalHealthChanges)
+            Dictionary<int, PeriodicalEffectPresenter> periodicalHealthChanges = new Dictionary<int, PeriodicalEffectPresenter>(_periodicalHealthChanges);
+            foreach(var item in periodicalHealthChanges)
             {
-                item.Value.Action();
+                item.Value.ApplyEffect();
+                item.Value.DecreaseDuration();
+                if(item.Value.GetDuration() <= 0)
+                {
+                    _periodicalHealthChanges.Remove(item.Key);
+                    item.Value.Delete();
+                }
             }
         }
 

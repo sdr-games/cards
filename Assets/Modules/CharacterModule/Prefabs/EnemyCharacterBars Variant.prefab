@@ -8,6 +8,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1347345717257640600, guid: b88c8f4eb0a3dc74d96ed2d7204167ae,
+        type: 3}
+      propertyPath: m_ChildAlignment
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 2075363754251847566, guid: b88c8f4eb0a3dc74d96ed2d7204167ae,
         type: 3}
       propertyPath: m_Pivot.x
@@ -112,6 +117,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: EnemyCharacterBars Variant
+      objectReference: {fileID: 0}
+    - target: {fileID: 8159979230595263924, guid: b88c8f4eb0a3dc74d96ed2d7204167ae,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

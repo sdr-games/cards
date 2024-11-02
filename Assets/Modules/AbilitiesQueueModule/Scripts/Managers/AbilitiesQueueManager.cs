@@ -53,6 +53,12 @@ namespace SDRGames.Whist.AbilitiesQueueModule.Managers
             SwitchButtonsActivity();
         }
 
+        public override void Hide()
+        {
+            ClearBindedAbilities();
+            base.Hide();
+        }
+
         private AbilitySlotManager FindFirstEmptySlot()
         {
             AbilitySlotManager abilitySlotManager = _bindedAbilities.FirstOrDefault(item => item.Value == null).Key;
@@ -90,20 +96,23 @@ namespace SDRGames.Whist.AbilitiesQueueModule.Managers
 
         private void OnApplyButtonClicked(object sender, EventArgs e)
         {
-            Dictionary<AbilitySlotManager, AbilityScriptableObject> bindedAbilities = new Dictionary<AbilitySlotManager, AbilityScriptableObject>(_bindedAbilities);
-            float totalCost = bindedAbilities.Values.Where(item => item != null).Sum(item => item.Cost);
-            ClearBindedAbilities(bindedAbilities);
-            ApplyButtonClicked?.Invoke(this, new ApplyButtonClickedEventArgs(totalCost, bindedAbilities.Values.ToList()));
+            if(_bindedAbilities.Values.All(item => item is null))
+            {
+                return;
+            }
+            float totalCost = _bindedAbilities.Values.Where(item => item != null).Sum(item => item.Cost);
+            ApplyButtonClicked?.Invoke(this, new ApplyButtonClickedEventArgs(totalCost, _bindedAbilities.Values.ToList()));
+            ClearBindedAbilities();
         }
 
         private void OnCancelButtonClicked(object sender, EventArgs e)
         {
-            Dictionary<AbilitySlotManager, AbilityScriptableObject> bindedAbilities = new Dictionary<AbilitySlotManager, AbilityScriptableObject>(_bindedAbilities);
-            ClearBindedAbilities(bindedAbilities);
+            ClearBindedAbilities();
         }
 
-        private void ClearBindedAbilities(Dictionary<AbilitySlotManager, AbilityScriptableObject> bindedAbilities)
+        private void ClearBindedAbilities()
         {
+            Dictionary<AbilitySlotManager, AbilityScriptableObject> bindedAbilities = new Dictionary<AbilitySlotManager, AbilityScriptableObject>(_bindedAbilities);
             foreach (KeyValuePair<AbilitySlotManager, AbilityScriptableObject> item in bindedAbilities)
             {
                 if (item.Value == null)

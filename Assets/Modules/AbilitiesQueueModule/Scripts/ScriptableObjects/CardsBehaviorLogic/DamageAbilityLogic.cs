@@ -11,39 +11,49 @@ namespace SDRGames.Whist.AbilitiesQueueModule.ScriptableObjects
     public class DamageAbilityLogic : AbilityLogicScriptableObject
     {
         private enum DamageType { Physical, Magical, True };
-        [field: SerializeField] private DamageType _damageType;
+        [SerializeField] private DamageType _damageType;
 
-        [field: SerializeField] public int DamageValue { get; private set; }
-        [field: SerializeField] public int RoundsCount { get; private set; }
+        [SerializeField] private int _damageValue;
+        [SerializeField] private int _roundsCount;
 
         public override void Apply(CharacterCombatManager characterCombatManager)
         {
+            int randomInt = UnityEngine.Random.Range(0, 100);
             switch (_damageType)
             {
                 case DamageType.Physical:
-                    if (RoundsCount > 1)
+                    if (_chance >= randomInt)
                     {
-                        characterCombatManager.SetPeriodicalChanges(DamageValue, RoundsCount, () => characterCombatManager.TakePhysicalDamage(DamageValue));
-                        break;
+                        if (_roundsCount > 1)
+                        {
+                            characterCombatManager.SetPeriodicalChanges(_damageValue, _roundsCount, EffectIcon, () => characterCombatManager.TakePhysicalDamage(_damageValue));
+                            break;
+                        }
+                        characterCombatManager.TakePhysicalDamage(_damageValue);
                     }
-                    characterCombatManager.TakePhysicalDamage(DamageValue);
                     break;
                 case DamageType.Magical:
                 default:
-                    if (RoundsCount > 1)
+                    if (_chance >= randomInt)
                     {
-                        characterCombatManager.SetPeriodicalChanges(DamageValue, RoundsCount, () => characterCombatManager.TakeMagicalDamage(DamageValue));
-                        break;
+                        if (_roundsCount > 1)
+                        {
+                            characterCombatManager.SetPeriodicalChanges(_damageValue, _roundsCount, EffectIcon, () => characterCombatManager.TakeMagicalDamage(_damageValue));
+                            break;
+                        }
+                        characterCombatManager.TakeMagicalDamage(_damageValue);
                     }
-                    characterCombatManager.TakeMagicalDamage(DamageValue);
                     break;
                 case DamageType.True:
-                    if (RoundsCount > 1)
+                    if (_chance >= randomInt)
                     {
-                        characterCombatManager.SetPeriodicalChanges(DamageValue, RoundsCount, () => characterCombatManager.TakeTrueDamage(DamageValue));
-                        break;
+                        if (_roundsCount > 1)
+                        {
+                            characterCombatManager.SetPeriodicalChanges(_damageValue, _roundsCount, EffectIcon, () => characterCombatManager.TakeTrueDamage(_damageValue));
+                            break;
+                        }
+                        characterCombatManager.TakeTrueDamage(_damageValue);
                     }
-                    characterCombatManager.TakeTrueDamage(DamageValue);
                     break;
             }
         }

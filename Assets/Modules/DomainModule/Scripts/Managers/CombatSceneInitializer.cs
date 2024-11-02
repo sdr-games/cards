@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 using SDRGames.Whist.AbilitiesQueueModule.Managers;
 using SDRGames.Whist.CardsCombatModule.Managers;
@@ -13,6 +14,7 @@ using SDRGames.Whist.TurnSwitchModule.Managers;
 using SDRGames.Whist.UserInputModule.Controller;
 
 using UnityEditor;
+using UnityEditor.Playables;
 
 using UnityEngine;
 
@@ -184,6 +186,7 @@ namespace SDRGames.Whist.DomainModule.Managers
 
         private void ShowPlayerUI(bool isCombatTurn)
         {
+            _abilitiesQueueManager.Show();
             if (isCombatTurn)
             {
                 _meleeAttackListManager.Show();
@@ -243,7 +246,7 @@ namespace SDRGames.Whist.DomainModule.Managers
 
         private void OnQueueApplyButtonClicked(object sender, AbilitiesQueueModule.Managers.ApplyButtonClickedEventArgs e)
         {
-            if(e.AbilityScriptableObjects.Count == 0)
+            if(e.AbilityScriptableObjects.Count == 0 && e.AbilityScriptableObjects.Any(item => item is null))
             {
                 return;
             }
@@ -262,7 +265,6 @@ namespace SDRGames.Whist.DomainModule.Managers
                     new List<int>() { 0 });
             }
             _playerCharacterCombatManager.SpendStaminaPoints(e.TotalCost);
-            HidePlayerUI();
             _turnsQueueManager.SwitchTurn();
         }
 
@@ -273,6 +275,8 @@ namespace SDRGames.Whist.DomainModule.Managers
                 return;
             }
 
+            List<CharacterCombatManager> enemyCharacterCombatManagers = new List<CharacterCombatManager>() { _enemyCharacterCombatManager };
+
             foreach (var card in e.Cards)
             {
                 if (card == null)
@@ -280,10 +284,12 @@ namespace SDRGames.Whist.DomainModule.Managers
                     continue;
                 }
                 _deckOnHandsManager.RemoveSelectedCard(card);
-                //TODO: Apply card behavior
+                card.CardScriptableObject.ApplyLogics(
+                    _playerCharacterCombatManager,
+                    enemyCharacterCombatManagers,
+                    new List<int>() { 0 });
             }
             _playerCharacterCombatManager.SpendBreathPoints(e.TotalCost);
-            HidePlayerUI();
             _turnsQueueManager.SwitchTurn();
         }
 
@@ -321,9 +327,20 @@ namespace SDRGames.Whist.DomainModule.Managers
             HidePlayerUI();
             if (e.IsPlayerTurn)
             {
-                ShowPlayerUI(e.IsCombatTurn);
+                StartPlayerTurn(e.IsCombatTurn);
                 return;
             }
+            StartEnemyTurn();
+        }
+
+        private void StartPlayerTurn(bool isCombatTurn)
+        {
+            ShowPlayerUI(isCombatTurn);
+        }
+
+        private void StartEnemyTurn()
+        {
+            _enemyCharacterCombatManager.ApplyPeriodicalEffects();
             _enemyMeleeBehaviorManager.ChooseAndAppyAbilities();
             _turnsQueueManager.SwitchTurn();
         }

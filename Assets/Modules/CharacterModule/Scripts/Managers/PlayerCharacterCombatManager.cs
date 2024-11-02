@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 
 using SDRGames.Whist.CharacterModule.Presenters;
@@ -66,6 +67,17 @@ namespace SDRGames.Whist.CharacterModule.Managers
         public override void RestoreBreath(int restoration)
         {
             _playerCharacterCombatParamsPresenter.RestoreBreath(restoration);
+        }
+
+        public override void SetPeriodicalChanges(int valuePerRound, int roundsCount, Sprite effectIcon, Action changingAction)
+        {
+            if (_periodicalHealthChanges.ContainsKey(valuePerRound))
+            {
+                _periodicalHealthChanges[valuePerRound].IncreaseDuration(roundsCount);
+                return;
+            }
+            PeriodicalEffectView periodicalEffectView = Instantiate(_periodicalEffectViewPrefab, _playerCharacterCombatParamsView.EffectsBar.transform, false);
+            _periodicalHealthChanges.Add(valuePerRound, new PeriodicalEffectPresenter(roundsCount, changingAction, effectIcon, periodicalEffectView));
         }
 
         public bool HasEnoughStaminaPoints(float cost)

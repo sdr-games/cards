@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 
 using SDRGames.Whist.CharacterModule.Models;
+using SDRGames.Whist.CharacterModule.Presenters;
+using SDRGames.Whist.CharacterModule.Views;
 
 using UnityEngine;
 
@@ -9,7 +11,9 @@ namespace SDRGames.Whist.CharacterModule.Managers
 {
     public abstract class CharacterCombatManager : MonoBehaviour
     {
-        protected Dictionary<int, PeriodicalEffect> PeriodicalHealthChanges;
+        [SerializeField] protected PeriodicalEffectView _periodicalEffectViewPrefab;
+
+        protected Dictionary<int, PeriodicalEffectPresenter> _periodicalHealthChanges;
 
         public abstract void Initialize();
         public abstract void TakePhysicalDamage(int damage);
@@ -20,20 +24,11 @@ namespace SDRGames.Whist.CharacterModule.Managers
         public abstract void RestoreHealth(int restoration);
         public abstract void RestoreStamina(int restoration);
         public abstract void RestoreBreath(int restoration);
-
-        public void SetPeriodicalChanges(int valuePerRound, int roundsCount, Action changingAction)
-        {
-            if (PeriodicalHealthChanges.ContainsKey(valuePerRound))
-            {
-                PeriodicalHealthChanges[valuePerRound].IncreaseDuration(roundsCount);
-                return;
-            }
-            PeriodicalHealthChanges.Add(valuePerRound, new PeriodicalEffect(roundsCount, changingAction));
-        }
+        public abstract void SetPeriodicalChanges(int valuePerRound, int roundsCount, Sprite effectIcon, Action changingAction);
 
         protected virtual void OnEnable()
         {
-            PeriodicalHealthChanges = new Dictionary<int, PeriodicalEffect>();
+            _periodicalHealthChanges = new Dictionary<int, PeriodicalEffectPresenter>();
         }
     }
 }
