@@ -10,57 +10,45 @@ namespace SDRGames.Whist.AbilitiesQueueModule.ScriptableObjects
     public class RestorationAbilityLogic : AbilityLogicScriptableObject
     {
         private enum RestorationType { Armor, Barrier, Health, Stamina, Breath };
-        [field: SerializeField] private RestorationType _restorationType;
+        [SerializeField] private RestorationType _restorationType;
 
-        [field: SerializeField] public int RestorationValue { get; private set; }
-        [field: SerializeField] public int RoundsCount { get; private set; }
+        [SerializeField] private int _restorationValue;
 
         public override void Apply(CharacterCombatManager characterCombatManager)
         {
+            int randomInt = UnityEngine.Random.Range(0, 100);
+            if(_chance < randomInt)
+            {
+                return;
+            }
+            Action action = null;
+
             switch (_restorationType)
             {
                 case RestorationType.Armor:
-                    if (RoundsCount > 1)
-                    {
-                        characterCombatManager.SetPeriodicalChanges(RestorationValue, RoundsCount, EffectIcon, () => characterCombatManager.RestoreArmor(RestorationValue));
-                        break;
-                    }
-                    characterCombatManager.RestoreArmor(RestorationValue);
+                    action = () => characterCombatManager.RestoreArmor(_restorationValue);
                     break;
                 case RestorationType.Barrier:
-                default:
-                    if (RoundsCount > 1)
-                    {
-                        characterCombatManager.SetPeriodicalChanges(RestorationValue, RoundsCount, EffectIcon, () => characterCombatManager.RestoreBarrier(RestorationValue));
-                        break;
-                    }
-                    characterCombatManager.RestoreBarrier(RestorationValue);
+                    action = () => characterCombatManager.RestoreBarrier(_restorationValue);
                     break;
                 case RestorationType.Health:
-                    if (RoundsCount > 1)
-                    {
-                        characterCombatManager.SetPeriodicalChanges(RestorationValue, RoundsCount, EffectIcon, () => characterCombatManager.RestoreHealth(RestorationValue));
-                        break;
-                    }
-                    characterCombatManager.RestoreHealth(RestorationValue);
+                    action = () => characterCombatManager.RestoreHealth(_restorationValue);
                     break;
                 case RestorationType.Stamina:
-                    if (RoundsCount > 1)
-                    {
-                        characterCombatManager.SetPeriodicalChanges(RestorationValue, RoundsCount, EffectIcon, () => characterCombatManager.RestoreStamina(RestorationValue));
-                        break;
-                    }
-                    characterCombatManager.RestoreStamina(RestorationValue);
+                    action = () => characterCombatManager.RestoreStamina(_restorationValue);
                     break;
                 case RestorationType.Breath:
-                    if (RoundsCount > 1)
-                    {
-                        characterCombatManager.SetPeriodicalChanges(RestorationValue, RoundsCount, EffectIcon, () => characterCombatManager.RestoreBreath(RestorationValue));
-                        break;
-                    }
-                    characterCombatManager.RestoreBreath(RestorationValue);
+                    action = () => characterCombatManager.RestoreBreath(_restorationValue);
+                    break;
+                default:
                     break;
             }
+            if (_roundsCount > 1)
+            {
+                characterCombatManager.SetPeriodicalChanges(_restorationValue, _roundsCount, EffectIcon, action);
+                return;
+            }
+            action();
         }
 
         private void OnEnable()

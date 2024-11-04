@@ -12,6 +12,8 @@ namespace SDRGames.Whist.AbilitiesQueueModule.ScriptableObjects
         [field: SerializeField] public Sprite EffectIcon { get; protected set; }
         [field: SerializeField] public int TargetsCount { get; protected set; } = 1;
         [SerializeField][Range(0, 100)] protected int _chance = 100;
+
+        [SerializeField] protected int _roundsCount = 1;
         public bool SelfUsable { get; protected set; }
 
         public abstract void Apply(CharacterCombatManager characterCombatManager);

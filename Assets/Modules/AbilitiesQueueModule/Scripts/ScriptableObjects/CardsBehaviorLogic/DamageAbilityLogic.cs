@@ -14,48 +14,36 @@ namespace SDRGames.Whist.AbilitiesQueueModule.ScriptableObjects
         [SerializeField] private DamageType _damageType;
 
         [SerializeField] private int _damageValue;
-        [SerializeField] private int _roundsCount;
 
         public override void Apply(CharacterCombatManager characterCombatManager)
         {
             int randomInt = UnityEngine.Random.Range(0, 100);
+            if(_chance < randomInt)
+            {
+                return;
+            }
+            Action action = null;
+
             switch (_damageType)
             {
                 case DamageType.Physical:
-                    if (_chance >= randomInt)
-                    {
-                        if (_roundsCount > 1)
-                        {
-                            characterCombatManager.SetPeriodicalChanges(_damageValue, _roundsCount, EffectIcon, () => characterCombatManager.TakePhysicalDamage(_damageValue));
-                            break;
-                        }
-                        characterCombatManager.TakePhysicalDamage(_damageValue);
-                    }
+                    action = () => characterCombatManager.TakePhysicalDamage(_damageValue);
                     break;
                 case DamageType.Magical:
-                default:
-                    if (_chance >= randomInt)
-                    {
-                        if (_roundsCount > 1)
-                        {
-                            characterCombatManager.SetPeriodicalChanges(_damageValue, _roundsCount, EffectIcon, () => characterCombatManager.TakeMagicalDamage(_damageValue));
-                            break;
-                        }
-                        characterCombatManager.TakeMagicalDamage(_damageValue);
-                    }
+                    action = () => characterCombatManager.TakeMagicalDamage(_damageValue);
                     break;
                 case DamageType.True:
-                    if (_chance >= randomInt)
-                    {
-                        if (_roundsCount > 1)
-                        {
-                            characterCombatManager.SetPeriodicalChanges(_damageValue, _roundsCount, EffectIcon, () => characterCombatManager.TakeTrueDamage(_damageValue));
-                            break;
-                        }
-                        characterCombatManager.TakeTrueDamage(_damageValue);
-                    }
+                    action = () => characterCombatManager.TakeTrueDamage(_damageValue);
+                    break;
+                default:
                     break;
             }
+            if (_roundsCount > 1)
+            {
+                characterCombatManager.SetPeriodicalChanges(_damageValue, _roundsCount, EffectIcon, action);
+                return;
+            }
+            action();
         }
 
         private void OnEnable()

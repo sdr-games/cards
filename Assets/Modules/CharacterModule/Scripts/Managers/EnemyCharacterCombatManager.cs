@@ -22,7 +22,7 @@ namespace SDRGames.Whist.CharacterModule.Managers
             _characterCombatParamsPresenter = new CharacterCombatParamsPresenter(_characterParamsModel, _characterCombatParamsView);
         }
 
-        public CharacterParamsModel GetParams()
+        public override CharacterParamsModel GetParams()
         {
             return _characterParamsModel;
         }
@@ -76,6 +76,11 @@ namespace SDRGames.Whist.CharacterModule.Managers
             }
             PeriodicalEffectView periodicalEffectView = Instantiate(_periodicalEffectViewPrefab, _characterCombatParamsView.EffectsBar.transform, false);
             _periodicalHealthChanges.Add(valuePerRound, new PeriodicalEffectPresenter(roundsCount, changingAction, effectIcon, periodicalEffectView));
+        }
+
+        public override void SetBuff(int value, int roundsCount, Sprite effectIcon, Action buffAction, bool inPercents = false)
+        {
+            throw new NotImplementedException();
         }
 
         public bool HasEnoughStaminaPoints(float cost)

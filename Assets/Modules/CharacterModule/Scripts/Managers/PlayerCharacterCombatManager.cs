@@ -24,7 +24,7 @@ namespace SDRGames.Whist.CharacterModule.Managers
             _playerCharacterCombatParamsPresenter = new PlayerCharacterCombatParamsPresenter(_playerCharacterParamsModel, _playerCharacterCombatParamsView);
         }
 
-        public CharacterParamsModel GetParams()
+        public override CharacterParamsModel GetParams()
         {
             return _playerCharacterParamsModel;
         }
@@ -158,6 +158,11 @@ namespace SDRGames.Whist.CharacterModule.Managers
                     EditorApplication.isPlaying = false;
                 #endif
             }
+        }
+
+        public override void SetBuff(int value, int roundsCount, Sprite effectIcon, Action buffAction, bool inPercents = false)
+        {
+            throw new NotImplementedException();
         }
     }
 }

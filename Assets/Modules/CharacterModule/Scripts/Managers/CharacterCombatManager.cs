@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 
-using SDRGames.Whist.CharacterModule.Models;
 using SDRGames.Whist.CharacterModule.Presenters;
+using SDRGames.Whist.CharacterModule.ScriptableObjects;
 using SDRGames.Whist.CharacterModule.Views;
 
 using UnityEngine;
@@ -16,6 +16,7 @@ namespace SDRGames.Whist.CharacterModule.Managers
         protected Dictionary<int, PeriodicalEffectPresenter> _periodicalHealthChanges;
 
         public abstract void Initialize();
+        public abstract CharacterParamsModel GetParams();
         public abstract void TakePhysicalDamage(int damage);
         public abstract void TakeMagicalDamage(int damage);
         public abstract void TakeTrueDamage(int damage);
@@ -25,6 +26,7 @@ namespace SDRGames.Whist.CharacterModule.Managers
         public abstract void RestoreStamina(int restoration);
         public abstract void RestoreBreath(int restoration);
         public abstract void SetPeriodicalChanges(int valuePerRound, int roundsCount, Sprite effectIcon, Action changingAction);
+        public abstract void SetBuff(int value, int roundsCount, Sprite effectIcon, Action buffAction, bool inPercents = false);
 
         protected virtual void OnEnable()
         {
