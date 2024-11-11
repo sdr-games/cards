@@ -15,20 +15,21 @@ namespace SDRGames.Whist.CharacterModule.Views
         [SerializeField] private TextMeshProUGUI _levelTMP;
         [SerializeField] private TextMeshProUGUI _experienceTMP;
         [SerializeField] private TextMeshProUGUI _gloryTMP;
-        [SerializeField] private TextMeshProUGUI _magicDamageMultiplierTMP;
+        [SerializeField] private TextMeshProUGUI _physicalDamageTMP;
+        [SerializeField] private TextMeshProUGUI _magicDamageTMP;
 
         [field: SerializeField] public PointsTextView HealthPointsView { get; private set; }
         [field: SerializeField] public PointsTextView StaminaPointsView { get; private set; }
         [field: SerializeField] public PointsTextView BreathPointsView { get; private set; }
         [field: SerializeField] public PointsTextView PhysicalArmorPointsView { get; private set; }
         [field: SerializeField] public PointsTextView MagicShieldPointsView { get; private set; }
-        [field: SerializeField] public DiceView PhysicalDamageDiceView { get; private set; }
 
-        public void Initialize(string name, string level, string experience, string glory, string magicDamageMultiplier)
+        public void Initialize(string name, string level, string experience, string glory, string physicalDamage, string magicDamage)
         {
             _nameTMP.text = name;
             SetLevelText(level);
-            SetMagicDamageMultiplierText(magicDamageMultiplier);
+            SetPhysicalDamageText(physicalDamage);
+            SetMagicDamageText(magicDamage);
             SetExperienceText(experience);
             SetGloryText(glory);
         }
@@ -38,9 +39,14 @@ namespace SDRGames.Whist.CharacterModule.Views
             _levelTMP.text = level;
         }
 
-        public void SetMagicDamageMultiplierText(string magicDamageMultiplier)
+        public void SetPhysicalDamageText(string physicalDamage)
         {
-            _magicDamageMultiplierTMP.text = magicDamageMultiplier;
+            _physicalDamageTMP.text = physicalDamage;
+        }
+
+        public void SetMagicDamageText(string magicDamage)
+        {
+            _magicDamageTMP.text = magicDamage;
         }
 
         public void SetExperienceText(string experience)
@@ -112,17 +118,17 @@ namespace SDRGames.Whist.CharacterModule.Views
                 #endif
             }
 
-            if (PhysicalDamageDiceView == null)
+            if (_physicalDamageTMP == null)
             {
-                Debug.LogError("Physical Damage Dice View не был назначен");
+                Debug.LogError("Physical Damage TextMeshPro не был назначен");
                 #if UNITY_EDITOR
                     EditorApplication.isPlaying = false;
                 #endif
             }
 
-            if (_magicDamageMultiplierTMP == null)
+            if (_magicDamageTMP == null)
             {
-                Debug.LogError("Magic Damage Multiplier TextMeshPro не был назначен");
+                Debug.LogError("Magic Damage TextMeshPro не был назначен");
                 #if UNITY_EDITOR
                     EditorApplication.isPlaying = false;
                 #endif

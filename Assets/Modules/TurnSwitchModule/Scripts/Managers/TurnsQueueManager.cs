@@ -110,8 +110,8 @@ namespace SDRGames.Whist.TurnSwitchModule.Managers
             List<Points> result = new List<Points>();
             foreach (CharacterParamsModel characterParamsModel in characterParamsModels)
             {
-                result.Add(characterParamsModel.Armor);
-                result.Add(characterParamsModel.Barrier);
+                result.Add(characterParamsModel.ArmorPoints);
+                result.Add(characterParamsModel.BarrierPoints);
                 result.Add(characterParamsModel.HealthPoints);
             }
             return result;

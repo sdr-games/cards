@@ -70,7 +70,7 @@ namespace SDRGames.Whist.CharacterModule.Managers
 
         public bool HasEnoughStaminaPoints(float cost)
         {
-            if(_playerCharacterParamsModel.Stamina.CurrentValue < _playerCharacterParamsModel.Stamina.ReservedValue + cost)
+            if(_playerCharacterParamsModel.StaminaPoints.CurrentValue < _playerCharacterParamsModel.StaminaPoints.ReservedValue + cost)
             {
                 Notification.Show(_playerCharacterCombatParamsPresenter.GetNotEnoughStaminaErrorMessage());
                 return false;
@@ -100,7 +100,7 @@ namespace SDRGames.Whist.CharacterModule.Managers
 
         public bool HasEnoughBreathPoints(float cost)
         {
-            if (_playerCharacterParamsModel.Breath.CurrentValue < _playerCharacterParamsModel.Breath.ReservedValue + cost)
+            if (_playerCharacterParamsModel.BreathPoints.CurrentValue < _playerCharacterParamsModel.BreathPoints.ReservedValue + cost)
             {
                 Notification.Show(_playerCharacterCombatParamsPresenter.GetNotEnoughBreathErrorMessage());
                 return false;

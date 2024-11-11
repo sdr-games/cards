@@ -20,24 +20,25 @@ namespace SDRGames.Whist.CharacterModule.Presenters
                 _playerCharacterParams.Level.ToString(), 
                 _playerCharacterParams.Experience.ToString(),
                 _playerCharacterParams.Glory.ToString(),
-                _playerCharacterParams.MagicDamageMultiplier.ToString()
+                _playerCharacterParams.PhysicalDamage.ToString(),
+                _playerCharacterParams.MagicDamage.ToString()
             );
 
             new PointsTextPresenter(_playerCharacterParams.HealthPoints, _playerCharacterParamsView.HealthPointsView);
-            new PointsTextPresenter(_playerCharacterParams.Stamina, _playerCharacterParamsView.StaminaPointsView);
-            new PointsTextPresenter(_playerCharacterParams.Breath, _playerCharacterParamsView.BreathPointsView);
-            new PointsTextPresenter(_playerCharacterParams.Armor, _playerCharacterParamsView.PhysicalArmorPointsView);
-            new PointsTextPresenter(_playerCharacterParams.Barrier, _playerCharacterParamsView.MagicShieldPointsView);
-            new DicePresenter(_playerCharacterParams.PhysicalDamage, _playerCharacterParamsView.PhysicalDamageDiceView);
+            new PointsTextPresenter(_playerCharacterParams.StaminaPoints, _playerCharacterParamsView.StaminaPointsView);
+            new PointsTextPresenter(_playerCharacterParams.BreathPoints, _playerCharacterParamsView.BreathPointsView);
+            new PointsTextPresenter(_playerCharacterParams.ArmorPoints, _playerCharacterParamsView.PhysicalArmorPointsView);
+            new PointsTextPresenter(_playerCharacterParams.BarrierPoints, _playerCharacterParamsView.MagicShieldPointsView);
 
             _playerCharacterParams.LevelChanged += OnLevelChanged;
-            _playerCharacterParams.MagicDamageMultiplierChanged += OnMagicDamageMultiplierChanged;
+            _playerCharacterParams.PhysicalDamageChanged += OnPhysicalDamageChanged;
+            _playerCharacterParams.MagicDamageChanged += OnMagicDamageChanged;
         }
 
         ~PlayerCharacterParamsPresenter()
         {
             _playerCharacterParams.LevelChanged -= OnLevelChanged;
-            _playerCharacterParams.MagicDamageMultiplierChanged -= OnMagicDamageMultiplierChanged;
+            _playerCharacterParams.MagicDamageChanged -= OnMagicDamageChanged;
         }
 
         private void OnLevelChanged(object sender, LevelChangedEventArgs e)
@@ -45,9 +46,14 @@ namespace SDRGames.Whist.CharacterModule.Presenters
             _playerCharacterParamsView.SetLevelText(e.Level.ToString());
         }
 
-        private void OnMagicDamageMultiplierChanged(object sender, MagicDamageMultiplierChangedEventArgs e)
+        private void OnMagicDamageChanged(object sender, MagicDamageChangedEventArgs e)
         {
-            _playerCharacterParamsView.SetMagicDamageMultiplierText(e.MagicDamageMultiplier.ToString());
+            _playerCharacterParamsView.SetMagicDamageText(e.MagicDamage.ToString());
+        }
+
+        private void OnPhysicalDamageChanged(object sender, PhysicalDamageChangedEventArgs e)
+        {
+            _playerCharacterParamsView.SetPhysicalDamageText(e.PhysicalDamage.ToString());
         }
     }
 }

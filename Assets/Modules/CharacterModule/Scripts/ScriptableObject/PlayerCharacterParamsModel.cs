@@ -1,8 +1,5 @@
 using System;
 
-using SDRGames.Whist.DiceModule.Models;
-using SDRGames.Whist.PointsModule.Models;
-
 using UnityEngine;
 
 namespace SDRGames.Whist.CharacterModule.ScriptableObjects
@@ -19,7 +16,8 @@ namespace SDRGames.Whist.CharacterModule.ScriptableObjects
         public event EventHandler<LevelChangedEventArgs> LevelChanged;
         public event EventHandler<ExperienceChangedEventArgs> ExperienceChanged;
         public event EventHandler<GloryChangedEventArgs> GloryChanged;
-        public event EventHandler<MagicDamageMultiplierChangedEventArgs> MagicDamageMultiplierChanged;
+        public event EventHandler<PhysicalDamageChangedEventArgs> PhysicalDamageChanged;
+        public event EventHandler<MagicDamageChangedEventArgs> MagicDamageChanged;
 
         public void IncreaseLevel(int level)
         {

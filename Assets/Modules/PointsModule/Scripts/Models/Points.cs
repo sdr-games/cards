@@ -11,8 +11,6 @@ namespace SDRGames.Whist.PointsModule.Models
         public string Name { get; private set; }
         [field: SerializeField] public float BaseValue { get; private set; }
         [field: SerializeField] public float Bonus { get; private set;  }
-        [field: SerializeField] public RelatedBonus[] RelatedBonuses { get; private set; }
-        [field: SerializeField] public float RegenerationSpeed { get; private set; }
         [field: SerializeField] public float RegenerationPower { get; private set; }
 
         public float CurrentValue { get; private set; }
@@ -116,11 +114,6 @@ namespace SDRGames.Whist.PointsModule.Models
                 regenerationPower = RegenerationPower;
             }
 
-            if (regenerationSpeed == 0)
-            {
-                regenerationSpeed = RegenerationSpeed;
-            }
-
             while (length >= 0 && CurrentValue < MaxValue)
             {
                 yield return new WaitForSeconds(regenerationSpeed);
@@ -149,18 +142,8 @@ namespace SDRGames.Whist.PointsModule.Models
 
         private void CalculateMaxValue()
         {
-            MaxValue = BaseValue + Bonus + GetTotalRelatedBonus();
+            MaxValue = BaseValue + Bonus;
             MaxValueChanged?.Invoke(this, new EventArgs());
-        }
-
-        private float GetTotalRelatedBonus()
-        {
-            float totalRelatedBonus = 0;
-            foreach(RelatedBonus relatedBonus in RelatedBonuses)
-            {
-                totalRelatedBonus += relatedBonus.GetBonus();
-            }
-            return totalRelatedBonus;
         }
 
         private void CalculateCurrentValue(float currentValueInPercents)

@@ -67,7 +67,7 @@ namespace SDRGames.Whist.CharacterModule.Managers
 
         public bool HasEnoughStaminaPoints(float cost)
         {
-            if (_characterParamsModel.Stamina.CurrentValue < _characterParamsModel.Stamina.ReservedValue + cost)
+            if (_characterParamsModel.StaminaPoints.CurrentValue < _characterParamsModel.StaminaPoints.ReservedValue + cost)
             {
                 return false;
             }
@@ -76,7 +76,7 @@ namespace SDRGames.Whist.CharacterModule.Managers
 
         public void SpendStaminaPoints(float totalCost)
         {
-            _characterParamsModel.Stamina.DecreaseCurrentValue(totalCost);
+            _characterParamsModel.StaminaPoints.DecreaseCurrentValue(totalCost);
         }
 
         //public void RestoreStaminaPoints()
@@ -91,7 +91,7 @@ namespace SDRGames.Whist.CharacterModule.Managers
 
         public bool HasEnoughBreathPoints(float cost)
         {
-            if (_characterParamsModel.Breath.CurrentValue < _characterParamsModel.Breath.ReservedValue + cost)
+            if (_characterParamsModel.BreathPoints.CurrentValue < _characterParamsModel.BreathPoints.ReservedValue + cost)
             {
                 return false;
             }
