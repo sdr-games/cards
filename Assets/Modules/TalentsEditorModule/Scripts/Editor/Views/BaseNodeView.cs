@@ -26,6 +26,8 @@ namespace SDRGames.Whist.TalentsEditorModule.Views
         [field: SerializeField] public List<string> OutputConnections { get; protected set; }
         [field: SerializeField] public Vector2 Position { get; protected set; }
 
+        private bool _isExpanded;
+
         public event EventHandler<NodeNameChangedEventArgs> NodeNameTextFieldChanged;
         public EventHandler<LocalizationDataChangedEventArgs> DescriptionLocalizationFieldChanged;
         public event EventHandler<CostChangedEventArgs> CostTextFieldChanged;
@@ -46,7 +48,7 @@ namespace SDRGames.Whist.TalentsEditorModule.Views
             return PortView.Create<Edge>(orientation, direction, capacity, type);
         }
 
-        public virtual void Initialize(string id, string nodeName, Vector2 position)
+        public void Initialize(string id, string nodeName, Vector2 position, Sprite nodeSprite)
         {
             SetPosition(new Rect(position, Vector2.zero));
 
@@ -61,6 +63,21 @@ namespace SDRGames.Whist.TalentsEditorModule.Views
 
             mainContainer.AddToClassList("ds-node__main-container");
             extensionContainer.AddToClassList("ds-node__extension-container");
+
+            _isExpanded = false;
+
+            Box nodeImage = new Box();
+            Background background = Background.FromSprite(nodeSprite);
+            nodeImage.style.backgroundImage = background;
+            nodeImage.AddToClassList("ds-node__node-image");
+            nodeImage.RegisterCallback<MouseUpEvent>(OnSpriteClicked);
+
+            topContainer.AddToClassList("ds-node__ports");
+            topContainer.parent.Remove(topContainer);
+            nodeImage.Add(topContainer);
+
+            Insert(0, nodeImage);
+            Remove(mainContainer);
         }
 
         public virtual void Draw()
@@ -128,6 +145,25 @@ namespace SDRGames.Whist.TalentsEditorModule.Views
         {
             DisconnectInputPorts();
             DisconnectOutputPorts();
+        }
+
+        protected void OnSpriteClicked(MouseUpEvent evt)
+        {
+            if (evt.button != 1)
+            {
+                return;
+            }
+
+            evt.StopImmediatePropagation();
+            if (_isExpanded)
+            {
+                Remove(mainContainer);
+            }
+            else
+            {
+                Add(mainContainer);
+            }
+            _isExpanded = !_isExpanded;
         }
 
         protected void Load(BaseNodeView node)

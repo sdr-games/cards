@@ -23,9 +23,10 @@
 	padding: var(--ds-metrics-window-pixels-8);
 }
 
-.ds-node__main-container
+#node-border.ds-node__main-container
 {
 	background-color: var(--ds-colors-window-dark-grey-1);
+	margin-left: 48px;
 }
 
 .ds-node__custom-data-container
@@ -38,21 +39,20 @@
 /* OUTPUTS */
 
 .ds-node__astra-output-port {
-	height: auto;
+	height: 100%;
 	--port-color: var(--ds-colors-astra-port-color);
 	--disabled-port-color: var(--ds-colors-disabled-astra-port-color);
 	align-items: center;
-	flex-direction: row-reverse;
 	padding: var(--ds-metrics-window-pixels-4);
 	transform-origin: 0 0;
 }
 
 .ds-node__astra-input-port {
+	height: 100%;
 	--port-color: var(--ds-colors-astra-port-color);
 	--disabled-port-color: var(--ds-colors-disabled-astra-port-color);
 	align-items: center;
-	flex-direction: row;
-	padding: var(--ds-metrics-window-pixels-4);
+	justify-content: center;
 	transform-origin: 0 0;
 }
 
@@ -64,14 +64,27 @@
 .ds-node__astra-output-port > #connector,
 .ds-node__astra-input-port > #connector {
 	border-color: var(--ds-colors-astra-port-color);
-	width: var(--ds-metrics-window-pixels-11);
-	height: var(--ds-metrics-window-pixels-11);
+	width: var(--ds-metrics-window-pixels-16);
+	height: var(--ds-metrics-window-pixels-16);
 	border-radius: var(--ds-metrics-window-pixels-11);
 	align-items: center;
 	justify-content: center;
-	margin-left: var(--ds-metrics-window-pixels-4);
-	margin-right: var(--ds-metrics-window-pixels-4);
 	border-width: var(--ds-metrics-window-pixels-1);
+}
+
+.ds-node__node-image {
+	width: 48px;
+	height: 48px;
+	background-size-x: 48px;
+	background-size-y: 48px;
+	background-position-x: left;
+}
+
+.ds-node__ports {
+	flex-direction: row;
+	justify-content: center;
+	width: 48px;
+	height: 48px;
 }
 
 .ds-node__talamus-output-port {
@@ -80,16 +93,15 @@
 	--disabled-port-color: var(--ds-colors-disabled-talamus-port-color);
 	align-items: center;
 	flex-direction: row-reverse;
-	padding: var(--ds-metrics-window-pixels-4);
 	transform-origin: 0 0;
 }
 
 .ds-node__talamus-input-port {
+	height: 100%;
 	--port-color: var(--ds-colors-talamus-port-color);
 	--disabled-port-color: var(--ds-colors-disabled-talamus-port-color);
 	align-items: center;
 	flex-direction: row;
-	padding: var(--ds-metrics-window-pixels-4);
 	transform-origin: 0 0;
 }
 
@@ -101,13 +113,11 @@
 .ds-node__talamus-output-port > #connector,
 .ds-node__talamus-input-port > #connector {
 	border-color: var(--ds-colors-talamus-port-color);
-	width: var(--ds-metrics-window-pixels-11);
-	height: var(--ds-metrics-window-pixels-11);
+	width: var(--ds-metrics-window-pixels-16);
+	height: var(--ds-metrics-window-pixels-16);
 	border-radius: var(--ds-metrics-window-pixels-11);
 	align-items: center;
 	justify-content: center;
-	margin-left: var(--ds-metrics-window-pixels-4);
-	margin-right: var(--ds-metrics-window-pixels-4);
 	border-width: var(--ds-metrics-window-pixels-1);
 }
 

@@ -37,7 +37,7 @@ namespace SDRGames.Whist.TalentsModule.ScriptableObjects
 
         public Vector2 CalculatePositionInContainer()
         {
-            Vector2 containerSize = new Vector2(Screen.width / 2, Screen.height / 2);
+            Vector2 containerSize = new Vector2(Screen.width, Screen.height);
             return new Vector2(
                 containerSize.x * PositionPercentages.x / 100,
                 containerSize.y - containerSize.y * PositionPercentages.y / 100

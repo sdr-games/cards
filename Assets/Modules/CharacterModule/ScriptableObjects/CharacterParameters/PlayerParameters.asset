@@ -15,33 +15,33 @@ MonoBehaviour:
   <CharacterInfo>k__BackingField: {fileID: 11400000, guid: 2138c702e452a7846b480e13bc6087ab,
     type: 2}
   <Level>k__BackingField: 1
-  <Initiative>k__BackingField: 50
+  <Initiative>k__BackingField: 0
   <HealthPoints>k__BackingField:
-    <BaseValue>k__BackingField: 10
+    <BaseValue>k__BackingField: 20
     <Bonus>k__BackingField: 0
     <RelatedBonuses>k__BackingField: []
-    <RegenerationSpeed>k__BackingField: 1
+    <RegenerationSpeed>k__BackingField: 0
     <RegenerationPower>k__BackingField: 1
   <Stamina>k__BackingField:
-    <BaseValue>k__BackingField: 10
+    <BaseValue>k__BackingField: 0
     <Bonus>k__BackingField: 0
     <RelatedBonuses>k__BackingField: []
     <RegenerationSpeed>k__BackingField: 0
     <RegenerationPower>k__BackingField: 0
   <Breath>k__BackingField:
-    <BaseValue>k__BackingField: 10
+    <BaseValue>k__BackingField: 0
     <Bonus>k__BackingField: 0
     <RelatedBonuses>k__BackingField: []
     <RegenerationSpeed>k__BackingField: 0
     <RegenerationPower>k__BackingField: 0
   <Armor>k__BackingField:
-    <BaseValue>k__BackingField: 10
+    <BaseValue>k__BackingField: 0
     <Bonus>k__BackingField: 0
     <RelatedBonuses>k__BackingField: []
     <RegenerationSpeed>k__BackingField: 0
     <RegenerationPower>k__BackingField: 0
   <Barrier>k__BackingField:
-    <BaseValue>k__BackingField: 10
+    <BaseValue>k__BackingField: 0
     <Bonus>k__BackingField: 0
     <RelatedBonuses>k__BackingField: []
     <RegenerationSpeed>k__BackingField: 0

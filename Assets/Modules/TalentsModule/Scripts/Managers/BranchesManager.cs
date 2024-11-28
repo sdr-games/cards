@@ -19,6 +19,7 @@ namespace SDRGames.Whist.TalentsModule.Managers
         [SerializeField] private TalentsBranchScriptableObject[] _talentBranchesSO;
 
         private float _startScale;
+        private float _rotationOffset;
         private List<BranchManager> _createdBranches;
 
         private void OnEnable()
@@ -52,6 +53,7 @@ namespace SDRGames.Whist.TalentsModule.Managers
 
             _createdBranches = new List<BranchManager>();
             _startScale = 1 - Screen.width / (_talentBranchesSO.Length * BranchView.SIZE.x);
+            _rotationOffset = transform.localEulerAngles.z;
 
             for (int i = 0; i < _talentBranchesSO.Length; i++)
             {
@@ -76,10 +78,9 @@ namespace SDRGames.Whist.TalentsModule.Managers
 
         private Vector2 CalculatePositionInRadius(int index, float scale)
         {
-            float radius = (Screen.width - BranchView.SIZE.x / _talentBranchesSO.Length) * scale;
-            float offsetY = BranchView.PADDING.y / 2 * scale;
-            float radiansOfSeparation = Mathf.PI / _talentBranchesSO.Length * (index + 0.5f);
-            return new Vector2(Mathf.Cos(radiansOfSeparation) * radius, Mathf.Sin(radiansOfSeparation) * radius - offsetY);
+            float radius = Screen.width / 2;
+            float angle = Mathf.PI * index / _talentBranchesSO.Length;
+            return new Vector2(Mathf.Sin(angle) * radius, Mathf.Cos(angle) * radius);
         }
 
         private void OnBranchZoomIn(object sender, BranchZoomedEventArgs e)
@@ -107,21 +108,26 @@ namespace SDRGames.Whist.TalentsModule.Managers
             StartCoroutine(RotateSmoothlyCoroutine(e.Angle, e.Time));
         }
 
-        private IEnumerator RotateSmoothlyCoroutine(float angle, float time)
+        private IEnumerator RotateSmoothlyCoroutine(float targetAngle, float time)
         {
             yield return null;
-            float destinationAngle = angle != 0 ? 360 - transform.localEulerAngles.z - Math.Abs(angle) : 0;
-            float direction = angle > 0 ? -1 : 1;
-            if(Math.Abs(angle) > 180)
+            float step = _rotationOffset / time;
+            float currentAngle = _rotationOffset;
+            if(targetAngle < 0)
             {
-                angle = 360 - Math.Abs(angle);
+                targetAngle = _rotationOffset;
+                currentAngle = transform.localEulerAngles.z;
             }
-            float speed = Math.Abs(angle / time);
-            while(Math.Abs(transform.localEulerAngles.z - destinationAngle) > speed)
+            Quaternion a = Quaternion.Euler(0, 0, currentAngle);
+            Quaternion b = Quaternion.Euler(0, 0, targetAngle);
+            float currentTime = 0;
+            while (currentTime < time)
             {
                 yield return null;
-                transform.RotateAround(transform.TransformPoint(((RectTransform)transform).rect.center), Vector3.forward * direction, speed);
-            } 
+                transform.rotation = Quaternion.Lerp(a, b, currentTime / time);
+                currentTime += step;
+            }
+            transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, targetAngle);
         }
     }
 }

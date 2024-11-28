@@ -47,15 +47,19 @@ namespace SDRGames.Whist.TalentsEditorModule
             GetElementsFromGraphView();
             GraphSaveDataScriptableObject graphData = CreateAsset<GraphSaveDataScriptableObject>(path);
             graphData.Initialize(_graphFileName, _graphView.GetBackgroundImage());
+            EditorUtility.SetDirty(graphData);
+            AssetDatabase.SaveAssetIfDirty(graphData);
 
             TalentsBranchScriptableObject talentsBranch = CreateAsset<TalentsBranchScriptableObject>(_containerFolderPath, _graphFileName);
             talentsBranch.Initialize(_graphFileName, _graphView.GetBackgroundImage());
+            EditorUtility.SetDirty(talentsBranch);
+            AssetDatabase.SaveAssetIfDirty(talentsBranch);
 
             SaveNodes(graphData, talentsBranch);
             //SaveVariables(graphData, talentsBranch);
 
-            SaveAsset(graphData);
-            SaveAsset(talentsBranch);
+            //SaveAsset(graphData);
+            //SaveAsset(talentsBranch);
         }
 
         public static T CreateAsset<T>(string path, string assetName = "") where T : ScriptableObject
@@ -129,7 +133,7 @@ namespace SDRGames.Whist.TalentsEditorModule
                 nodeNames.Add(node.NodeName);
             }
 
-            UpdateDialoguesChoicesConnections(createdTalents);
+            UpdateConnections(createdTalents);
 
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
@@ -145,7 +149,7 @@ namespace SDRGames.Whist.TalentsEditorModule
             } 
         }
 
-        private static void UpdateDialoguesChoicesConnections(Dictionary<string, TalentScriptableObject> createdTalents)
+        private static void UpdateConnections(Dictionary<string, TalentScriptableObject> createdTalents)
         {
             foreach (BaseNodeView node in _nodes)
             {

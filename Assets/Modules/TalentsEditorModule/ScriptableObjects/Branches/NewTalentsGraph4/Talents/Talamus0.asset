@@ -15,13 +15,14 @@ MonoBehaviour:
   <Name>k__BackingField: Talamus0
   <Cost>k__BackingField: 0
   <DescriptionLocalization>k__BackingField:
-    <SelectedLocalizationTable>k__BackingField: CharacterDescriptions
-    <SelectedEntryKey>k__BackingField: Slime
-    <LocalizedTextPreview>k__BackingField: Blah-blah-blah
+    <SelectedLocalizationTable>k__BackingField: NotificationMessages
+    <SelectedEntryKey>k__BackingField: "PlayerTurn\t"
+    <LocalizedTextPreview>k__BackingField: Attack now!
   <TalentType>k__BackingField: 0
-  <PositionPercentages>k__BackingField: {x: 0, y: 100.00001}
+  <PositionPercentages>k__BackingField: {x: 42.930595, y: -0.000008709359}
   <Blockers>k__BackingField: []
   <Dependencies>k__BackingField:
+  - {fileID: 11400000, guid: 1ba2afee971cba441a40dcb26758a786, type: 2}
   - {fileID: 11400000, guid: 3f500b1752c53f549b8735b4ceef9b9e, type: 2}
   <Characteristic>k__BackingField: Strength
   <CharacteristicValue>k__BackingField: 0
