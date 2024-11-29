@@ -55,7 +55,7 @@ namespace SDRGames.Whist.TalentsEditorModule.Views
             ID = id;
             NodeName = nodeName;
 
-            DescriptionLocalization = new LocalizationData("", "", "");
+            DescriptionLocalization = new LocalizationData("CharacterDescriptions", "Slime", "Slime");
             InputPorts = new List<Port>();
             OutputPorts = new List<Port>();
 
@@ -197,7 +197,7 @@ namespace SDRGames.Whist.TalentsEditorModule.Views
 
         protected Vector2 CalculateLocalPositionPercentages(Rect graphRect)
         {
-            return new Vector2((Position.x - graphRect.xMin) * 100 / (graphRect.size.x - localBound.size.x), (Position.y - graphRect.yMin) * 100 / (graphRect.size.y - localBound.size.y));
+            return new Vector2(Math.Abs(Position.x - graphRect.xMin) * 100 / (graphRect.size.x - localBound.size.x), Math.Abs(Position.y - graphRect.yMin) * 100 / (graphRect.size.y - localBound.size.y));
         }
 
         private void DisconnectInputPorts()

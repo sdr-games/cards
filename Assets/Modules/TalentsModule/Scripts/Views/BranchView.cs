@@ -17,7 +17,7 @@ namespace SDRGames.Whist.TalentsModule.Views
         private readonly float HIGHLIGHTED_ALPHA = 0.85f; // 217/255
 
         public static readonly Vector2 PADDING = new Vector2(50, 50);
-        public static Vector2 SIZE { get => GetBranchSize(); }
+        //public static Vector2 SIZE { get => GetBranchSize(); }
 
         [SerializeField] private float _speed = 8f;
         [SerializeField] private RectTransform _rectTransform;
@@ -46,7 +46,6 @@ namespace SDRGames.Whist.TalentsModule.Views
             _zoomOutScale = startScale;
 
             transform.localPosition = position;
-            _rectTransform.sizeDelta = SIZE;
             transform.localScale = Vector2.one * startScale;
             transform.SetParent(parent, false);
             SetRotation();
@@ -55,6 +54,7 @@ namespace SDRGames.Whist.TalentsModule.Views
         public void SetBackground(Sprite backgroundImage)
         {
             _backgroundImage.sprite = backgroundImage;
+            _rectTransform.sizeDelta = GetBackgroundSize();
         }
 
         public void SetSizeSmoothly(float scale)
@@ -104,9 +104,14 @@ namespace SDRGames.Whist.TalentsModule.Views
             _backgroundImage.color = new Color(_backgroundImage.color.r, _backgroundImage.color.g, _backgroundImage.color.b, DEFAULT_ALPHA);
         }
 
-        private static Vector2 GetBranchSize()
+        public Vector2 GetBackgroundSize()
         {
-            return new Vector2(Screen.width, Screen.height);
+            return _backgroundImage.sprite.rect.size;
+        }
+
+        private Vector2 GetBranchSize()
+        {
+            return GetBackgroundSize();
         }
 
         private void SetRotation()

@@ -1,3 +1,5 @@
+using SDRGames.Whist.TalentsEditorModule.Managers;
+
 using UnityEditor.Experimental.GraphView;
 using UnityEditor.UIElements;
 
@@ -10,7 +12,7 @@ namespace SDRGames.Whist.TalentsEditorModule
     {
         private ObjectField _backgroundObjectField;
 
-        public ParametersWindow()
+        public ParametersWindow(GraphManager graphManager)
         {
             capabilities = Capabilities.Resizable;
 
@@ -37,24 +39,24 @@ namespace SDRGames.Whist.TalentsEditorModule
             _backgroundObjectField = UtilityElement.CreateObjectField(typeof(Sprite), null, "Background image:", callback =>
             {
                 ((ObjectField)callback.target).value = callback.newValue;
-                Background background = Background.FromSprite((Sprite)callback.newValue);
-                backgroundImagePreview.style.backgroundImage = background;
+                graphManager.SetBackgroundImage((Sprite)callback.newValue);
+                //backgroundImagePreview.style.backgroundImage = background;
 
-                if(background == null)
-                {
-                    backgroundImagePreview.style.width = 0;
-                    backgroundImagePreview.style.height = 0;
-                    return;
-                }
+                //if(background == null)
+                //{
+                //    backgroundImagePreview.style.width = 0;
+                //    backgroundImagePreview.style.height = 0;
+                //    return;
+                //}
 
-                backgroundImagePreview.style.width = background.sprite.rect.width > previewFoldout.contentContainer.layout.width ? previewFoldout.contentContainer.layout.width : background.sprite.rect.width;
-                float height = background.sprite.rect.height;
-                if(background.sprite.rect.width > previewFoldout.contentContainer.layout.width)
-                {
-                    height = (height > background.sprite.rect.width) ? height / background.sprite.rect.width : background.sprite.rect.width / height;
-                    height *= previewFoldout.contentContainer.layout.width;
-                }
-                backgroundImagePreview.style.height = height;
+                //backgroundImagePreview.style.width = background.sprite.rect.width > previewFoldout.contentContainer.layout.width ? previewFoldout.contentContainer.layout.width : background.sprite.rect.width;
+                //float height = background.sprite.rect.height;
+                //if(background.sprite.rect.width > previewFoldout.contentContainer.layout.width)
+                //{
+                //    height = (height > background.sprite.rect.width) ? height / background.sprite.rect.width : background.sprite.rect.width / height;
+                //    height *= previewFoldout.contentContainer.layout.width;
+                //}
+                //backgroundImagePreview.style.height = height;
             });
 
             mainContainer.Add(_backgroundObjectField);

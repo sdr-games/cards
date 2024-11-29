@@ -183,7 +183,7 @@ MonoBehaviour:
   _talentBranchesSO:
   - {fileID: 11400000, guid: 0a15406e84e15b548be7fe7ad263bf56, type: 2}
   - {fileID: 11400000, guid: a108daae6dbe5c94a986d51aacfe73df, type: 2}
-  - {fileID: 11400000, guid: 9adaeadd06c67044c9a196a1bbcfab00, type: 2}
+  - {fileID: 11400000, guid: 2c54dcf06f9152c4f83eb73b2ab01d34, type: 2}
 --- !u!1 &809495764
 GameObject:
   m_ObjectHideFlags: 0

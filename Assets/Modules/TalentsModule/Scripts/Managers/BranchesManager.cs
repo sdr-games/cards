@@ -52,7 +52,7 @@ namespace SDRGames.Whist.TalentsModule.Managers
             }
 
             _createdBranches = new List<BranchManager>();
-            _startScale = 1 - Screen.width / (_talentBranchesSO.Length * BranchView.SIZE.x);
+            _startScale = 0.6f;
             _rotationOffset = transform.localEulerAngles.z;
 
             for (int i = 0; i < _talentBranchesSO.Length; i++)
