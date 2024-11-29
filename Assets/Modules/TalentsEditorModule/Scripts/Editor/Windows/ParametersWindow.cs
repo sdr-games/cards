@@ -31,36 +31,13 @@ namespace SDRGames.Whist.TalentsEditorModule
             VisualElement mainContainer = new VisualElement();
             mainContainer.AddToClassList("main-container");
 
-            Foldout previewFoldout = UtilityElement.CreateFoldout("Preview", false);
-
-            Box backgroundImagePreview = new Box();
-            previewFoldout.Add(backgroundImagePreview);
-
             _backgroundObjectField = UtilityElement.CreateObjectField(typeof(Sprite), null, "Background image:", callback =>
             {
                 ((ObjectField)callback.target).value = callback.newValue;
                 graphManager.SetBackgroundImage((Sprite)callback.newValue);
-                //backgroundImagePreview.style.backgroundImage = background;
-
-                //if(background == null)
-                //{
-                //    backgroundImagePreview.style.width = 0;
-                //    backgroundImagePreview.style.height = 0;
-                //    return;
-                //}
-
-                //backgroundImagePreview.style.width = background.sprite.rect.width > previewFoldout.contentContainer.layout.width ? previewFoldout.contentContainer.layout.width : background.sprite.rect.width;
-                //float height = background.sprite.rect.height;
-                //if(background.sprite.rect.width > previewFoldout.contentContainer.layout.width)
-                //{
-                //    height = (height > background.sprite.rect.width) ? height / background.sprite.rect.width : background.sprite.rect.width / height;
-                //    height *= previewFoldout.contentContainer.layout.width;
-                //}
-                //backgroundImagePreview.style.height = height;
             });
 
             mainContainer.Add(_backgroundObjectField);
-            mainContainer.Add(previewFoldout);
             contentContainer.Add(header);
             contentContainer.Add(mainContainer);
 

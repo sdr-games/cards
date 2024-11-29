@@ -317,8 +317,9 @@ namespace SDRGames.Whist.TalentsEditorModule.Managers
             Insert(0, gridBackground);
 
             _background = new Box();
-            _background.AddToClassList("ds-graph_manager-background");
             _background.StretchToParentSize();
+            _background.style.top = 35;
+            _background.AddToClassList("ds-graph_manager-background");
             Insert(1, _background);
         }
 

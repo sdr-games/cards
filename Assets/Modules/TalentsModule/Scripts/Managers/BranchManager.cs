@@ -30,15 +30,16 @@ namespace SDRGames.Whist.TalentsModule.Managers
 
             foreach (TalentScriptableObject talent in _talentBranchSO.StartTalents)
             {
-                Vector2 talentPosition = talent.CalculatePositionInContainer(BranchView.GetBackgroundSize());
                 if (talent is AstraScriptableObject astraTalent)
                 {
+                    Vector2 talentPosition = talent.CalculatePositionInContainer(BranchView.GetBackgroundSize() - _astraPrefab.GetSize());
                     CreateAstra(astraTalent, talentPosition);
                     continue;
                 }
 
                 if (talent is TalamusScriptableObject talamusTalent)
                 {
+                    Vector2 talentPosition = talent.CalculatePositionInContainer(BranchView.GetBackgroundSize() - _talamusPrefab.GetSize());
                     CreateTalamus(talamusTalent, talentPosition);
                     continue;
                 }
@@ -61,13 +62,14 @@ namespace SDRGames.Whist.TalentsModule.Managers
                     continue;
                 }
 
-                Vector2 talentPosition = talent.CalculatePositionInContainer(BranchView.GetBackgroundSize());
                 if (talent is AstraScriptableObject astraTalent)
                 {
+                    Vector2 talentPosition = talent.CalculatePositionInContainer(BranchView.GetBackgroundSize() - _astraPrefab.GetSize());
                     CreateAstra(astraTalent, talentPosition);
                 }
                 else if (talent is TalamusScriptableObject talamusTalent)
                 {
+                    Vector2 talentPosition = talent.CalculatePositionInContainer(BranchView.GetBackgroundSize() - _talamusPrefab.GetSize());
                     CreateTalamus(talamusTalent, talentPosition);
                 }
                 dependencies.Add(_createdTalents[talent.Name].TalentView);

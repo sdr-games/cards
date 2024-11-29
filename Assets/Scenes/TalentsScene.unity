@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 262.33694, g: 325.04984, b: 430.2193, a: 1}
+  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -181,9 +181,9 @@ MonoBehaviour:
     type: 3}
   _userInputController: {fileID: 2101908830}
   _talentBranchesSO:
-  - {fileID: 11400000, guid: 0a15406e84e15b548be7fe7ad263bf56, type: 2}
-  - {fileID: 11400000, guid: a108daae6dbe5c94a986d51aacfe73df, type: 2}
-  - {fileID: 11400000, guid: 2c54dcf06f9152c4f83eb73b2ab01d34, type: 2}
+  - {fileID: 11400000, guid: 369c05d6be6d7de4c8a2379620fe02f7, type: 2}
+  - {fileID: 11400000, guid: 369c05d6be6d7de4c8a2379620fe02f7, type: 2}
+  - {fileID: 11400000, guid: 369c05d6be6d7de4c8a2379620fe02f7, type: 2}
 --- !u!1 &809495764
 GameObject:
   m_ObjectHideFlags: 0

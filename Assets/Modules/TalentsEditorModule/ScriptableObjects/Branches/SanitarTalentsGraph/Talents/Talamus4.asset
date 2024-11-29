@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a14f64b3bdf6434b96df8acde5a77a4, type: 3}
+  m_Name: Talamus4
+  m_EditorClassIdentifier: 
+  <Name>k__BackingField: Talamus4
+  <Cost>k__BackingField: 0
+  <DescriptionLocalization>k__BackingField:
+    <SelectedLocalizationTable>k__BackingField: CharacterDescriptions
+    <SelectedEntryKey>k__BackingField: Slime
+    <LocalizedTextPreview>k__BackingField: Slime
+  <TalentType>k__BackingField: 0
+  <PositionPercentages>k__BackingField: {x: 50.67986, y: 72.06235}
+  <Blockers>k__BackingField: []
+  <Dependencies>k__BackingField:
+  - {fileID: 11400000, guid: 004b8a96b7e23f44c8dc3d92ed874ffe, type: 2}
+  - {fileID: 11400000, guid: 0c02553b48a986342b703a3003e14f72, type: 2}
+  - {fileID: 11400000, guid: dd0246dbfc1b0dd438b988ae5cd6aca8, type: 2}
+  <Characteristic>k__BackingField: Strength
+  <CharacteristicValue>k__BackingField: 0

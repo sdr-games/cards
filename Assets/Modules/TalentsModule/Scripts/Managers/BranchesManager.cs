@@ -55,10 +55,11 @@ namespace SDRGames.Whist.TalentsModule.Managers
             _startScale = 0.6f;
             _rotationOffset = transform.localEulerAngles.z;
 
+            Vector2 totalSize = CalculateBranchesTotalSize();
             for (int i = 0; i < _talentBranchesSO.Length; i++)
             {
                 BranchManager branchManager = Instantiate(_branchManagerPrefab);
-                Vector2 position = CalculatePositionInRadius(i, _startScale);
+                Vector2 position = CalculatePositionInRadius(i, totalSize * _startScale);
                 branchManager.Initialize(_userInputController, _talentBranchesSO[i], position, _startScale, transform);
                 branchManager.BranchView.BranchZoomInStarted += OnBranchZoomIn;
                 branchManager.BranchView.BranchZoomOutStarted += OnBranchZoomOut;
@@ -76,9 +77,9 @@ namespace SDRGames.Whist.TalentsModule.Managers
             }
         }
 
-        private Vector2 CalculatePositionInRadius(int index, float scale)
+        private Vector2 CalculatePositionInRadius(int index, Vector2 size)
         {
-            float radius = Screen.width / 2;
+            float radius = size.x / 2;
             float angle = Mathf.PI * index / _talentBranchesSO.Length;
             return new Vector2(Mathf.Sin(angle) * radius, Mathf.Cos(angle) * radius);
         }
@@ -96,6 +97,7 @@ namespace SDRGames.Whist.TalentsModule.Managers
                 branchManager.BranchView.Hide();
             }
             StartCoroutine(RotateSmoothlyCoroutine(e.Angle, e.Time));
+            StartCoroutine(MoveSmoothlyCoroutine(-80, e.Time));
         }
 
         private void OnBranchZoomOut(object sender, BranchZoomedEventArgs e)
@@ -106,6 +108,7 @@ namespace SDRGames.Whist.TalentsModule.Managers
                 branchManager.BranchView.Show();
             }
             StartCoroutine(RotateSmoothlyCoroutine(e.Angle, e.Time));
+            StartCoroutine(MoveSmoothlyCoroutine(80, e.Time));
         }
 
         private IEnumerator RotateSmoothlyCoroutine(float targetAngle, float time)
@@ -128,6 +131,33 @@ namespace SDRGames.Whist.TalentsModule.Managers
                 currentTime += step;
             }
             transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, targetAngle);
+        }
+
+        private IEnumerator MoveSmoothlyCoroutine(float distance, float time)
+        {
+            yield return null;
+            float step = distance / time;
+            float currentTime = 0;
+            Vector3 newPosition = transform.localPosition;
+            while (currentTime < time)
+            {
+                yield return null;
+                newPosition.y += step;
+                transform.localPosition = newPosition;
+                Debug.Log(transform.localPosition);
+                currentTime++;
+                Debug.Log(currentTime);
+            }
+        }
+
+        private Vector2 CalculateBranchesTotalSize()
+        {
+            Vector2 totalSize = Vector2.zero;
+            foreach(TalentsBranchScriptableObject talentsBranchScriptableObject in _talentBranchesSO)
+            {
+                totalSize += talentsBranchScriptableObject.Background.rect.size;
+            }
+            return totalSize;
         }
     }
 }

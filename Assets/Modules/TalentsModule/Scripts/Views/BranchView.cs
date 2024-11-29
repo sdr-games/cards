@@ -17,7 +17,6 @@ namespace SDRGames.Whist.TalentsModule.Views
         private readonly float HIGHLIGHTED_ALPHA = 0.85f; // 217/255
 
         public static readonly Vector2 PADDING = new Vector2(50, 50);
-        //public static Vector2 SIZE { get => GetBranchSize(); }
 
         [SerializeField] private float _speed = 8f;
         [SerializeField] private RectTransform _rectTransform;

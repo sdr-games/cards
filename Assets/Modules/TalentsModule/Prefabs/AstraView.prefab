@@ -136,6 +136,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb6483d36469cf04a9212f285a051237, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _rectTransform: {fileID: 3346155476199489155}
   <TalentView>k__BackingField: {fileID: 7667247063588046234}
 --- !u!114 &7667247063588046234
 MonoBehaviour:
