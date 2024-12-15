@@ -48,6 +48,7 @@ namespace SDRGames.Whist.CharacterModule.Managers
             }
             Instance = this;
             DontDestroyOnLoad(gameObject);
+            InitializePlayerCharacterParamsPresenter();
         }
 
         public void InitializePlayerCharacterParamsPresenter()

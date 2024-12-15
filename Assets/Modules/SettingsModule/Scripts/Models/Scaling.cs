@@ -9,20 +9,68 @@ namespace SDRGames.Whist.SettingsModule.Models
     {
         public static Scaling Instance { get; private set; }
 
-        [field: SerializeField] public int OnePointStrengthToHealthPoints { get; private set; }
-        [field: SerializeField] public int OnePointStrengthToPhysicalDamage { get; private set; }
-        [field: SerializeField] public int OnePointStrengthToHitChance { get; private set; }
-        [field: SerializeField] public int OnePointAgilityToStaminaRestorationPerRound { get; private set; }
-        [field: SerializeField] public int OnePointAgilityToInitiative { get; private set; }
-        [field: SerializeField] public int OnePointAgilityToDodge { get; private set; }
-        [field: SerializeField] public int OnePointStaminaToPhysicalDamageAbsorb { get; private set; }
-        [field: SerializeField] public int OnePointStaminaToMagicalDamageAbsorb { get; private set; }
-        [field: SerializeField] public int OnePointStaminaToHealthPoints { get; private set; }
-        [field: SerializeField] public int OnePointStaminaToStaminaPoints { get; private set; }
-        [field: SerializeField] public int OnePointIntelligenceToMagicalDamage { get; private set; }
-        [field: SerializeField] public int OnePointIntelligenceToBreathPoints { get; private set; }
-        [field: SerializeField] public int OneLevelToArmorPoints { get; private set; }
-        [field: SerializeField] public int OneLevelToBarrierPoints { get; private set; }
+        #region Strength
+
+        [field: SerializeField] public int StrengthToHealthPoints { get; private set; }
+        [field: SerializeField] public int StrengthToPhysicalDamage { get; private set; }
+        [field: SerializeField][field: Range(0, 100)] public int StrengthToPhysicalHitChance { get; private set; }
+        [field: SerializeField][field: Range(0, 100)] public int StrengthToBlockChance { get; private set; }
+
+        #endregion
+
+        #region Strength and Agility
+
+        [field: SerializeField][field: Range(0, 100)] public int StrengthAndAgilityToCriticalStrikeChance { get; private set; }
+
+        #endregion
+
+        #region Agility
+
+        [field: SerializeField][field: Range(0, 100)] public int AgilityToDodgeChance { get; private set; }
+        [field: SerializeField][field: Range(0, 100)] public int AgilityToStaminaRestorationPerRound { get; private set; }
+        [field: SerializeField] public int AgilityToInitiative { get; private set; }
+        [field: SerializeField][field: Range(0, 100)] public int AgilityToPiercing { get; private set; }
+
+        #endregion
+
+        #region Stamina
+
+        [field: SerializeField] public int StaminaToHealthPoints { get; private set; }
+        [field: SerializeField] public int StaminaToStaminaPoints { get; private set; }
+        [field: SerializeField][field: Range(0, 100)] public int StaminaToResilience { get; private set; }
+        [field: SerializeField][field: Range(0, 100)] public int StaminaToOnslaughtChance { get; private set; }
+
+        #endregion
+
+        #region Intelligence
+
+        [field: SerializeField] public int IntelligenceToBreathPoints { get; private set; }
+        [field: SerializeField] public int IntelligenceToMagicalDamage { get; private set; }
+        [field: SerializeField][field: Range(0, 100)] public int IntelligenceToMagicalHitChance { get; private set; }
+
+        #endregion
+
+        #region Level
+
+        [field: SerializeField] public int[] ExperienceRequiredPerLevel { get; private set; }
+        [field: SerializeField] public int TalentPointsPerLevel { get; private set; }
+        [field: SerializeField] public int LevelToArmorPoints { get; private set; }
+        [field: SerializeField] public int LevelToBarrierPoints { get; private set; }
+        [field: SerializeField] public int LevelsCountForMultiplier { get; private set; }
+        [field: SerializeField] public int LevelsToPhysicalDamageMultiplier { get; private set; }
+        [field: SerializeField] public int LevelsToMagicalDamageMultiplier { get; private set; }
+
+        #endregion
+
+        #region Other
+
+        [field: SerializeField][field: Range(0, 100)] public int WeakeningMaxPercent { get; private set; }
+        [field: SerializeField][field: Range(0, 100)] public int AmplificationMaxPercent { get; private set; }
+        [field: SerializeField][field: Range(0, 100)] public float BaseStaminaRestorationPowerPercent { get; private set; }
+        [field: SerializeField][field: Range(0, 100)] public int BaseStunResistance { get; private set; }
+        [field: SerializeField][field: Range(0, 100)] public int BaseStunResistanceWithoutArmor { get; private set; }
+        
+        #endregion
 
         public void UpdateStaticFields()
         {
@@ -31,24 +79,40 @@ namespace SDRGames.Whist.SettingsModule.Models
                 Instance = new Scaling();
             }
 
-            Instance.OnePointStrengthToHealthPoints = OnePointStrengthToHealthPoints;
-            Instance.OnePointStrengthToPhysicalDamage = OnePointStrengthToPhysicalDamage;
-            Instance.OnePointStrengthToHitChance = OnePointStrengthToHitChance;
+            Instance.StrengthToHealthPoints = StrengthToHealthPoints;
+            Instance.StrengthToPhysicalDamage = StrengthToPhysicalDamage;
+            Instance.StrengthToPhysicalHitChance = StrengthToPhysicalHitChance;
+            Instance.StrengthToBlockChance = StrengthToBlockChance;
 
-            Instance.OnePointAgilityToStaminaRestorationPerRound = OnePointAgilityToStaminaRestorationPerRound;
-            Instance.OnePointAgilityToInitiative = OnePointAgilityToInitiative;
-            Instance.OnePointAgilityToDodge = OnePointAgilityToDodge;
+            Instance.StrengthAndAgilityToCriticalStrikeChance = StrengthAndAgilityToCriticalStrikeChance;
 
-            Instance.OnePointStaminaToPhysicalDamageAbsorb = OnePointStaminaToPhysicalDamageAbsorb;
-            Instance.OnePointStaminaToMagicalDamageAbsorb = OnePointStaminaToMagicalDamageAbsorb;
-            Instance.OnePointStaminaToHealthPoints = OnePointStaminaToHealthPoints;
-            Instance.OnePointStaminaToStaminaPoints = OnePointStaminaToStaminaPoints;
+            Instance.AgilityToDodgeChance = AgilityToDodgeChance;
+            Instance.AgilityToStaminaRestorationPerRound = AgilityToStaminaRestorationPerRound;
+            Instance.AgilityToInitiative = AgilityToInitiative;
+            Instance.AgilityToPiercing = AgilityToPiercing;
 
-            Instance.OnePointIntelligenceToMagicalDamage = OnePointIntelligenceToMagicalDamage;
-            Instance.OnePointIntelligenceToBreathPoints = OnePointIntelligenceToBreathPoints;
+            Instance.StaminaToHealthPoints = StaminaToHealthPoints;
+            Instance.StaminaToStaminaPoints = StaminaToStaminaPoints;
+            Instance.StaminaToResilience = StaminaToResilience;
+            Instance.StaminaToOnslaughtChance = StaminaToOnslaughtChance;
 
-            Instance.OneLevelToArmorPoints = OneLevelToArmorPoints;
-            Instance.OneLevelToBarrierPoints = OneLevelToBarrierPoints;
+            Instance.IntelligenceToBreathPoints = IntelligenceToBreathPoints;
+            Instance.IntelligenceToMagicalDamage = IntelligenceToMagicalDamage;
+            Instance.IntelligenceToMagicalHitChance = IntelligenceToMagicalHitChance;
+
+            Instance.ExperienceRequiredPerLevel = ExperienceRequiredPerLevel;
+            Instance.TalentPointsPerLevel = TalentPointsPerLevel;
+            Instance.LevelToArmorPoints = LevelToArmorPoints;
+            Instance.LevelToBarrierPoints = LevelToBarrierPoints;
+            Instance.LevelsCountForMultiplier = LevelsCountForMultiplier;
+            Instance.LevelsToPhysicalDamageMultiplier = LevelsToPhysicalDamageMultiplier;
+            Instance.LevelsToMagicalDamageMultiplier = LevelsToMagicalDamageMultiplier;
+
+            Instance.WeakeningMaxPercent = WeakeningMaxPercent;
+            Instance.AmplificationMaxPercent = AmplificationMaxPercent;
+            Instance.BaseStaminaRestorationPowerPercent = BaseStaminaRestorationPowerPercent;
+            Instance.BaseStunResistance = BaseStunResistance;
+            Instance.BaseStunResistanceWithoutArmor = BaseStunResistanceWithoutArmor;
         }
     }
 }

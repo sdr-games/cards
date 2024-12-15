@@ -97,7 +97,7 @@ namespace SDRGames.Whist.TurnSwitchModule.Managers
         private List<CharacterInfoScriptableObject> OrderByInitiative(List<CharacterParamsModel> characterParamsModels)
         {
             List<CharacterInfoScriptableObject> result = new List<CharacterInfoScriptableObject>();
-            List<CharacterParamsModel> sortedParams = characterParamsModels.OrderByDescending(x => x.Initiative).ToList();
+            List<CharacterParamsModel> sortedParams = characterParamsModels.OrderByDescending(x => x.Initiative.CheckRoll()).ToList();
             foreach (CharacterParamsModel characterParamsModel in sortedParams)
             {
                 result.Add(characterParamsModel.CharacterInfo);

@@ -2,11 +2,13 @@
 {
     public class ExperienceChangedEventArgs
     {
-        public int Experience { get; private set; }
+        public int CurrentExperience { get; private set; }
+        public int RequiredExperience { get; private set; }
 
-        public ExperienceChangedEventArgs(int experience)
+        public ExperienceChangedEventArgs(int currentExperience, int requiredExperience)
         {
-            Experience = experience;
+            CurrentExperience = currentExperience;
+            RequiredExperience = requiredExperience;
         }
     }
 }

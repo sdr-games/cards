@@ -2,9 +2,8 @@ using SDRGames.Whist.CharacterModule.ScriptableObjects;
 using SDRGames.Whist.CharacterModule.Presenters;
 using SDRGames.Whist.CharacterModule.Views;
 
-using UnityEditor;
-
 using UnityEngine;
+using SDRGames.Whist.HelpersModule;
 
 namespace SDRGames.Whist.CharacterModule.Managers
 {
@@ -124,13 +123,7 @@ namespace SDRGames.Whist.CharacterModule.Managers
         protected override void OnEnable()
         {
             base.OnEnable();
-            if (_characterCombatParamsView == null)
-            {
-                Debug.LogError("Common Character Combat Params View не был назначен");
-                #if UNITY_EDITOR
-                    EditorApplication.isPlaying = false;
-                #endif
-            }
+            this.CheckFieldValueIsNotNull(nameof(_characterCombatParamsView), _characterCombatParamsView);
         }
     }
 }

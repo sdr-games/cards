@@ -1,4 +1,4 @@
-using SDRGames.Whist.DiceModule.Views;
+using SDRGames.Whist.HelpersModule;
 using SDRGames.Whist.PointsModule.Views;
 
 using TMPro;
@@ -11,145 +11,150 @@ namespace SDRGames.Whist.CharacterModule.Views
 {
     public class PlayerCharacterParamsView : MonoBehaviour
     {
-        [SerializeField] private TextMeshProUGUI _nameTMP;
-        [SerializeField] private TextMeshProUGUI _levelTMP;
-        [SerializeField] private TextMeshProUGUI _experienceTMP;
-        [SerializeField] private TextMeshProUGUI _gloryTMP;
-        [SerializeField] private TextMeshProUGUI _physicalDamageTMP;
-        [SerializeField] private TextMeshProUGUI _magicDamageTMP;
+        [SerializeField] private TextMeshProUGUI _levelValue;
+        [SerializeField] private TextMeshProUGUI _experienceValue;
 
+        #region Characteristics
+
+        [Header("Characteristics")]
+        [SerializeField] private TextMeshProUGUI _strengthValue;
+        [SerializeField] private TextMeshProUGUI _agilityValue;
+        [SerializeField] private TextMeshProUGUI _staminaValue;
+        [SerializeField] private TextMeshProUGUI _intelligenceValue;
+
+        #endregion
+
+        #region Points
+
+        [field: Header("Points")]
         [field: SerializeField] public PointsTextView HealthPointsView { get; private set; }
         [field: SerializeField] public PointsTextView StaminaPointsView { get; private set; }
         [field: SerializeField] public PointsTextView BreathPointsView { get; private set; }
-        [field: SerializeField] public PointsTextView PhysicalArmorPointsView { get; private set; }
-        [field: SerializeField] public PointsTextView MagicShieldPointsView { get; private set; }
+        [field: SerializeField] public PointsTextView ArmorPointsView { get; private set; }
+        [field: SerializeField] public PointsTextView BarrierPointsView { get; private set; }
 
-        public void Initialize(string name, string level, string experience, string glory, string physicalDamage, string magicDamage)
+        #endregion
+
+        #region Parameters
+
+        [Header("Parameters")]
+        [SerializeField] private TextMeshProUGUI _physicalDamageValue;
+        [SerializeField] private TextMeshProUGUI _physicalHitChanceValue;
+        [SerializeField] private TextMeshProUGUI _magicalDamageValue;
+        [SerializeField] private TextMeshProUGUI _magicalHitChanceValue;
+        [SerializeField] private TextMeshProUGUI _staminaRestorationPerRoundValue;
+        [SerializeField] private TextMeshProUGUI _piercingValue;
+
+        #endregion
+
+        public void Initialize(string level, string experience, string strength, string agility, string stamina, string intelligence, string physicalDamage, string physicalHitChance, string magicalDamage, string magicalHitChance, string staminaRestorationPerRound, string piercing)
         {
-            _nameTMP.text = name;
             SetLevelText(level);
-            SetPhysicalDamageText(physicalDamage);
-            SetMagicDamageText(magicDamage);
             SetExperienceText(experience);
-            SetGloryText(glory);
+
+            SetStrengthText(strength);
+            SetAgilityText(agility);
+            SetStaminaText(stamina);
+            SetIntelligenceText(intelligence);
+
+            SetPhysicalDamageText(physicalDamage);
+            SetPhysicalHitChanceText(physicalHitChance);
+            SetMagicalDamageText(magicalDamage);
+            SetMagicHitChanceText(magicalHitChance);
+            SetStaminaRestorationPerRoundText(staminaRestorationPerRound);
+            SetPiercingText(piercing);
         }
+
+        #region Setters
 
         public void SetLevelText(string level)
         {
-            _levelTMP.text = level;
-        }
-
-        public void SetPhysicalDamageText(string physicalDamage)
-        {
-            _physicalDamageTMP.text = physicalDamage;
-        }
-
-        public void SetMagicDamageText(string magicDamage)
-        {
-            _magicDamageTMP.text = magicDamage;
+            _levelValue.text = level;
         }
 
         public void SetExperienceText(string experience)
         {
-            _experienceTMP.text = experience;
+            _experienceValue.text = experience;
         }
 
-        public void SetGloryText(string glory)
+        public void SetStrengthText(string strength)
         {
-            _gloryTMP.text = glory;
+            _strengthValue.text = strength;
         }
+
+        public void SetAgilityText(string agility)
+        {
+            _agilityValue.text = agility;
+        }
+
+        public void SetStaminaText(string stamina)
+        {
+            _staminaValue.text = stamina;
+        }
+
+        public void SetIntelligenceText(string intelligence)
+        {
+            _intelligenceValue.text = intelligence;
+        }
+
+        public void SetPhysicalDamageText(string physicalDamage)
+        {
+            _physicalDamageValue.text = physicalDamage;
+        }
+
+        public void SetPhysicalHitChanceText(string physicalHitChance)
+        {
+            _physicalHitChanceValue.text = physicalHitChance;
+        }
+
+        public void SetMagicalDamageText(string magicalDamage)
+        {
+            _magicalDamageValue.text = magicalDamage;
+        }
+
+        public void SetMagicHitChanceText(string magicalHitChance)
+        {
+            _magicalHitChanceValue.text = magicalHitChance;
+        }
+
+        public void SetStaminaRestorationPerRoundText(string staminaRestorationPerRound)
+        {
+            _staminaRestorationPerRoundValue.text = staminaRestorationPerRound;
+        }
+
+        public void SetPiercingText(string piercing)
+        {
+            _piercingValue.text = piercing;
+        }
+
+        #endregion
 
         #region MonoBehaviour methods
+
         private void OnEnable()
         {
-            if (_nameTMP == null)
-            {
-                Debug.LogError("Name TextMeshPro не был назначен");
-                #if UNITY_EDITOR
-                    EditorApplication.isPlaying = false;
-                #endif
-            }
+            this.CheckFieldValueIsNotNull(nameof(_levelValue), _levelValue);
+            this.CheckFieldValueIsNotNull(nameof(_experienceValue), _experienceValue);
 
-            if (_levelTMP == null)
-            {
-                Debug.LogError("Level TextMeshPro не был назначен");
-                #if UNITY_EDITOR
-                    EditorApplication.isPlaying = false;
-                #endif
-            }
+            this.CheckFieldValueIsNotNull(nameof(_strengthValue), _strengthValue);
+            this.CheckFieldValueIsNotNull(nameof(_agilityValue), _agilityValue);
+            this.CheckFieldValueIsNotNull(nameof(_staminaValue), _staminaValue);
+            this.CheckFieldValueIsNotNull(nameof(_intelligenceValue), _intelligenceValue);
 
-            if (HealthPointsView == null)
-            {
-                Debug.LogError("Health Points View не был назначен");
-                #if UNITY_EDITOR
-                    EditorApplication.isPlaying = false;
-                #endif
-            }
+            this.CheckFieldValueIsNotNull(nameof(HealthPointsView), HealthPointsView);
+            this.CheckFieldValueIsNotNull(nameof(StaminaPointsView), StaminaPointsView);
+            this.CheckFieldValueIsNotNull(nameof(BreathPointsView), BreathPointsView);
+            this.CheckFieldValueIsNotNull(nameof(ArmorPointsView), ArmorPointsView);
+            this.CheckFieldValueIsNotNull(nameof(BarrierPointsView), BarrierPointsView);
 
-            if (StaminaPointsView == null)
-            {
-                Debug.LogError("Stamina Points View не был назначен");
-                #if UNITY_EDITOR
-                    EditorApplication.isPlaying = false;
-                #endif
-            }
-
-            if (BreathPointsView == null)
-            {
-                Debug.LogError("Breath Points View не был назначен");
-                #if UNITY_EDITOR
-                    EditorApplication.isPlaying = false;
-                #endif
-            }
-
-            if (PhysicalArmorPointsView == null)
-            {
-                Debug.LogError("Physical Armor Points View не был назначен");
-                #if UNITY_EDITOR
-                    EditorApplication.isPlaying = false;
-                #endif
-            }
-
-            if (MagicShieldPointsView == null)
-            {
-                Debug.LogError("Magic Shield Points View не был назначен");
-                #if UNITY_EDITOR
-                    EditorApplication.isPlaying = false;
-                #endif
-            }
-
-            if (_physicalDamageTMP == null)
-            {
-                Debug.LogError("Physical Damage TextMeshPro не был назначен");
-                #if UNITY_EDITOR
-                    EditorApplication.isPlaying = false;
-                #endif
-            }
-
-            if (_magicDamageTMP == null)
-            {
-                Debug.LogError("Magic Damage TextMeshPro не был назначен");
-                #if UNITY_EDITOR
-                    EditorApplication.isPlaying = false;
-                #endif
-            }
-
-            if (_experienceTMP == null)
-            {
-                Debug.LogError("Experience TextMeshPro не был назначен");
-                #if UNITY_EDITOR
-                    EditorApplication.isPlaying = false;
-                #endif
-            }
-
-            if (_gloryTMP == null)
-            {
-                Debug.LogError("Glory TextMeshPro не был назначен");
-                #if UNITY_EDITOR
-                    EditorApplication.isPlaying = false;
-                #endif
-            }
+            this.CheckFieldValueIsNotNull(nameof(_physicalDamageValue), _physicalDamageValue);
+            this.CheckFieldValueIsNotNull(nameof(_physicalHitChanceValue), _physicalHitChanceValue);
+            this.CheckFieldValueIsNotNull(nameof(_magicalDamageValue), _magicalDamageValue);
+            this.CheckFieldValueIsNotNull(nameof(_magicalHitChanceValue), _magicalHitChanceValue);
+            this.CheckFieldValueIsNotNull(nameof(_staminaRestorationPerRoundValue), _staminaRestorationPerRoundValue);
+            this.CheckFieldValueIsNotNull(nameof(_piercingValue), _piercingValue);
         }
+
         #endregion
     }
 }

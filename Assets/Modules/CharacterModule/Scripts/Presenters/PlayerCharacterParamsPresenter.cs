@@ -1,4 +1,3 @@
-using SDRGames.Whist.DiceModule.Presenters;
 using SDRGames.Whist.PointsModule.Presenters;
 using SDRGames.Whist.CharacterModule.ScriptableObjects;
 using SDRGames.Whist.CharacterModule.Views;
@@ -16,29 +15,35 @@ namespace SDRGames.Whist.CharacterModule.Presenters
             _playerCharacterParamsView = playerCharacterParamsView;
 
             _playerCharacterParamsView.Initialize(
-                _playerCharacterParams.CharacterInfo.CharacterNameLocalization.GetLocalizedString(), 
                 _playerCharacterParams.Level.ToString(), 
                 _playerCharacterParams.Experience.ToString(),
-                _playerCharacterParams.Glory.ToString(),
+                _playerCharacterParams.Strength.ToString(),
+                _playerCharacterParams.Agility.ToString(),
+                _playerCharacterParams.Stamina.ToString(),
+                _playerCharacterParams.Intelligence.ToString(),
                 _playerCharacterParams.PhysicalDamage.ToString(),
-                _playerCharacterParams.MagicDamage.ToString()
+                _playerCharacterParams.PhysicalHitChance.ToString(),
+                _playerCharacterParams.MagicalDamage.ToString(),
+                _playerCharacterParams.MagicalHitChance.ToString(),
+                _playerCharacterParams.StaminaRestorationPower.ToString(),
+                _playerCharacterParams.Piercing.ToString()
             );
 
             new PointsTextPresenter(_playerCharacterParams.HealthPoints, _playerCharacterParamsView.HealthPointsView);
             new PointsTextPresenter(_playerCharacterParams.StaminaPoints, _playerCharacterParamsView.StaminaPointsView);
             new PointsTextPresenter(_playerCharacterParams.BreathPoints, _playerCharacterParamsView.BreathPointsView);
-            new PointsTextPresenter(_playerCharacterParams.ArmorPoints, _playerCharacterParamsView.PhysicalArmorPointsView);
-            new PointsTextPresenter(_playerCharacterParams.BarrierPoints, _playerCharacterParamsView.MagicShieldPointsView);
+            new PointsTextPresenter(_playerCharacterParams.ArmorPoints, _playerCharacterParamsView.ArmorPointsView);
+            new PointsTextPresenter(_playerCharacterParams.BarrierPoints, _playerCharacterParamsView.BarrierPointsView);
 
             _playerCharacterParams.LevelChanged += OnLevelChanged;
             _playerCharacterParams.PhysicalDamageChanged += OnPhysicalDamageChanged;
-            _playerCharacterParams.MagicDamageChanged += OnMagicDamageChanged;
+            _playerCharacterParams.MagicalDamageChanged += OnMagicDamageChanged;
         }
 
         ~PlayerCharacterParamsPresenter()
         {
             _playerCharacterParams.LevelChanged -= OnLevelChanged;
-            _playerCharacterParams.MagicDamageChanged -= OnMagicDamageChanged;
+            _playerCharacterParams.MagicalDamageChanged -= OnMagicDamageChanged;
         }
 
         private void OnLevelChanged(object sender, LevelChangedEventArgs e)
@@ -46,14 +51,14 @@ namespace SDRGames.Whist.CharacterModule.Presenters
             _playerCharacterParamsView.SetLevelText(e.Level.ToString());
         }
 
-        private void OnMagicDamageChanged(object sender, MagicDamageChangedEventArgs e)
+        private void OnMagicDamageChanged(object sender, ParameterChangedEventArgs e)
         {
-            _playerCharacterParamsView.SetMagicDamageText(e.MagicDamage.ToString());
+            _playerCharacterParamsView.SetMagicalDamageText(e.ParameterValue.ToString());
         }
 
-        private void OnPhysicalDamageChanged(object sender, PhysicalDamageChangedEventArgs e)
+        private void OnPhysicalDamageChanged(object sender, ParameterChangedEventArgs e)
         {
-            _playerCharacterParamsView.SetPhysicalDamageText(e.PhysicalDamage.ToString());
+            _playerCharacterParamsView.SetPhysicalDamageText(e.ParameterValue.ToString());
         }
     }
 }
