@@ -1,0 +1,113 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50a8127899c311142a6d585424984797, type: 3}
+  m_Name: AlchemistTalentsGraph
+  m_EditorClassIdentifier: 
+  <FileName>k__BackingField: 
+  <Background>k__BackingField: {fileID: 21300000, guid: 0d5d87cbd97bb0f44b87da2451c3218e,
+    type: 3}
+  <TalamusNodes>k__BackingField:
+  - <ID>k__BackingField: 9b83a41b-6942-4259-98de-de9932e75033
+    <NodeName>k__BackingField: Talamus2
+    <DescriptionLocalization>k__BackingField:
+      <SelectedLocalizationTable>k__BackingField: CharacterDescriptions
+      <SelectedEntryKey>k__BackingField: Slime
+      <LocalizedTextPreview>k__BackingField: "\u0416\u0443\u0442\u043A\u0430\u044F
+        \u0431\u043E\u043B\u0435\u0437\u043D\u044C, \u0441\u043B\u0438\u0437\u044C,
+        \u0431\u043B\u0430-\u0431\u043B\u0430-\u0431\u043B\u0430"
+    <Cost>k__BackingField: 0
+    <OutputConnections>k__BackingField:
+    - 08346585-562b-4607-b06a-2affc7f44dde
+    - 5faedb44-8c17-4db1-b68f-a3b4bc5f1b07
+    - 3bf23c8e-f7c4-4fe0-8c65-289beb71ba7b
+    <Position>k__BackingField: {x: 1041.6, y: 336.8}
+    <CharacteristicName>k__BackingField: 0
+    <CharacteristicValue>k__BackingField: 0
+  - <ID>k__BackingField: 3bf23c8e-f7c4-4fe0-8c65-289beb71ba7b
+    <NodeName>k__BackingField: Talamus3
+    <DescriptionLocalization>k__BackingField:
+      <SelectedLocalizationTable>k__BackingField: CharacterDescriptions
+      <SelectedEntryKey>k__BackingField: Slime
+      <LocalizedTextPreview>k__BackingField: "\u0416\u0443\u0442\u043A\u0430\u044F
+        \u0431\u043E\u043B\u0435\u0437\u043D\u044C, \u0441\u043B\u0438\u0437\u044C,
+        \u0431\u043B\u0430-\u0431\u043B\u0430-\u0431\u043B\u0430"
+    <Cost>k__BackingField: 0
+    <OutputConnections>k__BackingField:
+    - 8efa902d-0cad-47b5-b0aa-628fe7e7c4ad
+    <Position>k__BackingField: {x: 1269.6, y: 328}
+    <CharacteristicName>k__BackingField: 0
+    <CharacteristicValue>k__BackingField: 0
+  - <ID>k__BackingField: e8e993af-f57a-4caf-aeee-a7099e1c943f
+    <NodeName>k__BackingField: Talamus6
+    <DescriptionLocalization>k__BackingField:
+      <SelectedLocalizationTable>k__BackingField: CharacterDescriptions
+      <SelectedEntryKey>k__BackingField: Slime
+      <LocalizedTextPreview>k__BackingField: "\u0416\u0443\u0442\u043A\u0430\u044F
+        \u0431\u043E\u043B\u0435\u0437\u043D\u044C, \u0441\u043B\u0438\u0437\u044C,
+        \u0431\u043B\u0430-\u0431\u043B\u0430-\u0431\u043B\u0430"
+    <Cost>k__BackingField: 0
+    <OutputConnections>k__BackingField:
+    - 8efa902d-0cad-47b5-b0aa-628fe7e7c4ad
+    - a0705558-301a-4436-8164-b6f63b0d4951
+    <Position>k__BackingField: {x: 1135.2, y: 593.6}
+    <CharacteristicName>k__BackingField: 0
+    <CharacteristicValue>k__BackingField: 0
+  <AstraNodes>k__BackingField:
+  - <ID>k__BackingField: 08346585-562b-4607-b06a-2affc7f44dde
+    <NodeName>k__BackingField: Astra0
+    <DescriptionLocalization>k__BackingField:
+      <SelectedLocalizationTable>k__BackingField: CharacterDescriptions
+      <SelectedEntryKey>k__BackingField: Slime
+      <LocalizedTextPreview>k__BackingField: "\u0416\u0443\u0442\u043A\u0430\u044F
+        \u0431\u043E\u043B\u0435\u0437\u043D\u044C, \u0441\u043B\u0438\u0437\u044C,
+        \u0431\u043B\u0430-\u0431\u043B\u0430-\u0431\u043B\u0430"
+    <Cost>k__BackingField: 0
+    <OutputConnections>k__BackingField: []
+    <Position>k__BackingField: {x: 1094.4, y: 182.40001}
+    <Equipment>k__BackingField: 0
+  - <ID>k__BackingField: 5faedb44-8c17-4db1-b68f-a3b4bc5f1b07
+    <NodeName>k__BackingField: Astra1
+    <DescriptionLocalization>k__BackingField:
+      <SelectedLocalizationTable>k__BackingField: CharacterDescriptions
+      <SelectedEntryKey>k__BackingField: Slime
+      <LocalizedTextPreview>k__BackingField: "\u0416\u0443\u0442\u043A\u0430\u044F
+        \u0431\u043E\u043B\u0435\u0437\u043D\u044C, \u0441\u043B\u0438\u0437\u044C,
+        \u0431\u043B\u0430-\u0431\u043B\u0430-\u0431\u043B\u0430"
+    <Cost>k__BackingField: 0
+    <OutputConnections>k__BackingField: []
+    <Position>k__BackingField: {x: 780, y: 301.59998}
+    <Equipment>k__BackingField: 0
+  - <ID>k__BackingField: 8efa902d-0cad-47b5-b0aa-628fe7e7c4ad
+    <NodeName>k__BackingField: Astra4
+    <DescriptionLocalization>k__BackingField:
+      <SelectedLocalizationTable>k__BackingField: CharacterDescriptions
+      <SelectedEntryKey>k__BackingField: Slime
+      <LocalizedTextPreview>k__BackingField: "\u0416\u0443\u0442\u043A\u0430\u044F
+        \u0431\u043E\u043B\u0435\u0437\u043D\u044C, \u0441\u043B\u0438\u0437\u044C,
+        \u0431\u043B\u0430-\u0431\u043B\u0430-\u0431\u043B\u0430"
+    <Cost>k__BackingField: 0
+    <OutputConnections>k__BackingField: []
+    <Position>k__BackingField: {x: 1135.2, y: 461.59998}
+    <Equipment>k__BackingField: 0
+  - <ID>k__BackingField: a0705558-301a-4436-8164-b6f63b0d4951
+    <NodeName>k__BackingField: Astra5
+    <DescriptionLocalization>k__BackingField:
+      <SelectedLocalizationTable>k__BackingField: CharacterDescriptions
+      <SelectedEntryKey>k__BackingField: Slime
+      <LocalizedTextPreview>k__BackingField: "\u0416\u0443\u0442\u043A\u0430\u044F
+        \u0431\u043E\u043B\u0435\u0437\u043D\u044C, \u0441\u043B\u0438\u0437\u044C,
+        \u0431\u043B\u0430-\u0431\u043B\u0430-\u0431\u043B\u0430"
+    <Cost>k__BackingField: 0
+    <OutputConnections>k__BackingField: []
+    <Position>k__BackingField: {x: 1135.2, y: 737.6}
+    <Equipment>k__BackingField: 0
+  <Variables>k__BackingField: []

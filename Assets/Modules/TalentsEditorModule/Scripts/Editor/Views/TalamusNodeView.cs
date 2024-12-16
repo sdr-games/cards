@@ -26,7 +26,7 @@ namespace SDRGames.Whist.TalentsEditorModule.Views
 
         public void Initialize(string id, string nodeName, Vector2 position)
         {
-            Sprite sprite = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Modules/TalentsModule/Sprites/уроборо.png");
+            Sprite sprite = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Modules/TalentsModule/Sprites/Thalamus.png");
             base.Initialize(id, nodeName, position, sprite);
             CharacteristicName = default;
             CharacteristicValue = 0;

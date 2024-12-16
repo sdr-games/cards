@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e27b5ac8de4c7949a7747223e0df75b, type: 3}
+  m_Name: AlchemistTalentsGraph
+  m_EditorClassIdentifier: 
+  <FileName>k__BackingField: 
+  <Background>k__BackingField: {fileID: 21300000, guid: 0d5d87cbd97bb0f44b87da2451c3218e,
+    type: 3}
+  <Talents>k__BackingField:
+  - {fileID: 11400000, guid: 80e649d5e4c4c1542b788bc8c7539b1e, type: 2}
+  - {fileID: 11400000, guid: af15e4de605085542ba30f2d1c65d9e6, type: 2}
+  - {fileID: 11400000, guid: d54b34db69e6ce24aab2b47368a29ce1, type: 2}
+  - {fileID: 11400000, guid: 636981a815e5c46458710c7361e24e70, type: 2}
+  - {fileID: 11400000, guid: 732aff7f71aada042b04de781c9090eb, type: 2}
+  - {fileID: 11400000, guid: 425d35d6b5133504090a3b7214efbcae, type: 2}
+  - {fileID: 11400000, guid: 0a4290a5b4b5f7f4381f73b64e4acad1, type: 2}
+  <Bonuses>k__BackingField: []

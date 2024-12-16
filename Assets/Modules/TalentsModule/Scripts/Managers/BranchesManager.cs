@@ -52,7 +52,7 @@ namespace SDRGames.Whist.TalentsModule.Managers
             }
 
             _createdBranches = new List<BranchManager>();
-            _startScale = 0.6f;
+            _startScale = 0.25f;
             _rotationOffset = transform.localEulerAngles.z;
 
             Vector2 totalSize = CalculateBranchesTotalSize();

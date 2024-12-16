@@ -119,6 +119,11 @@ namespace SDRGames.Whist.TalentsEditorModule.Managers
             _miniMap.visible = !_miniMap.visible;
         }
 
+        public void ToggleParametersWindow()
+        {
+            _parametersWindow.visible = !_parametersWindow.visible;
+        }
+
         public override List<Port> GetCompatiblePorts(Port startPort, NodeAdapter nodeAdapter)
         {
             return ports.ToList()!.Where(endPort =>
@@ -131,7 +136,6 @@ namespace SDRGames.Whist.TalentsEditorModule.Managers
         public Rect GetGraphRect()
         {
             Rect backgroundRect = GetBackgroundImageParameter().rect;
-            
             return new Rect(new Vector2(contentRect.width / 2 - backgroundRect.width / 2, 0), backgroundRect.size);
         }
 
@@ -150,6 +154,7 @@ namespace SDRGames.Whist.TalentsEditorModule.Managers
         {
             Background background = Background.FromSprite(backgroundImage);
             _background.style.backgroundImage = background;
+            _background.style.backgroundSize = new BackgroundSize(new Length(background.sprite.rect.width), new Length(background.sprite.rect.height));
         }
 
         private void AddNode(string nodeName, BaseNodeView node)
@@ -171,7 +176,7 @@ namespace SDRGames.Whist.TalentsEditorModule.Managers
         {
             SetupZoom(ContentZoomer.DefaultMinScale, ContentZoomer.DefaultMaxScale);
 
-            this.AddManipulator(new ContentDragger());
+            //this.AddManipulator(new ContentDragger());
             this.AddManipulator(new SelectionDragger());
             this.AddManipulator(new RectangleSelector());
 

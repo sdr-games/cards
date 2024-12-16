@@ -45,20 +45,20 @@ namespace SDRGames.Whist.TalentsEditorModule
 
             GetElementsFromGraphView();
             GraphSaveDataScriptableObject graphData = CreateAsset<GraphSaveDataScriptableObject>(path);
-            graphData.Initialize(_graphFileName, _graphView.GetBackgroundImageParameter());
-            EditorUtility.SetDirty(graphData);
-            AssetDatabase.SaveAssetIfDirty(graphData);
+            graphData.Initialize(_graphFileName);
 
             TalentsBranchScriptableObject talentsBranch = CreateAsset<TalentsBranchScriptableObject>(_containerFolderPath, _graphFileName);
-            talentsBranch.Initialize(_graphFileName, _graphView.GetBackgroundImageParameter());
-            EditorUtility.SetDirty(talentsBranch);
-            AssetDatabase.SaveAssetIfDirty(talentsBranch);
+            talentsBranch.Initialize(_graphFileName);
 
             SaveNodes(graphData, talentsBranch);
             //SaveVariables(graphData, talentsBranch);
 
-            //SaveAsset(graphData);
-            //SaveAsset(talentsBranch);
+            Sprite backgroundImage = _graphView.GetBackgroundImageParameter();
+
+            graphData.SetBackgroundImage(backgroundImage);
+            SaveAsset(graphData);
+            talentsBranch.SetBackgroundImage(backgroundImage);
+            SaveAsset(talentsBranch);
         }
 
         public static T CreateAsset<T>(string path, string assetName = "") where T : ScriptableObject

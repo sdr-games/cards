@@ -1,9 +1,11 @@
 using SDRGames.Whist.TalentsEditorModule.Managers;
 
+using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEditor.UIElements;
 
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.UIElements;
 
 namespace SDRGames.Whist.TalentsEditorModule
@@ -14,7 +16,7 @@ namespace SDRGames.Whist.TalentsEditorModule
 
         public ParametersWindow(GraphManager graphManager)
         {
-            capabilities = Capabilities.Resizable;
+            capabilities = Capabilities.Selectable | Capabilities.Resizable | Capabilities.Ascendable | Capabilities.Collapsible;
 
             /* HEADER */
 

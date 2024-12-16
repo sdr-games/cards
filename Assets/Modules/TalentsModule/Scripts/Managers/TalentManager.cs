@@ -40,7 +40,7 @@ namespace SDRGames.Whist.TalentsModule.Managers
 
         public Vector2 GetSize()
         {
-            return _rectTransform.rect.size;
+            return _rectTransform.rect.size / 1.5f;
         }
 
         private void OnBlockChanged(object sender, System.EventArgs e)

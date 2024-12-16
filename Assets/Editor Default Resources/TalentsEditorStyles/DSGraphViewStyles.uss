@@ -9,7 +9,6 @@ GridBackground
 
 .ds-graph_manager-background {
     background-color: transparent;
-    background-size: contain;
 }
 
 .variable-detail-view {

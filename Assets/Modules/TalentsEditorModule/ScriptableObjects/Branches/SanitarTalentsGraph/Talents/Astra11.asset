@@ -17,10 +17,12 @@ MonoBehaviour:
   <DescriptionLocalization>k__BackingField:
     <SelectedLocalizationTable>k__BackingField: CharacterDescriptions
     <SelectedEntryKey>k__BackingField: Slime
-    <LocalizedTextPreview>k__BackingField: Slime
+    <LocalizedTextPreview>k__BackingField: "\u0416\u0443\u0442\u043A\u0430\u044F
+      \u0431\u043E\u043B\u0435\u0437\u043D\u044C, \u0441\u043B\u0438\u0437\u044C,
+      \u0431\u043B\u0430-\u0431\u043B\u0430-\u0431\u043B\u0430"
   <TalentType>k__BackingField: 1
-  <PositionPercentages>k__BackingField: {x: 73.30038, y: 79.97601}
+  <PositionPercentages>k__BackingField: {x: 63.496143, y: 78.50468}
   <Blockers>k__BackingField:
-  - {fileID: 11400000, guid: 73246e09d18662f47a56fb2058494ab0, type: 2}
+  - {fileID: 11400000, guid: 37d5d48bbea707744ae597e00e5a9852, type: 2}
   <Dependencies>k__BackingField: []
   <Equipment>k__BackingField: Weapon

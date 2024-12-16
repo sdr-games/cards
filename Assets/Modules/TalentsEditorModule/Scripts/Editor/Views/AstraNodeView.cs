@@ -23,7 +23,7 @@ namespace SDRGames.Whist.TalentsEditorModule.Views
 
         public void Initialize(string id, string nodeName, Vector2 position)
         {
-            Sprite sprite = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Modules/TalentsModule/Sprites/уроборо.png");
+            Sprite sprite = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Modules/TalentsModule/Sprites/Star.png");
             Initialize(id, nodeName, position, sprite);
 
             CreateInputPort();
