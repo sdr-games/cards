@@ -1,0 +1,44 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a78993f904d7ff443bfe26057a8ddef6, type: 3}
+  m_Name: Test
+  m_EditorClassIdentifier: 
+  <FileName>k__BackingField: Test
+  <StartNode>k__BackingField:
+    <ID>k__BackingField: 3bbadfb1-c986-468c-88fb-d30659bacd2c
+    <NodeName>k__BackingField: Start
+    <OutputConnections>k__BackingField:
+    - 7c6ceaa4-af85-4315-8c2b-d7200df44bff
+    <Position>k__BackingField: {x: 0, y: 0}
+  <AnswerNodes>k__BackingField:
+  - <ID>k__BackingField: 3033c9fa-3c0f-4164-ba99-7afe808ced7e
+    <NodeName>k__BackingField: Answer
+    <OutputConnections>k__BackingField: []
+    <Position>k__BackingField: {x: 740, y: -29.6}
+    <Character>k__BackingField: {fileID: 11400000, guid: 2138c702e452a7846b480e13bc6087ab,
+      type: 2}
+    <TextLocalization>k__BackingField:
+      <SelectedLocalizationTable>k__BackingField: NotificationMessages
+      <SelectedEntryKey>k__BackingField: "PlayerTurn\t"
+      <LocalizedTextPreview>k__BackingField: Attack now!
+  <SpeechNodes>k__BackingField:
+  - <ID>k__BackingField: 7c6ceaa4-af85-4315-8c2b-d7200df44bff
+    <NodeName>k__BackingField: Speech
+    <OutputConnections>k__BackingField:
+    - 3033c9fa-3c0f-4164-ba99-7afe808ced7e
+    <Position>k__BackingField: {x: 239.2, y: -29.6}
+    <Character>k__BackingField: {fileID: 11400000, guid: c474431b8bbfc0d42a0688abb1ab4a68,
+      type: 2}
+    <TextLocalization>k__BackingField:
+      <SelectedLocalizationTable>k__BackingField: NotificationMessages
+      <SelectedEntryKey>k__BackingField: RestorationTurn
+      <LocalizedTextPreview>k__BackingField: Have a rest now

@@ -17,10 +17,9 @@ namespace SDRGames.Whist.TalentsEditorModule
         [field: SerializeField] public List<AstraNodeView> AstraNodes { get; private set; }
         [field: SerializeField] public List<BonusData> Variables { get; private set; }
 
-        public void Initialize(string fileName, Sprite backgroundImage)
+        public void Initialize(string fileName)
         {
             FileName = fileName;
-            Background = backgroundImage;
             TalamusNodes = new List<TalamusNodeView>();
             AstraNodes = new List<AstraNodeView>();
             Variables = new List<BonusData>();

@@ -22,6 +22,7 @@ namespace SDRGames.Whist.TalentsEditorModule
         private static TextField _fileNameTextField;
         private Button _saveButton;
         private Button _miniMapButton;
+        private Button _parametersButton;
 
         [MenuItem("Window/Talents/Talents Graph")]
         public static void Open()
@@ -75,6 +76,8 @@ namespace SDRGames.Whist.TalentsEditorModule
             Button resetButton = UtilityElement.CreateButton("Reset", () => ResetGraph());
 
             _miniMapButton = UtilityElement.CreateButton("Minimap", () => ToggleMiniMap());
+            _parametersButton = UtilityElement.CreateButton("Parameters", () => ToggleParametersWindow());
+            _parametersButton.ToggleInClassList("ds-toolbar__button__selected");
 
             toolbar.Add(_fileNameTextField);
             toolbar.Add(_saveButton);
@@ -82,6 +85,7 @@ namespace SDRGames.Whist.TalentsEditorModule
             toolbar.Add(clearButton);
             toolbar.Add(resetButton);
             toolbar.Add(_miniMapButton);
+            toolbar.Add(_parametersButton);
 
             toolbar.AddStyleSheets("TalentsEditorStyles/DSToolbarStyles.uss");
 
@@ -146,6 +150,12 @@ namespace SDRGames.Whist.TalentsEditorModule
         {
             _graphView.ToggleMiniMap();
             _miniMapButton.ToggleInClassList("ds-toolbar__button__selected");
+        }
+
+        private void ToggleParametersWindow()
+        {
+            _graphView.ToggleParametersWindow();
+            _parametersButton.ToggleInClassList("ds-toolbar__button__selected");
         }
 
         private void CreateDefaultFolders()

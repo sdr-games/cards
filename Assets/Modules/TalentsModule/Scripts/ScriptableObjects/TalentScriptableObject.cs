@@ -35,9 +35,8 @@ namespace SDRGames.Whist.TalentsModule.ScriptableObjects
             PositionPercentages = positionPercentages;
         }
 
-        public Vector2 CalculatePositionInContainer()
+        public Vector2 CalculatePositionInContainer(Vector2 containerSize)
         {
-            Vector2 containerSize = new Vector2(Screen.width / 2, Screen.height / 2);
             return new Vector2(
                 containerSize.x * PositionPercentages.x / 100,
                 containerSize.y - containerSize.y * PositionPercentages.y / 100

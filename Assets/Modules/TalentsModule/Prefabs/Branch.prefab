@@ -82,7 +82,7 @@ MonoBehaviour:
       m_Calls: []
   m_Sprite: {fileID: 0}
   m_Type: 0
-  m_PreserveAspect: 0
+  m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
@@ -102,7 +102,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 439c2e2d69a01714fb3d49c2ba440eb3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 8
+  _speed: 7
   _rectTransform: {fileID: 4109599800829843283}
   _canvasGroup: {fileID: -1341961103603074712}
   _backgroundImage: {fileID: 3132378548958706415}

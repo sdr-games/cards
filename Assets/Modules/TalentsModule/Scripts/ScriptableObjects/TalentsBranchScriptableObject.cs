@@ -15,12 +15,16 @@ namespace SDRGames.Whist.TalentsModule.ScriptableObjects
         public List<TalentScriptableObject> StartTalents => Talents.Where(x => x.Blockers.Count == 0).ToList();
         [field: SerializeField][field: ReadOnly] public List<BonusScriptableObject> Bonuses { get; set; }
 
-        public void Initialize(string fileName, Sprite background)
+        public void Initialize(string fileName)
         {
             FileName = fileName;
-            Background = background;
             Talents = new List<TalentScriptableObject>();
             Bonuses = new List<BonusScriptableObject>();
+        }
+
+        public void SetBackgroundImage(Sprite backgroundImage)
+        {
+            Background = backgroundImage;
         }
     }
 }

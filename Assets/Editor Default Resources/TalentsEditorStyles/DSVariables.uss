@@ -1,5 +1,6 @@
 :root
 {
+	--ds-colors-black: #000;
 	--ds-colors-grid-light-grey-1: #001e17;
 	--ds-colors-grid-light-grey-2: rgba(51, 51, 51, 0.4);
 	--ds-colors-grid-light-grey-3: rgba(51, 51, 51, 1);
