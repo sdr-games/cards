@@ -51,15 +51,16 @@ namespace SDRGames.Whist.TalentsModule.Managers
                 Application.Quit();
             }
 
+            Vector2 totalSize = CalculateBranchesTotalSize();
+
             _createdBranches = new List<BranchManager>();
-            _startScale = 0.25f;
+            _startScale = 0.5f;
             _rotationOffset = transform.localEulerAngles.z;
 
-            Vector2 totalSize = CalculateBranchesTotalSize();
             for (int i = 0; i < _talentBranchesSO.Length; i++)
             {
                 BranchManager branchManager = Instantiate(_branchManagerPrefab);
-                Vector2 position = CalculatePositionInRadius(i, totalSize * _startScale);
+                Vector2 position = CalculatePositionInRadius(i, totalSize * 0.25f);
                 branchManager.Initialize(_userInputController, _talentBranchesSO[i], position, _startScale, transform);
                 branchManager.BranchView.BranchZoomInStarted += OnBranchZoomIn;
                 branchManager.BranchView.BranchZoomOutStarted += OnBranchZoomOut;
