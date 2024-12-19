@@ -7,10 +7,10 @@ using UnityEngine.Localization.Settings;
 
 using static TMPro.TMP_Dropdown;
 
-namespace SDRGames.Whist.SettingsModule.Models
+namespace SDRGames.Whist.SettingsModule.ScriptableObjects
 {
     [CreateAssetMenu(fileName = "PredefinedDropdownSetting", menuName = "SDRGames/Settings/Dropdown Predefined")]
-    public class PredefinedDropdownSettingModel : DropdownSettingModel
+    public class PredefinedDropdownSettingScriptableObject : DropdownSettingScriptableObject
     {
         public enum PredefinedOptions { FullscreenModes, Resolutions, RefreshRate, Qualities, Languages }
         [SerializeField] private PredefinedOptions _predefinedOption;

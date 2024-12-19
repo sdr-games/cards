@@ -1,7 +1,7 @@
-using SDRGames.Whist.DiceModule.Presenters;
 using SDRGames.Whist.PointsModule.Presenters;
 using SDRGames.Whist.CharacterModule.ScriptableObjects;
 using SDRGames.Whist.CharacterModule.Views;
+using SDRGames.Whist.SettingsModule.Models;
 
 namespace SDRGames.Whist.CharacterModule.Presenters
 {
@@ -16,28 +16,59 @@ namespace SDRGames.Whist.CharacterModule.Presenters
             _playerCharacterParamsView = playerCharacterParamsView;
 
             _playerCharacterParamsView.Initialize(
-                _playerCharacterParams.CharacterInfo.CharacterNameLocalization.GetLocalizedString(), 
                 _playerCharacterParams.Level.ToString(), 
                 _playerCharacterParams.Experience.ToString(),
-                _playerCharacterParams.Glory.ToString(),
-                _playerCharacterParams.MagicDamageMultiplier.ToString()
+                Scaling.Instance.ExperienceRequiredPerLevel[_playerCharacterParams.Level - 1].ToString(),
+                _playerCharacterParams.Strength.ToString(),
+                _playerCharacterParams.Agility.ToString(),
+                _playerCharacterParams.Stamina.ToString(),
+                _playerCharacterParams.Intelligence.ToString(),
+                _playerCharacterParams.PhysicalDamage.ToString(),
+                _playerCharacterParams.PhysicalHitChance.ToString(),
+                _playerCharacterParams.MagicalDamage.ToString(),
+                _playerCharacterParams.MagicalHitChance.ToString(),
+                _playerCharacterParams.StaminaRestorationPower.ToString(),
+                _playerCharacterParams.Piercing.ToString()
             );
 
             new PointsTextPresenter(_playerCharacterParams.HealthPoints, _playerCharacterParamsView.HealthPointsView);
-            new PointsTextPresenter(_playerCharacterParams.Stamina, _playerCharacterParamsView.StaminaPointsView);
-            new PointsTextPresenter(_playerCharacterParams.Breath, _playerCharacterParamsView.BreathPointsView);
-            new PointsTextPresenter(_playerCharacterParams.Armor, _playerCharacterParamsView.PhysicalArmorPointsView);
-            new PointsTextPresenter(_playerCharacterParams.Barrier, _playerCharacterParamsView.MagicShieldPointsView);
-            new DicePresenter(_playerCharacterParams.PhysicalDamage, _playerCharacterParamsView.PhysicalDamageDiceView);
+            new PointsTextPresenter(_playerCharacterParams.StaminaPoints, _playerCharacterParamsView.StaminaPointsView);
+            new PointsTextPresenter(_playerCharacterParams.BreathPoints, _playerCharacterParamsView.BreathPointsView);
+            new PointsTextPresenter(_playerCharacterParams.ArmorPoints, _playerCharacterParamsView.ArmorPointsView);
+            new PointsTextPresenter(_playerCharacterParams.BarrierPoints, _playerCharacterParamsView.BarrierPointsView);
 
             _playerCharacterParams.LevelChanged += OnLevelChanged;
-            _playerCharacterParams.MagicDamageMultiplierChanged += OnMagicDamageMultiplierChanged;
+            _playerCharacterParams.ExperienceChanged += OnExperienceChanged;
+            
+            _playerCharacterParams.StrengthChanged += OnStrengthChanged;
+            _playerCharacterParams.AgilityChanged += OnAgilityChanged;
+            _playerCharacterParams.StaminaChanged += OnStaminaChanged;
+            _playerCharacterParams.IntelligenceChanged += OnIntelligenceChanged;
+
+            _playerCharacterParams.PhysicalDamageChanged += OnPhysicalDamageChanged;
+            _playerCharacterParams.PhysicalHitChanceChanged += OnPhysicalHitChanceChanged;
+            _playerCharacterParams.MagicalDamageChanged += OnMagicalDamageChanged;
+            _playerCharacterParams.MagicalHitChanceChanged += OnMagicalHitChanceChanged;
+            _playerCharacterParams.StaminaRestorationPowerChanged += OnStaminaRestorationPowerChanged;
+            _playerCharacterParams.PiercingChanged += OnPiercingChanged;
         }
 
         ~PlayerCharacterParamsPresenter()
         {
             _playerCharacterParams.LevelChanged -= OnLevelChanged;
-            _playerCharacterParams.MagicDamageMultiplierChanged -= OnMagicDamageMultiplierChanged;
+            _playerCharacterParams.ExperienceChanged -= OnExperienceChanged;
+
+            _playerCharacterParams.StrengthChanged -= OnStrengthChanged;
+            _playerCharacterParams.AgilityChanged -= OnAgilityChanged;
+            _playerCharacterParams.StaminaChanged -= OnStaminaChanged;
+            _playerCharacterParams.IntelligenceChanged -= OnIntelligenceChanged;
+
+            _playerCharacterParams.PhysicalDamageChanged -= OnPhysicalDamageChanged;
+            _playerCharacterParams.PhysicalHitChanceChanged -= OnPhysicalHitChanceChanged;
+            _playerCharacterParams.MagicalDamageChanged -= OnMagicalDamageChanged;
+            _playerCharacterParams.MagicalHitChanceChanged -= OnMagicalHitChanceChanged;
+            _playerCharacterParams.StaminaRestorationPowerChanged -= OnStaminaRestorationPowerChanged;
+            _playerCharacterParams.PiercingChanged -= OnPiercingChanged;
         }
 
         private void OnLevelChanged(object sender, LevelChangedEventArgs e)
@@ -45,9 +76,59 @@ namespace SDRGames.Whist.CharacterModule.Presenters
             _playerCharacterParamsView.SetLevelText(e.Level.ToString());
         }
 
-        private void OnMagicDamageMultiplierChanged(object sender, MagicDamageMultiplierChangedEventArgs e)
+        private void OnExperienceChanged(object sender, ExperienceChangedEventArgs e)
         {
-            _playerCharacterParamsView.SetMagicDamageMultiplierText(e.MagicDamageMultiplier.ToString());
+            _playerCharacterParamsView.SetExperienceText(e.CurrentExperience.ToString(), e.RequiredExperience.ToString());
+        }
+
+        private void OnStrengthChanged(object sender, CharactersticChangedEventArgs e)
+        {
+            _playerCharacterParamsView.SetStrengthText(e.CharactersticValue.ToString());
+        }
+
+        private void OnAgilityChanged(object sender, CharactersticChangedEventArgs e)
+        {
+            _playerCharacterParamsView.SetAgilityText(e.CharactersticValue.ToString());
+        }
+
+        private void OnStaminaChanged(object sender, CharactersticChangedEventArgs e)
+        {
+            _playerCharacterParamsView.SetStaminaText(e.CharactersticValue.ToString());
+        }
+
+        private void OnIntelligenceChanged(object sender, CharactersticChangedEventArgs e)
+        {
+            _playerCharacterParamsView.SetIntelligenceText(e.CharactersticValue.ToString());
+        }
+
+        private void OnPhysicalDamageChanged(object sender, ParameterChangedEventArgs e)
+        {
+            _playerCharacterParamsView.SetPhysicalDamageText(e.ParameterValue.ToString());
+        }
+
+        private void OnPhysicalHitChanceChanged(object sender, ParameterChangedEventArgs e)
+        {
+            _playerCharacterParamsView.SetPhysicalHitChanceText(e.ParameterValue.ToString());
+        }
+
+        private void OnMagicalDamageChanged(object sender, ParameterChangedEventArgs e)
+        {
+            _playerCharacterParamsView.SetMagicalDamageText(e.ParameterValue.ToString());
+        }
+
+        private void OnMagicalHitChanceChanged(object sender, ParameterChangedEventArgs e)
+        {
+            _playerCharacterParamsView.SetMagicHitChanceText(e.ParameterValue.ToString());
+        }
+
+        private void OnStaminaRestorationPowerChanged(object sender, ParameterChangedEventArgs e)
+        {
+            _playerCharacterParamsView.SetStaminaRestorationPerRoundText(e.ParameterValue.ToString());
+        }
+
+        private void OnPiercingChanged(object sender, ParameterChangedEventArgs e)
+        {
+            _playerCharacterParamsView.SetPiercingText(e.ParameterValue.ToString());
         }
     }
 }

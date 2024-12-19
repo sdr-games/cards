@@ -2,9 +2,8 @@ using SDRGames.Whist.CharacterModule.ScriptableObjects;
 using SDRGames.Whist.CharacterModule.Presenters;
 using SDRGames.Whist.CharacterModule.Views;
 
-using UnityEditor;
-
 using UnityEngine;
+using SDRGames.Whist.HelpersModule;
 
 namespace SDRGames.Whist.CharacterModule.Managers
 {
@@ -67,7 +66,7 @@ namespace SDRGames.Whist.CharacterModule.Managers
 
         public bool HasEnoughStaminaPoints(float cost)
         {
-            if (_characterParamsModel.Stamina.CurrentValue < _characterParamsModel.Stamina.ReservedValue + cost)
+            if (_characterParamsModel.StaminaPoints.CurrentValue < _characterParamsModel.StaminaPoints.ReservedValue + cost)
             {
                 return false;
             }
@@ -76,7 +75,7 @@ namespace SDRGames.Whist.CharacterModule.Managers
 
         public void SpendStaminaPoints(float totalCost)
         {
-            _characterParamsModel.Stamina.DecreaseCurrentValue(totalCost);
+            _characterParamsModel.StaminaPoints.DecreaseCurrentValue(totalCost);
         }
 
         //public void RestoreStaminaPoints()
@@ -91,7 +90,7 @@ namespace SDRGames.Whist.CharacterModule.Managers
 
         public bool HasEnoughBreathPoints(float cost)
         {
-            if (_characterParamsModel.Breath.CurrentValue < _characterParamsModel.Breath.ReservedValue + cost)
+            if (_characterParamsModel.BreathPoints.CurrentValue < _characterParamsModel.BreathPoints.ReservedValue + cost)
             {
                 return false;
             }
@@ -124,13 +123,7 @@ namespace SDRGames.Whist.CharacterModule.Managers
         protected override void OnEnable()
         {
             base.OnEnable();
-            if (_characterCombatParamsView == null)
-            {
-                Debug.LogError("Common Character Combat Params View не был назначен");
-                #if UNITY_EDITOR
-                    EditorApplication.isPlaying = false;
-                #endif
-            }
+            this.CheckFieldValueIsNotNull(nameof(_characterCombatParamsView), _characterCombatParamsView);
         }
     }
 }

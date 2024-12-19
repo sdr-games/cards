@@ -1,0 +1,43 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 407885db81eac90418ddb5c4cb298e8d, type: 3}
+  m_Name: ScalingSetting
+  m_EditorClassIdentifier: 
+  _scaling:
+    <StrengthToHealthPoints>k__BackingField: 5
+    <StrengthToPhysicalDamage>k__BackingField: 5
+    <StrengthToPhysicalHitChance>k__BackingField: 1
+    <StrengthToBlockChance>k__BackingField: 1
+    <StrengthAndAgilityToCriticalStrikeChance>k__BackingField: 1
+    <AgilityToDodgeChance>k__BackingField: 1
+    <AgilityToStaminaRestorationPerRound>k__BackingField: 1
+    <AgilityToInitiative>k__BackingField: 1
+    <AgilityToPiercing>k__BackingField: 1
+    <StaminaToHealthPoints>k__BackingField: 10
+    <StaminaToStaminaPoints>k__BackingField: 10
+    <StaminaToResilience>k__BackingField: 1
+    <StaminaToOnslaughtChance>k__BackingField: 1
+    <IntelligenceToBreathPoints>k__BackingField: 10
+    <IntelligenceToMagicalDamage>k__BackingField: 10
+    <IntelligenceToMagicalHitChance>k__BackingField: 1
+    <ExperienceRequiredPerLevel>k__BackingField: 0a0000001e00000032000000
+    <TalentPointsPerLevel>k__BackingField: 0
+    <LevelToArmorPoints>k__BackingField: 10
+    <LevelToBarrierPoints>k__BackingField: 10
+    <LevelsCountForMultiplier>k__BackingField: 3
+    <LevelsToPhysicalDamageMultiplier>k__BackingField: 5
+    <LevelsToMagicalDamageMultiplier>k__BackingField: 5
+    <WeakeningMaxPercent>k__BackingField: 10
+    <AmplificationMaxPercent>k__BackingField: 10
+    <BaseStaminaRestorationPowerPercent>k__BackingField: 30
+    <BaseStunResistance>k__BackingField: 50
+    <BaseStunResistanceWithoutArmor>k__BackingField: 20

@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 
+using SDRGames.Whist.HelpersModule;
+
 using UnityEngine;
 
 namespace SDRGames.Whist.PointsModule.Models
@@ -10,21 +12,21 @@ namespace SDRGames.Whist.PointsModule.Models
     {
         public string Name { get; private set; }
         [field: SerializeField] public float BaseValue { get; private set; }
-        [field: SerializeField] public float Bonus { get; private set;  }
-        [field: SerializeField] public RelatedBonus[] RelatedBonuses { get; private set; }
-        [field: SerializeField] public float RegenerationSpeed { get; private set; }
-        [field: SerializeField] public float RegenerationPower { get; private set; }
+        [field: SerializeField][field: ReadOnly] public float PermanentBonus { get; private set; }
+        [field: SerializeField][field: ReadOnly] public float TemporaryBonus { get; private set; }
+        [field: SerializeField][field: ReadOnly] public float RestorationPower { get; private set; }
 
+        [field: SerializeField][field: ReadOnly] public float MaxValue { get; private set; }
         public float CurrentValue { get; private set; }
         public float CurrentValueInPercents { get; private set; }
         public float ReservedValue { get; private set; }
-        public float MaxValue { get; private set; }
 
-        public event EventHandler BonusChanged;
+        public event EventHandler PermanentBonusChanged;
+        public event EventHandler TemporaryBonusChanged;
         public event EventHandler RegenerationPowerChanged;
         public event EventHandler<ValueChangedEventArgs> CurrentValueChanged;
         public event EventHandler<ValueChangedEventArgs> ReservedValueChanged;
-        public event EventHandler MaxValueChanged;
+        public event EventHandler<ValueChangedEventArgs> MaxValueChanged;
 
         public void SetName(string name)
         {
@@ -45,32 +47,57 @@ namespace SDRGames.Whist.PointsModule.Models
             ReservedValue = 0;
         }
 
-        public void IncreaseBonus(float bonus)
+        public void SetPermanentBonus(float bonus)
         {
-            Bonus += bonus;
+            PermanentBonus = bonus;
             CalculateValues();
-            BonusChanged?.Invoke(this, new EventArgs());
+            PermanentBonusChanged?.Invoke(this, EventArgs.Empty);
         }
 
-        public void DecreaseBonus(float bonus)
+        public void IncreasePermanentBonus(float bonus)
         {
-            Bonus -= bonus;
+            PermanentBonus += bonus;
             CalculateValues();
-            BonusChanged?.Invoke(this, new EventArgs());
+            PermanentBonusChanged?.Invoke(this, EventArgs.Empty);
         }
 
-        public void IncreaseRegenerationPower(float regenerationPower)
+        public void DecreasePermanentBonus(float bonus)
         {
-            RegenerationPower += regenerationPower;
+            PermanentBonus -= bonus;
             CalculateValues();
-            RegenerationPowerChanged?.Invoke(this, new EventArgs());
+            PermanentBonusChanged?.Invoke(this, EventArgs.Empty);
         }
 
-        public void DecreaseRegenerationPower(float regenerationPower)
+        public void IncreaseTemporaryBonus(float bonus)
         {
-            RegenerationPower -= regenerationPower;
+            TemporaryBonus += bonus;
             CalculateValues();
-            RegenerationPowerChanged?.Invoke(this, new EventArgs());
+            TemporaryBonusChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        public void DecreaseTemporaryBonus(float bonus)
+        {
+            TemporaryBonus -= bonus;
+            CalculateValues();
+            TemporaryBonusChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        public void SetRestorationPower(float restorationPower)
+        {
+            RestorationPower = restorationPower;
+            RegenerationPowerChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        public void IncreaseRestorationPower(float restorationPower)
+        {
+            RestorationPower += restorationPower;
+            RegenerationPowerChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        public void DecreaseRestorationPower(float restorationPower)
+        {
+            RestorationPower -= restorationPower;
+            RegenerationPowerChanged?.Invoke(this, EventArgs.Empty);
         }
 
         public void IncreaseCurrentValue(float value)
@@ -113,12 +140,7 @@ namespace SDRGames.Whist.PointsModule.Models
         {
             if (regenerationPower == 0)
             {
-                regenerationPower = RegenerationPower;
-            }
-
-            if (regenerationSpeed == 0)
-            {
-                regenerationSpeed = RegenerationSpeed;
+                regenerationPower = RestorationPower;
             }
 
             while (length >= 0 && CurrentValue < MaxValue)
@@ -149,18 +171,9 @@ namespace SDRGames.Whist.PointsModule.Models
 
         private void CalculateMaxValue()
         {
-            MaxValue = BaseValue + Bonus + GetTotalRelatedBonus();
-            MaxValueChanged?.Invoke(this, new EventArgs());
-        }
-
-        private float GetTotalRelatedBonus()
-        {
-            float totalRelatedBonus = 0;
-            foreach(RelatedBonus relatedBonus in RelatedBonuses)
-            {
-                totalRelatedBonus += relatedBonus.GetBonus();
-            }
-            return totalRelatedBonus;
+            CalculateCurrentValue(GetValueInPercents(CurrentValue));
+            MaxValue = BaseValue + PermanentBonus + TemporaryBonus;
+            MaxValueChanged?.Invoke(this, new ValueChangedEventArgs(CurrentValue, CurrentValueInPercents, MaxValue));
         }
 
         private void CalculateCurrentValue(float currentValueInPercents)

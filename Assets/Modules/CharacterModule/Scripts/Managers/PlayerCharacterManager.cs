@@ -1,8 +1,7 @@
 using SDRGames.Whist.CharacterModule.ScriptableObjects;
 using SDRGames.Whist.CharacterModule.Presenters;
 using SDRGames.Whist.CharacterModule.Views;
-
-using UnityEditor;
+using SDRGames.Whist.HelpersModule;
 
 using UnityEngine;
 
@@ -10,54 +9,30 @@ namespace SDRGames.Whist.CharacterModule.Managers
 {
     public class PlayerCharacterManager : MonoBehaviour
     {
-        public static PlayerCharacterManager Instance { get; private set; }
-
         [SerializeField] private PlayerCharacterParamsModel _playerCharacterParamsModel;
         [SerializeField] private PlayerCharacterParamsView _playerCharacterParamsView;
-        [SerializeField] private PlayerCharacterCombatParamsView _combatPlayerCharacterParamsView;
 
         private PlayerCharacterParamsPresenter _playerCharacterParamsPresenter;
 
         private void OnEnable()
         {
-            if (_playerCharacterParamsView == null)
-            {
-                Debug.LogError("Player Character Params View не был назначен");
-                #if UNITY_EDITOR
-                    EditorApplication.isPlaying = false;
-                #endif
-            }
-
-            if (_combatPlayerCharacterParamsView == null)
-            {
-                Debug.LogError("Combat Player Character Params View не был назначен");
-                #if UNITY_EDITOR
-                    EditorApplication.isPlaying = false;
-                #endif
-            }
-
+            this.CheckFieldValueIsNotNull(nameof(_playerCharacterParamsView), _playerCharacterParamsView);
             Initialize();
         }
 
         public void Initialize()
         {
-            if (Instance != null && Instance != this)
-            {
-                Destroy(this);
-                return;
-            }
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-
-        public void InitializePlayerCharacterParamsPresenter()
-        {
             _playerCharacterParamsPresenter = new PlayerCharacterParamsPresenter(_playerCharacterParamsModel, _playerCharacterParamsView);
         }
 
-        public void InitializeCombatPlayerCharacterParamsPresenter()
+        public void Test()
         {
-            new PlayerCharacterCombatParamsPresenter(_playerCharacterParamsModel, _combatPlayerCharacterParamsView);
+            _playerCharacterParamsModel.IncreaseLevel(1);
+            _playerCharacterParamsModel.IncreaseExperience(10);
+            _playerCharacterParamsModel.IncreaseStrength(1);
+            _playerCharacterParamsModel.IncreaseAgility(1);
+            _playerCharacterParamsModel.IncreaseStamina(1);
+            _playerCharacterParamsModel.IncreaseIntelligence(1);
         }
     }
 }

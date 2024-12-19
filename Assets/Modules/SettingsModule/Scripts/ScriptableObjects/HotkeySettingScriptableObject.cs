@@ -1,9 +1,9 @@
 using UnityEngine;
 
-namespace SDRGames.Whist.SettingsModule.Models
+namespace SDRGames.Whist.SettingsModule.ScriptableObjects
 {
     [CreateAssetMenu(fileName = "HotkeySetting", menuName = "SDRGames/Settings/Hotkey")]
-    public class HotkeySettingModel : ScriptableObject
+    public class HotkeySettingScriptableObject : ScriptableObject
     {
         [field: SerializeField] public string Name { get; private set; }
         [field: SerializeField] public KeyCode DefaultValue { get; private set; }

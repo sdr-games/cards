@@ -24,17 +24,17 @@ namespace SDRGames.Whist.MeleeCombatModule.AI.Managers
 
         public void ChooseAndAppyAbilities()
         {
-            if (_combatManager.GetParams().Stamina.CurrentValue <= 0)
+            if (_combatManager.GetParams().StaminaPoints.CurrentValue <= 0)
             {
                 return;
             }
 
             List<AbilityScriptableObject> abilities = new List<AbilityScriptableObject>();
             BehaviorScriptableObject selectedBehavior = _behaviors.Where(
-                behavior => behavior.CheckIfAppliableByArmor(_playerCharacterCombatManager.GetParams().Armor.CurrentValueInPercents)
+                behavior => behavior.CheckIfAppliableByArmor(_playerCharacterCombatManager.GetParams().ArmorPoints.CurrentValueInPercents)
             ).FirstOrDefault();
 
-            if(selectedBehavior is null || !selectedBehavior.CheckIfAppliableByResource(_combatManager.GetParams().Stamina.CurrentValue))
+            if(selectedBehavior is null || !selectedBehavior.CheckIfAppliableByResource(_combatManager.GetParams().StaminaPoints.CurrentValue))
             {
                 selectedBehavior = _behaviors.OrderBy(behavior => behavior.MinimalAttacksCost).FirstOrDefault();
                 abilities = selectedBehavior.MinimalCostAttacks;
