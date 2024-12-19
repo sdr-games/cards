@@ -21,6 +21,7 @@ namespace SDRGames.Whist.TalentsEditorModule.Models
         {
             ID = Guid.NewGuid().ToString();
             NodeName = nodeName;
+            DescriptionLocalization = new LocalizationData("CharacterDescriptions", "Slime", "Slime");
         }
 
         public virtual void SetNodeName(string nodeName)

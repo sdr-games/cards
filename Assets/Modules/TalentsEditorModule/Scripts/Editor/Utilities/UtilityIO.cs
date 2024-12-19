@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text.RegularExpressions;
 
 using SDRGames.Whist.TalentsEditorModule.Managers;
@@ -46,15 +45,19 @@ namespace SDRGames.Whist.TalentsEditorModule
 
             GetElementsFromGraphView();
             GraphSaveDataScriptableObject graphData = CreateAsset<GraphSaveDataScriptableObject>(path);
-            graphData.Initialize(_graphFileName, _graphView.GetBackgroundImage());
+            graphData.Initialize(_graphFileName);
 
             TalentsBranchScriptableObject talentsBranch = CreateAsset<TalentsBranchScriptableObject>(_containerFolderPath, _graphFileName);
-            talentsBranch.Initialize(_graphFileName, _graphView.GetBackgroundImage());
+            talentsBranch.Initialize(_graphFileName);
 
             SaveNodes(graphData, talentsBranch);
             //SaveVariables(graphData, talentsBranch);
 
+            Sprite backgroundImage = _graphView.GetBackgroundImageParameter();
+
+            graphData.SetBackgroundImage(backgroundImage);
             SaveAsset(graphData);
+            talentsBranch.SetBackgroundImage(backgroundImage);
             SaveAsset(talentsBranch);
         }
 
@@ -106,7 +109,7 @@ namespace SDRGames.Whist.TalentsEditorModule
             TalentsEditorWindow.UpdateFileName(graphData.FileName);
 
             _graphView.ClearGraph();
-            _graphView.SetBackgroundImage(graphData.Background);
+            _graphView.SetBackgroundImageParameter(graphData.Background);
             LoadNodes(graphData.TalamusNodes);
             LoadNodes(graphData.AstraNodes);
             //LoadVariables(graphData.Variables);
@@ -129,7 +132,7 @@ namespace SDRGames.Whist.TalentsEditorModule
                 nodeNames.Add(node.NodeName);
             }
 
-            UpdateDialoguesChoicesConnections(createdTalents);
+            UpdateConnections(createdTalents);
 
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
@@ -145,7 +148,7 @@ namespace SDRGames.Whist.TalentsEditorModule
             } 
         }
 
-        private static void UpdateDialoguesChoicesConnections(Dictionary<string, TalentScriptableObject> createdTalents)
+        private static void UpdateConnections(Dictionary<string, TalentScriptableObject> createdTalents)
         {
             foreach (BaseNodeView node in _nodes)
             {

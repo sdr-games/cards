@@ -17,7 +17,6 @@ namespace SDRGames.Whist.TalentsModule.Views
         private readonly float HIGHLIGHTED_ALPHA = 0.85f; // 217/255
 
         public static readonly Vector2 PADDING = new Vector2(50, 50);
-        public static Vector2 SIZE { get => GetBranchSize(); }
 
         [SerializeField] private float _speed = 8f;
         [SerializeField] private RectTransform _rectTransform;
@@ -46,7 +45,6 @@ namespace SDRGames.Whist.TalentsModule.Views
             _zoomOutScale = startScale;
 
             transform.localPosition = position;
-            _rectTransform.sizeDelta = SIZE;
             transform.localScale = Vector2.one * startScale;
             transform.SetParent(parent, false);
             SetRotation();
@@ -55,6 +53,7 @@ namespace SDRGames.Whist.TalentsModule.Views
         public void SetBackground(Sprite backgroundImage)
         {
             _backgroundImage.sprite = backgroundImage;
+            _rectTransform.sizeDelta = GetBackgroundSize();
         }
 
         public void SetSizeSmoothly(float scale)
@@ -104,9 +103,14 @@ namespace SDRGames.Whist.TalentsModule.Views
             _backgroundImage.color = new Color(_backgroundImage.color.r, _backgroundImage.color.g, _backgroundImage.color.b, DEFAULT_ALPHA);
         }
 
-        private static Vector2 GetBranchSize()
+        public Vector2 GetBackgroundSize()
         {
-            return new Vector2(Screen.width / 2 + PADDING.x, Screen.height / 2 + PADDING.y);
+            return _backgroundImage.sprite.rect.size;
+        }
+
+        private Vector2 GetBranchSize()
+        {
+            return GetBackgroundSize();
         }
 
         private void SetRotation()
@@ -151,9 +155,9 @@ namespace SDRGames.Whist.TalentsModule.Views
                 IsZoomed = true;
                 _isMoving = true;
                 _backgroundImage.color = new Color(_backgroundImage.color.r, _backgroundImage.color.g, _backgroundImage.color.b, HIGHLIGHTED_ALPHA);
-                float direction = transform.localRotation.w > 0 ? 1 : -1;
+                float angle = transform.localEulerAngles.z > 0 ? 360 - transform.localEulerAngles.z : 0;
                 float scalingTime = Math.Abs(transform.localScale.x - _zoomInScale) / _speed;
-                BranchZoomInStarted?.Invoke(this, new BranchZoomedEventArgs(transform.localEulerAngles.z * direction, scalingTime));
+                BranchZoomInStarted?.Invoke(this, new BranchZoomedEventArgs(angle, scalingTime));
             }
         }
 
@@ -164,9 +168,9 @@ namespace SDRGames.Whist.TalentsModule.Views
                 IsZoomed = false;
                 _isMoving = true;
                 _backgroundImage.color = new Color(_backgroundImage.color.r, _backgroundImage.color.g, _backgroundImage.color.b, DEFAULT_ALPHA);
-                float direction = transform.localRotation.w > 0 ? 1 : -1;
+                float angle = transform.localEulerAngles.z > 0 ? 360 - transform.localEulerAngles.z : 0;
                 float scalingTime = Math.Abs(transform.localScale.x - _zoomOutScale) / _speed;
-                BranchZoomOutStarted?.Invoke(this, new BranchZoomedEventArgs(-transform.localEulerAngles.z * direction, scalingTime));
+                BranchZoomOutStarted?.Invoke(this, new BranchZoomedEventArgs(transform.localEulerAngles.z - 360, scalingTime));
             }
         }
 

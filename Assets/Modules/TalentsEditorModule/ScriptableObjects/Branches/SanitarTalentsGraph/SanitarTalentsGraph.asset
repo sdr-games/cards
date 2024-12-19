@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e27b5ac8de4c7949a7747223e0df75b, type: 3}
+  m_Name: SanitarTalentsGraph
+  m_EditorClassIdentifier: 
+  <FileName>k__BackingField: 
+  <Background>k__BackingField: {fileID: 21300000, guid: 8e4badd2f27ddfb47a40683c8fcae567,
+    type: 3}
+  <Talents>k__BackingField:
+  - {fileID: 11400000, guid: 433358b0cb44b2e41ad07511c784aefd, type: 2}
+  - {fileID: 11400000, guid: fc6ca69ac38cab6468b1a3d1f10c471e, type: 2}
+  - {fileID: 11400000, guid: 252bb8a49d71d9d4e879ed58b0347711, type: 2}
+  - {fileID: 11400000, guid: 37d5d48bbea707744ae597e00e5a9852, type: 2}
+  - {fileID: 11400000, guid: 88817a498655b4d4e8291d286b75f85c, type: 2}
+  - {fileID: 11400000, guid: 1b6518e8aa3080a42ae9f905ca94b35b, type: 2}
+  - {fileID: 11400000, guid: 46c7dfa85aea5024790d2ad2821d5b49, type: 2}
+  - {fileID: 11400000, guid: 62678c513113865469efa4ede228cdf4, type: 2}
+  - {fileID: 11400000, guid: 4fafca40a40aa4a46bfbc7db195bfc61, type: 2}
+  - {fileID: 11400000, guid: 9137f191eb20e014a93cc14f3b4baf1a, type: 2}
+  - {fileID: 11400000, guid: 1bf1d60592e8ca8448e8fc2e2d48e936, type: 2}
+  - {fileID: 11400000, guid: 99c27f181e4d6334194ad23084ad901f, type: 2}
+  <Bonuses>k__BackingField: []

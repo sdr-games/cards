@@ -192,6 +192,10 @@ namespace SDRGames.Whist.TalentsEditorModule
         }
         private static DropdownField CreateLocalizationEntriesDropdown(LocalizationData localizationSaveData, Box box, string uss_class, EventHandler<LocalizationDataChangedEventArgs> onValueChangedEvent)
         {
+            if(LocalizationSettings.ProjectLocale == null)
+            {
+                LocalizationSettings.Instance.GetSelectedLocale();
+            }
             Dictionary<string, string> localizationEntries = new Dictionary<string, string>();
             var currentLocale = LocalizationSettings.ProjectLocale.Formatter.ToString();
             var collection = LocalizationEditorSettings.GetStringTableCollection(localizationSaveData.SelectedLocalizationTable);
