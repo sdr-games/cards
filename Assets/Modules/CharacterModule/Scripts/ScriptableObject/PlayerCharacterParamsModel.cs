@@ -10,8 +10,8 @@ namespace SDRGames.Whist.CharacterModule.ScriptableObjects
     [CreateAssetMenu(fileName = "PlayerParameters", menuName = "SDRGames/Characters/Player Parameters")]
     public class PlayerCharacterParamsModel : CharacterParamsModel
     {
-        public int Experience { get; private set; }
-        public int TalentPoints { get; private set; }
+        [field: SerializeField] public int Experience { get; private set; } = 0;
+        [field: SerializeField] public int TalentPoints { get; private set; } = 0;
 
         public event EventHandler<LevelChangedEventArgs> LevelChanged;
         public event EventHandler<ExperienceChangedEventArgs> ExperienceChanged;
@@ -75,11 +75,30 @@ namespace SDRGames.Whist.CharacterModule.ScriptableObjects
         public void IncreaseExperience(int experience)
         {
             Experience += experience;
-            if(Experience > Scaling.Instance.ExperienceRequiredPerLevel[Level + 2])
+
+            if(Level > Scaling.Instance.ExperienceRequiredPerLevel.Length)
+            {
+                ExperienceChanged?.Invoke(this, new ExperienceChangedEventArgs(Experience, Experience));
+                return;
+            }
+
+            if(Experience >= Scaling.Instance.ExperienceRequiredPerLevel[Level - 1])
             {
                 IncreaseLevel(1);
+                if (Level >= Scaling.Instance.ExperienceRequiredPerLevel.Length)
+                {
+                    ExperienceChanged?.Invoke(this, new ExperienceChangedEventArgs(Experience, Scaling.Instance.ExperienceRequiredPerLevel[Scaling.Instance.ExperienceRequiredPerLevel.Length - 1]));
+                    return;
+                }
             } 
-            ExperienceChanged?.Invoke(this, new ExperienceChangedEventArgs(Experience, Scaling.Instance.ExperienceRequiredPerLevel[Level + 2]));
+            ExperienceChanged?.Invoke(this, new ExperienceChangedEventArgs(Experience, Scaling.Instance.ExperienceRequiredPerLevel[Level - 1]));
+        }
+
+        private void OnDisable()
+        {
+            base.OnDisable();
+            Experience = 0;
+            TalentPoints = 0;
         }
     }
 }

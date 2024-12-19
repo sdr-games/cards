@@ -60,5 +60,15 @@ namespace SDRGames.Whist.CharacterModule.Managers
         {
             new PlayerCharacterCombatParamsPresenter(_playerCharacterParamsModel, _combatPlayerCharacterParamsView);
         }
+
+        public void Test()
+        {
+            _playerCharacterParamsModel.IncreaseLevel(1);
+            _playerCharacterParamsModel.IncreaseExperience(10);
+            _playerCharacterParamsModel.IncreaseStrength(1);
+            _playerCharacterParamsModel.IncreaseAgility(1);
+            _playerCharacterParamsModel.IncreaseStamina(1);
+            _playerCharacterParamsModel.IncreaseIntelligence(1);
+        }
     }
 }

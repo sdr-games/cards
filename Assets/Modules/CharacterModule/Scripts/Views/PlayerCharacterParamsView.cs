@@ -3,8 +3,6 @@ using SDRGames.Whist.PointsModule.Views;
 
 using TMPro;
 
-using UnityEditor;
-
 using UnityEngine;
 
 namespace SDRGames.Whist.CharacterModule.Views
@@ -47,10 +45,10 @@ namespace SDRGames.Whist.CharacterModule.Views
 
         #endregion
 
-        public void Initialize(string level, string experience, string strength, string agility, string stamina, string intelligence, string physicalDamage, string physicalHitChance, string magicalDamage, string magicalHitChance, string staminaRestorationPerRound, string piercing)
+        public void Initialize(string level, string currentExperience, string requiredExperience, string strength, string agility, string stamina, string intelligence, string physicalDamage, string physicalHitChance, string magicalDamage, string magicalHitChance, string staminaRestorationPerRound, string piercing)
         {
             SetLevelText(level);
-            SetExperienceText(experience);
+            SetExperienceText(currentExperience, requiredExperience);
 
             SetStrengthText(strength);
             SetAgilityText(agility);
@@ -72,9 +70,9 @@ namespace SDRGames.Whist.CharacterModule.Views
             _levelValue.text = level;
         }
 
-        public void SetExperienceText(string experience)
+        public void SetExperienceText(string currentExperience, string requiredExperience)
         {
-            _experienceValue.text = experience;
+            _experienceValue.text = $"{currentExperience} / {requiredExperience}";
         }
 
         public void SetStrengthText(string strength)

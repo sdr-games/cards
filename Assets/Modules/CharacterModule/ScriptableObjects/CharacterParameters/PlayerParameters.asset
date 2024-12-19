@@ -34,7 +34,7 @@ MonoBehaviour:
   <Initiative>k__BackingField:
     <Name>k__BackingField: Initiative
     <RollsCount>k__BackingField: 1
-    <SidesCount>k__BackingField: 19
+    <SidesCount>k__BackingField: 20
     <Modificator>k__BackingField: 0
   <StunResistance>k__BackingField: 50
   <HealthPoints>k__BackingField:
@@ -67,3 +67,5 @@ MonoBehaviour:
     <TemporaryBonus>k__BackingField: 0
     <RestorationPower>k__BackingField: 0
     <MaxValue>k__BackingField: 10
+  <Experience>k__BackingField: 0
+  <TalentPoints>k__BackingField: 0

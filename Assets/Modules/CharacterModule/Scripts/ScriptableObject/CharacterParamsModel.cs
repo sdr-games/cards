@@ -14,15 +14,15 @@ namespace SDRGames.Whist.CharacterModule.ScriptableObjects
     public class CharacterParamsModel : ScriptableObject
     {
         [field: SerializeField] public CharacterInfoScriptableObject CharacterInfo { get; protected set; }
-        [field: SerializeField] public int Level { get; protected set; }
+        [field: SerializeField] public int Level { get; protected set; } = 1;
 
         #region Characteristics
 
         [field: Header("Characteristics")]
-        [field: SerializeField] public int Strength { get; protected set; }
-        [field: SerializeField] public int Agility { get; protected set; }
-        [field: SerializeField] public int Stamina { get; protected set; }
-        [field: SerializeField] public int Intelligence { get; protected set; }
+        [field: SerializeField] public int Strength { get; protected set; } = 1;
+        [field: SerializeField] public int Agility { get; protected set; } = 1;
+        [field: SerializeField] public int Stamina { get; protected set; } = 1;
+        [field: SerializeField] public int Intelligence { get; protected set; } = 1;
 
         #endregion
 
@@ -219,6 +219,21 @@ namespace SDRGames.Whist.CharacterModule.ScriptableObjects
                 Intelligence = 1;
             }
 
+            CalculateParameters();
+        }
+
+        protected void OnDisable()
+        {
+            Level = 1;
+            Strength = 1;
+            Agility = 1;
+            Stamina = 1;
+            Intelligence = 1;
+            CalculateParameters();
+        }
+
+        protected void CalculateParameters()
+        {
             int physicalDamageLevelScaling = Level / Scaling.Instance.LevelsCountForMultiplier * Scaling.Instance.LevelsToPhysicalDamageMultiplier;
             int magicalDamageLevelScaling = Level / Scaling.Instance.LevelsCountForMultiplier * Scaling.Instance.LevelsToMagicalDamageMultiplier;
 
@@ -237,7 +252,7 @@ namespace SDRGames.Whist.CharacterModule.ScriptableObjects
             Resilience = Stamina * Scaling.Instance.StaminaToResilience;
             Weakening = 0;
             Amplification = 0;
-            Initiative = new Dice("Initiative", 1, 20 - Agility * Scaling.Instance.AgilityToInitiative);
+            Initiative = new Dice("Initiative", 1, 21 - Agility * Scaling.Instance.AgilityToInitiative);
 
             HealthPoints.SetPermanentBonus(Strength * Scaling.Instance.StrengthToHealthPoints + Stamina * Scaling.Instance.StaminaToHealthPoints);
             StaminaPoints.SetPermanentBonus(Stamina * Scaling.Instance.StaminaToStaminaPoints);

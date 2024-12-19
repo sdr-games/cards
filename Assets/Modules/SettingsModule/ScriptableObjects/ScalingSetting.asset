@@ -29,6 +29,8 @@ MonoBehaviour:
     <IntelligenceToBreathPoints>k__BackingField: 10
     <IntelligenceToMagicalDamage>k__BackingField: 10
     <IntelligenceToMagicalHitChance>k__BackingField: 1
+    <ExperienceRequiredPerLevel>k__BackingField: 0a0000001e00000032000000
+    <TalentPointsPerLevel>k__BackingField: 0
     <LevelToArmorPoints>k__BackingField: 10
     <LevelToBarrierPoints>k__BackingField: 10
     <LevelsCountForMultiplier>k__BackingField: 3

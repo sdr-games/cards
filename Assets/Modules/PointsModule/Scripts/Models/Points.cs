@@ -26,7 +26,7 @@ namespace SDRGames.Whist.PointsModule.Models
         public event EventHandler RegenerationPowerChanged;
         public event EventHandler<ValueChangedEventArgs> CurrentValueChanged;
         public event EventHandler<ValueChangedEventArgs> ReservedValueChanged;
-        public event EventHandler MaxValueChanged;
+        public event EventHandler<ValueChangedEventArgs> MaxValueChanged;
 
         public void SetName(string name)
         {
@@ -171,8 +171,9 @@ namespace SDRGames.Whist.PointsModule.Models
 
         private void CalculateMaxValue()
         {
+            CalculateCurrentValue(GetValueInPercents(CurrentValue));
             MaxValue = BaseValue + PermanentBonus + TemporaryBonus;
-            MaxValueChanged?.Invoke(this, EventArgs.Empty);
+            MaxValueChanged?.Invoke(this, new ValueChangedEventArgs(CurrentValue, CurrentValueInPercents, MaxValue));
         }
 
         private void CalculateCurrentValue(float currentValueInPercents)
