@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 8343376991012400175}
   - component: {fileID: 7469305405322914884}
   - component: {fileID: 7667247063588046234}
+  - component: {fileID: 1108956633861400184}
   m_Layer: 5
   m_Name: AstraView
   m_TagString: Untagged
@@ -40,7 +41,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 50, y: 50}
+  m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0, y: 0}
 --- !u!222 &1659834020739647827
 CanvasRenderer:
@@ -157,6 +158,28 @@ MonoBehaviour:
     type: 3}
   _tooltipCanvasGroup: {fileID: 6774736921828981971}
   _tooltipText: {fileID: 5374741486194500609}
+--- !u!95 &1108956633861400184
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5099026879182458176}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: b4ac53ac8c2803f4db14d8cd2a8fcb44, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &6787633667911633954
 GameObject:
   m_ObjectHideFlags: 0
