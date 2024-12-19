@@ -130,6 +130,7 @@ GameObject:
   m_Component:
   - component: {fileID: 107867508}
   - component: {fileID: 107867507}
+  - component: {fileID: 107867509}
   m_Layer: 0
   m_Name: PlayerManager
   m_TagString: Untagged
@@ -152,7 +153,6 @@ MonoBehaviour:
   _playerCharacterParamsModel: {fileID: 11400000, guid: 1755d9fb95f659b4d9614cf02827ef19,
     type: 2}
   _playerCharacterParamsView: {fileID: 7611957976098362192}
-  _combatPlayerCharacterParamsView: {fileID: 502296447}
 --- !u!4 &107867508
 Transform:
   m_ObjectHideFlags: 0
@@ -168,6 +168,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &107867509
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 107867506}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a2955d05c147314f8b013de5fb80625, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _playerCharacterParamsModel: {fileID: 11400000, guid: 1755d9fb95f659b4d9614cf02827ef19,
+    type: 2}
+  _playerCharacterCombatParamsView: {fileID: 502296447}
 --- !u!1 &469199235
 GameObject:
   m_ObjectHideFlags: 0

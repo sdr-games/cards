@@ -87,7 +87,7 @@ namespace SDRGames.Whist.CharacterModule.ScriptableObjects
                 IncreaseLevel(1);
                 if (Level >= Scaling.Instance.ExperienceRequiredPerLevel.Length)
                 {
-                    ExperienceChanged?.Invoke(this, new ExperienceChangedEventArgs(Experience, Scaling.Instance.ExperienceRequiredPerLevel[Scaling.Instance.ExperienceRequiredPerLevel.Length - 1]));
+                    ExperienceChanged?.Invoke(this, new ExperienceChangedEventArgs(Experience, Scaling.Instance.ExperienceRequiredPerLevel[^1]));
                     return;
                 }
             } 

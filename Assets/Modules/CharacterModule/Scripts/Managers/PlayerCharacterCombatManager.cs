@@ -146,6 +146,7 @@ namespace SDRGames.Whist.CharacterModule.Managers
                     EditorApplication.isPlaying = false;
                 #endif
             }
+            Initialize();
         }
     }
 }
