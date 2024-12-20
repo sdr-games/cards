@@ -115,28 +115,32 @@ namespace SDRGames.Whist.TalentsModule.Views
 
         private void OnLeftMouseButtonClickedOnUI(object sender, LeftMouseButtonUIClickEventArgs e)
         {
-            if (e.GameObject == gameObject && !IsZoomed && !_isMoving)
+            if(e.GameObject != gameObject || IsZoomed || _isMoving)
             {
-                IsZoomed = true;
-                _isMoving = true;
-                _backgroundImage.color = new Color(_backgroundImage.color.r, _backgroundImage.color.g, _backgroundImage.color.b, HIGHLIGHTED_ALPHA);
-                float angle = transform.localEulerAngles.z > 0 ? 360 - transform.localEulerAngles.z : 0;
-                float scalingTime = Math.Abs(transform.localScale.x - _zoomInScale) / _speed;
-                BranchZoomInStarted?.Invoke(this, new BranchZoomedEventArgs(angle, scalingTime));
+                return;
             }
+
+            IsZoomed = true;
+            _isMoving = true;
+            _backgroundImage.color = new Color(_backgroundImage.color.r, _backgroundImage.color.g, _backgroundImage.color.b, HIGHLIGHTED_ALPHA);
+            float angle = transform.localEulerAngles.z > 0 ? 360 - transform.localEulerAngles.z : 0;
+            float scalingTime = Math.Abs(transform.localScale.x - _zoomInScale) / _speed;
+            BranchZoomInStarted?.Invoke(this, new BranchZoomedEventArgs(angle, scalingTime));
         }
 
         private void OnRightMouseButtonClickedOnUI(object sender, RightMouseButtonUIClickEventArgs e)
         {
-            if (e.GameObject == gameObject && IsZoomed)
+            if (e.GameObject != gameObject || !IsZoomed || _isMoving)
             {
-                IsZoomed = false;
-                _isMoving = true;
-                _backgroundImage.color = new Color(_backgroundImage.color.r, _backgroundImage.color.g, _backgroundImage.color.b, DEFAULT_ALPHA);
-                float angle = transform.localEulerAngles.z > 0 ? 360 - transform.localEulerAngles.z : 0;
-                float scalingTime = Math.Abs(transform.localScale.x - _zoomOutScale) / _speed;
-                BranchZoomOutStarted?.Invoke(this, new BranchZoomedEventArgs(transform.localEulerAngles.z - 360, scalingTime));
+                return;
             }
+
+            IsZoomed = false;
+            _isMoving = true;
+            _backgroundImage.color = new Color(_backgroundImage.color.r, _backgroundImage.color.g, _backgroundImage.color.b, DEFAULT_ALPHA);
+            float angle = transform.localEulerAngles.z > 0 ? 360 - transform.localEulerAngles.z : 0;
+            float scalingTime = Math.Abs(transform.localScale.x - _zoomOutScale) / _speed;
+            BranchZoomOutStarted?.Invoke(this, new BranchZoomedEventArgs(transform.localEulerAngles.z - 360, scalingTime));
         }
 
         private void SetRotation()

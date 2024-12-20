@@ -115,7 +115,6 @@ namespace SDRGames.Whist.TalentsModule.Managers
         private IEnumerator RotateSmoothlyCoroutine(float targetAngle, float time)
         {
             yield return null;
-            float step = _rotationOffset / time;
             float currentAngle = _rotationOffset;
             if(targetAngle < 0)
             {
@@ -131,7 +130,6 @@ namespace SDRGames.Whist.TalentsModule.Managers
                 transform.rotation = Quaternion.Lerp(a, b, currentTime / time);
                 currentTime++;
             }
-            Debug.Log(currentTime);
             transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, targetAngle);
         }
 
@@ -148,7 +146,6 @@ namespace SDRGames.Whist.TalentsModule.Managers
                 transform.localPosition = newPosition;
                 currentTime++;
             }
-            Debug.Log(currentTime);
         }
 
         private Vector2 CalculateBranchesTotalSize()
