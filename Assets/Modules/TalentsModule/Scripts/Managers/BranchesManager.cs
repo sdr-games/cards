@@ -54,13 +54,13 @@ namespace SDRGames.Whist.TalentsModule.Managers
             Vector2 totalSize = CalculateBranchesTotalSize();
 
             _createdBranches = new List<BranchManager>();
-            _startScale = 0.5f;
+            _startScale = 0.6f;
             _rotationOffset = transform.localEulerAngles.z;
 
             for (int i = 0; i < _talentBranchesSO.Length; i++)
             {
                 BranchManager branchManager = Instantiate(_branchManagerPrefab);
-                Vector2 position = CalculatePositionInRadius(i, totalSize * 0.25f);
+                Vector2 position = CalculatePositionInRadius(i, totalSize * 0.3f);
                 branchManager.Initialize(_userInputController, _talentBranchesSO[i], position, _startScale, transform);
                 branchManager.BranchView.BranchZoomInStarted += OnBranchZoomIn;
                 branchManager.BranchView.BranchZoomOutStarted += OnBranchZoomOut;
@@ -89,7 +89,7 @@ namespace SDRGames.Whist.TalentsModule.Managers
         {
             foreach (BranchManager branchManager in _createdBranches)
             {
-                branchManager.BranchView.SetSizeSmoothly(1);
+                branchManager.BranchView.SetSizeSmoothly(1, e.Time);
                 if(sender as BranchView == branchManager.BranchView)
                 {
                     branchManager.BranchView.Show();
@@ -98,24 +98,23 @@ namespace SDRGames.Whist.TalentsModule.Managers
                 branchManager.BranchView.Hide();
             }
             StartCoroutine(RotateSmoothlyCoroutine(e.Angle, e.Time));
-            StartCoroutine(MoveSmoothlyCoroutine(-80, e.Time));
+            StartCoroutine(MoveSmoothlyCoroutine(-180, e.Time));
         }
 
         private void OnBranchZoomOut(object sender, BranchZoomedEventArgs e)
         {
             foreach (BranchManager branchManager in _createdBranches)
             {
-                branchManager.BranchView.SetSizeSmoothly(_startScale);
+                branchManager.BranchView.SetSizeSmoothly(_startScale, e.Time);
                 branchManager.BranchView.Show();
             }
             StartCoroutine(RotateSmoothlyCoroutine(e.Angle, e.Time));
-            StartCoroutine(MoveSmoothlyCoroutine(80, e.Time));
+            StartCoroutine(MoveSmoothlyCoroutine(180, e.Time));
         }
 
         private IEnumerator RotateSmoothlyCoroutine(float targetAngle, float time)
         {
             yield return null;
-            float step = _rotationOffset / time;
             float currentAngle = _rotationOffset;
             if(targetAngle < 0)
             {
@@ -129,7 +128,7 @@ namespace SDRGames.Whist.TalentsModule.Managers
             {
                 yield return null;
                 transform.rotation = Quaternion.Lerp(a, b, currentTime / time);
-                currentTime += step;
+                currentTime++;
             }
             transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, targetAngle);
         }
@@ -145,9 +144,7 @@ namespace SDRGames.Whist.TalentsModule.Managers
                 yield return null;
                 newPosition.y += step;
                 transform.localPosition = newPosition;
-                Debug.Log(transform.localPosition);
                 currentTime++;
-                Debug.Log(currentTime);
             }
         }
 

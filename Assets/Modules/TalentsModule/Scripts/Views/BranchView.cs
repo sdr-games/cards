@@ -13,8 +13,8 @@ namespace SDRGames.Whist.TalentsModule.Views
 {
     public class BranchView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
-        private readonly float DEFAULT_ALPHA = 0.35f; // 90/255
-        private readonly float HIGHLIGHTED_ALPHA = 0.85f; // 217/255
+        private readonly float DEFAULT_ALPHA = 0.6f; // 191/255
+        private readonly float HIGHLIGHTED_ALPHA = 1f; // 255/255
 
         public static readonly Vector2 PADDING = new Vector2(50, 50);
 
@@ -56,21 +56,26 @@ namespace SDRGames.Whist.TalentsModule.Views
             _rectTransform.sizeDelta = GetBackgroundSize();
         }
 
-        public void SetSizeSmoothly(float scale)
+        public void SetSizeSmoothly(float scale, float time)
         {
-            StartCoroutine(SetSizeSmoothlyCoroutine(scale));
+            StartCoroutine(SetSizeSmoothlyCoroutine(scale, time));
         }
 
-        public IEnumerator SetSizeSmoothlyCoroutine(float scale)
+        public IEnumerator SetSizeSmoothlyCoroutine(float scale, float time)
         {
+            Debug.Log(time);
             yield return null;
             float direction = transform.localScale.x < scale ? 1 : -1;
             Vector3 speedVector = Vector3.one * _speed * direction;
-            while(Math.Abs(transform.localScale.x - scale) > _speed && Math.Abs(transform.localScale.y - scale) > _speed) 
+            Debug.Log(speedVector);
+            float currentTime = 0;
+            while(currentTime < time) 
             {
-                yield return null;
+                yield return _speed;
                 transform.localScale += speedVector;
+                currentTime++;
             }
+            Debug.Log(currentTime);
             transform.localScale = new Vector3(scale, scale, scale);
             _isMoving = false;
         }
@@ -108,9 +113,34 @@ namespace SDRGames.Whist.TalentsModule.Views
             return _backgroundImage.sprite.rect.size;
         }
 
-        private Vector2 GetBranchSize()
+        private void OnLeftMouseButtonClickedOnUI(object sender, LeftMouseButtonUIClickEventArgs e)
         {
-            return GetBackgroundSize();
+            if(e.GameObject != gameObject || IsZoomed || _isMoving)
+            {
+                return;
+            }
+
+            IsZoomed = true;
+            _isMoving = true;
+            _backgroundImage.color = new Color(_backgroundImage.color.r, _backgroundImage.color.g, _backgroundImage.color.b, HIGHLIGHTED_ALPHA);
+            float angle = transform.localEulerAngles.z > 0 ? 360 - transform.localEulerAngles.z : 0;
+            float scalingTime = Math.Abs(transform.localScale.x - _zoomInScale) / _speed;
+            BranchZoomInStarted?.Invoke(this, new BranchZoomedEventArgs(angle, scalingTime));
+        }
+
+        private void OnRightMouseButtonClickedOnUI(object sender, RightMouseButtonUIClickEventArgs e)
+        {
+            if (e.GameObject != gameObject || !IsZoomed || _isMoving)
+            {
+                return;
+            }
+
+            IsZoomed = false;
+            _isMoving = true;
+            _backgroundImage.color = new Color(_backgroundImage.color.r, _backgroundImage.color.g, _backgroundImage.color.b, DEFAULT_ALPHA);
+            float angle = transform.localEulerAngles.z > 0 ? 360 - transform.localEulerAngles.z : 0;
+            float scalingTime = Math.Abs(transform.localScale.x - _zoomOutScale) / _speed;
+            BranchZoomOutStarted?.Invoke(this, new BranchZoomedEventArgs(transform.localEulerAngles.z - 360, scalingTime));
         }
 
         private void SetRotation()
@@ -146,32 +176,6 @@ namespace SDRGames.Whist.TalentsModule.Views
                 _canvasGroup.alpha = 0;
             }
             BranchVisibilityChanged?.Invoke(this, new BranchVisibilityChangedEventArgs(visibility));
-        }
-
-        private void OnLeftMouseButtonClickedOnUI(object sender, LeftMouseButtonUIClickEventArgs e)
-        {
-            if (e.GameObject == gameObject && !IsZoomed && !_isMoving)
-            {
-                IsZoomed = true;
-                _isMoving = true;
-                _backgroundImage.color = new Color(_backgroundImage.color.r, _backgroundImage.color.g, _backgroundImage.color.b, HIGHLIGHTED_ALPHA);
-                float angle = transform.localEulerAngles.z > 0 ? 360 - transform.localEulerAngles.z : 0;
-                float scalingTime = Math.Abs(transform.localScale.x - _zoomInScale) / _speed;
-                BranchZoomInStarted?.Invoke(this, new BranchZoomedEventArgs(angle, scalingTime));
-            }
-        }
-
-        private void OnRightMouseButtonClickedOnUI(object sender, RightMouseButtonUIClickEventArgs e)
-        {
-            if (e.GameObject == gameObject && IsZoomed)
-            {
-                IsZoomed = false;
-                _isMoving = true;
-                _backgroundImage.color = new Color(_backgroundImage.color.r, _backgroundImage.color.g, _backgroundImage.color.b, DEFAULT_ALPHA);
-                float angle = transform.localEulerAngles.z > 0 ? 360 - transform.localEulerAngles.z : 0;
-                float scalingTime = Math.Abs(transform.localScale.x - _zoomOutScale) / _speed;
-                BranchZoomOutStarted?.Invoke(this, new BranchZoomedEventArgs(transform.localEulerAngles.z - 360, scalingTime));
-            }
         }
 
         private void OnEnable()
