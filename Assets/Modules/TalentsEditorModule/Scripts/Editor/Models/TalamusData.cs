@@ -1,13 +1,11 @@
 using System;
 
 using SDRGames.Whist.TalentsEditorModule.Views;
-using SDRGames.Whist.TalentsModule.Models;
 using SDRGames.Whist.TalentsModule.ScriptableObjects;
 
 using UnityEditor;
 
-using UnityEngine;
-
+using static SDRGames.Whist.TalentsModule.Models.Talamus;
 using static SDRGames.Whist.TalentsModule.ScriptableObjects.TalentScriptableObject;
 
 namespace SDRGames.Whist.TalentsEditorModule.Models
@@ -15,7 +13,6 @@ namespace SDRGames.Whist.TalentsEditorModule.Models
     [Serializable]
     public class TalamusData : BaseData
     {
-        public enum CharacteristicNames { Strength, Agility, Stamina, Intellegence, Immunity }
         public CharacteristicNames CharacteristicName { get; private set; }
         public int CharacteristicValue { get; private set; }
 
@@ -59,7 +56,7 @@ namespace SDRGames.Whist.TalentsEditorModule.Models
                 Cost,
                 DescriptionLocalization,
                 NodeType,
-                CharacteristicName.ToString(),
+                CharacteristicName,
                 CharacteristicValue
             );
             EditorUtility.SetDirty(talamusSO);

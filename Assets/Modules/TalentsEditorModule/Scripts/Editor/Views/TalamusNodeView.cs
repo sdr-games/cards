@@ -9,7 +9,7 @@ using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-using static SDRGames.Whist.TalentsEditorModule.Models.TalamusData;
+using static SDRGames.Whist.TalentsModule.Models.Talamus;
 
 namespace SDRGames.Whist.TalentsEditorModule.Views
 {

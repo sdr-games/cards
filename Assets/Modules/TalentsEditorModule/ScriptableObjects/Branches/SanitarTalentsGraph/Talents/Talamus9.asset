@@ -21,11 +21,11 @@ MonoBehaviour:
       \u0431\u043E\u043B\u0435\u0437\u043D\u044C, \u0441\u043B\u0438\u0437\u044C,
       \u0431\u043B\u0430-\u0431\u043B\u0430-\u0431\u043B\u0430"
   <TalentType>k__BackingField: 0
-  <PositionPercentages>k__BackingField: {x: 51.15681, y: 67.44548}
+  <PositionPercentages>k__BackingField: {x: 51.639904, y: 62.572254}
   <Blockers>k__BackingField:
   - {fileID: 11400000, guid: 252bb8a49d71d9d4e879ed58b0347711, type: 2}
   <Dependencies>k__BackingField:
   - {fileID: 11400000, guid: 9137f191eb20e014a93cc14f3b4baf1a, type: 2}
   - {fileID: 11400000, guid: 1bf1d60592e8ca8448e8fc2e2d48e936, type: 2}
-  <Characteristic>k__BackingField: Strength
-  <CharacteristicValue>k__BackingField: 0
+  <Characteristic>k__BackingField: 0
+  <CharacteristicValuePerPoint>k__BackingField: 0

@@ -10,9 +10,6 @@ namespace SDRGames.Whist.TalentsModule.Presenters
     [Serializable]
     public class AstraPresenter
     {
-        private readonly Color ACTIVE_COLOR = Color.yellow;
-        private readonly Color INACTIVE_COLOR = Color.gray;
-
         private Astra _astra;
         private TalentView _talentView;
 
@@ -21,7 +18,7 @@ namespace SDRGames.Whist.TalentsModule.Presenters
             _astra = data;
 
             _talentView = talentView;
-            _talentView.Initialize(ACTIVE_COLOR, INACTIVE_COLOR, data.TotalCost, data.Description, position);
+            _talentView.Initialize(data.TotalCost, data.Description, position);
 
             _astra.CurrentPointsChanged += OnCurrentPointsChanged;
         }
@@ -29,6 +26,7 @@ namespace SDRGames.Whist.TalentsModule.Presenters
         private void OnCurrentPointsChanged(object sender, CurrentPointsChangedEventArgs e)
         {
             _talentView.ChangeCurrentPoints($"{e.CurrentPoints}/{_astra.TotalCost}");
+            _talentView.SetFilled(e.CurrentPoints == _astra.TotalCost);
         }
     }
 }

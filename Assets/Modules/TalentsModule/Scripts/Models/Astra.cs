@@ -4,7 +4,8 @@ namespace SDRGames.Whist.TalentsModule.Models
 {
     public class Astra : Talent
     {
-        public string Equipment { get; private set; }
+        public enum EquipmentNames { Weapon }
+        public EquipmentNames Equipment { get; private set; }
 
         public Astra(AstraScriptableObject astraScriptableObject) : base(astraScriptableObject.Cost, astraScriptableObject.DescriptionLocalization.GetLocalizedText())
         {

@@ -4,7 +4,7 @@ using SDRGames.Whist.LocalizationModule.Models;
 
 using UnityEngine;
 
-using static SDRGames.Whist.TalentsEditorModule.Models.AstraData;
+using static SDRGames.Whist.TalentsModule.Models.Astra;
 
 namespace SDRGames.Whist.TalentsEditorModule.Views
 {

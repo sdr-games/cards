@@ -8,7 +8,7 @@ using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-using static SDRGames.Whist.TalentsEditorModule.Models.AstraData;
+using static SDRGames.Whist.TalentsModule.Models.Astra;
 
 namespace SDRGames.Whist.TalentsEditorModule.Views
 {

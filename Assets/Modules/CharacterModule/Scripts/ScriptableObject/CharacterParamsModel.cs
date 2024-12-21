@@ -85,9 +85,13 @@ namespace SDRGames.Whist.CharacterModule.ScriptableObjects
 
         #region Characterstic changing methods
 
-        public virtual void IncreaseStrength(int strength)
+        public virtual void ChangeStrength(int strength)
         {
             Strength += strength;
+            if(Strength < 1)
+            {
+                Strength = 1;
+            }
             int physicalDamageLevelScaling = Level / Scaling.Instance.LevelsCountForMultiplier * Scaling.Instance.LevelsToPhysicalDamageMultiplier;
 
             PhysicalDamage = Strength * Scaling.Instance.StrengthToPhysicalDamage;
@@ -98,9 +102,13 @@ namespace SDRGames.Whist.CharacterModule.ScriptableObjects
             HealthPoints.SetPermanentBonus(Strength * Scaling.Instance.StrengthToHealthPoints + Stamina * Scaling.Instance.StaminaToHealthPoints);
         }
 
-        public virtual void IncreaseAgility(int agility)
+        public virtual void ChangeAgility(int agility)
         {
             Agility += agility;
+            if(Agility < 1)
+            {
+                Agility = 1;
+            }
 
             DodgeChance = Agility * Scaling.Instance.AgilityToDodgeChance;
             CriticalStrikeChance = (Strength + Agility) / 2 * Scaling.Instance.StrengthAndAgilityToCriticalStrikeChance;
@@ -110,9 +118,13 @@ namespace SDRGames.Whist.CharacterModule.ScriptableObjects
 
         }
 
-        public virtual void IncreaseStamina(int stamina)
+        public virtual void ChangeStamina(int stamina)
         {
             Stamina += stamina;
+            if(Stamina < 1)
+            {
+                Stamina = 1;
+            } 
 
             HealthPoints.SetPermanentBonus(Strength * Scaling.Instance.StrengthToHealthPoints + Stamina * Scaling.Instance.StaminaToHealthPoints);
             StaminaPoints.SetPermanentBonus(Stamina * Scaling.Instance.StaminaToStaminaPoints);
@@ -120,9 +132,13 @@ namespace SDRGames.Whist.CharacterModule.ScriptableObjects
             Resilience = Stamina * Scaling.Instance.StaminaToResilience;
         }
 
-        public virtual void IncreaseIntelligence(int intelligence)
+        public virtual void ChangeIntelligence(int intelligence)
         {
             Intelligence += intelligence;
+            if(Intelligence < 1)
+            {
+                Intelligence = 1;
+            } 
             int magicalDamageLevelScaling = Level / Scaling.Instance.LevelsCountForMultiplier * Scaling.Instance.LevelsToMagicalDamageMultiplier;
 
             MagicalDamage = Intelligence * Scaling.Instance.IntelligenceToMagicalDamage;

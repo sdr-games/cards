@@ -17,7 +17,6 @@ namespace SDRGames.Whist.CharacterModule.Managers
         private void OnEnable()
         {
             this.CheckFieldValueIsNotNull(nameof(_playerCharacterParamsView), _playerCharacterParamsView);
-            Initialize();
         }
 
         public void Initialize()
@@ -29,10 +28,10 @@ namespace SDRGames.Whist.CharacterModule.Managers
         {
             _playerCharacterParamsModel.IncreaseLevel(1);
             _playerCharacterParamsModel.IncreaseExperience(10);
-            _playerCharacterParamsModel.IncreaseStrength(1);
-            _playerCharacterParamsModel.IncreaseAgility(1);
-            _playerCharacterParamsModel.IncreaseStamina(1);
-            _playerCharacterParamsModel.IncreaseIntelligence(1);
+            _playerCharacterParamsModel.ChangeStrength(1);
+            _playerCharacterParamsModel.ChangeAgility(1);
+            _playerCharacterParamsModel.ChangeStamina(1);
+            _playerCharacterParamsModel.ChangeIntelligence(1);
         }
     }
 }

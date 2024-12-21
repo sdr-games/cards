@@ -1,55 +1,32 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 
 using SDRGames.Whist.TalentsModule.ScriptableObjects;
 using SDRGames.Whist.TalentsModule.Views;
 using SDRGames.Whist.UserInputModule.Controller;
-
-using UnityEditor;
+using SDRGames.Whist.HelpersModule;
 
 using UnityEngine;
+using System;
 
 namespace SDRGames.Whist.TalentsModule.Managers
 {
     public class BranchesManager : MonoBehaviour
     {
         [SerializeField] private BranchManager _branchManagerPrefab;
-        [SerializeField] private UserInputController _userInputController;
         [SerializeField] private TalentsBranchScriptableObject[] _talentBranchesSO;
 
+        private UserInputController _userInputController;
         private float _startScale;
         private float _rotationOffset;
         private List<BranchManager> _createdBranches;
 
-        private void OnEnable()
+        public event EventHandler<AstraChangedEventArgs> AstraChanged;
+        public event EventHandler<TalamusChangedEventArgs> TalamusChanged;
+
+        public void Initialize(UserInputController userInputController)
         {
-            if (_branchManagerPrefab == null)
-            {
-                Debug.LogError("Branch Manager Prefab не был назначен");
-                #if UNITY_EDITOR
-                    EditorApplication.isPlaying = false;
-                #endif
-                Application.Quit();
-            }
-
-            if (_userInputController == null)
-            {
-                Debug.LogError("User Input Controller не были назначен");
-                #if UNITY_EDITOR
-                    EditorApplication.isPlaying = false;
-                #endif
-                Application.Quit();
-            }
-
-            if (_talentBranchesSO.Length == 0)
-            {
-                Debug.LogError("Talent Branches не были назначены");
-                #if UNITY_EDITOR
-                    EditorApplication.isPlaying = false;
-                #endif
-                Application.Quit();
-            }
+            _userInputController = userInputController;
 
             Vector2 totalSize = CalculateBranchesTotalSize();
 
@@ -62,18 +39,39 @@ namespace SDRGames.Whist.TalentsModule.Managers
                 BranchManager branchManager = Instantiate(_branchManagerPrefab);
                 Vector2 position = CalculatePositionInRadius(i, totalSize * 0.3f);
                 branchManager.Initialize(_userInputController, _talentBranchesSO[i], position, _startScale, transform);
-                branchManager.BranchView.BranchZoomInStarted += OnBranchZoomIn;
-                branchManager.BranchView.BranchZoomOutStarted += OnBranchZoomOut;
+                branchManager.AstraChanged += OnAstraChanged;
+                branchManager.TalamusChanged += OnTalamusChanged;
+                branchManager.GetView().BranchZoomInStarted += OnBranchZoomIn;
+                branchManager.GetView().BranchZoomOutStarted += OnBranchZoomOut;
                 _createdBranches.Add(branchManager);
             }
+        }
+
+        private void OnAstraChanged(object sender, AstraChangedEventArgs e)
+        {
+            AstraChanged?.Invoke(this, e);
+        }
+
+        private void OnTalamusChanged(object sender, TalamusChangedEventArgs e)
+        {
+            TalamusChanged?.Invoke(this, e);
+        }
+
+        private void OnEnable()
+        {
+            this.CheckFieldValueIsNotNull(nameof(_branchManagerPrefab), _branchManagerPrefab);
+            this.CheckFieldValueIsNotNull(nameof(_talentBranchesSO), _talentBranchesSO);
+            this.CheckFieldValueIsNotEmpty(nameof(_talentBranchesSO), _talentBranchesSO);
         }
 
         private void OnDestroy()
         {
             foreach (BranchManager branchManager in _createdBranches)
             {
-                branchManager.BranchView.BranchZoomInStarted -= OnBranchZoomIn;
-                branchManager.BranchView.BranchZoomOutStarted -= OnBranchZoomOut;
+                branchManager.AstraChanged -= OnAstraChanged;
+                branchManager.TalamusChanged -= OnTalamusChanged;
+                branchManager.GetView().BranchZoomInStarted -= OnBranchZoomIn;
+                branchManager.GetView().BranchZoomOutStarted -= OnBranchZoomOut;
                 StopAllCoroutines();
             }
         }
@@ -89,13 +87,14 @@ namespace SDRGames.Whist.TalentsModule.Managers
         {
             foreach (BranchManager branchManager in _createdBranches)
             {
-                branchManager.BranchView.SetSizeSmoothly(1, e.Time);
-                if(sender as BranchView == branchManager.BranchView)
+                BranchView branchView = branchManager.GetView();
+                branchView.SetSizeSmoothly(1, e.Time);
+                if(sender as BranchView == branchView)
                 {
-                    branchManager.BranchView.Show();
+                    branchManager.GetView().Show();
                     continue;
                 }
-                branchManager.BranchView.Hide();
+                branchView.Hide();
             }
             StartCoroutine(RotateSmoothlyCoroutine(e.Angle, e.Time));
             StartCoroutine(MoveSmoothlyCoroutine(-180, e.Time));
@@ -105,8 +104,9 @@ namespace SDRGames.Whist.TalentsModule.Managers
         {
             foreach (BranchManager branchManager in _createdBranches)
             {
-                branchManager.BranchView.SetSizeSmoothly(_startScale, e.Time);
-                branchManager.BranchView.Show();
+                BranchView branchView = branchManager.GetView();
+                branchView.SetSizeSmoothly(_startScale, e.Time);
+                branchView.Show();
             }
             StartCoroutine(RotateSmoothlyCoroutine(e.Angle, e.Time));
             StartCoroutine(MoveSmoothlyCoroutine(180, e.Time));

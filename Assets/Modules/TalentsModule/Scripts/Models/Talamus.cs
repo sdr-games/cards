@@ -4,13 +4,14 @@ namespace SDRGames.Whist.TalentsModule.Models
 {
     public class Talamus : Talent
     {
-        public string Characteristic { get; private set; }
-        public int CharacteristicValue { get; private set; }
+        public enum CharacteristicNames { Strength, Agility, Stamina, Intellegence }
+        public CharacteristicNames Characteristic { get; private set; }
+        public int CharacteristicValuePerPoint { get; private set; }
 
         public Talamus(TalamusScriptableObject talamusScriptableObject) : base(talamusScriptableObject.Cost, talamusScriptableObject.DescriptionLocalization.GetLocalizedText())
         {
             Characteristic = talamusScriptableObject.Characteristic;
-            CharacteristicValue = talamusScriptableObject.CharacteristicValue;
+            CharacteristicValuePerPoint = talamusScriptableObject.CharacteristicValuePerPoint;
         }
     }
 }

@@ -21,8 +21,8 @@ MonoBehaviour:
       \u0431\u043E\u043B\u0435\u0437\u043D\u044C, \u0441\u043B\u0438\u0437\u044C,
       \u0431\u043B\u0430-\u0431\u043B\u0430-\u0431\u043B\u0430"
   <TalentType>k__BackingField: 1
-  <PositionPercentages>k__BackingField: {x: 63.496143, y: 78.50468}
+  <PositionPercentages>k__BackingField: {x: 64.75914, y: 72.832375}
   <Blockers>k__BackingField:
   - {fileID: 11400000, guid: 37d5d48bbea707744ae597e00e5a9852, type: 2}
   <Dependencies>k__BackingField: []
-  <Equipment>k__BackingField: Weapon
+  <Equipment>k__BackingField: 0

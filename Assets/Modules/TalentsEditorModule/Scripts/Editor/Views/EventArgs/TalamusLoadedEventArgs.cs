@@ -1,9 +1,8 @@
 ﻿using System;
 
 using SDRGames.Whist.LocalizationModule.Models;
-using UnityEngine;
 
-using static SDRGames.Whist.TalentsEditorModule.Models.TalamusData;
+using static SDRGames.Whist.TalentsModule.Models.Talamus;
 
 namespace SDRGames.Whist.TalentsEditorModule.Views
 {

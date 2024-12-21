@@ -36,31 +36,31 @@ namespace SDRGames.Whist.CharacterModule.ScriptableObjects
             MagicalDamageChanged?.Invoke(this, new ParameterChangedEventArgs(MagicalDamage));
         }
 
-        public override void IncreaseStrength(int strength)
+        public override void ChangeStrength(int strength)
         {
-            base.IncreaseStrength(strength);
+            base.ChangeStrength(strength);
             StrengthChanged?.Invoke(this, new CharactersticChangedEventArgs(Strength));
             PhysicalDamageChanged?.Invoke(this, new ParameterChangedEventArgs(PhysicalDamage));
             PhysicalHitChanceChanged?.Invoke(this, new ParameterChangedEventArgs(PhysicalHitChance));
         }
 
-        public override void IncreaseAgility(int agility)
+        public override void ChangeAgility(int agility)
         {
-            base.IncreaseAgility(agility);
+            base.ChangeAgility(agility);
             AgilityChanged?.Invoke(this, new CharactersticChangedEventArgs(Agility));
             StaminaRestorationPowerChanged?.Invoke(this, new ParameterChangedEventArgs(StaminaRestorationPower));
             PiercingChanged?.Invoke(this, new ParameterChangedEventArgs(Piercing));
         }
 
-        public override void IncreaseStamina(int stamina)
+        public override void ChangeStamina(int stamina)
         {
-            base.IncreaseStamina(stamina);
+            base.ChangeStamina(stamina);
             StaminaChanged?.Invoke(this, new CharactersticChangedEventArgs(Stamina));
         }
 
-        public override void IncreaseIntelligence(int intelligence)
+        public override void ChangeIntelligence(int intelligence)
         {
-            base.IncreaseIntelligence(intelligence);
+            base.ChangeIntelligence(intelligence);
             IntelligenceChanged?.Invoke(this, new CharactersticChangedEventArgs(Intelligence));
             MagicalDamageChanged?.Invoke(this, new ParameterChangedEventArgs(MagicalDamage));
             MagicalHitChanceChanged?.Invoke(this, new ParameterChangedEventArgs(MagicalHitChance));

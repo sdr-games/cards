@@ -5,13 +5,13 @@ using SDRGames.Whist.TalentsModule.ScriptableObjects;
 
 using UnityEditor;
 
+using static SDRGames.Whist.TalentsModule.Models.Astra;
 using static SDRGames.Whist.TalentsModule.ScriptableObjects.TalentScriptableObject;
 
 namespace SDRGames.Whist.TalentsEditorModule.Models
 {
     public class AstraData : BaseData
     {
-        public enum EquipmentNames { Weapon }
         public EquipmentNames Equipment { get; private set; }
 
         public AstraData(string name) : base(name)
@@ -42,7 +42,7 @@ namespace SDRGames.Whist.TalentsEditorModule.Models
                 Cost,
                 DescriptionLocalization,
                 NodeType,
-                Equipment.ToString()
+                Equipment
             );
             UtilityIO.SaveAsset(astraSO);
             EditorUtility.SetDirty(astraSO);
