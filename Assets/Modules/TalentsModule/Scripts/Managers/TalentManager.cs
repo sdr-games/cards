@@ -35,7 +35,7 @@ namespace SDRGames.Whist.TalentsModule.Managers
             return _talentView;
         }
 
-        private void OnBlockChanged(object sender, System.EventArgs e)
+        private void OnBlockChanged(object sender, EventArgs e)
         {
             _talent.ResetCurrentPoints();
         }

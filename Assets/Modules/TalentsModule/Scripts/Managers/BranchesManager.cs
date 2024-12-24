@@ -21,8 +21,10 @@ namespace SDRGames.Whist.TalentsModule.Managers
         private float _rotationOffset;
         private List<BranchManager> _createdBranches;
 
-        public event EventHandler<AstraChangedEventArgs> AstraChanged;
-        public event EventHandler<TalamusChangedEventArgs> TalamusChanged;
+        public event EventHandler<AstraChangedEventArgs> AstraIncreased;
+        public event EventHandler<AstraChangedEventArgs> AstraDecreased;
+        public event EventHandler<TalamusChangedEventArgs> TalamusIncreased;
+        public event EventHandler<TalamusChangedEventArgs> TalamusDecreased;
 
         public void Initialize(UserInputController userInputController)
         {
@@ -49,12 +51,22 @@ namespace SDRGames.Whist.TalentsModule.Managers
 
         private void OnAstraChanged(object sender, AstraChangedEventArgs e)
         {
-            AstraChanged?.Invoke(this, e);
+            if (e.TotalPoints > 0)
+            {
+                AstraIncreased?.Invoke(this, e);
+                return;
+            }
+            AstraDecreased?.Invoke(this, e);
         }
 
         private void OnTalamusChanged(object sender, TalamusChangedEventArgs e)
         {
-            TalamusChanged?.Invoke(this, e);
+            if (e.TotalPoints > 0)
+            {
+                TalamusIncreased?.Invoke(this, e);
+                return;
+            }
+            TalamusDecreased?.Invoke(this, e);
         }
 
         private void OnEnable()

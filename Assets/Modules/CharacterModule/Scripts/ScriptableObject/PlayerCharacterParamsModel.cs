@@ -66,10 +66,23 @@ namespace SDRGames.Whist.CharacterModule.ScriptableObjects
             MagicalHitChanceChanged?.Invoke(this, new ParameterChangedEventArgs(MagicalHitChance));
         }
 
-        public void IncreaseTalentPoints(int talentPoints)
+        public void IncreaseTalentPoints(int talentPoints = 1)
         {
             TalentPoints += talentPoints;
-            TalentPointsChanged?.Invoke(this, null);
+            if(TalentPoints < 0)
+            {
+                TalentPoints = 0;
+            } 
+            TalentPointsChanged?.Invoke(this, new ParameterChangedEventArgs(TalentPoints));
+        }
+
+        public void DecreaseTalentPoints(int talentPoints = 1)
+        {
+            if(talentPoints > TalentPoints || TalentPoints <= 0)
+            {
+                return;
+            } 
+            IncreaseTalentPoints(-talentPoints);
         }
 
         public void IncreaseExperience(int experience)

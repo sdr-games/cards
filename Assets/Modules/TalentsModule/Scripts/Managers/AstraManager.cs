@@ -33,7 +33,6 @@ namespace SDRGames.Whist.TalentsModule.Managers
             {
                 return;
             }
-            _astra.IncreaseCurrentPoints();
             AstraChanged?.Invoke(this, new AstraChangedEventArgs(_astra, 1));
         }
 
@@ -43,7 +42,6 @@ namespace SDRGames.Whist.TalentsModule.Managers
             {
                 return;
             }
-            _astra.DecreaseCurrentPoints();
             AstraChanged?.Invoke(this, new AstraChangedEventArgs(_astra, -1));
         }
 

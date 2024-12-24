@@ -33,7 +33,6 @@ namespace SDRGames.Whist.TalentsModule.Managers
             {
                 return;
             }
-            _talamus.IncreaseCurrentPoints();
             TalamusChanged?.Invoke(this, new TalamusChangedEventArgs(_talamus, 1));
         }
 
@@ -43,7 +42,6 @@ namespace SDRGames.Whist.TalentsModule.Managers
             {
                 return;
             }
-            _talamus.DecreaseCurrentPoints();
             TalamusChanged?.Invoke(this, new TalamusChangedEventArgs(_talamus, -1));
         }
 
