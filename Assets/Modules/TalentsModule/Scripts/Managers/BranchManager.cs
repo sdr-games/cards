@@ -7,6 +7,7 @@ using SDRGames.Whist.HelpersModule;
 
 using UnityEngine;
 using System;
+using SDRGames.Whist.TalentsModule.Models;
 
 namespace SDRGames.Whist.TalentsModule.Managers
 {
@@ -34,19 +35,7 @@ namespace SDRGames.Whist.TalentsModule.Managers
 
             foreach (TalentScriptableObject talent in _talentBranchSO.StartTalents)
             {
-                if (talent is AstraScriptableObject astraTalent)
-                {
-                    Vector2 talentPosition = talent.CalculatePositionInContainer(_branchView.GetBackgroundSize() - _astraPrefab.GetSize());
-                    CreateAstra(astraTalent, talentPosition);
-                    continue;
-                }
-
-                if (talent is TalamusScriptableObject talamusTalent)
-                {
-                    Vector2 talentPosition = talent.CalculatePositionInContainer(_branchView.GetBackgroundSize() - _talamusPrefab.GetSize());
-                    CreateTalamus(talamusTalent, talentPosition);
-                    continue;
-                }
+                CreateTalent(talent);
             }
         }
 
@@ -60,64 +49,77 @@ namespace SDRGames.Whist.TalentsModule.Managers
             this.CheckFieldValueIsNotNull(nameof(_astraPrefab), _astraPrefab);
             this.CheckFieldValueIsNotNull(nameof(_talamusPrefab), _talamusPrefab);
 
-            _createdTalents =  new Dictionary<string, TalentManager>();
+            _createdTalents = new Dictionary<string, TalentManager>();
         }
 
-        private List<TalentView> CreateDependencies(List<TalentScriptableObject> talents)
+        private void CreateTalent(TalentScriptableObject talent)
         {
-            List<TalentView> dependencies = new List<TalentView>();
+            TalentManager talentManager = null;
+            if (talent is AstraScriptableObject astraTalent)
+            {
+                talentManager = CreateAstra(astraTalent);
+            }
+            else if (talent is TalamusScriptableObject talamusTalent)
+            {
+                talentManager = CreateTalamus(talamusTalent);
+            }
+
+            if(talentManager is null)
+            {
+                return;
+            }
+            List<TalentManager> dependencies = CreateDependencies(talent.Dependencies, talentManager);
+            talentManager.SetDependencies(dependencies);
+            _createdTalents.Add(talent.Name, talentManager);
+        }
+
+        private TalamusManager CreateTalamus(TalamusScriptableObject talamus)
+        {
+            TalamusManager talamusManager = Instantiate(_talamusPrefab, transform, false);
+            talamusManager.Initialize(_userInputController, talamus, _branchView.GetBackgroundSize());
+            talamusManager.TalamusChanged += OnTalamusChanged;
+            return talamusManager;
+        }
+
+        private AstraManager CreateAstra(AstraScriptableObject astra)
+        {
+            AstraManager astraManager = Instantiate(_astraPrefab, transform, false);
+            astraManager.Initialize(_userInputController, astra, _branchView.GetBackgroundSize());
+            astraManager.AstraChanged += OnAstraChanged;
+            return astraManager;
+        }
+
+        private List<TalentManager> CreateDependencies(List<TalentScriptableObject> talents, TalentManager blocker)
+        {
+            List<TalentManager> dependencies = new List<TalentManager>();
             foreach (TalentScriptableObject talent in talents)
             {
-                if (_createdTalents.ContainsKey(talent.Name))
+                if (!_createdTalents.ContainsKey(talent.Name))
                 {
-                    dependencies.Add(_createdTalents[talent.Name].GetView());
-                    continue;
+                    CreateTalent(talent);
                 }
-
-                if (talent is AstraScriptableObject astraTalent)
-                {
-                    Vector2 talentPosition = talent.CalculatePositionInContainer(_branchView.GetBackgroundSize() - _astraPrefab.GetSize());
-                    CreateAstra(astraTalent, talentPosition);
-                }
-                else if (talent is TalamusScriptableObject talamusTalent)
-                {
-                    Vector2 talentPosition = talent.CalculatePositionInContainer(_branchView.GetBackgroundSize() - _talamusPrefab.GetSize());
-                    CreateTalamus(talamusTalent, talentPosition);
-                }
-                dependencies.Add(_createdTalents[talent.Name].GetView());
+                TalentManager talentManager = _createdTalents[talent.Name];
+                talentManager.AddBlocker(blocker);
+                dependencies.Add(talentManager);
             }
             return dependencies;
         }
 
-        private TalamusManager CreateTalamus(TalamusScriptableObject talamus, Vector2 position)
-        {
-            List<TalentView> dependencies = CreateDependencies(talamus.Dependencies);
-            TalamusManager talamusManager = Instantiate(_talamusPrefab, transform, false);
-            talamusManager.Initialize(_userInputController, talamus, position);
-            talamusManager.GetView().SetDependencies(dependencies);
-            talamusManager.TalamusChanged += OnTalamusChanged;
-            _createdTalents.Add(talamus.Name, talamusManager);
-            return talamusManager;
-        }
-
-        private AstraManager CreateAstra(AstraScriptableObject astra, Vector2 position)
-        {
-            List<TalentView> dependencies = CreateDependencies(astra.Dependencies);
-            AstraManager astraManager = Instantiate(_astraPrefab, transform, false);
-            astraManager.Initialize(_userInputController, astra, position);
-            astraManager.GetView().SetDependencies(dependencies);
-            astraManager.AstraChanged += OnAstraChanged;
-            _createdTalents.Add(astra.Name, astraManager);
-            return astraManager;
-        }
-
         private void OnAstraChanged(object sender, AstraChangedEventArgs e)
         {
+            if(!_branchView.IsZoomed || _branchView.IsMoving)
+            {
+                return;
+            }
             AstraChanged?.Invoke(this, e);
         }
 
         private void OnTalamusChanged(object sender, TalamusChangedEventArgs e)
         {
+            if (!_branchView.IsZoomed || _branchView.IsMoving)
+            {
+                return;
+            }
             TalamusChanged?.Invoke(this, e);
         }
 
@@ -125,12 +127,7 @@ namespace SDRGames.Whist.TalentsModule.Managers
         {
             foreach(TalentManager talentManager in _createdTalents.Values)
             {
-                if(e.IsVisible && _branchView.IsZoomed)
-                {
-                    talentManager.GetView().ChangeBlock();
-                    continue;
-                }
-                talentManager.GetView().ChangeVisibility(false);
+                talentManager.ChangeAvailability(e.IsVisible && _branchView.IsZoomed);
             }
         }
     }

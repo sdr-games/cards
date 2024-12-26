@@ -6,6 +6,8 @@ using SDRGames.Whist.CharacterModule.ScriptableObjects;
 using UnityEngine;
 
 using static SDRGames.Whist.TalentsModule.Models.Talamus;
+
+using SDRGames.Whist.NotificationsModule;
 using System;
 
 namespace SDRGames.Whist.DomainModule
@@ -31,22 +33,47 @@ namespace SDRGames.Whist.DomainModule
 
         private void OnAstraIncreased(object sender, AstraChangedEventArgs e)
         {
-            
-        }
-
-        private void OnAstraDecreased(object sender, AstraChangedEventArgs e)
-        {
-            
-        }
-
-        private void OnTalamusIncreased(object sender, TalamusChangedEventArgs e)
-        {
-            if(e.TotalPoints == 0 || _playerCharacterParamsModel.TalentPoints == 0)
+            if (e.TotalPoints == 0)
             {
                 return;
             }
 
-            int amount = e.TotalPoints * e.Talamus.CharacteristicValuePerPoint;
+            if (_playerCharacterParamsModel.TalentPoints == 0)
+            {
+                Notification.Show(_playerCharacterParamsModel.NotEnoughtTalentPointsErrorMessage.GetLocalizedText());
+                return;
+            }
+
+            e.Astra.IncreaseCurrentPoints();
+            _playerCharacterParamsModel.DecreaseTalentPoints();
+        }
+
+        private void OnAstraDecreased(object sender, AstraChangedEventArgs e)
+        {
+            if (e.TotalPoints == 0)
+            {
+                return;
+            }
+
+            int absTotalPoints = Math.Abs(e.TotalPoints);
+            e.Astra.DecreaseCurrentPoints(absTotalPoints);
+            _playerCharacterParamsModel.IncreaseTalentPoints(absTotalPoints);
+        }
+
+        private void OnTalamusIncreased(object sender, TalamusChangedEventArgs e)
+        {
+            if(e.TotalPoints == 0)
+            {
+                return;
+            }
+
+            if(_playerCharacterParamsModel.TalentPoints == 0)
+            {
+                Notification.Show(_playerCharacterParamsModel.NotEnoughtTalentPointsErrorMessage.GetLocalizedText());
+                return;
+            }
+
+            int amount = e.Talamus.CharacteristicValuePerPoint;
             e.Talamus.IncreaseCurrentPoints();
             switch (e.Talamus.Characteristic)
             {
@@ -78,25 +105,26 @@ namespace SDRGames.Whist.DomainModule
                 return;
             }
 
+            int absTotalPoints = Math.Abs(e.TotalPoints);
             int amount = e.TotalPoints * e.Talamus.CharacteristicValuePerPoint;
-            e.Talamus.DecreaseCurrentPoints();
+            e.Talamus.DecreaseCurrentPoints(absTotalPoints);
             switch (e.Talamus.Characteristic)
             {
                 case CharacteristicNames.Strength:
                     _playerCharacterParamsModel.ChangeStrength(amount);
-                    _playerCharacterParamsModel.IncreaseTalentPoints();
+                    _playerCharacterParamsModel.IncreaseTalentPoints(absTotalPoints);
                     break;
                 case CharacteristicNames.Agility:
                     _playerCharacterParamsModel.ChangeAgility(amount);
-                    _playerCharacterParamsModel.IncreaseTalentPoints();
+                    _playerCharacterParamsModel.IncreaseTalentPoints(absTotalPoints);
                     break;
                 case CharacteristicNames.Stamina:
                     _playerCharacterParamsModel.ChangeStamina(amount);
-                    _playerCharacterParamsModel.IncreaseTalentPoints();
+                    _playerCharacterParamsModel.IncreaseTalentPoints(absTotalPoints);
                     break;
                 case CharacteristicNames.Intellegence:
                     _playerCharacterParamsModel.ChangeIntelligence(amount);
-                    _playerCharacterParamsModel.IncreaseTalentPoints();
+                    _playerCharacterParamsModel.IncreaseTalentPoints(absTotalPoints);
                     break;
                 default:
                     break;

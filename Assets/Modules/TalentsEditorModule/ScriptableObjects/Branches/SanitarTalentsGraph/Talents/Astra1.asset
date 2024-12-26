@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Astra1
   m_EditorClassIdentifier: 
   <Name>k__BackingField: Astra1
-  <Cost>k__BackingField: 0
+  <Cost>k__BackingField: 1
   <DescriptionLocalization>k__BackingField:
     <SelectedLocalizationTable>k__BackingField: CharacterDescriptions
     <SelectedEntryKey>k__BackingField: Slime
@@ -21,7 +21,7 @@ MonoBehaviour:
       \u0431\u043E\u043B\u0435\u0437\u043D\u044C, \u0441\u043B\u0438\u0437\u044C,
       \u0431\u043B\u0430-\u0431\u043B\u0430-\u0431\u043B\u0430"
   <TalentType>k__BackingField: 1
-  <PositionPercentages>k__BackingField: {x: 64.75914, y: 19.725433}
+  <PositionPercentages>k__BackingField: {x: 61.752644, y: 23.049133}
   <Blockers>k__BackingField:
   - {fileID: 11400000, guid: 433358b0cb44b2e41ad07511c784aefd, type: 2}
   <Dependencies>k__BackingField: []

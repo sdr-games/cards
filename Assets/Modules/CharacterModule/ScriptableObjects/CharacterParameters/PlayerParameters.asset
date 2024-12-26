@@ -68,4 +68,17 @@ MonoBehaviour:
     <RestorationPower>k__BackingField: 0
     <MaxValue>k__BackingField: 10
   <Experience>k__BackingField: 0
-  <TalentPoints>k__BackingField: 0
+  <TalentPoints>k__BackingField: 6
+  <NotEnoughtTalentPointsErrorMessage>k__BackingField:
+    <Entity>k__BackingField:
+      m_TableReference:
+        m_TableCollectionName: GUID:2f778a2bec4417b41b6ad50bdbac269f
+      m_TableEntryReference:
+        m_KeyId: 83009920153276416
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+  references:
+    version: 2
+    RefIds: []

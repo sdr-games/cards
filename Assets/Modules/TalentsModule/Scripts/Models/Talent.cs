@@ -32,11 +32,15 @@ namespace SDRGames.Whist.TalentsModule.Models
             }
         }
 
-        public void DecreaseCurrentPoints()
+        public void DecreaseCurrentPoints(int points)
         {
             if(CurrentPoints > 0)
             {
-                CurrentPoints--;
+                CurrentPoints -= points;
+                if(CurrentPoints < 0)
+                {
+                    CurrentPoints = 0;
+                }
                 CurrentPointsChanged?.Invoke(this, new CurrentPointsChangedEventArgs(CurrentPoints));
             }
         }

@@ -23,11 +23,11 @@ namespace SDRGames.Whist.TalentsModule.Views
         [SerializeField] private CanvasGroup _canvasGroup;
         [SerializeField] private Image _backgroundImage;
 
-        private bool _isMoving;
         private float _zoomInScale;
         private float _zoomOutScale;
         private UserInputController _userInputController;
         
+        public bool IsMoving { get; private set; }
         public bool IsZoomed { get; private set; }
 
         public event EventHandler<BranchZoomedEventArgs> BranchZoomInStarted;
@@ -63,11 +63,9 @@ namespace SDRGames.Whist.TalentsModule.Views
 
         public IEnumerator SetSizeSmoothlyCoroutine(float scale, float time)
         {
-            Debug.Log(time);
             yield return null;
             float direction = transform.localScale.x < scale ? 1 : -1;
             Vector3 speedVector = Vector3.one * _speed * direction;
-            Debug.Log(speedVector);
             float currentTime = 0;
             while(currentTime < time) 
             {
@@ -75,9 +73,8 @@ namespace SDRGames.Whist.TalentsModule.Views
                 transform.localScale += speedVector;
                 currentTime++;
             }
-            Debug.Log(currentTime);
             transform.localScale = new Vector3(scale, scale, scale);
-            _isMoving = false;
+            IsMoving = false;
         }
 
         public void Show()
@@ -115,13 +112,13 @@ namespace SDRGames.Whist.TalentsModule.Views
 
         private void OnLeftMouseButtonClickedOnUI(object sender, LeftMouseButtonUIClickEventArgs e)
         {
-            if(e.GameObject != gameObject || IsZoomed || _isMoving)
+            if(e.GameObject != gameObject || IsZoomed || IsMoving)
             {
                 return;
             }
 
             IsZoomed = true;
-            _isMoving = true;
+            IsMoving = true;
             _backgroundImage.color = new Color(_backgroundImage.color.r, _backgroundImage.color.g, _backgroundImage.color.b, HIGHLIGHTED_ALPHA);
             float angle = transform.localEulerAngles.z > 0 ? 360 - transform.localEulerAngles.z : 0;
             float scalingTime = Math.Abs(transform.localScale.x - _zoomInScale) / _speed;
@@ -130,13 +127,13 @@ namespace SDRGames.Whist.TalentsModule.Views
 
         private void OnRightMouseButtonClickedOnUI(object sender, RightMouseButtonUIClickEventArgs e)
         {
-            if (e.GameObject != gameObject || !IsZoomed || _isMoving)
+            if (e.GameObject != gameObject || !IsZoomed || IsMoving)
             {
                 return;
             }
 
             IsZoomed = false;
-            _isMoving = true;
+            IsMoving = true;
             _backgroundImage.color = new Color(_backgroundImage.color.r, _backgroundImage.color.g, _backgroundImage.color.b, DEFAULT_ALPHA);
             float angle = transform.localEulerAngles.z > 0 ? 360 - transform.localEulerAngles.z : 0;
             float scalingTime = Math.Abs(transform.localScale.x - _zoomOutScale) / _speed;

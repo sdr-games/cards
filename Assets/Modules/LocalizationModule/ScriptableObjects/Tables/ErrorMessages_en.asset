@@ -30,6 +30,10 @@ MonoBehaviour:
     m_Localized: Not enough breath points!
     m_Metadata:
       m_Items: []
+  - m_Id: 83009920153276416
+    m_Localized: Not enough talent points!
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

@@ -26,7 +26,6 @@ namespace SDRGames.Whist.TalentsModule.Presenters
         private void OnCurrentPointsChanged(object sender, CurrentPointsChangedEventArgs e)
         {
             _talentView.ChangeCurrentPoints($"{e.CurrentPoints}/{_astra.TotalCost}");
-            _talentView.SetFilled(e.CurrentPoints == _astra.TotalCost);
         }
     }
 }

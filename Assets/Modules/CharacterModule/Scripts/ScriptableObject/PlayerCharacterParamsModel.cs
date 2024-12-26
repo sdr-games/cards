@@ -1,5 +1,6 @@
 using System;
 
+using SDRGames.Whist.LocalizationModule.Models;
 using SDRGames.Whist.SettingsModule.Models;
 
 using UnityEngine;
@@ -12,6 +13,13 @@ namespace SDRGames.Whist.CharacterModule.ScriptableObjects
     {
         [field: SerializeField] public int Experience { get; private set; } = 0;
         [field: SerializeField] public int TalentPoints { get; private set; } = 0;
+
+        #region Error messages
+
+        [field: Header("Error messages")]
+        [field: SerializeField] public LocalizedString NotEnoughtTalentPointsErrorMessage { get; private set; }
+
+        #endregion
 
         public event EventHandler<LevelChangedEventArgs> LevelChanged;
         public event EventHandler<ExperienceChangedEventArgs> ExperienceChanged;

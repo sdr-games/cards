@@ -13,12 +13,12 @@ namespace SDRGames.Whist.TalentsModule.Presenters
         private Talamus _talamus;
         private TalentView _talentView;
 
-        public TalamusPresenter(Talamus data, TalentView talentView, Vector2 position)
+        public TalamusPresenter(Talamus talamus, TalentView talentView, Vector2 position)
         {
-            _talamus = data;
+            _talamus = talamus;
 
             _talentView = talentView;
-            _talentView.Initialize(data.TotalCost, data.Description, position);
+            _talentView.Initialize(talamus.TotalCost, talamus.Description, position);
 
             _talamus.CurrentPointsChanged += OnCurrentPointsChanged;
         }
@@ -26,7 +26,6 @@ namespace SDRGames.Whist.TalentsModule.Presenters
         private void OnCurrentPointsChanged(object sender, CurrentPointsChangedEventArgs e)
         {
             _talentView.ChangeCurrentPoints($"{e.CurrentPoints}/{_talamus.TotalCost}");
-            _talentView.SetFilled(e.CurrentPoints == _talamus.TotalCost);
         }
     }
 }

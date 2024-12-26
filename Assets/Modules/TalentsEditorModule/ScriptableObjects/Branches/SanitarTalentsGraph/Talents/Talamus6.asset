@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Talamus6
   m_EditorClassIdentifier: 
   <Name>k__BackingField: Talamus6
-  <Cost>k__BackingField: 0
+  <Cost>k__BackingField: 5
   <DescriptionLocalization>k__BackingField:
     <SelectedLocalizationTable>k__BackingField: CharacterDescriptions
     <SelectedEntryKey>k__BackingField: Slime
@@ -21,12 +21,12 @@ MonoBehaviour:
       \u0431\u043E\u043B\u0435\u0437\u043D\u044C, \u0441\u043B\u0438\u0437\u044C,
       \u0431\u043B\u0430-\u0431\u043B\u0430-\u0431\u043B\u0430"
   <TalentType>k__BackingField: 0
-  <PositionPercentages>k__BackingField: {x: 51.639904, y: 53.034683}
+  <PositionPercentages>k__BackingField: {x: 50.136658, y: 53.034683}
   <Blockers>k__BackingField:
   - {fileID: 11400000, guid: fc6ca69ac38cab6468b1a3d1f10c471e, type: 2}
   <Dependencies>k__BackingField:
   - {fileID: 11400000, guid: 4fafca40a40aa4a46bfbc7db195bfc61, type: 2}
   - {fileID: 11400000, guid: 99c27f181e4d6334194ad23084ad901f, type: 2}
   - {fileID: 11400000, guid: 37d5d48bbea707744ae597e00e5a9852, type: 2}
-  <Characteristic>k__BackingField: 1
+  <Characteristic>k__BackingField: 2
   <CharacteristicValuePerPoint>k__BackingField: 3
