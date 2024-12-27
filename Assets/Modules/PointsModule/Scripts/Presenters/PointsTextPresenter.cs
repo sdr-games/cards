@@ -17,11 +17,17 @@ namespace SDRGames.Whist.PointsModule.Presenters
             _pointsView.Initialize(points.Name, points.MaxValue);
 
             _points.CurrentValueChanged += OnPointsCurrentValueChanged;
+            _points.MaxValueChanged += OnMaxValueChanged;
         }
 
         private void OnPointsCurrentValueChanged(object sender, ValueChangedEventArgs e)
         {
             _pointsView.SetPointsText(e.CurrentValue);
+        }
+
+        private void OnMaxValueChanged(object sender, ValueChangedEventArgs e)
+        {
+            _pointsView.SetMaxPointsText(e.MaxValue, e.CurrentValueInPercents);
         }
     }
 }

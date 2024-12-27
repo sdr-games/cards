@@ -1,4 +1,4 @@
-using SDRGames.Whist.SettingsModule.Models;
+using SDRGames.Whist.SettingsModule.ScriptableObjects;
 using SDRGames.Whist.SettingsModule.Views;
 
 using UnityEngine;
@@ -8,11 +8,11 @@ namespace SDRGames.Whist.SettingsModule.Managers
 {
     public class DropdownSettingManager : MonoBehaviour
     {
-        [SerializeField] private DropdownSettingModel _dropdownSettingModel;
+        [SerializeField] private DropdownSettingScriptableObject _dropdownSettingModel;
         [SerializeField] private DropdownSettingView _dropdownSettingView;
         [SerializeField] private UnityEvent<DropdownChangeSettingsEventArgs> _updateSettingEvent;
 
-        public void Initialize(DropdownSettingModel dropdownSettingModel)
+        public void Initialize(DropdownSettingScriptableObject dropdownSettingModel)
         {
             _dropdownSettingView.Initialize(dropdownSettingModel.Name, dropdownSettingModel.Values, dropdownSettingModel.CurrentIndex);
             _dropdownSettingView.OnValueChanged += ChangeSetting;

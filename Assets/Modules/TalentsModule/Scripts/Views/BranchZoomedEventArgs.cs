@@ -1,6 +1,8 @@
-﻿namespace SDRGames.Whist.TalentsModule.Views
+﻿using System;
+
+namespace SDRGames.Whist.TalentsModule.Views
 {
-    public class BranchZoomedEventArgs
+    public class BranchZoomedEventArgs : EventArgs
     {
         public float Angle { get; private set; }
         public float Time { get; private set; }

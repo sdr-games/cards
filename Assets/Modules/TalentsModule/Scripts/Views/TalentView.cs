@@ -13,8 +13,8 @@ namespace SDRGames.Whist.TalentsModule.Views
 {
     public class TalentView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
-        private Color _activeColor;
-        private Color _inactiveColor;
+        //private Color _activeColor;
+        //private Color _inactiveColor;
 
         private List<TalentView> _blockers;
         private List<TalentView> _dependencies;
@@ -35,10 +35,10 @@ namespace SDRGames.Whist.TalentsModule.Views
 
         public void Initialize(Color activeColor, Color inactiveColor, int cost, string description, Vector2 position)
         {
-            _activeColor = activeColor;
-            _inactiveColor = inactiveColor;
+            //_activeColor = activeColor;
+            //_inactiveColor = inactiveColor;
 
-            _image.color = _inactiveColor;
+            //_image.color = _inactiveColor;
             _currentPointsText.text = $"0/{cost}";
             _tooltipText.text = description;
 
@@ -78,7 +78,7 @@ namespace SDRGames.Whist.TalentsModule.Views
         public void SetActive(bool isActive)
         {
             IsActive = isActive;
-            _image.color = IsActive ? _activeColor : _inactiveColor;
+            //_image.color = IsActive ? _activeColor : _inactiveColor;
             foreach (TalentView dependency in _dependencies)
             {
                 dependency.ChangeBlock();

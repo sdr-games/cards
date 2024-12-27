@@ -17,6 +17,7 @@ namespace SDRGames.Whist.TalentsEditorModule.Managers
 {
     public class GraphManager : GraphView
     {
+        private Box _background;
         private TalentsEditorWindow _editorWindow;
         private NodesSearchWindow _searchWindow;
         private ParametersWindow _parametersWindow;
@@ -56,7 +57,7 @@ namespace SDRGames.Whist.TalentsEditorModule.Managers
             _nodesPresenters = new SerializableDictionary<BaseNodeView, BaseNodePresenter>();
 
             AddManipulators();
-            AddGridBackground();
+            AddBackground();
             AddMiniMap();
             AddSearchWindow();
             //AddBlackboard();
@@ -68,6 +69,7 @@ namespace SDRGames.Whist.TalentsEditorModule.Managers
             AddMiniMapStyles();
 
             this.StretchToParentSize();
+            //AddToClassList("ds-graph_manager");
         }
 
         public GraphElement CreateNode<T>(string nodeName, Vector2 position, bool shouldDraw = true) where T : BaseNodePresenter, new()
@@ -117,6 +119,11 @@ namespace SDRGames.Whist.TalentsEditorModule.Managers
             _miniMap.visible = !_miniMap.visible;
         }
 
+        public void ToggleParametersWindow()
+        {
+            _parametersWindow.visible = !_parametersWindow.visible;
+        }
+
         public override List<Port> GetCompatiblePorts(Port startPort, NodeAdapter nodeAdapter)
         {
             return ports.ToList()!.Where(endPort =>
@@ -128,18 +135,28 @@ namespace SDRGames.Whist.TalentsEditorModule.Managers
 
         public Rect GetGraphRect()
         {
-            return CalculateRectToFitAll(contentContainer);
+            Rect backgroundRect = GetBackgroundImageParameter().rect;
+            return new Rect(new Vector2(contentRect.width / 2 - backgroundRect.width / 2, 0), backgroundRect.size);
         }
 
-        public Sprite GetBackgroundImage()
+        public Sprite GetBackgroundImageParameter()
         {
             return _parametersWindow.GetBackgroundImageFieldValue();
         }
 
-        public void SetBackgroundImage(Sprite backgroundImage)
+        public void SetBackgroundImageParameter(Sprite backgroundImage)
         {
             _parametersWindow.SetBackgroundImageFieldValue(backgroundImage);
+            SetBackgroundImage(backgroundImage);
         }
+
+        public void SetBackgroundImage(Sprite backgroundImage)
+        {
+            Background background = Background.FromSprite(backgroundImage);
+            _background.style.backgroundImage = background;
+            _background.style.backgroundSize = new BackgroundSize(new Length(background.sprite.rect.width), new Length(background.sprite.rect.height));
+        }
+
         private void AddNode(string nodeName, BaseNodeView node)
         {
             if (!_nodes.ContainsKey(nodeName))
@@ -159,7 +176,7 @@ namespace SDRGames.Whist.TalentsEditorModule.Managers
         {
             SetupZoom(ContentZoomer.DefaultMinScale, ContentZoomer.DefaultMaxScale);
 
-            this.AddManipulator(new ContentDragger());
+            //this.AddManipulator(new ContentDragger());
             this.AddManipulator(new SelectionDragger());
             this.AddManipulator(new RectangleSelector());
 
@@ -299,11 +316,16 @@ namespace SDRGames.Whist.TalentsEditorModule.Managers
             CheckNodeNameErrors(_nodes[nodeName]);
         }
 
-        private void AddGridBackground()
+        private void AddBackground()
         {
             GridBackground gridBackground = new GridBackground();
-            gridBackground.StretchToParentSize();
             Insert(0, gridBackground);
+
+            _background = new Box();
+            _background.StretchToParentSize();
+            _background.style.top = 35;
+            _background.AddToClassList("ds-graph_manager-background");
+            Insert(1, _background);
         }
 
         private void AddMiniMap()
@@ -312,7 +334,7 @@ namespace SDRGames.Whist.TalentsEditorModule.Managers
             {
                 anchored = true
             };
-            _miniMap.SetPosition(new Rect(15, 50, 200, 180));
+            _miniMap.SetPosition(new Rect(15, 150, 200, 180));
             Add(_miniMap);
             _miniMap.visible = false;
         }
@@ -355,7 +377,7 @@ namespace SDRGames.Whist.TalentsEditorModule.Managers
 
         private void AddParametersWindow()
         {
-            _parametersWindow = new ParametersWindow();
+            _parametersWindow = new ParametersWindow(this);
             Add(_parametersWindow);
         }
 

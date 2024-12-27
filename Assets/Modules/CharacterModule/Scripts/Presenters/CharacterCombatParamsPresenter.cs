@@ -13,8 +13,8 @@ namespace SDRGames.Whist.CharacterModule.Presenters
             _characterParamsModel = characterParamsModel;
 
             new PointsBarPresenter(_characterParamsModel.HealthPoints, characterCombatParamsView.HealthPointsBarView);
-            new PointsBarPresenter(_characterParamsModel.Armor, characterCombatParamsView.ArmorPointsBarView);
-            new PointsBarPresenter(_characterParamsModel.Barrier, characterCombatParamsView.BarrierPointsBarView);
+            new PointsBarPresenter(_characterParamsModel.ArmorPoints, characterCombatParamsView.ArmorPointsBarView);
+            new PointsBarPresenter(_characterParamsModel.BarrierPoints, characterCombatParamsView.BarrierPointsBarView);
         }
 
         public void TakePhysicalDamage(int damage)

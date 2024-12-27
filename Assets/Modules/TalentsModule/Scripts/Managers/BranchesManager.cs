@@ -19,6 +19,7 @@ namespace SDRGames.Whist.TalentsModule.Managers
         [SerializeField] private TalentsBranchScriptableObject[] _talentBranchesSO;
 
         private float _startScale;
+        private float _rotationOffset;
         private List<BranchManager> _createdBranches;
 
         private void OnEnable()
@@ -50,13 +51,16 @@ namespace SDRGames.Whist.TalentsModule.Managers
                 Application.Quit();
             }
 
+            Vector2 totalSize = CalculateBranchesTotalSize();
+
             _createdBranches = new List<BranchManager>();
-            _startScale = 1 - Screen.width / (_talentBranchesSO.Length * BranchView.SIZE.x);
+            _startScale = 0.6f;
+            _rotationOffset = transform.localEulerAngles.z;
 
             for (int i = 0; i < _talentBranchesSO.Length; i++)
             {
                 BranchManager branchManager = Instantiate(_branchManagerPrefab);
-                Vector2 position = CalculatePositionInRadius(i, _startScale);
+                Vector2 position = CalculatePositionInRadius(i, totalSize * 0.3f);
                 branchManager.Initialize(_userInputController, _talentBranchesSO[i], position, _startScale, transform);
                 branchManager.BranchView.BranchZoomInStarted += OnBranchZoomIn;
                 branchManager.BranchView.BranchZoomOutStarted += OnBranchZoomOut;
@@ -74,19 +78,18 @@ namespace SDRGames.Whist.TalentsModule.Managers
             }
         }
 
-        private Vector2 CalculatePositionInRadius(int index, float scale)
+        private Vector2 CalculatePositionInRadius(int index, Vector2 size)
         {
-            float radius = (Screen.width - BranchView.SIZE.x / _talentBranchesSO.Length) * scale;
-            float offsetY = BranchView.PADDING.y / 2 * scale;
-            float radiansOfSeparation = Mathf.PI / _talentBranchesSO.Length * (index + 0.5f);
-            return new Vector2(Mathf.Cos(radiansOfSeparation) * radius, Mathf.Sin(radiansOfSeparation) * radius - offsetY);
+            float radius = size.x / 2;
+            float angle = Mathf.PI * index / _talentBranchesSO.Length;
+            return new Vector2(Mathf.Sin(angle) * radius, Mathf.Cos(angle) * radius);
         }
 
         private void OnBranchZoomIn(object sender, BranchZoomedEventArgs e)
         {
             foreach (BranchManager branchManager in _createdBranches)
             {
-                branchManager.BranchView.SetSizeSmoothly(1);
+                branchManager.BranchView.SetSizeSmoothly(1, e.Time);
                 if(sender as BranchView == branchManager.BranchView)
                 {
                     branchManager.BranchView.Show();
@@ -95,33 +98,64 @@ namespace SDRGames.Whist.TalentsModule.Managers
                 branchManager.BranchView.Hide();
             }
             StartCoroutine(RotateSmoothlyCoroutine(e.Angle, e.Time));
+            StartCoroutine(MoveSmoothlyCoroutine(-180, e.Time));
         }
 
         private void OnBranchZoomOut(object sender, BranchZoomedEventArgs e)
         {
             foreach (BranchManager branchManager in _createdBranches)
             {
-                branchManager.BranchView.SetSizeSmoothly(_startScale);
+                branchManager.BranchView.SetSizeSmoothly(_startScale, e.Time);
                 branchManager.BranchView.Show();
             }
             StartCoroutine(RotateSmoothlyCoroutine(e.Angle, e.Time));
+            StartCoroutine(MoveSmoothlyCoroutine(180, e.Time));
         }
 
-        private IEnumerator RotateSmoothlyCoroutine(float angle, float time)
+        private IEnumerator RotateSmoothlyCoroutine(float targetAngle, float time)
         {
             yield return null;
-            float destinationAngle = angle != 0 ? 360 - transform.localEulerAngles.z - Math.Abs(angle) : 0;
-            float direction = angle > 0 ? -1 : 1;
-            if(Math.Abs(angle) > 180)
+            float currentAngle = _rotationOffset;
+            if(targetAngle < 0)
             {
-                angle = 360 - Math.Abs(angle);
+                targetAngle = _rotationOffset;
+                currentAngle = transform.localEulerAngles.z;
             }
-            float speed = Math.Abs(angle / time);
-            while(Math.Abs(transform.localEulerAngles.z - destinationAngle) > speed)
+            Quaternion a = Quaternion.Euler(0, 0, currentAngle);
+            Quaternion b = Quaternion.Euler(0, 0, targetAngle);
+            float currentTime = 0;
+            while (currentTime < time)
             {
                 yield return null;
-                transform.RotateAround(transform.TransformPoint(((RectTransform)transform).rect.center), Vector3.forward * direction, speed);
-            } 
+                transform.rotation = Quaternion.Lerp(a, b, currentTime / time);
+                currentTime++;
+            }
+            transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, targetAngle);
+        }
+
+        private IEnumerator MoveSmoothlyCoroutine(float distance, float time)
+        {
+            yield return null;
+            float step = distance / time;
+            float currentTime = 0;
+            Vector3 newPosition = transform.localPosition;
+            while (currentTime < time)
+            {
+                yield return null;
+                newPosition.y += step;
+                transform.localPosition = newPosition;
+                currentTime++;
+            }
+        }
+
+        private Vector2 CalculateBranchesTotalSize()
+        {
+            Vector2 totalSize = Vector2.zero;
+            foreach(TalentsBranchScriptableObject talentsBranchScriptableObject in _talentBranchesSO)
+            {
+                totalSize += talentsBranchScriptableObject.Background.rect.size;
+            }
+            return totalSize;
         }
     }
 }

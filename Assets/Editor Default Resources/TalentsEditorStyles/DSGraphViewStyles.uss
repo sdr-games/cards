@@ -6,6 +6,11 @@ GridBackground
 	--spacing: var(--ds-metrics-grid-25);
 }
 
+
+.ds-graph_manager-background {
+    background-color: transparent;
+}
+
 .variable-detail-view {
 	position:absolute;
     justify-content: flex-start;

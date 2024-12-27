@@ -15,40 +15,57 @@ MonoBehaviour:
   <CharacterInfo>k__BackingField: {fileID: 11400000, guid: 2138c702e452a7846b480e13bc6087ab,
     type: 2}
   <Level>k__BackingField: 1
-  <Initiative>k__BackingField: 50
-  <HealthPoints>k__BackingField:
-    <BaseValue>k__BackingField: 10
-    <Bonus>k__BackingField: 0
-    <RelatedBonuses>k__BackingField: []
-    <RegenerationSpeed>k__BackingField: 1
-    <RegenerationPower>k__BackingField: 1
-  <Stamina>k__BackingField:
-    <BaseValue>k__BackingField: 10
-    <Bonus>k__BackingField: 0
-    <RelatedBonuses>k__BackingField: []
-    <RegenerationSpeed>k__BackingField: 0
-    <RegenerationPower>k__BackingField: 0
-  <Breath>k__BackingField:
-    <BaseValue>k__BackingField: 10
-    <Bonus>k__BackingField: 0
-    <RelatedBonuses>k__BackingField: []
-    <RegenerationSpeed>k__BackingField: 0
-    <RegenerationPower>k__BackingField: 0
-  <Armor>k__BackingField:
-    <BaseValue>k__BackingField: 10
-    <Bonus>k__BackingField: 0
-    <RelatedBonuses>k__BackingField: []
-    <RegenerationSpeed>k__BackingField: 0
-    <RegenerationPower>k__BackingField: 0
-  <Barrier>k__BackingField:
-    <BaseValue>k__BackingField: 10
-    <Bonus>k__BackingField: 0
-    <RelatedBonuses>k__BackingField: []
-    <RegenerationSpeed>k__BackingField: 0
-    <RegenerationPower>k__BackingField: 0
-  <PhysicalDamage>k__BackingField:
-    <Name>k__BackingField: 
-    <RollsCount>k__BackingField: 0
-    <SidesCount>k__BackingField: 0
+  <Strength>k__BackingField: 1
+  <Agility>k__BackingField: 1
+  <Stamina>k__BackingField: 1
+  <Intelligence>k__BackingField: 1
+  <PhysicalDamage>k__BackingField: 5
+  <MagicalDamage>k__BackingField: 10
+  <PhysicalHitChance>k__BackingField: 1
+  <MagicalHitChance>k__BackingField: 1
+  <Piercing>k__BackingField: 1
+  <DodgeChance>k__BackingField: 1
+  <BlockChance>k__BackingField: 1
+  <OnslaughtChance>k__BackingField: 1
+  <CriticalStrikeChance>k__BackingField: 1
+  <Resilience>k__BackingField: 1
+  <Weakening>k__BackingField: 0
+  <Amplification>k__BackingField: 0
+  <Initiative>k__BackingField:
+    <Name>k__BackingField: Initiative
+    <RollsCount>k__BackingField: 1
+    <SidesCount>k__BackingField: 20
     <Modificator>k__BackingField: 0
-  <MagicDamageMultiplier>k__BackingField: 0
+  <StunResistance>k__BackingField: 50
+  <HealthPoints>k__BackingField:
+    <BaseValue>k__BackingField: 400
+    <PermanentBonus>k__BackingField: 15
+    <TemporaryBonus>k__BackingField: 0
+    <RestorationPower>k__BackingField: 0
+    <MaxValue>k__BackingField: 415
+  <StaminaPoints>k__BackingField:
+    <BaseValue>k__BackingField: 0
+    <PermanentBonus>k__BackingField: 10
+    <TemporaryBonus>k__BackingField: 0
+    <RestorationPower>k__BackingField: 4
+    <MaxValue>k__BackingField: 10
+  <BreathPoints>k__BackingField:
+    <BaseValue>k__BackingField: 0
+    <PermanentBonus>k__BackingField: 10
+    <TemporaryBonus>k__BackingField: 0
+    <RestorationPower>k__BackingField: 0
+    <MaxValue>k__BackingField: 10
+  <ArmorPoints>k__BackingField:
+    <BaseValue>k__BackingField: 0
+    <PermanentBonus>k__BackingField: 10
+    <TemporaryBonus>k__BackingField: 0
+    <RestorationPower>k__BackingField: 0
+    <MaxValue>k__BackingField: 10
+  <BarrierPoints>k__BackingField:
+    <BaseValue>k__BackingField: 0
+    <PermanentBonus>k__BackingField: 10
+    <TemporaryBonus>k__BackingField: 0
+    <RestorationPower>k__BackingField: 0
+    <MaxValue>k__BackingField: 10
+  <Experience>k__BackingField: 0
+  <TalentPoints>k__BackingField: 0

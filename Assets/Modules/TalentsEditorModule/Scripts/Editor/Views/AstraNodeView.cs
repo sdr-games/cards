@@ -2,6 +2,7 @@ using System;
 
 using SDRGames.Whist.TalentsModule.ScriptableObjects;
 
+using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 
 using UnityEngine;
@@ -20,9 +21,10 @@ namespace SDRGames.Whist.TalentsEditorModule.Views
         public event EventHandler<AstraLoadedEventArgs> Loaded;
         public event EventHandler<EquipmentChangedEventArgs> EquipmentChanged;
 
-        public override void Initialize(string id, string nodeName, Vector2 position)
+        public void Initialize(string id, string nodeName, Vector2 position)
         {
-            base.Initialize(id, nodeName, position);
+            Sprite sprite = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Modules/TalentsModule/Sprites/Star.png");
+            Initialize(id, nodeName, position, sprite);
 
             CreateInputPort();
         }
@@ -109,7 +111,7 @@ namespace SDRGames.Whist.TalentsEditorModule.Views
 
         protected override Port CreateInputPort()
         {
-            Port port = this.CreatePort(typeof(BaseNodeView), "Talamus", Orientation.Horizontal, Direction.Input, Port.Capacity.Multi);
+            Port port = this.CreatePort(typeof(BaseNodeView), "", Orientation.Horizontal, Direction.Input, Port.Capacity.Multi);
             port.ClearClassList();
             port.AddToClassList($"ds-node__astra-input-port");
             InputPorts.Add(port);

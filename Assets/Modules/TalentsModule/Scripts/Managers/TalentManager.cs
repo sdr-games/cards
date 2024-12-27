@@ -14,6 +14,8 @@ namespace SDRGames.Whist.TalentsModule.Managers
         private Talent _talent;
         private UserInputController _userInputController;
 
+        [SerializeField] private RectTransform _rectTransform;
+
         [field: SerializeField] public TalentView TalentView { get; protected set; }
 
 
@@ -34,6 +36,11 @@ namespace SDRGames.Whist.TalentsModule.Managers
             _userInputController = userInputController;
             _userInputController.LeftMouseButtonClickedOnUI += OnLeftMouseButtonClickedOnUI;
             _userInputController.RightMouseButtonClickedOnUI += OnRightMouseButtonClickedOnUI;
+        }
+
+        public Vector2 GetSize()
+        {
+            return _rectTransform.rect.size / 1.5f;
         }
 
         private void OnBlockChanged(object sender, System.EventArgs e)
