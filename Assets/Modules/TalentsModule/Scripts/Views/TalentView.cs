@@ -48,6 +48,11 @@ namespace SDRGames.Whist.TalentsModule.Views
             _currentPointsText.alpha = !isActive ? 0 : 1;
         }
 
+        public void SwitchTooltip(bool isVisible)
+        {
+            _tooltipCanvasGroup.alpha = isVisible ? 1 : 0;
+        }
+
         private void OnEnable()
         {
             this.CheckFieldValueIsNotNull(nameof(_image), _image);

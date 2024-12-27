@@ -1,10 +1,12 @@
+using System;
+using System.Collections.Generic;
+
 using SDRGames.Whist.TalentsModule.Models;
 using SDRGames.Whist.HelpersModule;
 using SDRGames.Whist.TalentsModule.Views;
 using SDRGames.Whist.UserInputModule.Controller;
 
 using UnityEngine;
-using System.Collections.Generic;
 using UnityEngine.EventSystems;
 
 namespace SDRGames.Whist.TalentsModule.Managers
@@ -22,6 +24,9 @@ namespace SDRGames.Whist.TalentsModule.Managers
 
         [SerializeField] private RectTransform _rectTransform;
         [SerializeField] protected TalentView _talentView;
+
+        public event EventHandler PointerEnterTalent;
+        public event EventHandler PointerExitTalent;
 
         public void Initialize(UserInputController userInputController, Talent talent)
         {
@@ -81,14 +86,32 @@ namespace SDRGames.Whist.TalentsModule.Managers
             _talentView.ChangeAvailability(isActive);
         }
 
+        public void SwitchTooltip(bool isVisible)
+        {
+            _talentView.SwitchTooltip(isVisible);
+        }
+
+        public void OnPointerEnter(PointerEventData eventData)
+        {
+            if (_isBlocked)
+            {
+                return;
+            } 
+            PointerEnterTalent?.Invoke(this, EventArgs.Empty);
+        }
+
+        public void OnPointerExit(PointerEventData eventData)
+        {
+            if (_isBlocked)
+            {
+                return;
+            }
+            PointerExitTalent?.Invoke(this, EventArgs.Empty);
+        }
+
         protected Vector2 GetSize()
         {
             return _rectTransform.rect.size / 1.5f;
-        }
-
-        public TalentView GetView()
-        {
-            return _talentView;
         }
 
         private void UpdateDependenciesBlockStatus()
@@ -107,16 +130,6 @@ namespace SDRGames.Whist.TalentsModule.Managers
         private void OnEnable()
         {
             this.CheckFieldValueIsNotNull(nameof(_talentView), _talentView);
-        }
-
-        public void OnPointerEnter(PointerEventData eventData)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public void OnPointerExit(PointerEventData eventData)
-        {
-            throw new System.NotImplementedException();
         }
     }
 }

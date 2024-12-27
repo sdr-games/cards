@@ -70,6 +70,8 @@ namespace SDRGames.Whist.TalentsModule.Managers
             }
             List<TalentManager> dependencies = CreateDependencies(talent.Dependencies, talentManager);
             talentManager.SetDependencies(dependencies);
+            talentManager.PointerEnterTalent += OnPointerEnterTalent;
+            talentManager.PointerExitTalent += OnPointerExitTalent;
             _createdTalents.Add(talent.Name, talentManager);
         }
 
@@ -129,6 +131,24 @@ namespace SDRGames.Whist.TalentsModule.Managers
             {
                 talentManager.ChangeAvailability(e.IsVisible && _branchView.IsZoomed);
             }
+        }
+
+        private void OnPointerExitTalent(object sender, EventArgs e)
+        {
+            if (!_branchView.IsZoomed || _branchView.IsMoving)
+            {
+                return;
+            }
+            ((TalentManager)sender).SwitchTooltip(false);
+        }
+
+        private void OnPointerEnterTalent(object sender, EventArgs e)
+        {
+            if (!_branchView.IsZoomed || _branchView.IsMoving)
+            {
+                return;
+            }
+            ((TalentManager)sender).SwitchTooltip(true);
         }
     }
 }
