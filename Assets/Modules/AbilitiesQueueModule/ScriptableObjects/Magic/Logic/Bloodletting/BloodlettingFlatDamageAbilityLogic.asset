@@ -16,6 +16,6 @@ MonoBehaviour:
   <EffectIcon>k__BackingField: {fileID: 0}
   <TargetsCount>k__BackingField: 1
   _chance: 100
-  _damageType: 0
-  _damageValue: 0
   _roundsCount: 0
+  _damageType: 0
+  _damageValue: 2

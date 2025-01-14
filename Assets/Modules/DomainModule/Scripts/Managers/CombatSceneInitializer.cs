@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using SDRGames.Whist.AbilitiesQueueModule.Managers;
+using SDRGames.Whist.AbilitiesQueueModule.ScriptableObjects;
 using SDRGames.Whist.CardsCombatModule.Managers;
 using SDRGames.Whist.CharacterModule.Managers;
 using SDRGames.Whist.CharacterModule.ScriptableObjects;
@@ -14,7 +15,6 @@ using SDRGames.Whist.TurnSwitchModule.Managers;
 using SDRGames.Whist.UserInputModule.Controller;
 
 using UnityEditor;
-using UnityEditor.Playables;
 
 using UnityEngine;
 
@@ -262,6 +262,7 @@ namespace SDRGames.Whist.DomainModule.Managers
                 ability.ApplyLogics(
                     _playerCharacterCombatManager,
                     enemyCharacterCombatManagers, 
+                    e.AbilityScriptableObjects.Count,
                     new List<int>() { 0 });
             }
             _playerCharacterCombatManager.SpendStaminaPoints(e.TotalCost);
@@ -270,23 +271,40 @@ namespace SDRGames.Whist.DomainModule.Managers
 
         private void OnDeckApplyButtonClicked(object sender, CardsCombatModule.Managers.ApplyButtonClickedEventArgs e)
         {
-            if(e.Cards.Count == 0)
+            if(e.Managers.Count == 0)
             {
                 return;
             }
 
             List<CharacterCombatManager> enemyCharacterCombatManagers = new List<CharacterCombatManager>() { _enemyCharacterCombatManager };
 
-            foreach (var card in e.Cards)
+            List<CardScriptableObject> cards = new List<CardScriptableObject>();
+            foreach(CardManager card in e.Managers)
+            {
+                cards.Add(card.CardScriptableObject);
+            }
+
+            foreach (CardManager card in e.Managers)
             {
                 if (card == null)
                 {
                     continue;
                 }
                 _deckOnHandsManager.RemoveSelectedCard(card);
+                
+                if(card.CardScriptableObject.AbilityModifiers.Length > 0)
+                {
+                    card.CardScriptableObject.ApplyModifiers(_playerCharacterCombatManager,
+                    enemyCharacterCombatManagers,
+                    e.Managers.Count,
+                    cards
+                    );
+                }
+
                 card.CardScriptableObject.ApplyLogics(
                     _playerCharacterCombatManager,
                     enemyCharacterCombatManagers,
+                    e.Managers.Count,
                     new List<int>() { 0 });
             }
             _playerCharacterCombatManager.SpendBreathPoints(e.TotalCost);
@@ -335,12 +353,15 @@ namespace SDRGames.Whist.DomainModule.Managers
 
         private void StartPlayerTurn(bool isCombatTurn)
         {
+            _playerCharacterCombatManager.ApplyPeriodicalEffects();
+            _enemyCharacterCombatManager.UpdateBonusesEffects();
             ShowPlayerUI(isCombatTurn);
         }
 
         private void StartEnemyTurn()
         {
             _enemyCharacterCombatManager.ApplyPeriodicalEffects();
+            _playerCharacterCombatManager.UpdateBonusesEffects();
             _enemyMeleeBehaviorManager.ChooseAndAppyAbilities();
             _turnsQueueManager.SwitchTurn();
         }

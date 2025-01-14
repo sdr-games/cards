@@ -21,12 +21,18 @@ namespace SDRGames.Whist.CharacterModule.Managers
 
         public override void Initialize()
         {
+            base.Initialize();
             _playerCharacterCombatParamsPresenter = new PlayerCharacterCombatParamsPresenter(_playerCharacterParamsModel, _playerCharacterCombatParamsView);
         }
 
         public override CharacterParamsModel GetParams()
         {
             return _playerCharacterParamsModel;
+        }
+
+        protected override CharacterCombatParamsView GetView()
+        {
+            return _playerCharacterCombatParamsView;
         }
 
         public override void TakePhysicalDamage(int damage)
@@ -67,17 +73,6 @@ namespace SDRGames.Whist.CharacterModule.Managers
         public override void RestoreBreath(int restoration)
         {
             _playerCharacterCombatParamsPresenter.RestoreBreath(restoration);
-        }
-
-        public override void SetPeriodicalChanges(int valuePerRound, int roundsCount, Sprite effectIcon, Action changingAction)
-        {
-            if (_periodicalHealthChanges.ContainsKey(valuePerRound))
-            {
-                _periodicalHealthChanges[valuePerRound].IncreaseDuration(roundsCount);
-                return;
-            }
-            PeriodicalEffectView periodicalEffectView = Instantiate(_periodicalEffectViewPrefab, _playerCharacterCombatParamsView.EffectsBar.transform, false);
-            _periodicalHealthChanges.Add(valuePerRound, new PeriodicalEffectPresenter(roundsCount, changingAction, effectIcon, periodicalEffectView));
         }
 
         public bool HasEnoughStaminaPoints(float cost)
@@ -140,9 +135,8 @@ namespace SDRGames.Whist.CharacterModule.Managers
             _playerCharacterCombatParamsPresenter.ResetBreathReservedPoints(reverseAmount);
         }
 
-        protected override void OnEnable()
+        protected void OnEnable()
         {
-            base.OnEnable();
             if (_playerCharacterParamsModel == null)
             {
                 Debug.LogError("Player Character Params Model не был назначен");
@@ -159,11 +153,6 @@ namespace SDRGames.Whist.CharacterModule.Managers
                 #endif
             }
             Initialize();
-        }
-
-        public override void SetBuff(int value, int roundsCount, Sprite effectIcon, Action buffAction, bool inPercents = false)
-        {
-            throw new NotImplementedException();
         }
     }
 }

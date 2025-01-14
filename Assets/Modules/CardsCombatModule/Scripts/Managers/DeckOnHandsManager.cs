@@ -9,6 +9,7 @@ using UnityEditor;
 
 using UnityEngine;
 using System.Linq;
+using SDRGames.Whist.AbilitiesQueueModule.ScriptableObjects;
 
 namespace SDRGames.Whist.CardsCombatModule.Managers
 {
@@ -99,7 +100,7 @@ namespace SDRGames.Whist.CardsCombatModule.Managers
 
         private void OnApplyButtonClicked(object sender, EventArgs e)
         {
-            List<CardManager> selectedCards = new List<CardManager>(_selectedCards);
+            List<CardManager> selectedCards = new List<CardManager>(_selectedCards).OrderBy(cardManager => cardManager.CardScriptableObject.AbilityModifiers.Length).ToList();
             float totalCost = _selectedCards.Where(item => item != null).Sum(item => item.CardScriptableObject.Cost);
             ApplyButtonClicked?.Invoke(this, new ApplyButtonClickedEventArgs(totalCost, selectedCards));
         }

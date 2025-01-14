@@ -133,6 +133,16 @@ namespace SDRGames.Whist.CharacterModule.ScriptableObjects
 
         #endregion
 
+        public void IncreasePhysicalDamage(int physicalDamage)
+        {
+            PhysicalDamage += physicalDamage;
+        }
+
+        public void IncreaseMagicalDamage(int magicalDamage)
+        {
+            MagicalDamage += magicalDamage;
+        }
+
         public void TakePhysicalDamage(int damage)
         {
             float trueDamage = damage - ArmorPoints.CurrentValue;

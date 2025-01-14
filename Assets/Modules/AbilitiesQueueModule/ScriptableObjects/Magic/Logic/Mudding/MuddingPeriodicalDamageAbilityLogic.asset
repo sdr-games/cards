@@ -10,12 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 32d27a04af33e994e967218025e0949c, type: 3}
-  m_Name: CauterizeFlatDamageAbilityLogic
+  m_Name: MuddingPeriodicalDamageAbilityLogic
   m_EditorClassIdentifier: 
   <Description>k__BackingField: 
-  <EffectIcon>k__BackingField: {fileID: 0}
+  <EffectIcon>k__BackingField: {fileID: 21300000, guid: 51ec7d862ab7a0449a1f4e0c618ec946,
+    type: 3}
   <TargetsCount>k__BackingField: 1
   _chance: 100
-  _roundsCount: 0
+  _roundsCount: 3
   _damageType: 1
   _damageValue: 2

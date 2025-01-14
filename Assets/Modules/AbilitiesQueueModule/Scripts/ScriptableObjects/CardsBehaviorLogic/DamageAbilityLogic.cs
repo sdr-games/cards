@@ -15,35 +15,35 @@ namespace SDRGames.Whist.AbilitiesQueueModule.ScriptableObjects
 
         [SerializeField] private int _damageValue;
 
-        public override void Apply(CharacterCombatManager characterCombatManager)
+        public override void Apply(CharacterCombatManager targetCharacterCombatManager)
         {
             int randomInt = UnityEngine.Random.Range(0, 100);
             if(_chance < randomInt)
             {
                 return;
             }
-            Action action = null;
+            Action<int> action = null;
 
             switch (_damageType)
             {
                 case DamageType.Physical:
-                    action = () => characterCombatManager.TakePhysicalDamage(_damageValue);
+                    action = (int value) => targetCharacterCombatManager.TakePhysicalDamage(value);
                     break;
                 case DamageType.Magical:
-                    action = () => characterCombatManager.TakeMagicalDamage(_damageValue);
+                    action = (int value) => targetCharacterCombatManager.TakeMagicalDamage(value);
                     break;
                 case DamageType.True:
-                    action = () => characterCombatManager.TakeTrueDamage(_damageValue);
+                    action = (int value) => targetCharacterCombatManager.TakeTrueDamage(value);
                     break;
                 default:
                     break;
             }
             if (_roundsCount > 1)
             {
-                characterCombatManager.SetPeriodicalChanges(_damageValue, _roundsCount, EffectIcon, action);
+                targetCharacterCombatManager.SetPeriodicalChanges(_damageValue, _roundsCount, EffectIcon, action);
                 return;
             }
-            action();
+            action(_damageValue);
         }
 
         private void OnEnable()

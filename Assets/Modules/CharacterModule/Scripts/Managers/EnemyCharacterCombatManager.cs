@@ -1,11 +1,11 @@
 using SDRGames.Whist.CharacterModule.ScriptableObjects;
 using SDRGames.Whist.CharacterModule.Presenters;
 using SDRGames.Whist.CharacterModule.Views;
+using SDRGames.Whist.HelpersModule;
 
 using UnityEngine;
-using SDRGames.Whist.HelpersModule;
+
 using System;
-using System.Collections.Generic;
 
 namespace SDRGames.Whist.CharacterModule.Managers
 {
@@ -18,12 +18,18 @@ namespace SDRGames.Whist.CharacterModule.Managers
 
         public override void Initialize()
         {
+            base.Initialize();
             _characterCombatParamsPresenter = new CharacterCombatParamsPresenter(_characterParamsModel, _characterCombatParamsView);
         }
 
         public override CharacterParamsModel GetParams()
         {
             return _characterParamsModel;
+        }
+
+        protected override CharacterCombatParamsView GetView()
+        {
+            return _characterCombatParamsView;
         }
 
         public override void TakePhysicalDamage(int damage)
@@ -64,22 +70,6 @@ namespace SDRGames.Whist.CharacterModule.Managers
         public override void RestoreBreath(int restoration)
         {
             _characterCombatParamsPresenter.RestoreBreath(restoration);
-        }
-
-        public override void SetPeriodicalChanges(int valuePerRound, int roundsCount, Sprite effectIcon, Action changingAction)
-        {
-            if (_periodicalHealthChanges.ContainsKey(valuePerRound))
-            {
-                _periodicalHealthChanges[valuePerRound].IncreaseDuration(roundsCount);
-                return;
-            }
-            PeriodicalEffectView periodicalEffectView = Instantiate(_periodicalEffectViewPrefab, _characterCombatParamsView.EffectsBar.transform, false);
-            _periodicalHealthChanges.Add(valuePerRound, new PeriodicalEffectPresenter(roundsCount, changingAction, effectIcon, periodicalEffectView));
-        }
-
-        public override void SetBuff(int value, int roundsCount, Sprite effectIcon, Action buffAction, bool inPercents = false)
-        {
-            throw new NotImplementedException();
         }
 
         public bool HasEnoughStaminaPoints(float cost)
@@ -130,24 +120,8 @@ namespace SDRGames.Whist.CharacterModule.Managers
         //    _characterCombatParamsPresenter.ResetBreathReservedPoints(reverseAmount);
         //}
 
-        public void ApplyPeriodicalEffects()
+        protected void OnEnable()
         {
-            Dictionary<int, PeriodicalEffectPresenter> periodicalHealthChanges = new Dictionary<int, PeriodicalEffectPresenter>(_periodicalHealthChanges);
-            foreach(var item in periodicalHealthChanges)
-            {
-                item.Value.ApplyEffect();
-                item.Value.DecreaseDuration();
-                if(item.Value.GetDuration() <= 0)
-                {
-                    _periodicalHealthChanges.Remove(item.Key);
-                    item.Value.Delete();
-                }
-            }
-        }
-
-        protected override void OnEnable()
-        {
-            base.OnEnable();
             this.CheckFieldValueIsNotNull(nameof(_characterCombatParamsView), _characterCombatParamsView);
         }
     }

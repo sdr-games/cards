@@ -1,6 +1,6 @@
 {
     "name": "AbilitiesQueueModule",
-    "rootNamespace": "",
+    "rootNamespace": "SDRGames.Whist.AbilitiesQueueModule",
     "references": [
         "GUID:551a70427e35b9c418cd828bf7b236b9",
         "GUID:e41ff2de5c626d64f9b1425803813a35",

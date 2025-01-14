@@ -10,7 +10,7 @@ namespace SDRGames.Whist.AbilitiesQueueModule.ScriptableObjects
     [CreateAssetMenu(fileName = "BuffAbilityLogic", menuName = "SDRGames/Combat/Logics/Buff Ability Logic")]
     public class BuffLogic : AbilityLogicScriptableObject
     {
-        private enum BuffType { HealthPoints, Strength, Agility, PhysicalDamage, MagicDamage };
+        private enum BuffType { HealthPoints, Strength, Agility, Stamina, Intelligence, PhysicalDamage, MagicDamage };
         [SerializeField] private BuffType _buffType;
 
         [SerializeField] private int _buffValue;
@@ -23,19 +23,31 @@ namespace SDRGames.Whist.AbilitiesQueueModule.ScriptableObjects
             {
                 return;
             }
-            Action action = null;
+            Action<int> action = null;
 
             switch (_buffType)
             {
                 case BuffType.HealthPoints:
-                    action = () => { characterCombatManager.GetParams().HealthPoints.IncreaseBonus(_buffValue); };
+                    action = (int value) => { characterCombatManager.GetParams().HealthPoints.IncreaseTemporaryBonus(value); };
                     break;
                 case BuffType.Strength:
+                    action = (int value) => { characterCombatManager.GetParams().IncreaseStrength(value); };
+                    break;
                 case BuffType.Agility:
+                    action = (int value) => { characterCombatManager.GetParams().IncreaseAgility(value); };
+                    break;
+                case BuffType.Stamina:
+                    action = (int value) => { characterCombatManager.GetParams().IncreaseStamina(value); };
+                    break;
+                case BuffType.Intelligence:
+                    action = (int value) => { characterCombatManager.GetParams().IncreaseIntelligence(value); };
                     break;
                 case BuffType.PhysicalDamage:
+                    action = (int value) => { characterCombatManager.GetParams().IncreasePhysicalDamage(value); };
                     break;
                 case BuffType.MagicDamage:
+                    action = (int value) => { characterCombatManager.GetParams().IncreaseMagicalDamage(value); };
+                    break;
                 default:
                     break;
             }

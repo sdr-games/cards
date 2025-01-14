@@ -28,7 +28,7 @@ namespace SDRGames.Whist.CharacterModule.Views
             {
                 _totalDuration = duration;
             }
-            _fillerImage.fillAmount = 1 - duration / _totalDuration;
+            _fillerImage.fillAmount = 1 - duration / (_totalDuration - 1);
         }
 
         public void Delete()

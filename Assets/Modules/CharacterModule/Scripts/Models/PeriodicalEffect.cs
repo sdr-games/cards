@@ -5,11 +5,11 @@ namespace SDRGames.Whist.CharacterModule.Models
     public class PeriodicalEffect
     {
         public int Duration { get; private set; }
-        public Action Action { get; private set; }
+        public Action<int> Action { get; private set; }
 
         public event EventHandler<DurationChangedEventArgs> DurationChanged;
 
-        public PeriodicalEffect(int duration, Action action)
+        public PeriodicalEffect(int duration, Action<int> action)
         {
             Duration = duration;
             Action = action;

@@ -32,8 +32,9 @@ MonoBehaviour:
       m_FallbackState: 0
       m_WaitForCompletion: 0
       m_LocalVariables: []
-  <Icon>k__BackingField: {fileID: 21300000, guid: ff26c8119a049334e90354bf02ae7cc4,
+  <Icon>k__BackingField: {fileID: 21300000, guid: b0b8d4b01410a28489effa761d472f0d,
     type: 3}
+  <Cost>k__BackingField: 0
   <AbilityLogics>k__BackingField: []
   references:
     version: 2

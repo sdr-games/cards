@@ -50,7 +50,7 @@ namespace SDRGames.Whist.MeleeCombatModule.AI.Managers
         {
             foreach (AbilityScriptableObject ability in abilities)
             {
-                ability.ApplyLogics(_combatManager, _playerCharacterCombatManager);
+                ability.ApplyLogics(_combatManager, _playerCharacterCombatManager, abilities.Count);
             }
             _combatManager.SpendStaminaPoints(abilities.Sum(ability => ability.Cost));
         }

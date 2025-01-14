@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0c08a056b016e845adb5621f9f7c077, type: 3}
   m_Name: DeckScriptableObject 2
   m_EditorClassIdentifier: 
-  <Backside>k__BackingField: {fileID: 21300000, guid: ff26c8119a049334e90354bf02ae7cc4,
+  <Backside>k__BackingField: {fileID: 21300000, guid: 255aeab2e4faf134eb0a9ef94bf6f250,
     type: 3}
   <Cards>k__BackingField:
   - {fileID: 11400000, guid: 1b85616281458454d90a7ce25d756a47, type: 2}

@@ -21,24 +21,24 @@ namespace SDRGames.Whist.AbilitiesQueueModule.ScriptableObjects
             {
                 return;
             }
-            Action action = null;
+            Action<int> action = null;
 
             switch (_restorationType)
             {
                 case RestorationType.Armor:
-                    action = () => characterCombatManager.RestoreArmor(_restorationValue);
+                    action = (int value) => characterCombatManager.RestoreArmor(value);
                     break;
                 case RestorationType.Barrier:
-                    action = () => characterCombatManager.RestoreBarrier(_restorationValue);
+                    action = (int value) => characterCombatManager.RestoreBarrier(value);
                     break;
                 case RestorationType.Health:
-                    action = () => characterCombatManager.RestoreHealth(_restorationValue);
+                    action = (int value) => characterCombatManager.RestoreHealth(value);
                     break;
                 case RestorationType.Stamina:
-                    action = () => characterCombatManager.RestoreStamina(_restorationValue);
+                    action = (int value) => characterCombatManager.RestoreStamina(value);
                     break;
                 case RestorationType.Breath:
-                    action = () => characterCombatManager.RestoreBreath(_restorationValue);
+                    action = (int value) => characterCombatManager.RestoreBreath(value);
                     break;
                 default:
                     break;
@@ -48,7 +48,7 @@ namespace SDRGames.Whist.AbilitiesQueueModule.ScriptableObjects
                 characterCombatManager.SetPeriodicalChanges(_restorationValue, _roundsCount, EffectIcon, action);
                 return;
             }
-            action();
+            action(_restorationValue);
         }
 
         private void OnEnable()

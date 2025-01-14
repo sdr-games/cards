@@ -16,9 +16,22 @@ namespace SDRGames.Whist.AbilitiesQueueModule.ScriptableObjects
         [field: SerializeField] public Sprite Icon { get; private set; }
         [field: SerializeField] public int Cost { get; private set; }
         [field: SerializeField] public AbilityLogicScriptableObject[] AbilityLogics { get; private set; }
+        [field: SerializeReference] public AbilityModifierScriptableObject[] AbilityModifiers { get; private set; }
 
-        public void ApplyLogics(CharacterCombatManager casterCombatManager, CharacterCombatManager targetCombatManager)
+        public void ApplyLogics(CharacterCombatManager casterCombatManager, CharacterCombatManager targetCombatManager, int totalSelectedAbilitiesCount)
         {
+            if(AbilityModifiers.Length > 0 && totalSelectedAbilitiesCount > 1)
+            {
+                AbilityModifierScriptableObject modifier = AbilityModifiers[totalSelectedAbilitiesCount - 1];
+                if (modifier.SelfUsable)
+                {
+                    modifier.Apply(casterCombatManager);
+                    return;
+                }
+                modifier.Apply(targetCombatManager);
+                return;
+            }
+
             foreach (AbilityLogicScriptableObject logic in AbilityLogics)
             {
                 if (logic.SelfUsable)
@@ -30,8 +43,23 @@ namespace SDRGames.Whist.AbilitiesQueueModule.ScriptableObjects
             }
         }
 
-        public void ApplyLogics(CharacterCombatManager casterCombatManager, List<CharacterCombatManager> targetsCombatManager, List<int> selectedTargetsIndexes)
+        public void ApplyLogics(CharacterCombatManager casterCombatManager, List<CharacterCombatManager> targetsCombatManager, int totalSelectedAbilitiesCount, List<int> selectedTargetsIndexes)
         {
+            if (AbilityModifiers.Length > 0 && totalSelectedAbilitiesCount > 1)
+            {
+                AbilityModifierScriptableObject modifier = AbilityModifiers[totalSelectedAbilitiesCount - 1];
+                if (modifier.SelfUsable)
+                {
+                    modifier.Apply(casterCombatManager);
+                    return;
+                }
+                foreach (int index in selectedTargetsIndexes)
+                {
+                    modifier.Apply(targetsCombatManager[index]);
+                }
+                return;
+            }
+
             foreach (AbilityLogicScriptableObject logic in AbilityLogics)
             {
                 if(logic.SelfUsable)
@@ -44,6 +72,11 @@ namespace SDRGames.Whist.AbilitiesQueueModule.ScriptableObjects
                     logic.Apply(targetsCombatManager[index]);
                 }
             }
+        }
+
+        public void ApplyModifiers(CharacterCombatManager casterCombatManager, List<CharacterCombatManager> targetsCombatManager, int totalSelectedAbilitiesCount, List<CardScriptableObject> cardScriptableObjects)
+        {
+
         }
 
         private void OnEnable()
