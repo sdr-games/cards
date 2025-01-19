@@ -4,8 +4,7 @@ using SDRGames.Whist.AbilitiesQueueModule.ScriptableObjects;
 using SDRGames.Whist.CardsCombatModule.Presenters;
 using SDRGames.Whist.CardsCombatModule.Views;
 using SDRGames.Whist.UserInputModule.Controller;
-
-using UnityEditor;
+using SDRGames.Whist.HelpersModule;
 
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -14,9 +13,7 @@ namespace SDRGames.Whist.CardsCombatModule.Managers
 {
     public class CardManager : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
-        [SerializeField] private RectTransform _rectTransform;
         [SerializeField] private CardView _cardView;
-        [SerializeField] private float _hoverOffset;
 
         private UserInputController _userInputController;
         private int _siblingIndex;
@@ -26,7 +23,7 @@ namespace SDRGames.Whist.CardsCombatModule.Managers
 
         public event EventHandler<CardClickedEventArgs> CardClicked;
 
-        public void Initialize(UserInputController userInputController, Vector3 position, CardScriptableObject cardScriptableObject, int siblingIndex)
+        public void Initialize(UserInputController userInputController, CardScriptableObject cardScriptableObject, int siblingIndex)
         {
             CardScriptableObject = cardScriptableObject;
 
@@ -35,15 +32,19 @@ namespace SDRGames.Whist.CardsCombatModule.Managers
 
             _siblingIndex = siblingIndex;
 
-            new CardPresenter(position, cardScriptableObject, _cardView);
+            new CardPresenter(cardScriptableObject, _cardView);
+        }
+
+        public void SetPosition(Vector2 position)
+        {
+            _cardView.transform.position = position;
         }
 
         public void OnPointerEnter(PointerEventData eventData)
         {
             if (!_isSelected)
             {
-                _rectTransform.SetAsLastSibling();
-                _rectTransform.Translate(Vector3.up * _hoverOffset);
+                _cardView.Highlight();
             }
         }
 
@@ -51,8 +52,7 @@ namespace SDRGames.Whist.CardsCombatModule.Managers
         {
             if (!_isSelected)
             {
-                _rectTransform.SetSiblingIndex(_siblingIndex);
-                _rectTransform.Translate(-Vector3.up * _hoverOffset);
+                _cardView.Unhighlight(_siblingIndex);
             }
         }
 
@@ -63,8 +63,13 @@ namespace SDRGames.Whist.CardsCombatModule.Managers
 
         public void Deselect()
         {
-            _rectTransform.SetSiblingIndex(_siblingIndex);
             _isSelected = false;
+        }
+
+        public void Destroy()
+        {
+            Deselect();
+            Destroy(gameObject);
         }
 
         private void OnLeftMouseButtonClickedOnUI(object sender, LeftMouseButtonUIClickEventArgs e)
@@ -77,21 +82,12 @@ namespace SDRGames.Whist.CardsCombatModule.Managers
 
         private void OnEnable()
         {
-            if (_rectTransform == null)
-            {
-                Debug.LogError("Rect Transform не был назначен");
-                #if UNITY_EDITOR
-                    EditorApplication.isPlaying = false;
-                #endif
-            }
+            this.CheckFieldValueIsNotNull(nameof(_cardView), _cardView);
+        }
 
-            if (_cardView == null)
-            {
-                Debug.LogError("Card View не был назначен");
-                #if UNITY_EDITOR
-                    EditorApplication.isPlaying = false;
-                #endif
-            }
+        private void OnDestroy()
+        {
+            _userInputController.LeftMouseButtonClickedOnUI -= OnLeftMouseButtonClickedOnUI;
         }
     }
 }

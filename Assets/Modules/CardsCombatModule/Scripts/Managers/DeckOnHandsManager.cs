@@ -1,34 +1,29 @@
 using System.Collections.Generic;
+using System.Linq;
 using System;
 
 using SDRGames.Whist.CardsCombatModule.ScriptableObjects;
-using SDRGames.Whist.HelpersModule.Views;
+using SDRGames.Whist.HelpersModule;
 using SDRGames.Whist.UserInputModule.Controller;
-
-using UnityEditor;
+using SDRGames.Whist.CardsCombatModule.Views;
+using SDRGames.Whist.CardsCombatModule.Models;
 
 using UnityEngine;
-using System.Linq;
-using SDRGames.Whist.AbilitiesQueueModule.ScriptableObjects;
 
 namespace SDRGames.Whist.CardsCombatModule.Managers
 {
     public class DeckOnHandsManager : MonoBehaviour
     {
-        [SerializeField] private CanvasGroup _canvasGroup;
-        [SerializeField] private RectTransform _rectTransform;
-        [SerializeField] private CardManager _cardManagerPrefab;
-        [SerializeField] private ButtonView _applyButton;
+        [SerializeField] private DeckOnHandView _deckOnHandView;
         [SerializeField] private int _maxCardsOnHandsCount = 4;
 
-        [SerializeField] private DeckScriptableObject _deck;
+        private Deck _deck;
 
         private UserInputController _userInputController;
         private List<CardManager> _cards;
-        [SerializeField] private List<CardManager> _selectedCards;
+        private List<CardManager> _selectedCards;
 
         public event EventHandler<CardClickedEventArgs> CardClicked;
-        public event EventHandler<ApplyButtonClickedEventArgs> ApplyButtonClicked;
 
         public void Initialize(UserInputController userInputController)
         {
@@ -36,40 +31,23 @@ namespace SDRGames.Whist.CardsCombatModule.Managers
             _selectedCards = new List<CardManager>();
 
             _userInputController = userInputController;
-
-            _applyButton.Initialize(userInputController);
-            _applyButton.ButtonClicked += OnApplyButtonClicked;
         }
 
         public void SetSelectedDeck(DeckScriptableObject deckScriptableObject)
         {
-            _deck = deckScriptableObject;
-            for (int i = 0; i < _maxCardsOnHandsCount; i++)
+            _deck = new Deck(deckScriptableObject.Cards);
+            int count = _deck.Cards.Length > _maxCardsOnHandsCount ? _maxCardsOnHandsCount : _deck.Cards.Length;
+            for (int i = 0; i < count; i++)
             {
                 int index = UnityEngine.Random.Range(0, _deck.Cards.Length - 1);
-                Vector2 position = CalculatePositionInRadius(i);
-                CardManager cardManager = Instantiate(_cardManagerPrefab, transform, false);
-                cardManager.Initialize(_userInputController, position, _deck.Cards[index], _deck.Cards.Length - i - 1);
+                CardManager cardManager = _deckOnHandView.DrawCard(count, i);
+                cardManager.Initialize(_userInputController, _deck.Cards[index], _deck.Cards.Length - i - 1);
                 cardManager.CardClicked += OnCardClicked;
                 _cards.Add(cardManager);
             }
         }
 
-        public void Show()
-        {
-            _canvasGroup.alpha = 1;
-            _canvasGroup.interactable = true;
-            _canvasGroup.blocksRaycasts = true;
-        }
-
-        public void Hide()
-        {
-            _canvasGroup.alpha = 0;
-            _canvasGroup.interactable = false;
-            _canvasGroup.blocksRaycasts = false;
-        }
-
-        public void AddSelectedCards(CardManager cardManager)
+        public void AddSelectedCard(CardManager cardManager)
         {
             if (_selectedCards.Contains(cardManager))
             {
@@ -87,22 +65,26 @@ namespace SDRGames.Whist.CardsCombatModule.Managers
                 return false;
             }
             _selectedCards.Remove(cardManager);
-            cardManager.Deselect();
+            //cardManager.Destroy();
             SwitchButtonsActivity();
             return true;
         }
 
-        private Vector2 CalculatePositionInRadius(int index)
+        public void ShowView()
         {
-            float radiansOfSeparation = Mathf.PI / 2 / _maxCardsOnHandsCount * (index + 0.5f);
-            return new Vector2(Mathf.Cos(radiansOfSeparation) * _rectTransform.sizeDelta.x, Mathf.Sin(radiansOfSeparation) * _rectTransform.sizeDelta.x);
+            _deckOnHandView.Show();
+        }
+
+        public void HideView()
+        {
+            _deckOnHandView.Hide();
         }
 
         private void OnApplyButtonClicked(object sender, EventArgs e)
         {
             List<CardManager> selectedCards = new List<CardManager>(_selectedCards).OrderBy(cardManager => cardManager.CardScriptableObject.AbilityModifiers.Length).ToList();
             float totalCost = _selectedCards.Where(item => item != null).Sum(item => item.CardScriptableObject.Cost);
-            ApplyButtonClicked?.Invoke(this, new ApplyButtonClickedEventArgs(totalCost, selectedCards));
+            //ApplyButtonClicked?.Invoke(this, new ApplyButtonClickedEventArgs(totalCost, selectedCards));
         }
 
         private void OnCardClicked(object sender, CardClickedEventArgs e)
@@ -112,39 +94,17 @@ namespace SDRGames.Whist.CardsCombatModule.Managers
 
         private void SwitchButtonsActivity()
         {
-            if (_selectedCards.FirstOrDefault(item => item != null))
-            {
-                _applyButton.Activate();
-                return;
-            }
-            _applyButton.Deactivate();
+            //if (_selectedCards.FirstOrDefault(item => item != null))
+            //{
+            //    _applyButton.Activate();
+            //    return;
+            //}
+            //_applyButton.Deactivate();
         }
 
         private void OnEnable()
         {
-            if (_canvasGroup == null)
-            {
-                Debug.LogError("Canvas Group не был назначен");
-                #if UNITY_EDITOR
-                    EditorApplication.isPlaying = false;
-                #endif
-            }
-
-            if (_rectTransform == null)
-            {
-                Debug.LogError("Rect Transform не был назначен");
-                #if UNITY_EDITOR
-                    EditorApplication.isPlaying = false;
-                #endif
-            }
-
-            if (_cardManagerPrefab == null)
-            {
-                Debug.LogError("Card Manager Prefab не был назначен");
-                #if UNITY_EDITOR
-                    EditorApplication.isPlaying = false;
-                #endif
-            }
+            this.CheckFieldValueIsNotNull(nameof(_deckOnHandView), _deckOnHandView);
         }
     }
 }

@@ -6,7 +6,7 @@ using SDRGames.Whist.HelpersModule;
 
 using UnityEngine;
 
-namespace SDRGames.Whist.MeleeCombatModule.AI.ScriptableObjects
+namespace SDRGames.Whist.AIMeleeCombatModule.ScriptableObjects
 {
     [CreateAssetMenu(fileName = "EnemyBehaviorScriptableObject", menuName = "SDRGames/Combat/AI/Behavior")]
     public class BehaviorScriptableObject : ScriptableObject

@@ -14,12 +14,18 @@ namespace SDRGames.Whist.CharacterModule.Managers
         [SerializeField] private CharacterParamsModel _characterParamsModel;
         [SerializeField] private CharacterCombatParamsView _characterCombatParamsView;
 
+        private EnemyMeleeBehaviorManager
         private CharacterCombatParamsPresenter _characterCombatParamsPresenter;
 
         public override void Initialize()
         {
             base.Initialize();
             _characterCombatParamsPresenter = new CharacterCombatParamsPresenter(_characterParamsModel, _characterCombatParamsView);
+        }
+
+        public void InitializeBehavior(PlayerCharacterCombatManager playerCharacterCombatManager)
+        {
+
         }
 
         public override CharacterParamsModel GetParams()

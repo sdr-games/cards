@@ -7,12 +7,12 @@ namespace SDRGames.Whist.CardsCombatModule.Managers
     public class ApplyButtonClickedEventArgs
     {
         public float TotalCost { get; private set; }
-        public List<CardManager> Managers { get; private set; }
+        public List<CardManager> CardManagers { get; private set; }
 
         public ApplyButtonClickedEventArgs(float totalCost, List<CardManager> managers)
         {
             TotalCost = totalCost;
-            Managers = managers;
+            CardManagers = managers;
         }
     }
 }

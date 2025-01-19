@@ -1,21 +1,16 @@
-using System.Collections;
-using System.Collections.Generic;
+using SDRGames.Whist.AbilitiesQueueModule.ScriptableObjects;
+
 using UnityEngine;
 
-namespace SDRGames.Whist.CardsCombatModule
+namespace SDRGames.Whist.CardsCombatModule.Models
 {
-    public class Deck : MonoBehaviour
+    public class Deck
     {
-        // Start is called before the first frame update
-        void Start()
-        {
-        
-        }
+        [field: SerializeField] public CardScriptableObject[] Cards { get; private set; }
 
-        // Update is called once per frame
-        void Update()
+        public Deck(CardScriptableObject[] cards)
         {
-        
+            Cards = cards;
         }
     }
 }

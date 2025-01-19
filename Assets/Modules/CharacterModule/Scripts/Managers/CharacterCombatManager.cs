@@ -71,7 +71,7 @@ namespace SDRGames.Whist.CharacterModule.Managers
         public void UpdateBonusesEffects()
         {
             Dictionary<int, PeriodicalEffectPresenter> periodicalBonuses = new Dictionary<int, PeriodicalEffectPresenter>(_periodicalBuffs);
-            _periodicalDebuffs.ToList().ForEach(item => periodicalBonuses.Add(item.Key, item.Value));
+            _periodicalDebuffs?.ToList().ForEach(item => periodicalBonuses.Add(item.Key, item.Value));
             foreach (var item in periodicalBonuses)
             {
                 item.Value.DecreaseDuration();

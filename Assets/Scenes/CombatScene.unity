@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 5892.0005, g: 5892.0005, b: 5892.0005, a: 1}
+  m_IndirectSpecularColor: {r: 0.17980959, g: 0.17980959, b: 0.17980959, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1038,7 +1038,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 748878985}
   m_HandleRect: {fileID: 748878984}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -1248,6 +1248,7 @@ GameObject:
   - component: {fileID: 417953862}
   - component: {fileID: 417953864}
   - component: {fileID: 417953863}
+  - component: {fileID: 417953865}
   m_Layer: 5
   m_Name: DeckOnHands
   m_TagString: Untagged
@@ -1294,14 +1295,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e429491a64058db47969a3b735df42eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _canvasGroup: {fileID: 417953864}
-  _rectTransform: {fileID: 417953861}
-  _cardManagerPrefab: {fileID: 5329724587500351692, guid: 33e93be23afa5674795dc658c934118b,
-    type: 3}
-  _applyButton: {fileID: 1848407202}
+  _deckOnHandView: {fileID: 417953865}
   _maxCardsOnHandsCount: 4
-  _deck: {fileID: 11400000, guid: 7d525ae9a7e3e4b4eb260e10af19770b, type: 2}
-  _selectedCards: []
 --- !u!225 &417953864
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -1314,6 +1309,22 @@ CanvasGroup:
   m_Interactable: 0
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
+--- !u!114 &417953865
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 417953860}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22f354ad7c9c8fb4a9402a41da57ea03, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _canvasGroup: {fileID: 417953864}
+  _rectTransform: {fileID: 417953861}
+  _cardManagerPrefab: {fileID: 5329724587500351692, guid: 33e93be23afa5674795dc658c934118b,
+    type: 3}
 --- !u!1001 &432291916
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3719,7 +3730,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: c1c45400ad6fad14892807d0ec12dc24,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -7896,7 +7907,7 @@ MonoBehaviour:
   m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 1
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 5760, y: 3240}
+  m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
@@ -8114,7 +8125,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1950234593
 Transform:
   m_ObjectHideFlags: 0
@@ -8549,6 +8560,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: GlassBlowerCough
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 4f478e2431b9c234dbb606cddd4224c0,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 4f478e2431b9c234dbb606cddd4224c0,
         type: 3}
