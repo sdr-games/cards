@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 
 using SDRGames.Whist.AbilitiesQueueModule.Managers;
+using SDRGames.Whist.AIBehaviorModule.Managers;
 using SDRGames.Whist.CardsCombatModule.Managers;
 using SDRGames.Whist.CharacterModule.Managers;
 using SDRGames.Whist.CharacterModule.ScriptableObjects;
 using SDRGames.Whist.HelpersModule;
 using SDRGames.Whist.HelpersModule.Views;
-using SDRGames.Whist.MeleeCombatModule.AI.Managers;
 using SDRGames.Whist.MeleeCombatModule.Managers;
 using SDRGames.Whist.RestorationModule.Managers;
 using SDRGames.Whist.TurnSwitchModule.Managers;
@@ -35,19 +35,18 @@ namespace SDRGames.Whist.DomainModule.Managers
         //[Header("RESTORATION")][SerializeField] private PotionListManager _potionListManager;
         [Header("UI")][SerializeField] private CombatUIManager _combatUIManager;
 
-        [Header("PLAYER")][SerializeField] private PlayerCharacterCombatManager _playerCharacterCombatManager;
+        [Header("PLAYER")][SerializeField] private PlayerCombatManager _playerCombatManager;
         //[SerializeField] private HideableUIView _playerSwitchableUI;
 
-        [Header("ENEMY")][SerializeField] private EnemyCharacterCombatManager _enemyCharacterCombatManager;
-        //[SerializeField] private EnemyMeleeBehaviorManager _enemyMeleeBehaviorManager;
+        [Header("ENEMIES")][SerializeField] private EnemyBehaviorManager[] _enemyBehaviorManagers;
         //[SerializeField] private CanvasGroup _enemySwitchableUI;
 
         private void OnEnable()
         {
             this.CheckFieldValueIsNotNull(nameof(_userInputController), _userInputController);
             this.CheckFieldValueIsNotNull(nameof(_turnsQueueManager), _turnsQueueManager);
-            this.CheckFieldValueIsNotNull(nameof(_playerCharacterCombatManager), _playerCharacterCombatManager);
-            this.CheckFieldValueIsNotNull(nameof(_enemyCharacterCombatManager), _enemyCharacterCombatManager);
+            this.CheckFieldValueIsNotNull(nameof(_playerCombatManager), _playerCombatManager);
+            this.CheckFieldValueIsNotNull(nameof(_enemyBehaviorManagers), _enemyBehaviorManagers);
 
             //if (_abilitiesQueueManager == null)
             //{
@@ -121,25 +120,34 @@ namespace SDRGames.Whist.DomainModule.Managers
             //    Application.Quit();
             //}
 
-            _playerCharacterCombatManager.Initialize();
-            _enemyCharacterCombatManager.Initialize();
-            _enemyCharacterCombatManager.InitializeBehavior();
+            _playerCombatManager.Initialize();
+
+            List<CharacterParamsModel> characterInfoScriptableObjects = new List<CharacterParamsModel>();
+            List<EnemyCombatManager> enemyCombatManagers = new List<EnemyCombatManager>();
+            characterInfoScriptableObjects.Add(_playerCombatManager.GetParams());
+            foreach (EnemyBehaviorManager enemyBehaviorManager in _enemyBehaviorManagers)
+            {
+                enemyBehaviorManager.Initialize(_playerCombatManager);
+                enemyCombatManagers.Add(enemyBehaviorManager.EnemyCombatManager);
+                characterInfoScriptableObjects.Add(enemyBehaviorManager.EnemyCombatManager.GetParams());   
+            }
 
             //_enemyMeleeBehaviorManager.Initialize(_enemyCharacterCombatManager, _playerCharacterCombatManager);
 
-            List<CharacterParamsModel> characterInfoScriptableObjects = new List<CharacterParamsModel>();
-            characterInfoScriptableObjects.Add(_playerCharacterCombatManager.GetParams());
-            characterInfoScriptableObjects.Add(_enemyCharacterCombatManager.GetParams());
             _turnsQueueManager.TurnSwitched += OnTurnSwitched;
             _turnsQueueManager.Initialize(characterInfoScriptableObjects);
 
             _combatUIManager.Initialize(
                 _userInputController, 
                 _turnsQueueManager, 
-                _playerCharacterCombatManager, 
-                _enemyCharacterCombatManager
+                _playerCombatManager,
+                enemyCombatManagers
             );
+            _combatUIManager.AbilityQueueCleared += OnAbilityQueueCleared;
             _combatUIManager.CardClicked += OnCardClicked;
+            _combatUIManager.MeleeAttackClicked += OnMeleeAttackClicked;
+            _combatUIManager.CardsTurnEnd += OnCardsTurnEnd;
+            _combatUIManager.MeleeTurnEnd += OnMeleeTurnEnd;
 
             //_abilitiesQueueManager.Initialize(_userInputController);
             //_abilitiesQueueManager.ApplyButtonClicked += OnQueueApplyButtonClicked;
@@ -165,143 +173,109 @@ namespace SDRGames.Whist.DomainModule.Managers
 
         private void OnCardClicked(object sender, CardClickedEventArgs e)
         {
-            if(!e.IsSelected && _playerCharacterCombatManager.HasEnoughBreathPoints(e.CardManager.CardScriptableObject.Cost))
+            if(!e.IsSelected && _playerCombatManager.HasEnoughBreathPoints(e.CardManager.CardScriptableObject.Cost))
             {
-                _combatUIManager.TrySelectCard(e.CardManager);
+                _combatUIManager.SelectCard(e.CardManager);
                 return;
             }
-            _combatUIManager.TryDeselectCard(e.CardManager);
+            _combatUIManager.DeselectCard(e.CardManager);
         }
 
         private void OnMeleeAttackClicked(object sender, MeleeAttackClickedEventArgs e)
         {
-            if(_abilitiesQueueManager.IsFull || !_playerCharacterCombatManager.HasEnoughStaminaPoints(e.MeleeAttackScriptableObject.Cost))
+            if(!_playerCombatManager.HasEnoughStaminaPoints(e.MeleeAttackScriptableObject.Cost))
             {
                 return;
             }
-            _playerCharacterCombatManager.ReserveStaminaPoints(e.MeleeAttackScriptableObject.Cost);
-            _abilitiesQueueManager.AddAbilityToQueue(e.MeleeAttackScriptableObject);
+
+            if (_combatUIManager.TryAddAbilityToQueue(e.MeleeAttackScriptableObject))
+            {
+                _playerCombatManager.ReserveStaminaPoints(e.MeleeAttackScriptableObject.Cost);
+            }            
         }
 
-        private void OnPotionClicked(object sender, PotionClickedEventArgs e)
+        private void OnMeleeTurnEnd(object sender, MeleeEndTurnEventArgs e)
         {
-            if (_abilitiesQueueManager.IsFull)
-            {
-                return;
-            }
-            _abilitiesQueueManager.AddAbilityToQueue(e.PotionScriptableObject);
-        }
+            
+            List<CharacterCombatManager> enemyCharacterCombatManagers = new List<CharacterCombatManager>(GetEnemyCombatManagers());
 
-        private void OnQueueApplyButtonClicked(object sender, AbilitiesQueueModule.Managers.ApplyButtonClickedEventArgs e)
-        {
-            if(e.AbilityScriptableObjects.Count == 0 && e.AbilityScriptableObjects.Any(item => item is null))
+            foreach (var ability in e.Abilities)
             {
-                return;
-            }
-
-            List<CharacterCombatManager> enemyCharacterCombatManagers = new List<CharacterCombatManager>() { _enemyCharacterCombatManager };
-
-            foreach (var ability in e.AbilityScriptableObjects)
-            {
-                if(ability == null)
+                if (ability == null)
                 {
                     continue;
                 }
                 ability.ApplyLogics(
-                    _playerCharacterCombatManager,
-                    enemyCharacterCombatManagers, 
-                    e.AbilityScriptableObjects.Count,
+                    _playerCombatManager,
+                    enemyCharacterCombatManagers,
+                    e.Abilities.Count,
                     new List<int>() { 0 });
             }
-            _playerCharacterCombatManager.SpendStaminaPoints(e.TotalCost);
+            _playerCombatManager.SpendStaminaPoints(e.TotalCost);
             _turnsQueueManager.SwitchTurn();
-        }
-
-        private void OnDeckApplyButtonClicked(object sender, CardsCombatModule.Managers.ApplyButtonClickedEventArgs e)
-        {
-            if(e.CardManagers.Count == 0)
-            {
-                return;
-            }
-
-            List<CharacterCombatManager> enemyCharacterCombatManagers = new List<CharacterCombatManager>() { _enemyCharacterCombatManager };
-
-            foreach(CardManager cardManager in e.CardManagers)
-            {
-                _deckOnHandsManager.RemoveSelectedCard(cardManager);
-
-            }
         }
 
         //private void OnDeckApplyButtonClicked(object sender, CardsCombatModule.Managers.ApplyButtonClickedEventArgs e)
         //{
-        //    if(e.Managers.Count == 0)
+        //    if (e.CardManagers.Count == 0)
         //    {
         //        return;
         //    }
 
-        //    List<CharacterCombatManager> enemyCharacterCombatManagers = new List<CharacterCombatManager>() { _enemyCharacterCombatManager };
+        //    List<CharacterCombatManager> enemyCharacterCombatManagers = new List<CharacterCombatManager>() { _enemyCharacterCombatManagers };
 
-        //    List<CardScriptableObject> cards = new List<CardScriptableObject>();
-        //    foreach(CardManager card in e.Managers)
+        //    foreach (CardManager cardManager in e.CardManagers)
         //    {
-        //        cards.Add(card.CardScriptableObject);
-        //    }
+        //        _deckOnHandsManager.RemoveSelectedCard(cardManager);
 
-        //    foreach (CardManager card in e.Managers)
-        //    {
-        //        if (card == null)
-        //        {
-        //            continue;
-        //        }
-        //        _deckOnHandsManager.RemoveSelectedCard(card);
-                
-        //        if(card.CardScriptableObject.AbilityModifiers.Length > 0)
-        //        {
-        //            card.CardScriptableObject.ApplyModifiers(_playerCharacterCombatManager,
-        //            enemyCharacterCombatManagers,
-        //            e.Managers.Count,
-        //            cards
-        //            );
-        //        }
-
-        //        card.CardScriptableObject.ApplyLogics(
-        //            _playerCharacterCombatManager,
-        //            enemyCharacterCombatManagers,
-        //            e.Managers.Count,
-        //            new List<int>() { 0 });
         //    }
-        //    _playerCharacterCombatManager.SpendBreathPoints(e.TotalCost);
-        //    _turnsQueueManager.SwitchTurn();
         //}
+
+        private void OnCardsTurnEnd(object sender, CardsEndTurnEventArgs e)
+        {
+            //if (e.Managers.Count == 0)
+            //{
+            //    return;
+            //}
+
+            //List<CharacterCombatManager> enemyCharacterCombatManagers = new List<CharacterCombatManager>() { _enemyCharacterCombatManager };
+
+            //List<CardScriptableObject> cards = new List<CardScriptableObject>();
+            //foreach (CardManager card in e.Managers)
+            //{
+            //    cards.Add(card.CardScriptableObject);
+            //}
+
+            //foreach (CardManager card in e.Managers)
+            //{
+            //    if (card == null)
+            //    {
+            //        continue;
+            //    }
+            //    _deckOnHandsManager.RemoveSelectedCard(card);
+
+            //    if (card.CardScriptableObject.AbilityModifiers.Length > 0)
+            //    {
+            //        card.CardScriptableObject.ApplyModifiers(_playerCharacterCombatManager,
+            //        enemyCharacterCombatManagers,
+            //        e.Managers.Count,
+            //        cards
+            //        );
+            //    }
+
+            //    card.CardScriptableObject.ApplyLogics(
+            //        _playerCharacterCombatManager,
+            //        enemyCharacterCombatManagers,
+            //        e.Managers.Count,
+            //        new List<int>() { 0 });
+            //}
+            //_playerCharacterCombatManager.SpendBreathPoints(e.TotalCost);
+            //_turnsQueueManager.SwitchTurn();
+        }
 
         private void OnAbilityQueueCleared(object sender, AbilityQueueClearedEventArgs e)
         {
-            _playerCharacterCombatManager.ResetStaminaReservedPoints(e.ReverseAmount);
-        }
-
-        private void OnSelectedDeckViewClicked(object sender, EventArgs e)
-        {
-            _abilitiesQueueManager.Hide();
-            _meleeAttackListManager.Hide();
-            _potionListManager.Hide();
-            _deckOnHandsManager.ShowView();
-        }
-
-        private void OnEmptyDeckViewClicked(object sender, EventArgs e)
-        {
-            _abilitiesQueueManager.Hide();
-            _meleeAttackListManager.Hide();
-            _decksPreviewWindowManager.Show();
-        }
-
-        private void OnDeckSelected(object sender, DeckPreviewClickedEventArgs e)
-        {
-            _abilitiesQueueManager.Show();
-            _meleeAttackListManager.Show();
-            _decksPreviewWindowManager.Hide();
-            _selectedDeckManager.SetSelectedDeck(e.DeckScriptableObject);
-            _deckOnHandsManager.SetSelectedDeck(e.DeckScriptableObject);
+            _playerCombatManager.ResetStaminaReservedPoints(e.ReverseAmount);
         }
 
         private void OnTurnSwitched(object sender, TurnSwitchedEventArgs e)
@@ -312,22 +286,35 @@ namespace SDRGames.Whist.DomainModule.Managers
                 StartPlayerTurn(e.IsCombatTurn);
                 return;
             }
-            StartEnemyTurn();
+            StartEnemyTurn(null);
         }
 
         private void StartPlayerTurn(bool isCombatTurn)
         {
-            _playerCharacterCombatManager.ApplyPeriodicalEffects();
-            _enemyCharacterCombatManager.UpdateBonusesEffects();
+            _playerCombatManager.ApplyPeriodicalEffects();
+            foreach (EnemyCombatManager enemyCharacterCombatManager in GetEnemyCombatManagers())
+            {
+                enemyCharacterCombatManager.UpdateBonusesEffects();
+            }
             _combatUIManager.ShowPlayerUI(isCombatTurn);
         }
 
-        private void StartEnemyTurn()
+        private void StartEnemyTurn(EnemyCombatManager enemyCharacterCombatManager)
         {
-            _enemyCharacterCombatManager.ApplyPeriodicalEffects();
-            _playerCharacterCombatManager.UpdateBonusesEffects();
-            _enemyMeleeBehaviorManager.ChooseAndAppyAbilities();
+            enemyCharacterCombatManager.ApplyPeriodicalEffects();
+            _playerCombatManager.UpdateBonusesEffects();
+            //_enemyMeleeBehaviorManager.ChooseAndAppyAbilities();
             _turnsQueueManager.SwitchTurn();
+        }
+
+        private List<EnemyCombatManager> GetEnemyCombatManagers()
+        {
+            List<EnemyCombatManager> enemyCombatManagers = new List<EnemyCombatManager>();
+            foreach(EnemyBehaviorManager enemyBehaviorManager in _enemyBehaviorManagers)
+            {
+                enemyCombatManagers.Add(enemyBehaviorManager.EnemyCombatManager);
+            }
+            return enemyCombatManagers;
         }
     }
 }

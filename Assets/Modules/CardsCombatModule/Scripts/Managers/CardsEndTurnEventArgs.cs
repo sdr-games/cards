@@ -4,15 +4,15 @@ using SDRGames.Whist.AbilitiesQueueModule.ScriptableObjects;
 
 namespace SDRGames.Whist.CardsCombatModule.Managers
 {
-    public class ApplyButtonClickedEventArgs
+    public class CardsEndTurnEventArgs
     {
         public float TotalCost { get; private set; }
-        public List<CardManager> CardManagers { get; private set; }
+        public List<CardScriptableObject> Cards { get; private set; }
 
-        public ApplyButtonClickedEventArgs(float totalCost, List<CardManager> managers)
+        public CardsEndTurnEventArgs(float totalCost, List<CardScriptableObject> cards)
         {
             TotalCost = totalCost;
-            CardManagers = managers;
+            Cards = cards;
         }
     }
 }

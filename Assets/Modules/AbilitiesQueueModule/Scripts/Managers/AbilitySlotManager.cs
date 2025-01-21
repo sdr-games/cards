@@ -1,5 +1,6 @@
 using System;
 
+using SDRGames.Whist.AbilitiesQueueModule.ScriptableObjects;
 using SDRGames.Whist.AbilitiesQueueModule.Views;
 using SDRGames.Whist.UserInputModule.Controller;
 
@@ -10,6 +11,8 @@ namespace SDRGames.Whist.AbilitiesQueueModule.Managers
     public class AbilitySlotManager : MonoBehaviour
     {
         [SerializeField] private AbilitySlotView _abilitySlotView;
+        
+        public AbilityScriptableObject AbilityScriptableObject { get; private set; }
 
         public event EventHandler AbilitySlotUnbound;
 
@@ -18,14 +21,16 @@ namespace SDRGames.Whist.AbilitiesQueueModule.Managers
             _abilitySlotView.Initialize(userInputController);
         }
 
-        public void Bind(Sprite icon)
+        public void Bind(AbilityScriptableObject abilityScriptableObject)
         {
-            _abilitySlotView.SetIconSprite(icon);
+            AbilityScriptableObject = abilityScriptableObject;
+            _abilitySlotView.SetIconSprite(abilityScriptableObject.Icon);
             _abilitySlotView.AbilitySlotUnbound += OnAbilitySlotCleared;
         }
 
         public void Unbind()
         {
+            AbilityScriptableObject = null;
             _abilitySlotView.Unbind();
         }
 

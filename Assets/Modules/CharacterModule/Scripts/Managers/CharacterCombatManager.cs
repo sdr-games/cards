@@ -33,6 +33,7 @@ namespace SDRGames.Whist.CharacterModule.Managers
         public abstract void RestoreHealth(int restoration);
         public abstract void RestoreStamina(int restoration);
         public abstract void RestoreBreath(int restoration);
+
         public void SetPeriodicalChanges(int valuePerRound, int roundsCount, Sprite effectIcon, Action<int> changingAction)
         {
             PeriodicalEffectView periodicalEffectView = Instantiate(_periodicalEffectViewPrefab, GetView().EffectsBar.transform, false);

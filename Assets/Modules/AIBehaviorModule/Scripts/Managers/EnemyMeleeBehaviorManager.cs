@@ -2,15 +2,25 @@ using System.Collections.Generic;
 using System.Linq;
 
 using SDRGames.Whist.AbilitiesQueueModule.ScriptableObjects;
-using SDRGames.Whist.AIMeleeCombatModule.ScriptableObjects;
+using SDRGames.Whist.AIBehaviorModule.ScriptableObjects;
+using SDRGames.Whist.CharacterModule.Managers;
 
 using UnityEngine;
 
-namespace SDRGames.Whist.AIMeleeCombatModule.Managers
+namespace SDRGames.Whist.AIBehaviorModule.Managers
 {
     public class EnemyMeleeBehaviorManager : MonoBehaviour
     {
         [SerializeField] private BehaviorScriptableObject[] _behaviors;
+        [SerializeField] private EnemyCombatManager _combatManager;
+
+        private PlayerCombatManager _playerCombatManager;
+
+        public void Initialize(EnemyCombatManager combatManager, PlayerCombatManager playerCombatManager)
+        {
+            _combatManager = combatManager;
+            _playerCombatManager = playerCombatManager;
+        }
 
         public void ChooseAndAppyAbilities(float currentResourceValue, float currentPlayerDefencePercents)
         {
@@ -38,11 +48,11 @@ namespace SDRGames.Whist.AIMeleeCombatModule.Managers
 
         private void ApplyAbilities(List<AbilityScriptableObject> abilities)
         {
-            //foreach (AbilityScriptableObject ability in abilities)
-            //{
-            //    ability.ApplyLogics(_combatManager, _playerCharacterCombatManager, abilities.Count);
-            //}
-            //_combatManager.SpendStaminaPoints(abilities.Sum(ability => ability.Cost));
+            foreach (AbilityScriptableObject ability in abilities)
+            {
+                ability.ApplyLogics(_combatManager, _playerCombatManager, abilities.Count);
+            }
+            _combatManager.SpendStaminaPoints(abilities.Sum(ability => ability.Cost));
         }
     }
 }

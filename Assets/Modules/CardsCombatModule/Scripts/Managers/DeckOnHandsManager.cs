@@ -1,6 +1,6 @@
-using System.Collections.Generic;
-using System.Linq;
 using System;
+using System.Linq;
+using System.Collections.Generic;
 
 using SDRGames.Whist.CardsCombatModule.ScriptableObjects;
 using SDRGames.Whist.HelpersModule;
@@ -23,7 +23,11 @@ namespace SDRGames.Whist.CardsCombatModule.Managers
         private List<CardManager> _cards;
         private List<CardManager> _selectedCards;
 
+        public bool IsEmpty => _selectedCards.Count == 0;
+
         public event EventHandler<CardClickedEventArgs> CardClicked;
+        public event EventHandler<SelectedCardsCountChangedEventArgs> SelectedCardsCountChanged;
+        public event EventHandler<CardsEndTurnEventArgs> ApplyButtonClicked;
 
         public void Initialize(UserInputController userInputController)
         {
@@ -55,7 +59,7 @@ namespace SDRGames.Whist.CardsCombatModule.Managers
             }
             _selectedCards.Add(cardManager);
             cardManager.Select();
-            SwitchButtonsActivity();
+            SelectedCardsCountChanged?.Invoke(this, new SelectedCardsCountChangedEventArgs(_selectedCards.Count <= 0));
         }
 
         public bool RemoveSelectedCard(CardManager cardManager)
@@ -66,8 +70,17 @@ namespace SDRGames.Whist.CardsCombatModule.Managers
             }
             _selectedCards.Remove(cardManager);
             //cardManager.Destroy();
-            SwitchButtonsActivity();
+            SelectedCardsCountChanged?.Invoke(this, new SelectedCardsCountChangedEventArgs(_selectedCards.Count <= 0));
             return true;
+        }
+
+        public List<CardManager> GetSelectedCards()
+        {
+            if(_selectedCards.Count == 0)
+            {
+                return null;
+            }
+            return new List<CardManager>(_selectedCards).OrderBy(cardManager => cardManager.CardScriptableObject.AbilityModifiers.Length).ToList();
         }
 
         public void ShowView()
@@ -78,28 +91,16 @@ namespace SDRGames.Whist.CardsCombatModule.Managers
         public void HideView()
         {
             _deckOnHandView.Hide();
-        }
-
-        private void OnApplyButtonClicked(object sender, EventArgs e)
-        {
-            List<CardManager> selectedCards = new List<CardManager>(_selectedCards).OrderBy(cardManager => cardManager.CardScriptableObject.AbilityModifiers.Length).ToList();
-            float totalCost = _selectedCards.Where(item => item != null).Sum(item => item.CardScriptableObject.Cost);
-            //ApplyButtonClicked?.Invoke(this, new ApplyButtonClickedEventArgs(totalCost, selectedCards));
+            foreach(CardManager cardManager in _selectedCards)
+            {
+                cardManager.Deselect();
+            }
+            SelectedCardsCountChanged?.Invoke(this, new SelectedCardsCountChangedEventArgs(_selectedCards.Count <= 0));
         }
 
         private void OnCardClicked(object sender, CardClickedEventArgs e)
         {
             CardClicked?.Invoke(this, new CardClickedEventArgs(e.CardManager, e.IsSelected));
-        }
-
-        private void SwitchButtonsActivity()
-        {
-            //if (_selectedCards.FirstOrDefault(item => item != null))
-            //{
-            //    _applyButton.Activate();
-            //    return;
-            //}
-            //_applyButton.Deactivate();
         }
 
         private void OnEnable()

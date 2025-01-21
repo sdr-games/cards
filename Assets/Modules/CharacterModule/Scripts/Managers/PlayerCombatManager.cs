@@ -12,7 +12,7 @@ using UnityEngine;
 
 namespace SDRGames.Whist.CharacterModule.Managers
 {
-    public class PlayerCharacterCombatManager : CharacterCombatManager
+    public class PlayerCombatManager : CharacterCombatManager
     {
         [SerializeField] private PlayerCharacterParamsModel _playerCharacterParamsModel;
         [SerializeField] private PlayerCharacterCombatParamsView _playerCharacterCombatParamsView;
