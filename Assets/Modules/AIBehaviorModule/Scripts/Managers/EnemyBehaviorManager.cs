@@ -9,8 +9,9 @@ namespace SDRGames.Whist.AIBehaviorModule.Managers
 {
     public class EnemyBehaviorManager : MonoBehaviour
     {
-        [SerializeField] public EnemyCombatManager EnemyCombatManager { get; private set; }
         [SerializeField] private EnemyMeleeBehaviorManager _meleeBehaviorManager;
+
+        [field: SerializeField] public EnemyCombatManager EnemyCombatManager { get; private set; }
 
         private PlayerCombatManager _playerCombatManager;
 

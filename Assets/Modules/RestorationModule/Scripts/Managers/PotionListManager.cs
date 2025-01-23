@@ -28,12 +28,12 @@ namespace SDRGames.Whist.RestorationModule.Managers
             {
                 PotionManager PotionManager = Instantiate(_potionPrefab, _contentRectTransform);
                 PotionManager.Initialize(userInputController, potionScriptableObject);
-                PotionManager.PotionClicked += OnMeleeAttackClicked;
+                PotionManager.PotionClicked += OnPotionClicked;
                 _createdManagers.Add(PotionManager);
             }
         }
 
-        private void OnMeleeAttackClicked(object sender, PotionClickedEventArgs e)
+        private void OnPotionClicked(object sender, PotionClickedEventArgs e)
         {
             PotionClicked?.Invoke(this, e);
         }
@@ -63,7 +63,7 @@ namespace SDRGames.Whist.RestorationModule.Managers
         {
             foreach (PotionManager potionManager in _createdManagers)
             {
-                potionManager.PotionClicked -= OnMeleeAttackClicked;
+                potionManager.PotionClicked -= OnPotionClicked;
             }
         }
     }

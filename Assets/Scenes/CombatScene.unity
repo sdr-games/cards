@@ -946,16 +946,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _userInputController: {fileID: 1847108587}
   _turnsQueueManager: {fileID: 675783145}
-  _abilitiesQueueManager: {fileID: 962776987}
-  _meleeAttackListManager: {fileID: 589486334}
-  _selectedDeckManager: {fileID: 914351972}
-  _decksPreviewWindowManager: {fileID: 54196806}
-  _deckOnHandsManager: {fileID: 417953863}
-  _potionListManager: {fileID: 2135899561}
-  _playerCharacterCombatManager: {fileID: 1174818902}
-  _playerSwitchableUI: {fileID: 1770557661}
-  _enemyCharacterCombatManager: {fileID: 1490765128}
-  _enemyMeleeBehaviorManager: {fileID: 1490765130}
+  _scalingSettings: {fileID: 11400000, guid: 62163cb19208e9d418f6090db59f0ed4, type: 2}
+  _combatUIManager: {fileID: 1915771327}
+  _playerCombatManager: {fileID: 1174818902}
+  _enemyBehaviorManagers:
+  - {fileID: 1490765131}
 --- !u!1 &354583934
 GameObject:
   m_ObjectHideFlags: 0
@@ -1038,7 +1033,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 748878985}
   m_HandleRect: {fileID: 748878984}
   m_Direction: 2
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -3207,7 +3202,7 @@ GameObject:
   - component: {fileID: 910288716}
   - component: {fileID: 910288718}
   m_Layer: 5
-  m_Name: CancelButton
+  m_Name: ClearButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3504,8 +3499,6 @@ MonoBehaviour:
   - {fileID: 375714904939269537}
   - {fileID: 2141565656}
   - {fileID: 1726773467}
-  _applyButton: {fileID: 1848407202}
-  _cancelButton: {fileID: 910288718}
   _errorMessage:
     <Entity>k__BackingField:
       m_TableReference:
@@ -3778,7 +3771,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1174818899}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6a2955d05c147314f8b013de5fb80625, type: 3}
+  m_Script: {fileID: 11500000, guid: af2555c164f745242bbb59cffaf25564, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _periodicalEffectViewPrefab: {fileID: 6722016241835193376, guid: 15982c4cf1d501247b07ae7bf0dc50b7,
@@ -5757,6 +5750,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1490765129}
   - component: {fileID: 1490765128}
+  - component: {fileID: 1490765131}
   - component: {fileID: 1490765130}
   m_Layer: 0
   m_Name: EnemyManager
@@ -5810,9 +5804,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _combatManager: {fileID: 1490765128}
-  _playerCharacterCombatManager: {fileID: 1174818902}
   _behaviors:
   - {fileID: 11400000, guid: cfc1e267a68c52e4b97575a8c1160399, type: 2}
+--- !u!114 &1490765131
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1490765127}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85dce3e5ff3f88a4890c16f2a28907b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _meleeBehaviorManager: {fileID: 1490765130}
+  <EnemyCombatManager>k__BackingField: {fileID: 1490765128}
 --- !u!1 &1654137442
 GameObject:
   m_ObjectHideFlags: 0
@@ -7748,7 +7755,7 @@ GameObject:
   - component: {fileID: 1848407200}
   - component: {fileID: 1848407202}
   m_Layer: 5
-  m_Name: ApplyButton
+  m_Name: EndTurnButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7868,6 +7875,8 @@ GameObject:
   - component: {fileID: 1915771324}
   - component: {fileID: 1915771323}
   - component: {fileID: 1915771322}
+  - component: {fileID: 1915771327}
+  - component: {fileID: 1915771326}
   m_Layer: 5
   m_Name: CombatUI
   m_TagString: Untagged
@@ -7963,6 +7972,40 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &1915771326
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1915771321}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e54646ee23ff5bc4fb97f26e595a5d17, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _endTurnButton: {fileID: 1848407202}
+  _clearButton: {fileID: 910288718}
+--- !u!114 &1915771327
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1915771321}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5c173300958eb243b92ace52e4ba0d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _combatUIView: {fileID: 1915771326}
+  _abilitiesQueueManager: {fileID: 962776987}
+  _meleeAttackListManager: {fileID: 589486334}
+  _selectedDeckManager: {fileID: 914351972}
+  _decksPreviewWindowManager: {fileID: 54196806}
+  _deckOnHandsManager: {fileID: 417953863}
+  _potionListManager: {fileID: 2135899561}
+  _playerSwitchableUI: {fileID: 1770557661}
 --- !u!224 &1915967527 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7632637947574618257, guid: b162b0b5c9b86e940af3bee11cb579fd,

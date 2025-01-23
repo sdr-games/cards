@@ -17,6 +17,7 @@ namespace SDRGames.Whist.HelpersModule.Views
 
         public void Initialize(UserInputController userInputController, bool interactable = false)
         {
+            ButtonClicked = null;
             _userInputController = userInputController;
             if(interactable)
             {
@@ -42,6 +43,8 @@ namespace SDRGames.Whist.HelpersModule.Views
         {
             if(e.GameObject == gameObject && interactable)
             {
+
+                Debug.Log("x");
                 ButtonClicked?.Invoke(this, EventArgs.Empty);
             }
         }

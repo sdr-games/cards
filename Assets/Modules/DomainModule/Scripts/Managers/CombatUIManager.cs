@@ -6,10 +6,10 @@ using SDRGames.Whist.AbilitiesQueueModule.Managers;
 using SDRGames.Whist.CardsCombatModule.Managers;
 using SDRGames.Whist.CharacterModule.Managers;
 using SDRGames.Whist.DomainModule.Views;
+using SDRGames.Whist.HelpersModule;
 using SDRGames.Whist.HelpersModule.Views;
 using SDRGames.Whist.MeleeCombatModule.Managers;
 using SDRGames.Whist.RestorationModule.Managers;
-using SDRGames.Whist.TurnSwitchModule.Managers;
 using SDRGames.Whist.UserInputModule.Controller;
 
 using UnityEngine;
@@ -20,7 +20,6 @@ namespace SDRGames.Whist.DomainModule.Managers
     public class CombatUIManager : MonoBehaviour
     {
         private UserInputController _userInputController;
-        private TurnsQueueManager _turnsQueueManager;
         private PlayerCombatManager _playerCombatManager;
         private List<EnemyCombatManager> _enemyCombatManagers;
 
@@ -42,18 +41,17 @@ namespace SDRGames.Whist.DomainModule.Managers
         public event EventHandler<AbilityQueueClearedEventArgs> AbilityQueueCleared;
         public event EventHandler<CardsEndTurnEventArgs> CardsTurnEnd;
         public event EventHandler<MeleeEndTurnEventArgs> MeleeTurnEnd;
+        public event EventHandler ClearButtonClicked;
 
-        public void Initialize(UserInputController userInputController, TurnsQueueManager turnsQueueManager, PlayerCombatManager playerCombatManager, List<EnemyCombatManager> enemyCombatManagers)
+        public void Initialize(UserInputController userInputController, PlayerCombatManager playerCombatManager, List<EnemyCombatManager> enemyCombatManagers)
         {
             _userInputController = userInputController;
-            _turnsQueueManager = turnsQueueManager;
             _playerCombatManager = playerCombatManager;
             _enemyCombatManagers = enemyCombatManagers;
 
             _abilitiesQueueManager.Initialize(_userInputController);
             _abilitiesQueueManager.AbilityQueueCleared += OnAbilityQueueCleared;
             _abilitiesQueueManager.AbilityQueueCountChanged += _combatUIView.OnAbilityQueueCountChanged;
-            //_abilitiesQueueManager.ApplyButtonClicked += OnQueueApplyButtonClicked;
 
             _meleeAttackListManager.Initialize(_userInputController);
             _meleeAttackListManager.MeleeAttackClicked += OnMeleeAttackClicked;
@@ -75,36 +73,9 @@ namespace SDRGames.Whist.DomainModule.Managers
 
             _combatUIView.Initialize(_userInputController);
             _combatUIView.EndTurnButtonClicked += OnEndTurnButtonClicked;
-        }
+            _combatUIView.ClearButtonClicked += OnClearButtonClicked;
 
-        private void OnEndTurnButtonClicked(object sender, EventArgs e)
-        {
-            float totalCost = 0;
-
-            List<CardManager> selectedCardsManagers = _deckOnHandsManager.GetSelectedCards();
-            if (selectedCardsManagers != null)
-            {
-                List<CardScriptableObject> selectedCards = new List<CardScriptableObject>();
-                foreach (CardManager cardManager in selectedCardsManagers)
-                {
-                    selectedCards.Add(cardManager.CardScriptableObject);
-                }
-                totalCost = selectedCardsManagers.Where(item => item != null).Sum(item => item.CardScriptableObject.Cost);
-                CardsTurnEnd?.Invoke(this, new CardsEndTurnEventArgs(totalCost, selectedCards));
-                return;
-            }
-
-            List<AbilitySlotManager> selectedAbilitiesSlots = _abilitiesQueueManager.GetSelectedAbilities();
-            if (selectedAbilitiesSlots != null)
-            {
-                List<AbilityScriptableObject> selectedAbilities = new List<AbilityScriptableObject>();
-                foreach(AbilitySlotManager abilitySlotManager in selectedAbilitiesSlots)
-                {
-                    selectedAbilities.Add(abilitySlotManager.AbilityScriptableObject);
-                }
-                totalCost = selectedAbilitiesSlots.Where(item => item != null).Sum(item => item.AbilityScriptableObject.Cost);
-                MeleeTurnEnd?.Invoke(this, new MeleeEndTurnEventArgs(totalCost, selectedAbilities));
-            }
+            HidePlayerUI();
         }
 
         public void ShowPlayerUI(bool isCombatTurn)
@@ -128,6 +99,7 @@ namespace SDRGames.Whist.DomainModule.Managers
 
         public void HidePlayerUI()
         {
+            _abilitiesQueueManager.ClearBindedAbilities();
             _playerSwitchableUI.Hide();
             _deckOnHandsManager.HideView();
             _potionListManager.Hide();
@@ -174,12 +146,12 @@ namespace SDRGames.Whist.DomainModule.Managers
             TryAddAbilityToQueue(e.PotionScriptableObject);
         }
 
-        private void OnQueueApplyButtonClicked(object sender, AbilitiesQueueModule.Managers.MeleeEndTurnEventArgs e)
+        private void OnQueueApplyButtonClicked(object sender, MeleeEndTurnEventArgs e)
         {
             if (e.Abilities.Count == 0 && e.Abilities.Any(item => item is null))
             {
                 return;
-}
+            }
 
             List<CharacterCombatManager> enemyCharacterCombatManagers = new List<CharacterCombatManager>(_enemyCombatManagers);
 
@@ -196,10 +168,10 @@ namespace SDRGames.Whist.DomainModule.Managers
                     new List<int>() { 0 });
             }
             _playerCombatManager.SpendStaminaPoints(e.TotalCost);
-            _turnsQueueManager.SwitchTurn();
+            //_turnsQueueManager.SwitchTurn();
         }
 
-        private void OnDeckApplyButtonClicked(object sender, CardsCombatModule.Managers.CardsEndTurnEventArgs e)
+        private void OnDeckApplyButtonClicked(object sender, CardsEndTurnEventArgs e)
         {
             if (e.Cards.Count == 0)
             {
@@ -285,6 +257,70 @@ namespace SDRGames.Whist.DomainModule.Managers
             _deckOnHandsManager.SetSelectedDeck(e.DeckScriptableObject);
         }
 
+        private void OnEndTurnButtonClicked(object sender, EventArgs e)
+        {
+            float totalCost = 0;
+
+            List<CardManager> selectedCardsManagers = _deckOnHandsManager.GetSelectedCards();
+            if (selectedCardsManagers != null)
+            {
+                List<CardScriptableObject> selectedCards = new List<CardScriptableObject>();
+                foreach (CardManager cardManager in selectedCardsManagers)
+                {
+                    selectedCards.Add(cardManager.CardScriptableObject);
+                }
+                totalCost = selectedCardsManagers.Where(item => item != null).Sum(item => item.CardScriptableObject.Cost);
+                CardsTurnEnd?.Invoke(this, new CardsEndTurnEventArgs(totalCost, selectedCards));
+                return;
+            }
+
+            AbilitySlotManager[] selectedAbilitiesSlots = _abilitiesQueueManager.GetSelectedAbilities();
+            if (selectedAbilitiesSlots != null)
+            {
+                List<AbilityScriptableObject> selectedAbilities = new List<AbilityScriptableObject>();
+                foreach(AbilitySlotManager abilitySlotManager in selectedAbilitiesSlots)
+                {
+                    selectedAbilities.Add(abilitySlotManager.AbilityScriptableObject);
+                }
+                totalCost = selectedAbilitiesSlots.Where(item => item != null).Sum(item => item.AbilityScriptableObject.Cost);
+                MeleeTurnEnd?.Invoke(this, new MeleeEndTurnEventArgs(totalCost, selectedAbilities));
+            }
+        }
+
+        private void OnClearButtonClicked(object sender, EventArgs e)
+        {
+            _abilitiesQueueManager.ClearBindedAbilities();
+            ClearButtonClicked?.Invoke(this, e);
+        }
+
         #endregion
+
+        private void OnEnable()
+        {
+            this.CheckFieldValueIsNotNull(nameof(_combatUIView), _combatUIView);
+            this.CheckFieldValueIsNotNull(nameof(_abilitiesQueueManager), _abilitiesQueueManager);
+            this.CheckFieldValueIsNotNull(nameof(_meleeAttackListManager), _meleeAttackListManager);
+            this.CheckFieldValueIsNotNull(nameof(_selectedDeckManager), _selectedDeckManager);
+            this.CheckFieldValueIsNotNull(nameof(_decksPreviewWindowManager), _decksPreviewWindowManager);
+            this.CheckFieldValueIsNotNull(nameof(_deckOnHandsManager), _deckOnHandsManager);
+            this.CheckFieldValueIsNotNull(nameof(_potionListManager), _potionListManager);
+            this.CheckFieldValueIsNotNull(nameof(_playerSwitchableUI), _playerSwitchableUI);
+        }
+
+        private void OnDestroy()
+        {
+            _abilitiesQueueManager.AbilityQueueCleared -= OnAbilityQueueCleared;
+            _abilitiesQueueManager.AbilityQueueCountChanged -= _combatUIView.OnAbilityQueueCountChanged;
+            _meleeAttackListManager.MeleeAttackClicked -= OnMeleeAttackClicked;
+            _potionListManager.PotionClicked -= OnPotionClicked;
+            _selectedDeckManager.EmptyDeckViewClicked -= OnEmptyDeckViewClicked;
+            _selectedDeckManager.SelectedDeckViewClicked -= OnSelectedDeckViewClicked;
+            _decksPreviewWindowManager.DeckSelected -= OnDeckSelected;
+            _deckOnHandsManager.CardClicked -= OnCardClicked;
+            _deckOnHandsManager.ApplyButtonClicked -= OnDeckApplyButtonClicked;
+            _deckOnHandsManager.SelectedCardsCountChanged -= _combatUIView.OnSelectedCardsCountChanged;
+            _combatUIView.EndTurnButtonClicked -= OnEndTurnButtonClicked;
+            _combatUIView.ClearButtonClicked -= OnClearButtonClicked;
+        }
     }
 }

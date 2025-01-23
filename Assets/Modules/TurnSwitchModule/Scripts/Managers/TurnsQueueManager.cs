@@ -26,25 +26,32 @@ namespace SDRGames.Whist.TurnSwitchModule.Managers
         private int _currentRestorationTurnCooldown = 0;
         private bool _isCombatTurn;
         private List<Points> _charactersPoints;
-        private List<CharacterInfoScriptableObject> _characterInfoScriptableObjects;
+        private List<CharacterInfoScriptableObject> _charactersInfos;
 
         public event EventHandler<TurnSwitchedEventArgs> TurnSwitched;
 
         public void Initialize(List<CharacterParamsModel> characterParamsModels)
         {
             _isCombatTurn = true;
-            _characterInfoScriptableObjects = OrderByInitiative(characterParamsModels);
+
+            _charactersInfos = OrderByInitiative(characterParamsModels);
             _charactersPoints = GetPointsFromParams(characterParamsModels);
-            _turnsQueueView.Initialize(_characterInfoScriptableObjects);
+
+            _turnsQueueView.Initialize(_charactersInfos);
             _turnsQueueView.ShiftDone += OnShiftDone;
 
             _timerManager.Initialize();
             _timerManager.TimeOver += OnTimeOver;
-            _timerManager.StartCombatTimer();
+        }
 
-            string turnSwitchMessage = _characterInfoScriptableObjects[0].IsPlayer ? _playerTurnSwitchMessage.GetLocalizedText() : _enemyTurnSwitchMessage.GetLocalizedText();
+        public void Run()
+        {
+            string turnSwitchMessage = _charactersInfos[0].IsPlayer ? _playerTurnSwitchMessage.GetLocalizedText() : _enemyTurnSwitchMessage.GetLocalizedText();
             Notification.Show(turnSwitchMessage);
-            TurnSwitched?.Invoke(this, new TurnSwitchedEventArgs(_characterInfoScriptableObjects[0].IsPlayer, true));
+
+            TurnSwitched?.Invoke(this, new TurnSwitchedEventArgs(_charactersInfos[0].IsPlayer, _isCombatTurn));
+
+            _timerManager.StartCombatTimer();
         }
 
         public void SwitchTurn()
@@ -124,7 +131,7 @@ namespace SDRGames.Whist.TurnSwitchModule.Managers
             //{
             if (_isCombatTurn)
             {
-                isPlayerTurn = _characterInfoScriptableObjects[e.CurrentIndex].IsPlayer;
+                isPlayerTurn = _charactersInfos[e.CurrentIndex].IsPlayer;
                 _timerManager.StartCombatTimer();
                 string turnSwitchMessage = isPlayerTurn ? _playerTurnSwitchMessage.GetLocalizedText() : _enemyTurnSwitchMessage.GetLocalizedText();
                 Notification.Show(turnSwitchMessage);

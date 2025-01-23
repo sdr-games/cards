@@ -11,42 +11,44 @@ namespace SDRGames.Whist.AbilitiesQueueModule.Managers
     public class AbilitySlotManager : MonoBehaviour
     {
         [SerializeField] private AbilitySlotView _abilitySlotView;
+        private UserInputController _userInputController;
         
-        public AbilityScriptableObject AbilityScriptableObject { get; private set; }
-
-        public event EventHandler AbilitySlotUnbound;
+        [field:SerializeField] public AbilityScriptableObject AbilityScriptableObject { get; private set; }
 
         public void Initialize(UserInputController userInputController)
         {
-            _abilitySlotView.Initialize(userInputController);
+            _abilitySlotView.Initialize();
+            _userInputController = userInputController;
         }
 
         public void Bind(AbilityScriptableObject abilityScriptableObject)
         {
             AbilityScriptableObject = abilityScriptableObject;
             _abilitySlotView.SetIconSprite(abilityScriptableObject.Icon);
-            _abilitySlotView.AbilitySlotUnbound += OnAbilitySlotCleared;
+            if(abilityScriptableObject.Icon != null)
+            {
+                _userInputController.LeftMouseButtonClickedOnUI += OnLeftMouseButtonClickedOnUI;
+            }
         }
 
         public void Unbind()
         {
             AbilityScriptableObject = null;
-            _abilitySlotView.Unbind();
+            _abilitySlotView.SetIconSprite();
+            _userInputController.LeftMouseButtonClickedOnUI -= OnLeftMouseButtonClickedOnUI;
         }
 
-        private void OnAbilitySlotCleared(object sender, EventArgs e)
+        private void OnLeftMouseButtonClickedOnUI(object sender, LeftMouseButtonUIClickEventArgs e)
         {
-            _abilitySlotView.AbilitySlotUnbound -= OnAbilitySlotCleared;
-            AbilitySlotUnbound?.Invoke(this, EventArgs.Empty);
+            if (e.GameObject == gameObject && _abilitySlotView.interactable)
+            {
+                Unbind();
+            }
         }
 
         private void OnDisable()
         {
-            if (_abilitySlotView == null)
-            {
-                return;
-            }
-            _abilitySlotView.AbilitySlotUnbound -= OnAbilitySlotCleared;
+            _userInputController.LeftMouseButtonClickedOnUI -= OnLeftMouseButtonClickedOnUI;
         }
     }
 }

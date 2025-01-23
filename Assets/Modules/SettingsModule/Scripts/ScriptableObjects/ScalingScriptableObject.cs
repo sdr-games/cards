@@ -8,7 +8,7 @@ namespace SDRGames.Whist.SettingsModule.ScriptableObjects
     {
         [SerializeField] private Scaling _scaling;
 
-        private void OnEnable()
+        public void Initialize()
         {
             _scaling.UpdateStaticFields();
         }
