@@ -9,6 +9,7 @@ using SDRGames.Whist.CardsCombatModule.Views;
 using SDRGames.Whist.CardsCombatModule.Models;
 
 using UnityEngine;
+using SDRGames.Whist.AbilitiesQueueModule.ScriptableObjects;
 
 namespace SDRGames.Whist.CardsCombatModule.Managers
 {
@@ -74,13 +75,19 @@ namespace SDRGames.Whist.CardsCombatModule.Managers
             return true;
         }
 
-        public List<CardManager> GetSelectedCards()
+        public List<CardScriptableObject> GetSelectedCards()
         {
             if(_selectedCards.Count == 0)
             {
                 return null;
             }
-            return new List<CardManager>(_selectedCards).OrderBy(cardManager => cardManager.CardScriptableObject.AbilityModifiers.Length).ToList();
+
+            List<CardScriptableObject> selectedCards = new List<CardScriptableObject>();
+            foreach(CardManager cardManager in _selectedCards)
+            {
+                selectedCards.Add(cardManager.CardScriptableObject);
+            }
+            return selectedCards.OrderBy(card => card.AbilityModifiers.Length).ToList();
         }
 
         public void ShowView()

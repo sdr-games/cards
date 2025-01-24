@@ -121,18 +121,7 @@ namespace SDRGames.Whist.DomainModule.Managers
 
         private void OnCardsTurnEnd(object sender, CardsEndTurnEventArgs e)
         {
-            //if (e.Managers.Count == 0)
-            //{
-            //    return;
-            //}
-
-            //List<CharacterCombatManager> enemyCharacterCombatManagers = new List<CharacterCombatManager>() { _enemyCharacterCombatManager };
-
-            //List<CardScriptableObject> cards = new List<CardScriptableObject>();
-            //foreach (CardManager card in e.Managers)
-            //{
-            //    cards.Add(card.CardScriptableObject);
-            //}
+            List<CharacterCombatManager> enemyCharacterCombatManagers = new List<CharacterCombatManager>(_enemyCombatManagers);
 
             //foreach (CardManager card in e.Managers)
             //{
@@ -157,8 +146,8 @@ namespace SDRGames.Whist.DomainModule.Managers
             //        e.Managers.Count,
             //        new List<int>() { 0 });
             //}
-            //_playerCharacterCombatManager.SpendBreathPoints(e.TotalCost);
-            //_turnsQueueManager.SwitchTurn();
+            _playerCombatManager.SpendBreathPoints(e.TotalCost);
+            _turnsQueueManager.SwitchTurn();
         }
 
         private void OnAbilityQueueCleared(object sender, AbilityQueueClearedEventArgs e)

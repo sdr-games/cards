@@ -261,28 +261,18 @@ namespace SDRGames.Whist.DomainModule.Managers
         {
             float totalCost = 0;
 
-            List<CardManager> selectedCardsManagers = _deckOnHandsManager.GetSelectedCards();
-            if (selectedCardsManagers != null)
+            List<CardScriptableObject> selectedCards = _deckOnHandsManager.GetSelectedCards();
+            if (selectedCards != null)
             {
-                List<CardScriptableObject> selectedCards = new List<CardScriptableObject>();
-                foreach (CardManager cardManager in selectedCardsManagers)
-                {
-                    selectedCards.Add(cardManager.CardScriptableObject);
-                }
-                totalCost = selectedCardsManagers.Where(item => item != null).Sum(item => item.CardScriptableObject.Cost);
+                totalCost = selectedCards.Where(item => item != null).Sum(item => item.Cost);
                 CardsTurnEnd?.Invoke(this, new CardsEndTurnEventArgs(totalCost, selectedCards));
                 return;
             }
 
-            AbilitySlotManager[] selectedAbilitiesSlots = _abilitiesQueueManager.GetSelectedAbilities();
-            if (selectedAbilitiesSlots != null)
+            List<AbilityScriptableObject> selectedAbilities = _abilitiesQueueManager.PopSelectedAbilities();
+            if (selectedAbilities != null)
             {
-                List<AbilityScriptableObject> selectedAbilities = new List<AbilityScriptableObject>();
-                foreach(AbilitySlotManager abilitySlotManager in selectedAbilitiesSlots)
-                {
-                    selectedAbilities.Add(abilitySlotManager.AbilityScriptableObject);
-                }
-                totalCost = selectedAbilitiesSlots.Where(item => item != null).Sum(item => item.AbilityScriptableObject.Cost);
+                totalCost = selectedAbilities.Where(item => item != null).Sum(item => item.Cost);
                 MeleeTurnEnd?.Invoke(this, new MeleeEndTurnEventArgs(totalCost, selectedAbilities));
             }
         }
