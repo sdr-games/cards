@@ -66,6 +66,7 @@ namespace SDRGames.Whist.DomainModule.Managers
             _combatUIManager.CardsTurnEnd += OnCardsTurnEnd;
             _combatUIManager.MeleeTurnEnd += OnMeleeTurnEnd;
             _combatUIManager.ClearButtonClicked += OnClearButtonClicked;
+            _combatUIManager.CardsSelectionCleared += OnCardsSelectionCleared;
 
             _turnsQueueManager.Initialize(characterInfoScriptableObjects);
             _turnsQueueManager.TurnSwitched += OnTurnSwitched;
@@ -159,7 +160,6 @@ namespace SDRGames.Whist.DomainModule.Managers
 
         private void OnTurnSwitched(object sender, TurnSwitchedEventArgs e)
         {
-            _combatUIManager.HidePlayerUI();
             if (e.IsPlayerTurn)
             {
                 StartPlayerTurn(e.IsCombatTurn);
@@ -171,6 +171,11 @@ namespace SDRGames.Whist.DomainModule.Managers
         private void OnClearButtonClicked(object sender, EventArgs e)
         {
             return;
+        }
+
+        private void OnCardsSelectionCleared(object sender, CardsSelectionClearedEventArgs e)
+        {
+            _playerCombatManager.ResetBreathReservedPoints(e.ReverseAmount);
         }
 
         private void StartPlayerTurn(bool isCombatTurn)

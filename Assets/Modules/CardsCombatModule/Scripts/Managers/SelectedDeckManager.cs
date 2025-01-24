@@ -19,11 +19,12 @@ namespace SDRGames.Whist.CardsCombatModule.Managers
         private UserInputController _userInputController;
         private DeckScriptableObject _deckScriptableObject;
         private SelectedDeckPresenter _selectedDeckPresenter;
+        private bool _visible = false;
 
         private bool IsEmpty => _deckScriptableObject == null;
 
         public event EventHandler EmptyDeckViewClicked;
-        public event EventHandler SelectedDeckViewClicked;
+        public event EventHandler<SelectedDeckViewClickedEventArgs> SelectedDeckViewClicked;
 
         public void Initialize(UserInputController userInputController)
         {
@@ -48,7 +49,8 @@ namespace SDRGames.Whist.CardsCombatModule.Managers
                     EmptyDeckViewClicked?.Invoke(this, EventArgs.Empty);
                     return;
                 }
-                SelectedDeckViewClicked?.Invoke(this, EventArgs.Empty);
+                _visible = !_visible;
+                SelectedDeckViewClicked?.Invoke(this, new SelectedDeckViewClickedEventArgs(_visible));
             }
         }
 

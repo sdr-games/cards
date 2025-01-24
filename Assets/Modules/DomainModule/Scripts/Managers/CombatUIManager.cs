@@ -39,6 +39,7 @@ namespace SDRGames.Whist.DomainModule.Managers
         public event EventHandler<AbilityQueueClearedEventArgs> AbilityQueueCleared;
         public event EventHandler<CardsEndTurnEventArgs> CardsTurnEnd;
         public event EventHandler<MeleeEndTurnEventArgs> MeleeTurnEnd;
+        public event EventHandler<CardsSelectionClearedEventArgs> CardsSelectionCleared;
         public event EventHandler ClearButtonClicked;
 
         public void Initialize(UserInputController userInputController)
@@ -64,6 +65,7 @@ namespace SDRGames.Whist.DomainModule.Managers
 
             _deckOnHandsManager.Initialize(_userInputController);
             _deckOnHandsManager.CardClicked += OnCardClicked;
+            _deckOnHandsManager.CardsSelectionCleared += OnCardsSelectionCleared;
             _deckOnHandsManager.SelectedCardsCountChanged += _combatUIView.OnSelectedCardsCountChanged;
 
             _combatUIView.Initialize(_userInputController);
@@ -128,6 +130,11 @@ namespace SDRGames.Whist.DomainModule.Managers
             CardClicked?.Invoke(this, e);
         }
 
+        private void OnCardsSelectionCleared(object sender, CardsSelectionClearedEventArgs e)
+        {
+            CardsSelectionCleared?.Invoke(this, e);
+        }
+
         private void OnMeleeAttackClicked(object sender, MeleeAttackClickedEventArgs e)
         {
             MeleeAttackClicked?.Invoke(this, e);
@@ -189,8 +196,16 @@ namespace SDRGames.Whist.DomainModule.Managers
             AbilityQueueCleared?.Invoke(this, e);
         }
 
-        private void OnSelectedDeckViewClicked(object sender, EventArgs e)
+        private void OnSelectedDeckViewClicked(object sender, SelectedDeckViewClickedEventArgs e)
         {
+            if (!e.Visible)
+            {
+                _deckOnHandsManager.ClearCardsSelection();
+                _abilitiesQueueManager.Show();
+                _meleeAttackListManager.Show();
+                _deckOnHandsManager.HideView();
+                return;
+            }
             _abilitiesQueueManager.ClearBindedAbilities();
             _abilitiesQueueManager.Hide();
             _meleeAttackListManager.Hide();
@@ -217,10 +232,11 @@ namespace SDRGames.Whist.DomainModule.Managers
         {
             float totalCost = 0;
 
-            List<CardScriptableObject> selectedCards = _deckOnHandsManager.GetSelectedCards();
+            List<CardScriptableObject> selectedCards = _deckOnHandsManager.PopSelectedCards();
             if (selectedCards != null)
             {
                 totalCost = selectedCards.Where(item => item != null).Sum(item => item.Cost);
+                HidePlayerUI();
                 CardsTurnEnd?.Invoke(this, new CardsEndTurnEventArgs(totalCost, selectedCards));
                 return;
             }
@@ -228,6 +244,7 @@ namespace SDRGames.Whist.DomainModule.Managers
             List<AbilityScriptableObject> selectedAbilities = _abilitiesQueueManager.PopSelectedAbilities();
             if (selectedAbilities != null)
             {
+                HidePlayerUI();
                 totalCost = selectedAbilities.Where(item => item != null).Sum(item => item.Cost);
                 MeleeTurnEnd?.Invoke(this, new MeleeEndTurnEventArgs(totalCost, selectedAbilities));
             }
