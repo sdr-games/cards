@@ -51,26 +51,38 @@ namespace SDRGames.Whist.CardsCombatModule.Managers
             }
         }
 
-        public void AddSelectedCard(CardManager cardManager)
+        public bool TryAddSelectedCard(CardManager cardManager)
         {
             if (_selectedCards.Contains(cardManager))
             {
-                return;
+                return false;
             }
             _selectedCards.Add(cardManager);
             cardManager.Select();
             SelectedCardsCountChanged?.Invoke(this, new SelectedCardsCountChangedEventArgs(_selectedCards.Count <= 0));
+            return true;
         }
 
-        public bool RemoveSelectedCard(CardManager cardManager)
+        public bool TryDeselectCard(CardManager cardManager)
         {
             if (!_selectedCards.Contains(cardManager))
             {
                 return false;
             }
             _selectedCards.Remove(cardManager);
-            //cardManager.Destroy();
+            cardManager.Deselect();
             SelectedCardsCountChanged?.Invoke(this, new SelectedCardsCountChangedEventArgs(_selectedCards.Count <= 0));
+            return true;
+        }
+
+        public bool TryRemoveSelectedCard(CardManager cardManager)
+        {
+            if(!TryDeselectCard(cardManager))
+            {
+                return false;
+            }
+            cardManager.CardClicked -= OnCardClicked;
+            //cardManager.Destroy();
             return true;
         }
 
@@ -112,6 +124,14 @@ namespace SDRGames.Whist.CardsCombatModule.Managers
         private void OnEnable()
         {
             this.CheckFieldValueIsNotNull(nameof(_deckOnHandView), _deckOnHandView);
+        }
+
+        private void OnDestroy()
+        {
+            foreach(CardManager cardManager in _cards)
+            {
+                cardManager.CardClicked -= OnCardClicked;
+            } 
         }
     }
 }

@@ -20,8 +20,6 @@ namespace SDRGames.Whist.DomainModule.Managers
     public class CombatUIManager : MonoBehaviour
     {
         private UserInputController _userInputController;
-        private PlayerCombatManager _playerCombatManager;
-        private List<EnemyCombatManager> _enemyCombatManagers;
 
         [SerializeField] private CombatUIView _combatUIView;
 
@@ -43,11 +41,9 @@ namespace SDRGames.Whist.DomainModule.Managers
         public event EventHandler<MeleeEndTurnEventArgs> MeleeTurnEnd;
         public event EventHandler ClearButtonClicked;
 
-        public void Initialize(UserInputController userInputController, PlayerCombatManager playerCombatManager, List<EnemyCombatManager> enemyCombatManagers)
+        public void Initialize(UserInputController userInputController)
         {
             _userInputController = userInputController;
-            _playerCombatManager = playerCombatManager;
-            _enemyCombatManagers = enemyCombatManagers;
 
             _abilitiesQueueManager.Initialize(_userInputController);
             _abilitiesQueueManager.AbilityQueueCleared += OnAbilityQueueCleared;
@@ -105,19 +101,20 @@ namespace SDRGames.Whist.DomainModule.Managers
             _decksPreviewWindowManager.Hide();
         }
 
-        public void SelectCard(CardManager cardManager)
+        public bool TrySelectCard(CardManager cardManager)
         {
-            _deckOnHandsManager.AddSelectedCard(cardManager);
-            _playerCombatManager.ReserveBreathPoints(cardManager.CardScriptableObject.Cost);            
+            return _deckOnHandsManager.TryAddSelectedCard(cardManager);       
         }
 
-        public void DeselectCard(CardManager cardManager)
+        public bool TryDeselectCard(CardManager cardManager)
         {
-            if (_deckOnHandsManager.RemoveSelectedCard(cardManager))
-            {
-                _playerCombatManager.ResetBreathReservedPoints(cardManager.CardScriptableObject.Cost);
-            }
+            return _deckOnHandsManager.TryDeselectCard(cardManager);
         }
+
+        public bool TryRemoveCard(CardManager cardManager)
+        {
+            return _deckOnHandsManager.TryRemoveSelectedCard(cardManager);
+        } 
 
         public bool TryAddAbilityToQueue(AbilityScriptableObject abilityScriptableObject)
         {

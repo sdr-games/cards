@@ -59,11 +59,13 @@ namespace SDRGames.Whist.CardsCombatModule.Managers
         public void Select()
         {
             _isSelected = true;
+            _cardView.Select();
         }
 
         public void Deselect()
         {
             _isSelected = false;
+            _cardView.Deselect();
         }
 
         public void Destroy()

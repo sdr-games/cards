@@ -59,11 +59,7 @@ namespace SDRGames.Whist.DomainModule.Managers
                 characterInfoScriptableObjects.Add(enemyBehaviorManager.EnemyCombatManager.GetParams());   
             }
 
-            _combatUIManager.Initialize(
-                _userInputController, 
-                _playerCombatManager,
-                _enemyCombatManagers
-            );
+            _combatUIManager.Initialize(_userInputController);
             _combatUIManager.AbilityQueueCleared += OnAbilityQueueCleared;
             _combatUIManager.CardClicked += OnCardClicked;
             _combatUIManager.MeleeAttackClicked += OnMeleeAttackClicked;
@@ -80,10 +76,16 @@ namespace SDRGames.Whist.DomainModule.Managers
         {
             if(!e.IsSelected && _playerCombatManager.HasEnoughBreathPoints(e.CardManager.CardScriptableObject.Cost))
             {
-                _combatUIManager.SelectCard(e.CardManager);
+                if (_combatUIManager.TrySelectCard(e.CardManager))
+                {
+                    _playerCombatManager.ReserveBreathPoints(e.CardManager.CardScriptableObject.Cost);
+                }
                 return;
             }
-            _combatUIManager.DeselectCard(e.CardManager);
+            if(_combatUIManager.TryDeselectCard(e.CardManager))
+            {
+                _playerCombatManager.ResetBreathReservedPoints(e.CardManager.CardScriptableObject.Cost);
+            }
         }
 
         private void OnMeleeAttackClicked(object sender, MeleeAttackClickedEventArgs e)

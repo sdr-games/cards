@@ -3,8 +3,6 @@ using SDRGames.Whist.HelpersModule;
 
 using TMPro;
 
-using UnityEditor;
-
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -37,6 +35,16 @@ namespace SDRGames.Whist.CardsCombatModule.Views
             _rectTransform.SetSiblingIndex(index);
             _rectTransform.Translate(-Vector3.up * _hoverOffset);
             _outline.enabled = false;
+        }
+
+        public void Select()
+        {
+            _rectTransform.Translate(Vector3.up * _rectTransform.rect.height / 2);
+        }
+
+        public void Deselect()
+        {
+            _rectTransform.Translate(-Vector3.up * _rectTransform.rect.height / 2);
         }
 
         private void SetRotation()
