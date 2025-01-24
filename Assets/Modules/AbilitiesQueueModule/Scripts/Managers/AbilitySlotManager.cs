@@ -15,6 +15,8 @@ namespace SDRGames.Whist.AbilitiesQueueModule.Managers
         
         [field:SerializeField] public AbilityScriptableObject AbilityScriptableObject { get; private set; }
 
+        public event EventHandler<AbilityQueueClearedEventArgs> AbilitySlotUnbindManually;
+
         public void Initialize(UserInputController userInputController)
         {
             _abilitySlotView.Initialize();
@@ -42,7 +44,9 @@ namespace SDRGames.Whist.AbilitiesQueueModule.Managers
         {
             if (e.GameObject == gameObject && _abilitySlotView.interactable)
             {
+                float cost = AbilityScriptableObject.Cost;
                 Unbind();
+                AbilitySlotUnbindManually?.Invoke(this, new AbilityQueueClearedEventArgs(cost));
             }
         }
 

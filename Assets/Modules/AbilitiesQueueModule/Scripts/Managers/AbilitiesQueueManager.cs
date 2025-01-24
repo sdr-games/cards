@@ -29,6 +29,7 @@ namespace SDRGames.Whist.AbilitiesQueueModule.Managers
             foreach (AbilitySlotManager abilitySlotManager in _abilitySlotManagers)
             {
                 abilitySlotManager.Initialize(userInputController);
+                abilitySlotManager.AbilitySlotUnbindManually += OnAbilitySlotUnbindManually;
             }
         }
 
@@ -84,6 +85,11 @@ namespace SDRGames.Whist.AbilitiesQueueModule.Managers
                 Notification.Show(_errorMessage.GetLocalizedText());
             }
             return abilitySlotManager;
+        }
+
+        private void OnAbilitySlotUnbindManually(object sender, AbilityQueueClearedEventArgs e)
+        {
+            AbilityQueueCleared?.Invoke(this, e);
         }
 
         private void OnEnable()

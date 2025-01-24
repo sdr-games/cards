@@ -68,7 +68,6 @@ namespace SDRGames.Whist.DomainModule.Managers
 
             _deckOnHandsManager.Initialize(_userInputController);
             _deckOnHandsManager.CardClicked += OnCardClicked;
-            _deckOnHandsManager.ApplyButtonClicked += OnDeckApplyButtonClicked;
             _deckOnHandsManager.SelectedCardsCountChanged += _combatUIView.OnSelectedCardsCountChanged;
 
             _combatUIView.Initialize(_userInputController);
@@ -144,46 +143,6 @@ namespace SDRGames.Whist.DomainModule.Managers
                 return;
             }
             TryAddAbilityToQueue(e.PotionScriptableObject);
-        }
-
-        private void OnQueueApplyButtonClicked(object sender, MeleeEndTurnEventArgs e)
-        {
-            if (e.Abilities.Count == 0 && e.Abilities.Any(item => item is null))
-            {
-                return;
-            }
-
-            List<CharacterCombatManager> enemyCharacterCombatManagers = new List<CharacterCombatManager>(_enemyCombatManagers);
-
-            foreach (var ability in e.Abilities)
-            {
-                if (ability == null)
-                {
-                    continue;
-                }
-                ability.ApplyLogics(
-                    _playerCombatManager,
-                    enemyCharacterCombatManagers,
-                    e.Abilities.Count,
-                    new List<int>() { 0 });
-            }
-            _playerCombatManager.SpendStaminaPoints(e.TotalCost);
-            //_turnsQueueManager.SwitchTurn();
-        }
-
-        private void OnDeckApplyButtonClicked(object sender, CardsEndTurnEventArgs e)
-        {
-            if (e.Cards.Count == 0)
-            {
-                return;
-            }
-
-            List<CharacterCombatManager> enemyCharacterCombatManagers = new List<CharacterCombatManager>(_enemyCombatManagers);
-
-            foreach (CardScriptableObject cardManager in e.Cards)
-            {
-                
-            }
         }
 
         //private void OnDeckApplyButtonClicked(object sender, CardsCombatModule.Managers.ApplyButtonClickedEventArgs e)
@@ -307,7 +266,6 @@ namespace SDRGames.Whist.DomainModule.Managers
             _selectedDeckManager.SelectedDeckViewClicked -= OnSelectedDeckViewClicked;
             _decksPreviewWindowManager.DeckSelected -= OnDeckSelected;
             _deckOnHandsManager.CardClicked -= OnCardClicked;
-            _deckOnHandsManager.ApplyButtonClicked -= OnDeckApplyButtonClicked;
             _deckOnHandsManager.SelectedCardsCountChanged -= _combatUIView.OnSelectedCardsCountChanged;
             _combatUIView.EndTurnButtonClicked -= OnEndTurnButtonClicked;
             _combatUIView.ClearButtonClicked -= OnClearButtonClicked;

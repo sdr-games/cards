@@ -37,7 +37,7 @@ namespace SDRGames.Whist.CardsCombatModule.Managers
 
         public void SetPosition(Vector2 position)
         {
-            _cardView.transform.position = position;
+            _cardView.transform.localPosition = position;
         }
 
         public void OnPointerEnter(PointerEventData eventData)

@@ -28,7 +28,6 @@ namespace SDRGames.Whist.CardsCombatModule.Managers
 
         public event EventHandler<CardClickedEventArgs> CardClicked;
         public event EventHandler<SelectedCardsCountChangedEventArgs> SelectedCardsCountChanged;
-        public event EventHandler<CardsEndTurnEventArgs> ApplyButtonClicked;
 
         public void Initialize(UserInputController userInputController)
         {
