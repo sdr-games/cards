@@ -1,16 +1,16 @@
 ﻿using System;
 
-using SDRGames.Whist.AbilitiesQueueModule.ScriptableObjects;
+using SDRGames.Whist.MeleeCombatModule.Models;
 
 namespace SDRGames.Whist.MeleeCombatModule.Managers
 {
     public class MeleeAttackClickedEventArgs : EventArgs
     {
-        public MeleeAttackScriptableObject MeleeAttackScriptableObject { get; private set; }
+        public MeleeAttack MeleeAttack { get; private set; }
 
-        public MeleeAttackClickedEventArgs(MeleeAttackScriptableObject meleeAttackScriptableObject)
+        public MeleeAttackClickedEventArgs(MeleeAttack meleeAttack)
         {
-            MeleeAttackScriptableObject = meleeAttackScriptableObject;
+            MeleeAttack = meleeAttack;
         }
     }
 }

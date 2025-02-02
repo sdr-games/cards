@@ -1,0 +1,56 @@
+using System.Collections;
+using System.Collections.Generic;
+using SDRGames.Whist.AbilitiesModule.ScriptableObjects;
+using SDRGames.Whist.CharacterModule.Managers;
+using SDRGames.Whist.LocalizationModule.Models;
+
+using UnityEngine;
+
+namespace SDRGames.Whist.AbilitiesModule.Models
+{
+    public class Ability
+    {
+        public LocalizedString Name { get; private set; }
+        public LocalizedString Description { get; private set; }
+        public Sprite Icon { get; private set; }
+        public int Cost { get; private set; }
+        public List<AbilityLogic> AbilityLogics { get; protected set; }
+
+        public Ability(AbilityScriptableObject abilityScriptableObject)
+        {
+            Name = abilityScriptableObject.Name;
+            Description = abilityScriptableObject.Description;
+            Icon = abilityScriptableObject.Icon;
+            Cost = abilityScriptableObject.Cost;
+        }
+
+        public void ApplyLogics(CharacterCombatManager casterCombatManager, CharacterCombatManager targetCombatManager, int totalSelectedAbilitiesCount)
+        {
+            foreach (AbilityLogic logic in AbilityLogics)
+            {
+                if (logic.SelfUsable)
+                {
+                    logic.Apply(casterCombatManager);
+                    continue;
+                }
+                logic.Apply(targetCombatManager);
+            }
+        }
+
+        public void ApplyLogics(CharacterCombatManager casterCombatManager, List<CharacterCombatManager> targetsCombatManager, int totalSelectedAbilitiesCount, List<int> selectedTargetsIndexes)
+        {
+            foreach (AbilityLogic logic in AbilityLogics)
+            {
+                if (logic.SelfUsable)
+                {
+                    logic.Apply(casterCombatManager);
+                    continue;
+                }
+                foreach (int index in selectedTargetsIndexes)
+                {
+                    logic.Apply(targetsCombatManager[index]);
+                }
+            }
+        }
+    }
+}

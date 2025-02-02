@@ -15,13 +15,8 @@ namespace SDRGames.Whist.CharacterModule.Presenters
         public PeriodicalEffectPresenter(int duration, Action<int> action, Sprite effectIcon, PeriodicalEffectView periodicalEffectView)
         {
             _periodicalEffect = new PeriodicalEffect(duration, action);
-
-            if(effectIcon == null)
-            {
-                return;
-            }
-
             _periodicalEffect.DurationChanged += OnDurationChanged;
+
             _periodicalEffectView = periodicalEffectView;
             _periodicalEffectView.Initialize(effectIcon, duration);
         }
@@ -54,12 +49,12 @@ namespace SDRGames.Whist.CharacterModule.Presenters
         public void Delete()
         {
             _periodicalEffect.DurationChanged -= OnDurationChanged;
-            _periodicalEffectView.Delete();
+            _periodicalEffectView?.Delete();
         }
 
         private void OnDurationChanged(object sender, DurationChangedEventArgs e)
         {
-            _periodicalEffectView.UpdateDuration(e.Duration);
+            _periodicalEffectView?.UpdateDuration(e.Duration);
         }
     }
 }

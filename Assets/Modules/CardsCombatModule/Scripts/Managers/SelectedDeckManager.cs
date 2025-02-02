@@ -1,12 +1,12 @@
 using System;
 
+using SDRGames.Whist.CardsCombatModule.Models;
 using SDRGames.Whist.CardsCombatModule.Presenters;
 using SDRGames.Whist.CardsCombatModule.ScriptableObjects;
 using SDRGames.Whist.CardsCombatModule.Views;
 using SDRGames.Whist.HelpersModule.Views;
 using SDRGames.Whist.UserInputModule.Controller;
-
-using UnityEditor;
+using SDRGames.Whist.HelpersModule;
 
 using UnityEngine;
 
@@ -17,11 +17,11 @@ namespace SDRGames.Whist.CardsCombatModule.Managers
         [SerializeField] private SelectedDeckView _selectedDeckView;
 
         private UserInputController _userInputController;
-        private DeckScriptableObject _deckScriptableObject;
+        private Deck _deck;
         private SelectedDeckPresenter _selectedDeckPresenter;
         private bool _visible = false;
 
-        private bool IsEmpty => _deckScriptableObject == null;
+        private bool IsEmpty => _deck == null;
 
         public event EventHandler EmptyDeckViewClicked;
         public event EventHandler<SelectedDeckViewClickedEventArgs> SelectedDeckViewClicked;
@@ -36,8 +36,8 @@ namespace SDRGames.Whist.CardsCombatModule.Managers
 
         public void SetSelectedDeck(DeckScriptableObject deckScriptableObject)
         {
-            _deckScriptableObject = deckScriptableObject;
-            _selectedDeckPresenter.SetSelectedDeck(deckScriptableObject);
+            _deck = new Deck(deckScriptableObject);
+            _selectedDeckPresenter.SetSelectedDeck(_deck);
         }
 
         private void OnLeftMouseButtonClickedOnUI(object sender, LeftMouseButtonUIClickEventArgs e)
@@ -56,14 +56,7 @@ namespace SDRGames.Whist.CardsCombatModule.Managers
 
         private void OnEnable()
         {
-            if (_selectedDeckView == null)
-            {
-                Debug.LogError("Selected Deck View не был назначен");
-                #if UNITY_EDITOR
-                    EditorApplication.isPlaying = false;
-                #endif
-                Application.Quit();
-            }
+            this.CheckFieldValueIsNotNull(nameof(_selectedDeckView), _selectedDeckView);
         }
 
         private void OnDisable()

@@ -1,4 +1,4 @@
-using SDRGames.Whist.AbilitiesQueueModule.ScriptableObjects;
+using SDRGames.Whist.CardsCombatModule.ScriptableObjects;
 using SDRGames.Whist.CardsCombatModule.Views;
 
 using UnityEditor;

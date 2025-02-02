@@ -1,7 +1,7 @@
 using SDRGames.Whist.PointsModule.Presenters;
 using SDRGames.Whist.CharacterModule.ScriptableObjects;
 using SDRGames.Whist.CharacterModule.Views;
-using SDRGames.Whist.SettingsModule.Models;
+using SDRGames.Whist.CharacterModule.Models;
 
 namespace SDRGames.Whist.CharacterModule.Presenters
 {
@@ -18,7 +18,7 @@ namespace SDRGames.Whist.CharacterModule.Presenters
             _playerCharacterParamsView.Initialize(
                 _playerCharacterParams.Level.ToString(), 
                 _playerCharacterParams.Experience.ToString(),
-                Scaling.Instance.ExperienceRequiredPerLevel[_playerCharacterParams.Level - 1].ToString(),
+                CharacterParametersScaling.Instance.ExperienceRequiredPerLevel[_playerCharacterParams.Level - 1].ToString(),
                 _playerCharacterParams.Strength.ToString(),
                 _playerCharacterParams.Agility.ToString(),
                 _playerCharacterParams.Stamina.ToString(),

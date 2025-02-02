@@ -1,15 +1,17 @@
 using TMPro;
 
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace SDRGames.Whist.CharacterModule.Views
 {
-    public class PeriodicalEffectView : MonoBehaviour
+    public class PeriodicalEffectView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
         [SerializeField] private Image _backgroundImage;
         [SerializeField] private Image _fillerImage;
         [SerializeField] private TextMeshProUGUI _roundsText;
+        [SerializeField] private CanvasGroup _tooltipCanvasGroup;
 
         private float _totalDuration;
 
@@ -34,6 +36,16 @@ namespace SDRGames.Whist.CharacterModule.Views
         public void Delete()
         {
             Destroy(gameObject);
+        }
+
+        public void OnPointerEnter(PointerEventData eventData)
+        {
+            _tooltipCanvasGroup.alpha = 1;
+        }
+
+        public void OnPointerExit(PointerEventData eventData)
+        {
+            _tooltipCanvasGroup.alpha = 0;
         }
     }
 }

@@ -1,15 +1,15 @@
 ﻿using System.Collections.Generic;
 
-using SDRGames.Whist.AbilitiesQueueModule.ScriptableObjects;
+using SDRGames.Whist.CardsCombatModule.Models;
 
 namespace SDRGames.Whist.CardsCombatModule.Managers
 {
     public class CardsEndTurnEventArgs
     {
         public float TotalCost { get; private set; }
-        public List<CardScriptableObject> Cards { get; private set; }
+        public List<Card> Cards { get; private set; }
 
-        public CardsEndTurnEventArgs(float totalCost, List<CardScriptableObject> cards)
+        public CardsEndTurnEventArgs(float totalCost, List<Card> cards)
         {
             TotalCost = totalCost;
             Cards = cards;

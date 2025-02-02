@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-using SDRGames.Whist.AbilitiesQueueModule.ScriptableObjects;
+using SDRGames.Whist.MeleeCombatModule.ScriptableObjects;
 using SDRGames.Whist.HelpersModule.Views;
 using SDRGames.Whist.UserInputModule.Controller;
 

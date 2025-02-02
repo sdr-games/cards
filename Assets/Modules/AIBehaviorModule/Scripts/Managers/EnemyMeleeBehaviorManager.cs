@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using SDRGames.Whist.AbilitiesQueueModule.ScriptableObjects;
+using SDRGames.Whist.AbilitiesModule.ScriptableObjects;
 using SDRGames.Whist.AIBehaviorModule.ScriptableObjects;
 using SDRGames.Whist.CharacterModule.Managers;
 
@@ -50,7 +50,7 @@ namespace SDRGames.Whist.AIBehaviorModule.Managers
         {
             foreach (AbilityScriptableObject ability in abilities)
             {
-                ability.ApplyLogics(_combatManager, _playerCombatManager, abilities.Count);
+                //ability.ApplyLogics(_combatManager, _playerCombatManager, abilities.Count);
             }
             _combatManager.SpendStaminaPoints(abilities.Sum(ability => ability.Cost));
         }

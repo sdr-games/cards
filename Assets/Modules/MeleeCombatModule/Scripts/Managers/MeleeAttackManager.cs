@@ -1,7 +1,8 @@
 using System;
 
+using SDRGames.Whist.MeleeCombatModule.Models;
 using SDRGames.Whist.MeleeCombatModule.Presenters;
-using SDRGames.Whist.AbilitiesQueueModule.ScriptableObjects;
+using SDRGames.Whist.MeleeCombatModule.ScriptableObjects;
 using SDRGames.Whist.MeleeCombatModule.Views;
 using SDRGames.Whist.UserInputModule.Controller;
 
@@ -15,16 +16,16 @@ namespace SDRGames.Whist.MeleeCombatModule.Managers
     {
         [SerializeField] private MeleeAttackView _meleeAttackView;
 
-        private MeleeAttackScriptableObject _meleeAttackScriptableObject;
+        private MeleeAttack _meleeAttack;
         private UserInputController _userInputController;
 
         public event EventHandler<MeleeAttackClickedEventArgs> MeleeAttackClicked;
 
         public void Initialize(UserInputController userInputController, MeleeAttackScriptableObject meleeAttackScriptableObject)
         {
-            _meleeAttackScriptableObject = meleeAttackScriptableObject;
+            _meleeAttack = new MeleeAttack(meleeAttackScriptableObject);
 
-            new MeleeAttackPresenter(userInputController, _meleeAttackScriptableObject, _meleeAttackView);
+            new MeleeAttackPresenter(_meleeAttack, _meleeAttackView);
 
             _userInputController = userInputController;
             _userInputController.LeftMouseButtonClickedOnUI += OnLeftMouseButtonClickedOnUI;
@@ -34,7 +35,7 @@ namespace SDRGames.Whist.MeleeCombatModule.Managers
         {
             if (e.GameObject == gameObject)
             {
-                MeleeAttackClicked?.Invoke(this, new MeleeAttackClickedEventArgs(_meleeAttackScriptableObject));
+                MeleeAttackClicked?.Invoke(this, new MeleeAttackClickedEventArgs(_meleeAttack));
             }
         }
 

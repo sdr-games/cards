@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using System.Collections.Generic;
 
 using SDRGames.Whist.CardsCombatModule.ScriptableObjects;
@@ -9,8 +8,6 @@ using SDRGames.Whist.CardsCombatModule.Views;
 using SDRGames.Whist.CardsCombatModule.Models;
 
 using UnityEngine;
-using SDRGames.Whist.AbilitiesQueueModule.ScriptableObjects;
-using SDRGames.Whist.AbilitiesQueueModule.Managers;
 
 namespace SDRGames.Whist.CardsCombatModule.Managers
 {
@@ -41,13 +38,13 @@ namespace SDRGames.Whist.CardsCombatModule.Managers
 
         public void SetSelectedDeck(DeckScriptableObject deckScriptableObject)
         {
-            _deck = new Deck(deckScriptableObject.Cards);
-            int count = _deck.Cards.Length > _maxCardsOnHandsCount ? _maxCardsOnHandsCount : _deck.Cards.Length;
+            _deck = new Deck(deckScriptableObject);
+            int count = _deck.Cards.Count > _maxCardsOnHandsCount ? _maxCardsOnHandsCount : _deck.Cards.Count;
             for (int i = 0; i < count; i++)
             {
-                int index = UnityEngine.Random.Range(0, _deck.Cards.Length - 1);
+                int index = UnityEngine.Random.Range(0, _deck.Cards.Count - 1);
                 CardManager cardManager = _deckOnHandView.DrawCard(count, i);
-                cardManager.Initialize(_userInputController, _deck.Cards[index], _deck.Cards.Length - i - 1);
+                cardManager.Initialize(_userInputController, _deck.Cards[index], _deck.Cards.Count - i - 1);
                 cardManager.CardClicked += OnCardClicked;
                 _cards.Add(cardManager);
             }
@@ -95,27 +92,27 @@ namespace SDRGames.Whist.CardsCombatModule.Managers
             foreach (CardManager cardManager in selectedCardsManagers)
             {
                 TryDeselectCard(cardManager);
-                reverseAmount += cardManager.CardScriptableObject.Cost;
+                reverseAmount += cardManager.Card.Cost;
             }
             CardsSelectionCleared?.Invoke(this, new CardsSelectionClearedEventArgs(reverseAmount));
             SelectedCardsCountChanged?.Invoke(this, new SelectedCardsCountChangedEventArgs(_selectedCardsManagers.Count <= 0));
         }
 
-        public List<CardScriptableObject> PopSelectedCards()
+        public List<Card> PopSelectedCards()
         {
             if(_selectedCardsManagers.Count == 0)
             {
                 return null;
             }
 
+            List<Card> selectedCards = new List<Card>();
             List<CardManager> selectedCardsManagers = new List<CardManager>(_selectedCardsManagers);
-            List<CardScriptableObject> selectedCards = new List<CardScriptableObject>();
             foreach(CardManager cardManager in selectedCardsManagers)
             {
-                selectedCards.Add(cardManager.CardScriptableObject);
+                selectedCards.Add(cardManager.Card);
                 TryRemoveSelectedCard(cardManager);
             }
-            return selectedCards.OrderBy(card => card.AbilityModifiers.Length).ToList();
+            return selectedCards;
         }
 
         public void ShowView()

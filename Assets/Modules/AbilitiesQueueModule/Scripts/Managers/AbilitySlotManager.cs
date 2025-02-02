@@ -1,6 +1,6 @@
 using System;
 
-using SDRGames.Whist.AbilitiesQueueModule.ScriptableObjects;
+using SDRGames.Whist.AbilitiesModule.Models;
 using SDRGames.Whist.AbilitiesQueueModule.Views;
 using SDRGames.Whist.UserInputModule.Controller;
 
@@ -13,7 +13,7 @@ namespace SDRGames.Whist.AbilitiesQueueModule.Managers
         [SerializeField] private AbilitySlotView _abilitySlotView;
         private UserInputController _userInputController;
         
-        [field:SerializeField] public AbilityScriptableObject AbilityScriptableObject { get; private set; }
+        [field:SerializeField] public Ability Ability { get; private set; }
 
         public event EventHandler<AbilityQueueClearedEventArgs> AbilitySlotUnbindManually;
 
@@ -23,11 +23,11 @@ namespace SDRGames.Whist.AbilitiesQueueModule.Managers
             _userInputController = userInputController;
         }
 
-        public void Bind(AbilityScriptableObject abilityScriptableObject)
+        public void Bind(Ability ability)
         {
-            AbilityScriptableObject = abilityScriptableObject;
-            _abilitySlotView.SetIconSprite(abilityScriptableObject.Icon);
-            if(abilityScriptableObject.Icon != null)
+            Ability = ability;
+            _abilitySlotView.SetIconSprite(ability.Icon);
+            if(ability.Icon != null)
             {
                 _userInputController.LeftMouseButtonClickedOnUI += OnLeftMouseButtonClickedOnUI;
             }
@@ -35,7 +35,7 @@ namespace SDRGames.Whist.AbilitiesQueueModule.Managers
 
         public void Unbind()
         {
-            AbilityScriptableObject = null;
+            Ability = null;
             _abilitySlotView.SetIconSprite();
             _userInputController.LeftMouseButtonClickedOnUI -= OnLeftMouseButtonClickedOnUI;
         }
@@ -44,7 +44,7 @@ namespace SDRGames.Whist.AbilitiesQueueModule.Managers
         {
             if (e.GameObject == gameObject && _abilitySlotView.interactable)
             {
-                float cost = AbilityScriptableObject.Cost;
+                float cost = Ability.Cost;
                 Unbind();
                 AbilitySlotUnbindManually?.Invoke(this, new AbilityQueueClearedEventArgs(cost));
             }

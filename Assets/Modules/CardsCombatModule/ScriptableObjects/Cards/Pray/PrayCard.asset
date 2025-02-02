@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a26571db55cf5054ea4c0e6e28c7f302, type: 3}
+  m_Name: PrayCard
+  m_EditorClassIdentifier: 
+  <Name>k__BackingField:
+    <Entity>k__BackingField:
+      m_TableReference:
+        m_TableCollectionName: GUID:4d392767c40aa5a4c99bdd73200f276b
+      m_TableEntryReference:
+        m_KeyId: 1411754881024
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+  <Description>k__BackingField:
+    <Entity>k__BackingField:
+      m_TableReference:
+        m_TableCollectionName: GUID:4d392767c40aa5a4c99bdd73200f276b
+      m_TableEntryReference:
+        m_KeyId: 1411754881024
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+  <Icon>k__BackingField: {fileID: 21300000, guid: 6fcc67a146113c6499624aa4c6bcc592,
+    type: 3}
+  <Cost>k__BackingField: 30
+  <AbilityLogics>k__BackingField:
+  - {fileID: 11400000, guid: 64e2fc4748a3747498566b1862505fed, type: 2}
+  <CardModifiersScriptableObjects>k__BackingField:
+  - {fileID: 11400000, guid: e191f4ed7cfcb864cbea1db14671674b, type: 2}
+  - {fileID: 11400000, guid: d9ee3711af4f6394494cbe27d5186868, type: 2}
+  references:
+    version: 2
+    RefIds: []

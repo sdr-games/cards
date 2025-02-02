@@ -226,8 +226,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _canvasGroup: {fileID: 54196805}
   _decks:
+  - {fileID: 11400000, guid: 7d525ae9a7e3e4b4eb260e10af19770b, type: 2}
   - {fileID: 11400000, guid: b53221eca4f4a244eaeb72ca64e7dbe5, type: 2}
-  - {fileID: 11400000, guid: 133861e3e3c99e148a54e0d0c16dbf95, type: 2}
   _cardsListManager: {fileID: 1366035642}
   _decksListManager: {fileID: 1797287280}
   _selectButton: {fileID: 1133765732}
@@ -946,7 +946,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _userInputController: {fileID: 1847108587}
   _turnsQueueManager: {fileID: 675783145}
-  _scalingSettings: {fileID: 11400000, guid: 62163cb19208e9d418f6090db59f0ed4, type: 2}
+  _characterParametersScalingSettings: {fileID: 11400000, guid: 62163cb19208e9d418f6090db59f0ed4,
+    type: 2}
+  _cardsScalingScriptableObject: {fileID: 11400000, guid: d7235515501a41441b4744416ff645b3,
+    type: 2}
+  _meleeAttacksScalingScriptableObject: {fileID: 11400000, guid: 5edbc78c63d1f4c47907d1e75345bfe1,
+    type: 2}
   _combatUIManager: {fileID: 1915771327}
   _playerCombatManager: {fileID: 1174818902}
   _enemyBehaviorManagers:
@@ -5771,7 +5776,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41f9507faf8892e4ab244bd5983af47a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _periodicalEffectViewPrefab: {fileID: 6722016241835193376, guid: 15982c4cf1d501247b07ae7bf0dc50b7,
+  _periodicalEffectViewPrefab: {fileID: 6722016241835193376, guid: df78d23cc311ddb49b0bb61ea33fc6f8,
     type: 3}
   _characterParamsModel: {fileID: 11400000, guid: ce7a9ca9dcc0d7e4bb8c0dec638ef1d8,
     type: 2}

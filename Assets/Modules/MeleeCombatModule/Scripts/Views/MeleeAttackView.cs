@@ -1,7 +1,4 @@
-using System;
-
-using SDRGames.Whist.AbilitiesQueueModule.ScriptableObjects;
-using SDRGames.Whist.UserInputModule.Controller;
+using SDRGames.Whist.MeleeCombatModule.Models;
 
 using TMPro;
 
@@ -21,7 +18,7 @@ namespace SDRGames.Whist.MeleeCombatModule.Views
         [SerializeField] private Image _iconImage;
         [SerializeField] private CanvasGroup _tooltipCanvasGroup;
 
-        public void Initialize(UserInputController userInputController, MeleeAttackScriptableObject meleeAttackScriptableObject)
+        public void Initialize(MeleeAttack meleeAttackScriptableObject)
         {
             _nameText.text = meleeAttackScriptableObject.Name.GetLocalizedText();
             _descriptionText.text = meleeAttackScriptableObject.Description.GetLocalizedText();

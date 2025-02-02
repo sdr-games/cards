@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-using SDRGames.Whist.AbilitiesQueueModule.ScriptableObjects;
+using SDRGames.Whist.AbilitiesModule.Models;
 using SDRGames.Whist.HelpersModule.Views;
 using SDRGames.Whist.LocalizationModule.Models;
 using SDRGames.Whist.NotificationsModule;
@@ -33,29 +33,29 @@ namespace SDRGames.Whist.AbilitiesQueueModule.Managers
             }
         }
 
-        public bool TryAddAbilityToQueue(AbilityScriptableObject abilityScriptableObject)
+        public bool TryAddAbilityToQueue(Ability ability)
         {
             AbilitySlotManager abilitySlotManager = FindFirstEmptySlot();
             if(abilitySlotManager == null)
             {
                 return false;
             }
-            abilitySlotManager.Bind(abilityScriptableObject);
-            AbilityQueueCountChanged?.Invoke(this, new AbilityQueueCountChangedEventArgs(_abilitySlotManagers.All(item => item.AbilityScriptableObject == null)));
+            abilitySlotManager.Bind(ability);
+            AbilityQueueCountChanged?.Invoke(this, new AbilityQueueCountChangedEventArgs(_abilitySlotManagers.All(item => item.Ability == null)));
             return true;
         }
 
-        public List<AbilityScriptableObject> PopSelectedAbilities()
+        public List<Ability> PopSelectedAbilities()
         {
-            if(_abilitySlotManagers.All(item => item.AbilityScriptableObject == null))
+            if(_abilitySlotManagers.All(item => item.Ability == null))
             {
                 return null;
             }
 
-            List<AbilityScriptableObject> selectedAbilities = new List<AbilityScriptableObject>();
+            List<Ability> selectedAbilities = new List<Ability>();
             foreach (AbilitySlotManager abilitySlotManager in _abilitySlotManagers)
             {
-                selectedAbilities.Add(abilitySlotManager.AbilityScriptableObject);
+                selectedAbilities.Add(abilitySlotManager.Ability);
                 abilitySlotManager.Unbind();
             }
             return selectedAbilities;
@@ -66,20 +66,20 @@ namespace SDRGames.Whist.AbilitiesQueueModule.Managers
             float reverseAmount = 0;
             foreach (AbilitySlotManager abilitySlotManager in _abilitySlotManagers)
             {
-                if (abilitySlotManager.AbilityScriptableObject == null)
+                if (abilitySlotManager.Ability == null)
                 {
                     continue;
                 }
-                reverseAmount += abilitySlotManager.AbilityScriptableObject.Cost;
+                reverseAmount += abilitySlotManager.Ability.Cost;
                 abilitySlotManager.Unbind();
             }
             AbilityQueueCleared?.Invoke(this, new AbilityQueueClearedEventArgs(reverseAmount));
-            AbilityQueueCountChanged?.Invoke(this, new AbilityQueueCountChangedEventArgs(_abilitySlotManagers.All(item => item.AbilityScriptableObject == null)));
+            AbilityQueueCountChanged?.Invoke(this, new AbilityQueueCountChangedEventArgs(_abilitySlotManagers.All(item => item.Ability == null)));
         }
 
         private AbilitySlotManager FindFirstEmptySlot()
         {
-            AbilitySlotManager abilitySlotManager = _abilitySlotManagers.FirstOrDefault(item => item.AbilityScriptableObject == null);
+            AbilitySlotManager abilitySlotManager = _abilitySlotManagers.FirstOrDefault(item => item.Ability == null);
             if(abilitySlotManager == null)
             {
                 Notification.Show(_errorMessage.GetLocalizedText());

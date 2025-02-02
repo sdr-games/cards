@@ -4,7 +4,6 @@ using System;
 
 using SDRGames.Whist.AbilitiesQueueModule.Managers;
 using SDRGames.Whist.CardsCombatModule.Managers;
-using SDRGames.Whist.CharacterModule.Managers;
 using SDRGames.Whist.DomainModule.Views;
 using SDRGames.Whist.HelpersModule;
 using SDRGames.Whist.HelpersModule.Views;
@@ -13,7 +12,10 @@ using SDRGames.Whist.RestorationModule.Managers;
 using SDRGames.Whist.UserInputModule.Controller;
 
 using UnityEngine;
-using SDRGames.Whist.AbilitiesQueueModule.ScriptableObjects;
+using SDRGames.Whist.AbilitiesModule.ScriptableObjects;
+using SDRGames.Whist.CardsCombatModule.ScriptableObjects;
+using SDRGames.Whist.CardsCombatModule.Models;
+using SDRGames.Whist.AbilitiesModule.Models;
 
 namespace SDRGames.Whist.DomainModule.Managers
 {
@@ -97,6 +99,8 @@ namespace SDRGames.Whist.DomainModule.Managers
         public void HidePlayerUI()
         {
             _abilitiesQueueManager.ClearBindedAbilities();
+            _deckOnHandsManager.ClearCardsSelection();
+            _abilitiesQueueManager.Hide();
             _playerSwitchableUI.Hide();
             _deckOnHandsManager.HideView();
             _potionListManager.Hide();
@@ -118,9 +122,9 @@ namespace SDRGames.Whist.DomainModule.Managers
             return _deckOnHandsManager.TryRemoveSelectedCard(cardManager);
         } 
 
-        public bool TryAddAbilityToQueue(AbilityScriptableObject abilityScriptableObject)
+        public bool TryAddAbilityToQueue(Ability ability)
         {
-            return _abilitiesQueueManager.TryAddAbilityToQueue(abilityScriptableObject);
+            return _abilitiesQueueManager.TryAddAbilityToQueue(ability);
         }
 
         #region Events methods
@@ -146,50 +150,8 @@ namespace SDRGames.Whist.DomainModule.Managers
             {
                 return;
             }
-            TryAddAbilityToQueue(e.PotionScriptableObject);
+            TryAddAbilityToQueue(e.Potion);
         }
-
-        //private void OnDeckApplyButtonClicked(object sender, CardsCombatModule.Managers.ApplyButtonClickedEventArgs e)
-        //{
-        //    if(e.Managers.Count == 0)
-        //    {
-        //        return;
-        //    }
-
-        //    List<CharacterCombatManager> enemyCharacterCombatManagers = new List<CharacterCombatManager>() { _enemyCharacterCombatManager };
-
-        //    List<CardScriptableObject> cards = new List<CardScriptableObject>();
-        //    foreach(CardManager card in e.Managers)
-        //    {
-        //        cards.Add(card.CardScriptableObject);
-        //    }
-
-        //    foreach (CardManager card in e.Managers)
-        //    {
-        //        if (card == null)
-        //        {
-        //            continue;
-        //        }
-        //        _deckOnHandsManager.RemoveSelectedCard(card);
-
-        //        if(card.CardScriptableObject.AbilityModifiers.Length > 0)
-        //        {
-        //            card.CardScriptableObject.ApplyModifiers(_playerCharacterCombatManager,
-        //            enemyCharacterCombatManagers,
-        //            e.Managers.Count,
-        //            cards
-        //            );
-        //        }
-
-        //        card.CardScriptableObject.ApplyLogics(
-        //            _playerCharacterCombatManager,
-        //            enemyCharacterCombatManagers,
-        //            e.Managers.Count,
-        //            new List<int>() { 0 });
-        //    }
-        //    _playerCharacterCombatManager.SpendBreathPoints(e.TotalCost);
-        //    _turnsQueueManager.SwitchTurn();
-        //}
 
         private void OnAbilityQueueCleared(object sender, AbilityQueueClearedEventArgs e)
         {
@@ -232,7 +194,7 @@ namespace SDRGames.Whist.DomainModule.Managers
         {
             float totalCost = 0;
 
-            List<CardScriptableObject> selectedCards = _deckOnHandsManager.PopSelectedCards();
+            List<Card> selectedCards = _deckOnHandsManager.PopSelectedCards();
             if (selectedCards != null)
             {
                 totalCost = selectedCards.Where(item => item != null).Sum(item => item.Cost);
@@ -241,7 +203,7 @@ namespace SDRGames.Whist.DomainModule.Managers
                 return;
             }
 
-            List<AbilityScriptableObject> selectedAbilities = _abilitiesQueueManager.PopSelectedAbilities();
+            List<Ability> selectedAbilities = _abilitiesQueueManager.PopSelectedAbilities();
             if (selectedAbilities != null)
             {
                 HidePlayerUI();

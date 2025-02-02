@@ -1,6 +1,5 @@
 using System;
 
-using SDRGames.Whist.AbilitiesQueueModule.ScriptableObjects;
 using SDRGames.Whist.CardsCombatModule.Presenters;
 using SDRGames.Whist.CardsCombatModule.Views;
 using SDRGames.Whist.UserInputModule.Controller;
@@ -8,6 +7,7 @@ using SDRGames.Whist.HelpersModule;
 
 using UnityEngine;
 using UnityEngine.EventSystems;
+using SDRGames.Whist.CardsCombatModule.Models;
 
 namespace SDRGames.Whist.CardsCombatModule.Managers
 {
@@ -19,20 +19,20 @@ namespace SDRGames.Whist.CardsCombatModule.Managers
         private int _siblingIndex;
         private bool _isSelected;
 
-        public CardScriptableObject CardScriptableObject { get; private set; }
+        public Card Card { get; private set; }
 
         public event EventHandler<CardClickedEventArgs> CardClicked;
 
-        public void Initialize(UserInputController userInputController, CardScriptableObject cardScriptableObject, int siblingIndex)
+        public void Initialize(UserInputController userInputController, Card card, int siblingIndex)
         {
-            CardScriptableObject = cardScriptableObject;
+            Card = card;
 
             _userInputController = userInputController;
             _userInputController.LeftMouseButtonClickedOnUI += OnLeftMouseButtonClickedOnUI;
 
             _siblingIndex = siblingIndex;
 
-            new CardPresenter(cardScriptableObject, _cardView);
+            new CardPresenter(Card, _cardView);
         }
 
         public void SetPosition(Vector2 position)

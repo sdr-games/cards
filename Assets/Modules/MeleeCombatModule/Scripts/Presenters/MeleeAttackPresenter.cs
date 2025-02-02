@@ -1,22 +1,19 @@
 using SDRGames.Whist.MeleeCombatModule.Views;
-using SDRGames.Whist.AbilitiesQueueModule.ScriptableObjects;
-
-using SDRGames.Whist.UserInputModule.Controller;
-using System;
+using SDRGames.Whist.MeleeCombatModule.Models;
 
 namespace SDRGames.Whist.MeleeCombatModule.Presenters
 {
     public class MeleeAttackPresenter
     {
-        private MeleeAttackScriptableObject _meleeAttackScriptableObject;
+        private MeleeAttack _meleeAttack;
         private MeleeAttackView _meleeAttackView;
 
-        public MeleeAttackPresenter(UserInputController userInputController, MeleeAttackScriptableObject meleeAttackScriptableObject, MeleeAttackView meleeAttackView)
+        public MeleeAttackPresenter(MeleeAttack meleeAttackScriptableObject, MeleeAttackView meleeAttackView)
         {
-            _meleeAttackScriptableObject = meleeAttackScriptableObject;
+            _meleeAttack = meleeAttackScriptableObject;
 
             _meleeAttackView = meleeAttackView;
-            _meleeAttackView.Initialize(userInputController, _meleeAttackScriptableObject);
+            _meleeAttackView.Initialize(_meleeAttack);
         }
     }
 }
