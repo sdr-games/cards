@@ -1,11 +1,9 @@
-using SDRGames.Whist.CardsCombatModule.ScriptableObjects;
-
 using UnityEngine;
 
 namespace SDRGames.Whist.AbilitiesModule.ScriptableObjects
 {
-    [CreateAssetMenu(fileName = "BuffLogic", menuName = "SDRGames/Combat/Cards/Logics/Buff Logic")]
-    public class BuffLogicScriptableObject : CardLogicScriptableObject
+    [CreateAssetMenu(fileName = "BuffLogic", menuName = "SDRGames/Combat/Logics/Buff Logic")]
+    public class BuffLogicScriptableObject : AbilityLogicScriptableObject
     {
         public enum BuffTypes { HealthPoints, Strength, Agility, Stamina, Intelligence, PhysicalDamage, MagicDamage };
         [field: SerializeField] public BuffTypes BuffType { get; private set; }

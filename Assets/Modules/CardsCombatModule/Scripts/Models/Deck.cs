@@ -14,6 +14,7 @@ namespace SDRGames.Whist.CardsCombatModule.Models
         public Deck(DeckScriptableObject deckScriptableObject)
         {
             Backside = deckScriptableObject.Backside;
+            Cards = new List<Card>();
             foreach(CardScriptableObject cardSO in deckScriptableObject.Cards)
             {
                 Card card = new Card(cardSO);

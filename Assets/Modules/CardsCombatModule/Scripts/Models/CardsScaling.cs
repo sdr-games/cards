@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 
-using SDRGames.Whist.CardsCombatModule.ScriptableObjects;
+using SDRGames.Whist.AbilitiesModule.ScriptableObjects;
 
 using UnityEngine;
 
@@ -24,9 +24,9 @@ namespace SDRGames.Whist.CardsCombatModule.Models
             Instance._cardsLogicScalings = _cardsLogicScalings;
         }
 
-        public int GetScalingMultiplier(CardLogicScriptableObject cardLogicScriptableObject, int currentLevel)
+        public int GetScalingMultiplier(AbilityLogicScriptableObject abilityLogicScriptableObject, int currentLevel)
         {
-            CardLogicScaling cardLogicScaling = _cardsLogicScalings.FirstOrDefault(item => item.CardLogicScriptableObject == cardLogicScriptableObject);
+            CardLogicScaling cardLogicScaling = _cardsLogicScalings.FirstOrDefault(item => item.AbilityLogicScriptableObject == abilityLogicScriptableObject);
             return cardLogicScaling.CalculateMultiplier(currentLevel);
         }
     }

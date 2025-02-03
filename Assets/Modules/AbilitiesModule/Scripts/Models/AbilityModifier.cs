@@ -1,11 +1,11 @@
-namespace SDRGames.Whist.CardsCombatModule.Models
+namespace SDRGames.Whist.AbilitiesModule.Models
 {
-    public class CardModifier
+    public class AbilityModifier
     {
         public int Value { get; private set; }
         public bool InPercents { get; private set; }
 
-        public CardModifier(int value, bool inPercents)
+        public AbilityModifier(int value, bool inPercents)
         {
             Value = value;
             InPercents = inPercents;

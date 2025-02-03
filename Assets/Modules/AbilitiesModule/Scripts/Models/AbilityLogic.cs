@@ -27,5 +27,7 @@ namespace SDRGames.Whist.AbilitiesModule.Models
         }
 
         public abstract void Apply(CharacterCombatManager characterCombatManager);
+
+        public abstract void AddEffect(AbilityModifier cardModifier);
     }
 }

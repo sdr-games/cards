@@ -6,9 +6,9 @@ using SDRGames.Whist.CharacterModule.ScriptableObjects;
 
 using static SDRGames.Whist.AbilitiesModule.ScriptableObjects.BuffLogicScriptableObject;
 
-namespace SDRGames.Whist.CardsCombatModule.Models
+namespace SDRGames.Whist.AbilitiesModule.Models
 {
-    public class BuffLogic : CardLogic
+    public class BuffLogic : AbilityLogic
     {
         protected BuffTypes _buffType;
         protected int _buffValue;
@@ -67,7 +67,7 @@ namespace SDRGames.Whist.CardsCombatModule.Models
             );
         }
 
-        public override void AddEffect(CardModifier cardModifier)
+        public override void AddEffect(AbilityModifier cardModifier)
         {
             if (cardModifier.InPercents)
             {

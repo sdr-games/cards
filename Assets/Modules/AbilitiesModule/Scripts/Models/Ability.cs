@@ -22,6 +22,27 @@ namespace SDRGames.Whist.AbilitiesModule.Models
             Description = abilityScriptableObject.Description;
             Icon = abilityScriptableObject.Icon;
             Cost = abilityScriptableObject.Cost;
+            AbilityLogics = new List<AbilityLogic>();
+            foreach (AbilityLogicScriptableObject abilityLogicScriptableObject in abilityScriptableObject.AbilityLogics)
+            {
+                switch (abilityLogicScriptableObject)
+                {
+                    case BuffLogicScriptableObject buffLogicScriptableObject:
+                        BuffLogic buffLogic = new BuffLogic(buffLogicScriptableObject);
+                        AbilityLogics.Add(buffLogic);
+                        break;
+                    case DamageLogicScriptableObject damageLogicScriptableObject:
+                        DamageLogic damageLogic = new DamageLogic(damageLogicScriptableObject);
+                        AbilityLogics.Add(damageLogic);
+                        break;
+                    case RestorationLogicScriptableObject restorationLogicScriptableObject:
+                        RestorationLogic restorationLogic = new RestorationLogic(restorationLogicScriptableObject);
+                        AbilityLogics.Add(restorationLogic);
+                        break;
+                    default:
+                        break;
+                }
+            }
         }
 
         public void ApplyLogics(CharacterCombatManager casterCombatManager, CharacterCombatManager targetCombatManager, int totalSelectedAbilitiesCount)

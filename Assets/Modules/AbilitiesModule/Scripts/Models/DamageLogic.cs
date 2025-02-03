@@ -1,15 +1,13 @@
 using System;
 
 using SDRGames.Whist.AbilitiesModule.ScriptableObjects;
-using SDRGames.Whist.CardsCombatModule;
-using SDRGames.Whist.CardsCombatModule.Models;
 using SDRGames.Whist.CharacterModule.Managers;
 
 using static SDRGames.Whist.AbilitiesModule.ScriptableObjects.DamageLogicScriptableObject;
 
-namespace SDRGames.Whist.CardsCombatModule.Models
+namespace SDRGames.Whist.AbilitiesModule.Models
 {
-    public class DamageLogic : CardLogic
+    public class DamageLogic : AbilityLogic
     {
         private DamageTypes _damageType;
         private int _damageValue;
@@ -53,7 +51,7 @@ namespace SDRGames.Whist.CardsCombatModule.Models
             action(_damageValue);
         }
 
-        public override void AddEffect(CardModifier cardModifier)
+        public override void AddEffect(AbilityModifier cardModifier)
         {
             if (cardModifier.InPercents)
             {

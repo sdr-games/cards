@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 
+using SDRGames.Whist.AbilitiesModule.Models;
 using SDRGames.Whist.CardsCombatModule.Models;
 using SDRGames.Whist.CharacterModule.Managers;
 
@@ -15,7 +16,7 @@ namespace SDRGames.Whist.CardsCombatModule.ScriptableObjects
         {
             foreach (Card card in affectedCards)
             {
-                card.AddEffect(new CardModifier(_valueInPercent, true));
+                card.AddEffect(new AbilityModifier(_valueInPercent, true));
             }
         }
     }

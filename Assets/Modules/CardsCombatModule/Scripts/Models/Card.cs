@@ -13,26 +13,6 @@ namespace SDRGames.Whist.CardsCombatModule.Models
 
         public Card(CardScriptableObject cardScriptableObject) : base(cardScriptableObject)
         {
-            foreach(AbilityLogicScriptableObject abilityLogicScriptableObject in cardScriptableObject.AbilityLogics)
-            {
-                switch (abilityLogicScriptableObject)
-                {
-                    case BuffLogicScriptableObject buffLogicScriptableObject:
-                        BuffLogic buffLogic = new BuffLogic(buffLogicScriptableObject);
-                        AbilityLogics.Add(buffLogic);
-                        break;
-                    case DamageLogicScriptableObject damageLogicScriptableObject:
-                        DamageLogic damageLogic = new DamageLogic(damageLogicScriptableObject);
-                        AbilityLogics.Add(damageLogic);
-                        break;
-                    case RestorationLogicScriptableObject restorationLogicScriptableObject:
-                        RestorationLogic restorationLogic = new RestorationLogic(restorationLogicScriptableObject);
-                        AbilityLogics.Add(restorationLogic);
-                        break;
-                    default:
-                        break;
-                }
-            }
             CardModifiersScriptableObjects = cardScriptableObject.CardModifiersScriptableObjects;
         }
 
@@ -41,11 +21,11 @@ namespace SDRGames.Whist.CardsCombatModule.Models
             CardModifiersScriptableObjects[index].Apply(casterCombatManager, targetCombatManagers, affectedCards);
         }
 
-        public void AddEffect(CardModifier cardModifier)
+        public void AddEffect(AbilityModifier cardModifier)
         {
-            foreach (CardLogic cardLogic in AbilityLogics)
+            foreach (AbilityLogic abilityLogic in AbilityLogics)
             {
-                cardLogic.AddEffect(cardModifier);
+                abilityLogic.AddEffect(cardModifier);
             }
         }
     }

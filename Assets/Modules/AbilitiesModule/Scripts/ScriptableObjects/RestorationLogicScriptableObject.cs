@@ -2,11 +2,11 @@ using System;
 
 using UnityEngine;
 
-namespace SDRGames.Whist.CardsCombatModule.ScriptableObjects
+namespace SDRGames.Whist.AbilitiesModule.ScriptableObjects
 {
     [Serializable]
-    [CreateAssetMenu(fileName = "RestorationLogic", menuName = "SDRGames/Combat/Cards/Logics/Restoration Logic")]
-    public class RestorationLogicScriptableObject : CardLogicScriptableObject
+    [CreateAssetMenu(fileName = "RestorationLogic", menuName = "SDRGames/Combat/Logics/Restoration Logic")]
+    public class RestorationLogicScriptableObject : AbilityLogicScriptableObject
     {
         public enum RestorationTypes { Armor, Barrier, Health, Stamina, Breath };
         [field: SerializeField] public RestorationTypes RestorationType { get; private set; }

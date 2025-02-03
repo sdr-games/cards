@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d8f8c80bc7494c045afd7fc61ea8c330, type: 3}
-  m_Name: FastStrikeMeleeAttack
+  m_Name: MediumStrikeMeleeAttack
   m_EditorClassIdentifier: 
   <Name>k__BackingField:
     <Entity>k__BackingField:
       m_TableReference:
         m_TableCollectionName: GUID:3b397188346b9fe4d87595afe2d9bae6
       m_TableEntryReference:
-        m_KeyId: 5358006272
+        m_KeyId: 81073582080
         m_Key: 
       m_FallbackState: 0
       m_WaitForCompletion: 0
@@ -27,16 +27,16 @@ MonoBehaviour:
       m_TableReference:
         m_TableCollectionName: GUID:3b397188346b9fe4d87595afe2d9bae6
       m_TableEntryReference:
-        m_KeyId: 5358006272
+        m_KeyId: 81073582080
         m_Key: 
       m_FallbackState: 0
       m_WaitForCompletion: 0
       m_LocalVariables: []
-  <Icon>k__BackingField: {fileID: 21300000, guid: ab624ac71b0619e49b126f082bb69460,
+  <Icon>k__BackingField: {fileID: 21300000, guid: a2956e0f6792d324d971a17853ca64be,
     type: 3}
-  <Cost>k__BackingField: 25
+  <Cost>k__BackingField: 35
   <AbilityLogics>k__BackingField:
-  - {fileID: 11400000, guid: 781fab9eff4c14a499c28695ac9fcaf4, type: 2}
+  - {fileID: 11400000, guid: be2e017f740fb364e90484961d0972f0, type: 2}
   references:
     version: 2
     RefIds: []

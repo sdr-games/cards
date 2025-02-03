@@ -19,10 +19,10 @@ namespace SDRGames.Whist.CharacterModule.ScriptableObjects
         #region Characteristics
 
         [field: Header("Characteristics")]
-        [field: SerializeField] public int Strength { get; protected set; } = 1;
-        [field: SerializeField] public int Agility { get; protected set; } = 1;
-        [field: SerializeField] public int Stamina { get; protected set; } = 1;
-        [field: SerializeField] public int Intelligence { get; protected set; } = 1;
+        [field: SerializeField] public int Strength { get; protected set; }
+        [field: SerializeField] public int Agility { get; protected set; }
+        [field: SerializeField] public int Stamina { get; protected set; }
+        [field: SerializeField] public int Intelligence { get; protected set; }
 
         #endregion
 
@@ -210,35 +210,13 @@ namespace SDRGames.Whist.CharacterModule.ScriptableObjects
             BarrierPoints.Reset();
         }
 
-        private void OnValidate()
+        protected virtual void OnValidate()
         {
-            if(Strength <= 0)
-            {
-                Strength = 1;
-            }
-            if (Agility <= 0)
-            {
-                Agility = 1;
-            }
-            if (Stamina <= 0)
-            {
-                Stamina = 1;
-            }
-            if (Intelligence <= 0)
-            {
-                Intelligence = 1;
-            }
-
             CalculateParameters();
         }
 
-        protected void OnDisable()
+        protected virtual void OnDisable()
         {
-            Level = 1;
-            Strength = 1;
-            Agility = 1;
-            Stamina = 1;
-            Intelligence = 1;
             CalculateParameters();
         }
 

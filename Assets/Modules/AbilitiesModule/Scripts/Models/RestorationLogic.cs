@@ -1,15 +1,15 @@
 using System;
 
-using SDRGames.Whist.CardsCombatModule.ScriptableObjects;
+using SDRGames.Whist.AbilitiesModule.ScriptableObjects;
 using SDRGames.Whist.CharacterModule.Managers;
 
 using UnityEngine;
 
-using static SDRGames.Whist.CardsCombatModule.ScriptableObjects.RestorationLogicScriptableObject;
+using static SDRGames.Whist.AbilitiesModule.ScriptableObjects.RestorationLogicScriptableObject;
 
-namespace SDRGames.Whist.CardsCombatModule.Models
+namespace SDRGames.Whist.AbilitiesModule.Models
 {
-    public class RestorationLogic : CardLogic
+    public class RestorationLogic : AbilityLogic
     {
         [SerializeField] private RestorationTypes _restorationType;
 
@@ -58,7 +58,7 @@ namespace SDRGames.Whist.CardsCombatModule.Models
             action(_restorationValue);
         }
 
-        public override void AddEffect(CardModifier cardModifier)
+        public override void AddEffect(AbilityModifier cardModifier)
         {
             if (cardModifier.InPercents)
             {

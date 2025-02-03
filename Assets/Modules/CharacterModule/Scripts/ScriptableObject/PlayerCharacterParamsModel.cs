@@ -94,11 +94,37 @@ namespace SDRGames.Whist.CharacterModule.ScriptableObjects
             ExperienceChanged?.Invoke(this, new ExperienceChangedEventArgs(Experience, CharacterParametersScaling.Instance.ExperienceRequiredPerLevel[Level - 1]));
         }
 
-        private void OnDisable()
+        protected override void OnValidate()
         {
-            base.OnDisable();
+            if (Strength <= 0)
+            {
+                Strength = 1;
+            }
+            if (Agility <= 0)
+            {
+                Agility = 1;
+            }
+            if (Stamina <= 0)
+            {
+                Stamina = 1;
+            }
+            if (Intelligence <= 0)
+            {
+                Intelligence = 1;
+            }
+            base.OnValidate();
+        }
+
+        protected override void OnDisable()
+        {
+            Level = 1;
+            Strength = 1;
+            Agility = 1;
+            Stamina = 1;
+            Intelligence = 1;
             Experience = 0;
             TalentPoints = 0;
+            base.OnDisable();
         }
     }
 }

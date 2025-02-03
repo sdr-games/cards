@@ -10,25 +10,25 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 32d27a04af33e994e967218025e0949c, type: 3}
-  m_Name: FastStrikeDamageLogic
+  m_Name: HeavyStrikeDamageLogic
   m_EditorClassIdentifier: 
   <Description>k__BackingField:
     <Entity>k__BackingField:
       m_TableReference:
         m_TableCollectionName: GUID:3b397188346b9fe4d87595afe2d9bae6
       m_TableEntryReference:
-        m_KeyId: 5358006272
+        m_KeyId: 166100512768
         m_Key: 
       m_FallbackState: 0
       m_WaitForCompletion: 0
       m_LocalVariables: []
-  <EffectIcon>k__BackingField: {fileID: 21300000, guid: ab624ac71b0619e49b126f082bb69460,
+  <EffectIcon>k__BackingField: {fileID: 21300000, guid: f9a48585b27a5bc4a8b563525affcf49,
     type: 3}
   <TargetsCount>k__BackingField: 1
   <Chance>k__BackingField: 100
   <RoundsCount>k__BackingField: 0
   <DamageType>k__BackingField: 0
-  <DamageValue>k__BackingField: 50
+  <DamageValue>k__BackingField: 90
   <InPercents>k__BackingField: 0
   references:
     version: 2

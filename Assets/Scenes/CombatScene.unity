@@ -226,8 +226,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _canvasGroup: {fileID: 54196805}
   _decks:
-  - {fileID: 11400000, guid: 7d525ae9a7e3e4b4eb260e10af19770b, type: 2}
   - {fileID: 11400000, guid: b53221eca4f4a244eaeb72ca64e7dbe5, type: 2}
+  - {fileID: 11400000, guid: 7d525ae9a7e3e4b4eb260e10af19770b, type: 2}
   _cardsListManager: {fileID: 1366035642}
   _decksListManager: {fileID: 1797287280}
   _selectButton: {fileID: 1133765732}
@@ -2310,8 +2310,8 @@ MonoBehaviour:
   _canvasGroup: {fileID: 589486335}
   _meleeAttackScriptableObjects:
   - {fileID: 11400000, guid: 0084636326e86804386c7d737f95eeb6, type: 2}
-  - {fileID: 11400000, guid: 0084636326e86804386c7d737f95eeb6, type: 2}
-  - {fileID: 11400000, guid: 0084636326e86804386c7d737f95eeb6, type: 2}
+  - {fileID: 11400000, guid: 7cd3bde1947bb21449b134e3d7167474, type: 2}
+  - {fileID: 11400000, guid: 3bf55dae7e21b734884fd6055adcc966, type: 2}
   _meleeAttackPrefab: {fileID: 4835292799439736030, guid: 264b53f9f5a3a40408ee0114be547915,
     type: 3}
   _contentRectTransform: {fileID: 1961955913}
