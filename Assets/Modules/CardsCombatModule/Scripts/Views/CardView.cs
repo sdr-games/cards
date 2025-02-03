@@ -1,23 +1,50 @@
+using SDRGames.Whist.LocalizationModule.Models;
+using SDRGames.Whist.HelpersModule;
+
 using TMPro;
 
-using UnityEditor;
-
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace SDRGames.Whist.CardsCombatModule.Views
 {
     public class CardView : CardPreviewView
     {
         [SerializeField] private RectTransform _rectTransform;
+        [SerializeField] private Outline _outline;
         [SerializeField] private TextMeshProUGUI _costText;
+        [SerializeField] private float _hoverOffset;
 
-        public void Initialize(Vector3 position, string nameText, string descriptionText, Sprite illustrationSprite, string costText)
+        public void Initialize(LocalizedString nameText, LocalizedString descriptionText, Sprite illustrationSprite, string costText)
         {
-            transform.localPosition = position;
             SetRotation();
             transform.SetAsFirstSibling();
             base.Initialize(nameText, descriptionText, illustrationSprite);
             _costText.text = costText;
+        }
+
+        public void Highlight()
+        {
+            _rectTransform.SetAsLastSibling();
+            _rectTransform.Translate(Vector3.up * _hoverOffset);
+            _outline.enabled = true;
+        }
+
+        public void Unhighlight(int index)
+        {
+            _rectTransform.SetSiblingIndex(index);
+            _rectTransform.Translate(-Vector3.up * _hoverOffset);
+            _outline.enabled = false;
+        }
+
+        public void Select()
+        {
+            _rectTransform.Translate(Vector3.up * _rectTransform.rect.height / 2);
+        }
+
+        public void Deselect()
+        {
+            _rectTransform.Translate(-Vector3.up * _rectTransform.rect.height / 2);
         }
 
         private void SetRotation()
@@ -29,21 +56,8 @@ namespace SDRGames.Whist.CardsCombatModule.Views
 
         private void OnEnable()
         {
-            if (_rectTransform == null)
-            {
-                Debug.LogError("Rect Transform не был назначен");
-                #if UNITY_EDITOR
-                    EditorApplication.isPlaying = false;
-                #endif
-            }
-
-            if (_costText == null)
-            {
-                Debug.LogError("Cost Text не был назначен");
-                #if UNITY_EDITOR
-                    EditorApplication.isPlaying = false;
-                #endif
-            }
+            this.CheckFieldValueIsNotNull(nameof(_rectTransform), _rectTransform);
+            this.CheckFieldValueIsNotNull(nameof(_costText), _costText);
         }
     }
 }

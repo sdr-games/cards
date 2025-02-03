@@ -1,6 +1,6 @@
 using System;
 
-using SDRGames.Whist.SettingsModule.Models;
+using SDRGames.Whist.CharacterModule.Models;
 
 using UnityEngine;
 
@@ -30,7 +30,7 @@ namespace SDRGames.Whist.CharacterModule.ScriptableObjects
         public override void IncreaseLevel(int level)
         {
             base.IncreaseLevel(level);
-            IncreaseTalentPoints(Scaling.Instance.TalentPointsPerLevel);
+            IncreaseTalentPoints(CharacterParametersScaling.Instance.TalentPointsPerLevel);
             LevelChanged?.Invoke(this, new LevelChangedEventArgs(Level));
             PhysicalDamageChanged?.Invoke(this, new ParameterChangedEventArgs(PhysicalDamage));
             MagicalDamageChanged?.Invoke(this, new ParameterChangedEventArgs(MagicalDamage));
@@ -76,29 +76,55 @@ namespace SDRGames.Whist.CharacterModule.ScriptableObjects
         {
             Experience += experience;
 
-            if(Level > Scaling.Instance.ExperienceRequiredPerLevel.Length)
+            if(Level > CharacterParametersScaling.Instance.ExperienceRequiredPerLevel.Length)
             {
                 ExperienceChanged?.Invoke(this, new ExperienceChangedEventArgs(Experience, Experience));
                 return;
             }
 
-            if(Experience >= Scaling.Instance.ExperienceRequiredPerLevel[Level - 1])
+            if(Experience >= CharacterParametersScaling.Instance.ExperienceRequiredPerLevel[Level - 1])
             {
                 IncreaseLevel(1);
-                if (Level >= Scaling.Instance.ExperienceRequiredPerLevel.Length)
+                if (Level >= CharacterParametersScaling.Instance.ExperienceRequiredPerLevel.Length)
                 {
-                    ExperienceChanged?.Invoke(this, new ExperienceChangedEventArgs(Experience, Scaling.Instance.ExperienceRequiredPerLevel[^1]));
+                    ExperienceChanged?.Invoke(this, new ExperienceChangedEventArgs(Experience, CharacterParametersScaling.Instance.ExperienceRequiredPerLevel[^1]));
                     return;
                 }
             } 
-            ExperienceChanged?.Invoke(this, new ExperienceChangedEventArgs(Experience, Scaling.Instance.ExperienceRequiredPerLevel[Level - 1]));
+            ExperienceChanged?.Invoke(this, new ExperienceChangedEventArgs(Experience, CharacterParametersScaling.Instance.ExperienceRequiredPerLevel[Level - 1]));
         }
 
-        private void OnDisable()
+        protected override void OnValidate()
         {
-            base.OnDisable();
+            if (Strength <= 0)
+            {
+                Strength = 1;
+            }
+            if (Agility <= 0)
+            {
+                Agility = 1;
+            }
+            if (Stamina <= 0)
+            {
+                Stamina = 1;
+            }
+            if (Intelligence <= 0)
+            {
+                Intelligence = 1;
+            }
+            base.OnValidate();
+        }
+
+        protected override void OnDisable()
+        {
+            Level = 1;
+            Strength = 1;
+            Agility = 1;
+            Stamina = 1;
+            Intelligence = 1;
             Experience = 0;
             TalentPoints = 0;
+            base.OnDisable();
         }
     }
 }

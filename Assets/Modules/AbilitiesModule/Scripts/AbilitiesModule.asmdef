@@ -1,0 +1,19 @@
+{
+    "name": "AbilitiesModule",
+    "rootNamespace": "SDRGames.Whist.AbilitiesModule",
+    "references": [
+        "GUID:93e0ad40b1227c94bbc216fd4643284f",
+        "GUID:df3e9bc81cfaeb44aac86061400f6ae1",
+        "GUID:1cc1c84c1ea29954790c451beed7c1db",
+        "GUID:e41ff2de5c626d64f9b1425803813a35"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

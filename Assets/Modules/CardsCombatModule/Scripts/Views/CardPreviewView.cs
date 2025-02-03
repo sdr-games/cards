@@ -1,3 +1,5 @@
+using SDRGames.Whist.LocalizationModule.Models;
+
 using TMPro;
 
 using UnityEditor;
@@ -12,10 +14,10 @@ namespace SDRGames.Whist.CardsCombatModule.Views
         [SerializeField] protected Image _illustrationImage;
         [SerializeField] protected TextMeshProUGUI _descriptionText;
 
-        public virtual void Initialize(string nameText, string descriptionText, Sprite illustrationSprite)
+        public virtual void Initialize(LocalizedString nameText, LocalizedString descriptionText, Sprite illustrationSprite)
         {
             _illustrationImage.sprite = illustrationSprite;
-            _descriptionText.text = descriptionText;
+            _descriptionText.text = descriptionText.GetLocalizedText();
         }
 
         private void OnEnable()

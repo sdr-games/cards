@@ -2,9 +2,6 @@ using System;
 
 using SDRGames.Whist.UserInputModule.Controller;
 
-using TMPro;
-
-using UnityEngine;
 using UnityEngine.UI;
 
 namespace SDRGames.Whist.HelpersModule.Views
@@ -17,6 +14,7 @@ namespace SDRGames.Whist.HelpersModule.Views
 
         public void Initialize(UserInputController userInputController, bool interactable = false)
         {
+            ButtonClicked = null;
             _userInputController = userInputController;
             if(interactable)
             {
@@ -28,12 +26,20 @@ namespace SDRGames.Whist.HelpersModule.Views
 
         public void Activate()
         {
+            if (interactable)
+            {
+                return;
+            } 
             interactable = true;
             _userInputController.LeftMouseButtonClickedOnUI += OnLeftMouseButtonClickedOnUI;
         }
 
         public void Deactivate()
         {
+            if(!interactable)
+            {
+                return;
+            }
             interactable = false;
             _userInputController.LeftMouseButtonClickedOnUI -= OnLeftMouseButtonClickedOnUI;
         }

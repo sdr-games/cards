@@ -1,19 +1,19 @@
-using SDRGames.Whist.RestorationModule.ScriptableObjects;
+using SDRGames.Whist.RestorationModule.Models;
 using SDRGames.Whist.RestorationModule.Views;
 
 namespace SDRGames.Whist.RestorationModule.Presenters
 {
     public class PotionPresenter
     {
-        private PotionScriptableObject _potionScriptableObject;
+        private Potion _potion;
         private PotionView _potionView;
 
-        public PotionPresenter(PotionScriptableObject meleeAttackScriptableObject, PotionView meleeAttackView)
+        public PotionPresenter(Potion potion, PotionView meleeAttackView)
         {
-            _potionScriptableObject = meleeAttackScriptableObject;
+            _potion = potion;
 
             _potionView = meleeAttackView;
-            _potionView.Initialize(_potionScriptableObject);
+            _potionView.Initialize(_potion);
         }
     }
 }

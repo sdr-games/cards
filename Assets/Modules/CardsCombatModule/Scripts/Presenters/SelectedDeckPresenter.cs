@@ -1,4 +1,4 @@
-using SDRGames.Whist.CardsCombatModule.ScriptableObjects;
+using SDRGames.Whist.CardsCombatModule.Models;
 using SDRGames.Whist.CardsCombatModule.Views;
 
 namespace SDRGames.Whist.CardsCombatModule.Presenters
@@ -13,9 +13,9 @@ namespace SDRGames.Whist.CardsCombatModule.Presenters
             _selectedDeckView.Initialize();
         }
 
-        public void SetSelectedDeck(DeckScriptableObject deckScriptableObject)
+        public void SetSelectedDeck(Deck deck)
         {
-            _selectedDeckView.SetBacksideImage(deckScriptableObject.Backside);
+            _selectedDeckView.SetBacksideImage(deck.Backside);
         }
     }
 }

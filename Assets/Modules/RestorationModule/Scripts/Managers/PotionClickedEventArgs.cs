@@ -1,16 +1,16 @@
 ﻿using System;
 
-using SDRGames.Whist.RestorationModule.ScriptableObjects;
+using SDRGames.Whist.RestorationModule.Models;
 
 namespace SDRGames.Whist.RestorationModule.Managers
 {
     public class PotionClickedEventArgs : EventArgs
     {
-        public PotionScriptableObject PotionScriptableObject { get; private set; }
+        public Potion Potion { get; private set; }
 
-        public PotionClickedEventArgs(PotionScriptableObject potionScriptableObject)
+        public PotionClickedEventArgs(Potion potion)
         {
-            PotionScriptableObject = potionScriptableObject;
+            Potion = potion;
         }
     }
 }

@@ -3,6 +3,7 @@ using SDRGames.Whist.PointsModule.Views;
 using UnityEditor;
 
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace SDRGames.Whist.CharacterModule.Views
 {
@@ -11,6 +12,7 @@ namespace SDRGames.Whist.CharacterModule.Views
         [field: SerializeField] public PointsBarView ArmorPointsBarView { get; protected set; }
         [field: SerializeField] public PointsBarView BarrierPointsBarView { get; protected set; }
         [field: SerializeField] public PointsBarView HealthPointsBarView { get; protected set; }
+        [field: SerializeField] public GridLayoutGroup EffectsBar { get; protected set; }
 
         private void OnEnable()
         {
@@ -33,6 +35,14 @@ namespace SDRGames.Whist.CharacterModule.Views
             if (BarrierPointsBarView == null)
             {
                 Debug.LogError("Barrier PointsBar View не был назначен");
+                #if UNITY_EDITOR
+                    EditorApplication.isPlaying = false;
+                #endif
+            }
+
+            if (EffectsBar == null)
+            {
+                Debug.LogError("Effects Bar не был назначен");
                 #if UNITY_EDITOR
                     EditorApplication.isPlaying = false;
                 #endif

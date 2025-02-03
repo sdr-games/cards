@@ -1,3 +1,5 @@
+using SDRGames.Whist.HelpersModule;
+
 using UnityEditor;
 
 using UnityEngine;
@@ -12,9 +14,11 @@ namespace SDRGames.Whist.CardsCombatModule.ScriptableObjects
 
         private void OnEnable()
         {
-            if (Backside == null)
+            this.CheckFieldValueIsNotNull(nameof(Backside), Backside);
+
+            if(Cards.Length < 16)
             {
-                Debug.LogError("Backside не был назначен");
+                Debug.LogError("Количество Cards должно быть равно 16");
                 #if UNITY_EDITOR
                     EditorApplication.isPlaying = false;
                 #endif

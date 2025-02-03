@@ -1,17 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
-using SDRGames.Whist.CardsCombatModule.ScriptableObjects;
+using SDRGames.Whist.CardsCombatModule.Models;
 using SDRGames.Whist.CardsCombatModule.Views;
-
-using UnityEngine;
 
 namespace SDRGames.Whist.CardsCombatModule.Presenters
 {
     public class CardPresenter
     {
-        public CardPresenter(Vector3 position, CardScriptableObject cardScriptableObject, CardView cardView)
+        public CardPresenter(Card card, CardView cardView)
         {
-            cardView.Initialize(position, cardScriptableObject.Name, cardScriptableObject.Description, cardScriptableObject.Illustration, cardScriptableObject.Cost.ToString());
+            cardView.Initialize(card.Name, card.Description, card.Icon, card.Cost.ToString());
         }
     }
 }

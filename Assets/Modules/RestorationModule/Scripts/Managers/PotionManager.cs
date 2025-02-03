@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
+using SDRGames.Whist.RestorationModule.Models;
 using SDRGames.Whist.RestorationModule.Presenters;
 using SDRGames.Whist.RestorationModule.ScriptableObjects;
 using SDRGames.Whist.RestorationModule.Views;
@@ -18,16 +19,16 @@ namespace SDRGames.Whist.RestorationModule.Managers
     {
         [SerializeField] private PotionView _potionView;
 
-        private PotionScriptableObject _potionScriptableObject;
+        private Potion _potion;
         private UserInputController _userInputController;
 
         public event EventHandler<PotionClickedEventArgs> PotionClicked;
 
-        public void Initialize(UserInputController userInputController, PotionScriptableObject meleeAttackScriptableObject)
+        public void Initialize(UserInputController userInputController, PotionScriptableObject potionScriptableObject)
         {
-            _potionScriptableObject = meleeAttackScriptableObject;
+            _potion = new Potion(potionScriptableObject);
 
-            new PotionPresenter(_potionScriptableObject, _potionView);
+            new PotionPresenter(_potion, _potionView);
 
             _userInputController = userInputController;
             _userInputController.LeftMouseButtonClickedOnUI += OnLeftMouseButtonClickedOnUI;
@@ -37,7 +38,7 @@ namespace SDRGames.Whist.RestorationModule.Managers
         {
             if (e.GameObject == gameObject)
             {
-                PotionClicked?.Invoke(this, new PotionClickedEventArgs(_potionScriptableObject));
+                PotionClicked?.Invoke(this, new PotionClickedEventArgs(_potion));
             }
         }
 

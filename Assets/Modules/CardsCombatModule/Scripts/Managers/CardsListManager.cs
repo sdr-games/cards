@@ -16,7 +16,7 @@ namespace SDRGames.Whist.CardsCombatModule.Managers
             for (int i = 0; i < cards.Length; i++)
             {
                 CardScriptableObject card = cards[i];
-                _cardPreviewViews[i].Initialize(card.Name, card.Description, card.Illustration);
+                _cardPreviewViews[i].Initialize(card.Name, card.Description, card.Icon);
             }
         }
 

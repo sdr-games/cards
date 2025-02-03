@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32d27a04af33e994e967218025e0949c, type: 3}
+  m_Name: MediumStrikeDamageLogic
+  m_EditorClassIdentifier: 
+  <Description>k__BackingField:
+    <Entity>k__BackingField:
+      m_TableReference:
+        m_TableCollectionName: GUID:3b397188346b9fe4d87595afe2d9bae6
+      m_TableEntryReference:
+        m_KeyId: 81073582080
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+  <EffectIcon>k__BackingField: {fileID: 21300000, guid: a2956e0f6792d324d971a17853ca64be,
+    type: 3}
+  <TargetsCount>k__BackingField: 1
+  <Chance>k__BackingField: 100
+  <RoundsCount>k__BackingField: 0
+  <DamageType>k__BackingField: 0
+  <DamageValue>k__BackingField: 70
+  <InPercents>k__BackingField: 0
+  references:
+    version: 2
+    RefIds: []

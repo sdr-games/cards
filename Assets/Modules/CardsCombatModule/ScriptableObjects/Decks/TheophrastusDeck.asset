@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0c08a056b016e845adb5621f9f7c077, type: 3}
+  m_Name: TheophrastusDeck
+  m_EditorClassIdentifier: 
+  <Backside>k__BackingField: {fileID: 21300000, guid: 0d5d87cbd97bb0f44b87da2451c3218e,
+    type: 3}
+  <Cards>k__BackingField:
+  - {fileID: 11400000, guid: 851bc708ce4106945bd2a3980f4c6631, type: 2}
+  - {fileID: 11400000, guid: 851bc708ce4106945bd2a3980f4c6631, type: 2}
+  - {fileID: 11400000, guid: dd4b155adf07c1a44ba45db397cdbc79, type: 2}
+  - {fileID: 11400000, guid: dd4b155adf07c1a44ba45db397cdbc79, type: 2}
+  - {fileID: 11400000, guid: 143d4886e0299344191c97ec98b4a465, type: 2}
+  - {fileID: 11400000, guid: 143d4886e0299344191c97ec98b4a465, type: 2}
+  - {fileID: 11400000, guid: 893537c48a1be1e44ab14de52975354d, type: 2}
+  - {fileID: 11400000, guid: 893537c48a1be1e44ab14de52975354d, type: 2}
+  - {fileID: 11400000, guid: 64ddc1ce9772e814aa8942ecb00c4684, type: 2}
+  - {fileID: 11400000, guid: 64ddc1ce9772e814aa8942ecb00c4684, type: 2}
+  - {fileID: 11400000, guid: f41aa10296fb42d4eb07f4c213652bf7, type: 2}
+  - {fileID: 11400000, guid: f41aa10296fb42d4eb07f4c213652bf7, type: 2}
+  - {fileID: 11400000, guid: 9728c4a9a3f96e94da381d46a6b074af, type: 2}
+  - {fileID: 11400000, guid: 9728c4a9a3f96e94da381d46a6b074af, type: 2}
+  - {fileID: 11400000, guid: 7242d87fe4e05cb4f9d50539e70a09cc, type: 2}
+  - {fileID: 11400000, guid: 7242d87fe4e05cb4f9d50539e70a09cc, type: 2}

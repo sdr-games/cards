@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-using SDRGames.Whist.AbilitiesQueueModule.ScriptableObjects;
+using SDRGames.Whist.AbilitiesModule.Models;
 using SDRGames.Whist.HelpersModule.Views;
 using SDRGames.Whist.LocalizationModule.Models;
 using SDRGames.Whist.NotificationsModule;
@@ -17,45 +17,69 @@ namespace SDRGames.Whist.AbilitiesQueueModule.Managers
     public class AbilitiesQueueManager : HideableUIView
     {
         [SerializeField] private AbilitySlotManager[] _abilitySlotManagers;
-        [SerializeField] private ButtonView _applyButton;
-        [SerializeField] private ButtonView _cancelButton;
         [SerializeField] private LocalizedString _errorMessage;
 
         public bool IsFull => FindFirstEmptySlot() == null;
 
-        private Dictionary<AbilitySlotManager, AbilityScriptableObject> _bindedAbilities;
-
-        public event EventHandler<ApplyButtonClickedEventArgs> ApplyButtonClicked;
         public event EventHandler<AbilityQueueClearedEventArgs> AbilityQueueCleared;
+        public event EventHandler<AbilityQueueCountChangedEventArgs> AbilityQueueCountChanged;
 
         public void Initialize(UserInputController userInputController)
         {
-            _bindedAbilities = new Dictionary<AbilitySlotManager, AbilityScriptableObject>();
-
-            foreach (var abilitySlotManager in _abilitySlotManagers)
+            foreach (AbilitySlotManager abilitySlotManager in _abilitySlotManagers)
             {
                 abilitySlotManager.Initialize(userInputController);
-                abilitySlotManager.AbilitySlotUnbound += OnAbilitySlotCleared;
-                _bindedAbilities.Add(abilitySlotManager, null);
+                abilitySlotManager.AbilitySlotUnbindManually += OnAbilitySlotUnbindManually;
             }
-            _applyButton.Initialize(userInputController);
-            _applyButton.ButtonClicked += OnApplyButtonClicked;
-
-            _cancelButton.Initialize(userInputController);
-            _cancelButton.ButtonClicked += OnCancelButtonClicked;
         }
 
-        public void AddAbilityToQueue(AbilityScriptableObject abilityScriptableObject)
+        public bool TryAddAbilityToQueue(Ability ability)
         {
             AbilitySlotManager abilitySlotManager = FindFirstEmptySlot();
-            abilitySlotManager.Bind(abilityScriptableObject.Icon);
-            _bindedAbilities[abilitySlotManager] = abilityScriptableObject;
-            SwitchButtonsActivity();
+            if(abilitySlotManager == null)
+            {
+                return false;
+            }
+            abilitySlotManager.Bind(ability);
+            AbilityQueueCountChanged?.Invoke(this, new AbilityQueueCountChangedEventArgs(_abilitySlotManagers.All(item => item.Ability == null)));
+            return true;
+        }
+
+        public List<Ability> PopSelectedAbilities()
+        {
+            if(_abilitySlotManagers.All(item => item.Ability == null))
+            {
+                return null;
+            }
+
+            List<Ability> selectedAbilities = new List<Ability>();
+            foreach (AbilitySlotManager abilitySlotManager in _abilitySlotManagers)
+            {
+                selectedAbilities.Add(abilitySlotManager.Ability);
+                abilitySlotManager.Unbind();
+            }
+            return selectedAbilities;
+        }
+
+        public void ClearBindedAbilities()
+        {
+            float reverseAmount = 0;
+            foreach (AbilitySlotManager abilitySlotManager in _abilitySlotManagers)
+            {
+                if (abilitySlotManager.Ability == null)
+                {
+                    continue;
+                }
+                reverseAmount += abilitySlotManager.Ability.Cost;
+                abilitySlotManager.Unbind();
+            }
+            AbilityQueueCleared?.Invoke(this, new AbilityQueueClearedEventArgs(reverseAmount));
+            AbilityQueueCountChanged?.Invoke(this, new AbilityQueueCountChangedEventArgs(_abilitySlotManagers.All(item => item.Ability == null)));
         }
 
         private AbilitySlotManager FindFirstEmptySlot()
         {
-            AbilitySlotManager abilitySlotManager = _bindedAbilities.FirstOrDefault(item => item.Value == null).Key;
+            AbilitySlotManager abilitySlotManager = _abilitySlotManagers.FirstOrDefault(item => item.Ability == null);
             if(abilitySlotManager == null)
             {
                 Notification.Show(_errorMessage.GetLocalizedText());
@@ -63,55 +87,9 @@ namespace SDRGames.Whist.AbilitiesQueueModule.Managers
             return abilitySlotManager;
         }
 
-        private void OnAbilitySlotCleared(object sender, EventArgs e)
+        private void OnAbilitySlotUnbindManually(object sender, AbilityQueueClearedEventArgs e)
         {
-            AbilitySlotManager abilitySlotManager = (AbilitySlotManager)sender;
-            float reverseAmount = 0;
-            if (_bindedAbilities.ContainsKey(abilitySlotManager))
-            {
-                reverseAmount = _bindedAbilities[abilitySlotManager].Cost;
-                _bindedAbilities[abilitySlotManager] = null;
-            }
-            SwitchButtonsActivity();
-            AbilityQueueCleared?.Invoke(this, new AbilityQueueClearedEventArgs(reverseAmount));
-        }
-
-        private void SwitchButtonsActivity()
-        {
-            if(_bindedAbilities.Values.FirstOrDefault(item => item != null))
-            {
-                _applyButton.Activate();
-                _cancelButton.Activate();
-                return;
-            }
-            _applyButton.Deactivate();
-            _cancelButton.Deactivate();
-        }
-
-        private void OnApplyButtonClicked(object sender, EventArgs e)
-        {
-            Dictionary<AbilitySlotManager, AbilityScriptableObject> bindedAbilities = new Dictionary<AbilitySlotManager, AbilityScriptableObject>(_bindedAbilities);
-            float totalCost = bindedAbilities.Values.Where(item => item != null).Sum(item => item.Cost);
-            ClearBindedAbilities(bindedAbilities);
-            ApplyButtonClicked?.Invoke(this, new ApplyButtonClickedEventArgs(totalCost, bindedAbilities.Values.ToList()));
-        }
-
-        private void OnCancelButtonClicked(object sender, EventArgs e)
-        {
-            Dictionary<AbilitySlotManager, AbilityScriptableObject> bindedAbilities = new Dictionary<AbilitySlotManager, AbilityScriptableObject>(_bindedAbilities);
-            ClearBindedAbilities(bindedAbilities);
-        }
-
-        private void ClearBindedAbilities(Dictionary<AbilitySlotManager, AbilityScriptableObject> bindedAbilities)
-        {
-            foreach (KeyValuePair<AbilitySlotManager, AbilityScriptableObject> item in bindedAbilities)
-            {
-                if (item.Value == null)
-                {
-                    continue;
-                }
-                item.Key.Unbind();
-            }
+            AbilityQueueCleared?.Invoke(this, e);
         }
 
         private void OnEnable()
@@ -123,33 +101,6 @@ namespace SDRGames.Whist.AbilitiesQueueModule.Managers
                     EditorApplication.isPlaying = false;
                 #endif
             }
-
-            if (_applyButton == null)
-            {
-                Debug.LogError("Apply Button не был назначен");
-                #if UNITY_EDITOR
-                    EditorApplication.isPlaying = false;
-                #endif
-            }
-
-            if (_cancelButton == null)
-            {
-                Debug.LogError("Cancel Button не был назначен");
-                #if UNITY_EDITOR
-                    EditorApplication.isPlaying = false;
-                #endif
-            }
-        }
-
-        private void OnDisable()
-        {
-            foreach (var abilitySlotManager in _abilitySlotManagers)
-            {
-                abilitySlotManager.AbilitySlotUnbound -= OnAbilitySlotCleared;
-            }
-
-            _applyButton.ButtonClicked -= OnApplyButtonClicked;
-            _cancelButton.ButtonClicked -= OnCancelButtonClicked;
         }
     }
 }
