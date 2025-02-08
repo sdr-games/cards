@@ -14,7 +14,7 @@ namespace SDRGames.Whist.PointsModule.Models
         [field: SerializeField] public float BaseValue { get; private set; }
         [field: SerializeField][field: ReadOnly] public float PermanentBonus { get; private set; }
         [field: SerializeField][field: ReadOnly] public float TemporaryBonus { get; private set; }
-        [field: SerializeField][field: ReadOnly] public float RestorationPower { get; private set; }
+        [field: SerializeField][field: ReadOnly][field: Range(0, 100)] public float RestorationPowerPercent { get; private set; }
 
         [field: SerializeField][field: ReadOnly] public float MaxValue { get; private set; }
         public float CurrentValue { get; private set; }
@@ -84,19 +84,19 @@ namespace SDRGames.Whist.PointsModule.Models
 
         public void SetRestorationPower(float restorationPower)
         {
-            RestorationPower = restorationPower;
+            RestorationPowerPercent = restorationPower;
             RegenerationPowerChanged?.Invoke(this, EventArgs.Empty);
         }
 
         public void IncreaseRestorationPower(float restorationPower)
         {
-            RestorationPower += restorationPower;
+            RestorationPowerPercent += restorationPower;
             RegenerationPowerChanged?.Invoke(this, EventArgs.Empty);
         }
 
         public void DecreaseRestorationPower(float restorationPower)
         {
-            RestorationPower -= restorationPower;
+            RestorationPowerPercent -= restorationPower;
             RegenerationPowerChanged?.Invoke(this, EventArgs.Empty);
         }
 
@@ -140,7 +140,7 @@ namespace SDRGames.Whist.PointsModule.Models
         {
             if (regenerationPower == 0)
             {
-                regenerationPower = RestorationPower;
+                regenerationPower = MaxValue * (RestorationPowerPercent / 100);
             }
 
             while (length >= 0 && CurrentValue < MaxValue)

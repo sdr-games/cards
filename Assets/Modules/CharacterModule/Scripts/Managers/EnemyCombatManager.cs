@@ -45,27 +45,27 @@ namespace SDRGames.Whist.CharacterModule.Managers
             _characterCombatParamsPresenter.TakeTrueDamage(damage);
         }
 
-        public override void RestoreArmor(int restoration)
+        public override void RestoreArmorPoints(float restoration)
         {
             _characterCombatParamsPresenter.RestoreArmor(restoration);
         }
 
-        public override void RestoreBarrier(int restoration)
+        public override void RestoreBarrierPoints(float restoration)
         {
             _characterCombatParamsPresenter.RestoreBarrier(restoration);
         }
 
-        public override void RestoreHealth(int restoration)
+        public override void RestoreHealthPoints(float restoration)
         {
             _characterCombatParamsPresenter.RestoreHealth(restoration);
         }
 
-        public override void RestoreStamina(int restoration)
+        public override void RestoreStaminaPoints(float restoration)
         {
             _characterCombatParamsPresenter.RestoreStamina(restoration);
         }
 
-        public override void RestoreBreath(int restoration)
+        public override void RestoreBreathPoints(float restoration)
         {
             _characterCombatParamsPresenter.RestoreBreath(restoration);
         }
@@ -84,16 +84,6 @@ namespace SDRGames.Whist.CharacterModule.Managers
             _characterParamsModel.StaminaPoints.DecreaseCurrentValue(totalCost);
         }
 
-        //public void RestoreStaminaPoints()
-        //{
-        //    _characterCombatParamsPresenter.RestoreStaminaPoints();
-        //}
-
-        //public void ResetStaminaReservedPoints(float reverseAmount)
-        //{
-        //    _characterCombatParamsPresenter.ResetStaminaReservedPoints(reverseAmount);
-        //}
-
         public bool HasEnoughBreathPoints(float cost)
         {
             if (_characterParamsModel.BreathPoints.CurrentValue < _characterParamsModel.BreathPoints.ReservedValue + cost)
@@ -102,21 +92,6 @@ namespace SDRGames.Whist.CharacterModule.Managers
             }
             return true;
         }
-
-        //public void SpendBreathPoints(float totalCost)
-        //{
-        //    _characterCombatParamsPresenter.SpendBreathPoints(totalCost);
-        //}
-
-        //public void RestoreBreathPoints()
-        //{
-        //    _characterCombatParamsPresenter.RestoreBreathPoints();
-        //}
-
-        //public void ResetBreathReservedPoints(float reverseAmount)
-        //{
-        //    _characterCombatParamsPresenter.ResetBreathReservedPoints(reverseAmount);
-        //}
 
         protected void OnEnable()
         {

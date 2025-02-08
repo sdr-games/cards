@@ -29,11 +29,11 @@ namespace SDRGames.Whist.CharacterModule.Managers
         public abstract void TakePhysicalDamage(int damage);
         public abstract void TakeMagicalDamage(int damage);
         public abstract void TakeTrueDamage(int damage);
-        public abstract void RestoreArmor(int restoration);
-        public abstract void RestoreBarrier(int restoration);
-        public abstract void RestoreHealth(int restoration);
-        public abstract void RestoreStamina(int restoration);
-        public abstract void RestoreBreath(int restoration);
+        public abstract void RestoreArmorPoints(float restoration = -1);
+        public abstract void RestoreBarrierPoints(float restoration = -1);
+        public abstract void RestoreHealthPoints(float restoration = -1);
+        public abstract void RestoreStaminaPoints(float restoration = -1);
+        public abstract void RestoreBreathPoints(float restoration = -1);
 
         public void SetPeriodicalChanges(int valuePerRound, int roundsCount, string description, Sprite effectIcon, Action<int> changingAction)
         {

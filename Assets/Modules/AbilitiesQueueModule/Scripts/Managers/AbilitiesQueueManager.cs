@@ -46,13 +46,7 @@ namespace SDRGames.Whist.AbilitiesQueueModule.Managers
         }
 
         public List<Ability> PopSelectedAbilities()
-        {
-            if(_abilitySlotManagers.All(item => item.Ability == null))
-            {
-                return null;
-            }
-
-            List<Ability> selectedAbilities = new List<Ability>();
+        {   List<Ability> selectedAbilities = new List<Ability>();
             foreach (AbilitySlotManager abilitySlotManager in _abilitySlotManagers)
             {
                 selectedAbilities.Add(abilitySlotManager.Ability);

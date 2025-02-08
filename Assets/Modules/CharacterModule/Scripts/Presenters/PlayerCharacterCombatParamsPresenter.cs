@@ -26,11 +26,6 @@ namespace SDRGames.Whist.CharacterModule.Presenters
             _staminaPointsBarPresenter.SpendPoints(totalCost);
         }
 
-        public void RestoreStaminaPoints()
-        {
-            _staminaPointsBarPresenter.RestorePoints();
-        }
-
         public void ResetStaminaReservedPoints(float reverseAmount)
         {
             _staminaPointsBarPresenter.ResetReservedPoints(reverseAmount);
@@ -49,11 +44,6 @@ namespace SDRGames.Whist.CharacterModule.Presenters
         public void SpendBreathPoints(float totalCost)
         {
             _breathPointsBarPresenter.SpendPoints(totalCost);
-        }
-
-        public void RestoreBreathPoints()
-        {
-            _breathPointsBarPresenter.RestorePoints();
         }
 
         public void ResetBreathReservedPoints(float reverseAmount)

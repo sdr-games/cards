@@ -33,19 +33,19 @@ namespace SDRGames.Whist.AbilitiesModule.Models
             switch (_restorationType)
             {
                 case RestorationTypes.Armor:
-                    action = (int value) => characterCombatManager.RestoreArmor(value);
+                    action = (int value) => characterCombatManager.RestoreArmorPoints(value);
                     break;
                 case RestorationTypes.Barrier:
-                    action = (int value) => characterCombatManager.RestoreBarrier(value);
+                    action = (int value) => characterCombatManager.RestoreBarrierPoints(value);
                     break;
                 case RestorationTypes.Health:
-                    action = (int value) => characterCombatManager.RestoreHealth(value);
+                    action = (int value) => characterCombatManager.RestoreHealthPoints(value);
                     break;
                 case RestorationTypes.Stamina:
-                    action = (int value) => characterCombatManager.RestoreStamina(value);
+                    action = (int value) => characterCombatManager.RestoreStaminaPoints(value);
                     break;
                 case RestorationTypes.Breath:
-                    action = (int value) => characterCombatManager.RestoreBreath(value);
+                    action = (int value) => characterCombatManager.RestoreBreathPoints(value);
                     break;
                 default:
                     break;
