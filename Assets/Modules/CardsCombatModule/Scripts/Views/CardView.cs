@@ -10,41 +10,86 @@ namespace SDRGames.Whist.CardsCombatModule.Views
 {
     public class CardView : CardPreviewView
     {
-        [SerializeField] private RectTransform _rectTransform;
-        [SerializeField] private Outline _outline;
-        [SerializeField] private TextMeshProUGUI _costText;
-        [SerializeField] private float _hoverOffset;
+        private int _siblingIndex;
+        private Vector3 _defaultPosition;
 
-        public void Initialize(LocalizedString nameText, LocalizedString descriptionText, Sprite illustrationSprite, string costText)
+        [SerializeField] private RectTransform _rectTransform;
+        [SerializeField] private float _hoverOffset;
+        [SerializeField] private TextMeshProUGUI _costText;
+        [SerializeField] private Outline _outline;
+        [SerializeField] private Color _hoverOutlineColor;
+        [SerializeField] private Color _selectedOutlineColor;
+        [SerializeField] private Color _disenchantOutlineColor;
+
+        public void Initialize(int siblingIndex, LocalizedString nameText, LocalizedString descriptionText, Sprite illustrationSprite, string costText)
         {
+            _siblingIndex = siblingIndex;
+
             SetRotation();
             transform.SetAsFirstSibling();
+            _defaultPosition = transform.localPosition;
+
             base.Initialize(nameText, descriptionText, illustrationSprite);
             _costText.text = costText;
         }
 
-        public void Highlight()
+        public void HoverHighlight()
         {
-            _rectTransform.SetAsLastSibling();
-            _rectTransform.Translate(Vector3.up * _hoverOffset);
+            SetHoverPosition();
+            _outline.effectColor = _hoverOutlineColor;
             _outline.enabled = true;
         }
 
-        public void Unhighlight(int index)
+        public void HoverUnhighlight()
         {
-            _rectTransform.SetSiblingIndex(index);
-            _rectTransform.Translate(-Vector3.up * _hoverOffset);
+            SetDefaultPosition();
             _outline.enabled = false;
         }
 
         public void Select()
         {
-            _rectTransform.Translate(Vector3.up * _rectTransform.rect.height / 2);
+            SetSelectedAndMarkedPosition();
+            _outline.effectColor = _selectedOutlineColor;
+            _outline.enabled = true;
         }
 
         public void Deselect()
         {
-            _rectTransform.Translate(-Vector3.up * _rectTransform.rect.height / 2);
+            SetDefaultPosition();
+            _outline.enabled = false;
+        }
+
+        public void MarkForDisenchant()
+        {
+            SetSelectedAndMarkedPosition();
+            _outline.effectColor = _disenchantOutlineColor;
+            _outline.enabled = true;
+        }
+
+        public void UnmarkForDisenchant()
+        {
+            SetDefaultPosition();
+            _outline.enabled = false;
+        }
+
+        private void SetHoverPosition()
+        {
+            SetDefaultPosition();
+            _rectTransform.SetAsLastSibling();
+            _rectTransform.Translate(Vector3.up * _hoverOffset);
+        }
+
+        private void SetSelectedAndMarkedPosition()
+        {
+            SetDefaultPosition();
+            _rectTransform.SetAsLastSibling();
+            _rectTransform.Translate(Vector3.up * _rectTransform.rect.height / 2);
+        }
+
+        private void SetDefaultPosition()
+        {
+            _rectTransform.SetSiblingIndex(_siblingIndex);
+            _rectTransform.localPosition = _defaultPosition;
         }
 
         private void SetRotation()

@@ -34,7 +34,8 @@ namespace SDRGames.Whist.DomainModule.Managers
 
         [Header("PLAYER")][SerializeField] private HideableUIView _playerSwitchableUI;
 
-        public event EventHandler<CardClickedEventArgs> CardClicked;
+        public event EventHandler<CardSelectClickedEventArgs> CardSelectClicked;
+        public event EventHandler<CardMarkClickedEventArgs> CardMarkClicked;
         public event EventHandler<MeleeAttackClickedEventArgs> MeleeAttackClicked;
         public event EventHandler<AbilityQueueClearedEventArgs> AbilityQueueCleared;
         public event EventHandler<CardsEndTurnEventArgs> CardsTurnEnd;
@@ -64,7 +65,8 @@ namespace SDRGames.Whist.DomainModule.Managers
             _decksPreviewWindowManager.DeckSelected += OnDeckSelected;
 
             _deckOnHandsManager.Initialize(_userInputController);
-            _deckOnHandsManager.CardClicked += OnCardClicked;
+            _deckOnHandsManager.CardSelectClicked += OnCardSelectClicked;
+            _deckOnHandsManager.CardMarkClicked += OnCardMarkClicked;
             _deckOnHandsManager.CardsSelectionCleared += OnCardsSelectionCleared;
             _deckOnHandsManager.SelectedCardsCountChanged += _combatUIView.OnSelectedCardsCountChanged;
 
@@ -115,6 +117,16 @@ namespace SDRGames.Whist.DomainModule.Managers
             return _deckOnHandsManager.TryDeselectCard(cardManager);
         }
 
+        public bool TryMarkCard(CardManager cardManager)
+        {
+            return _deckOnHandsManager.TryMarkCardForDisenchant(cardManager);
+        }
+
+        public bool TryUnmarkCard(CardManager cardManager)
+        {
+            return _deckOnHandsManager.TryUnmarkCardForDisenchant(cardManager);
+        }
+
         public bool TryRemoveCard(CardManager cardManager)
         {
             return _deckOnHandsManager.TryRemoveSelectedCard(cardManager);
@@ -127,9 +139,14 @@ namespace SDRGames.Whist.DomainModule.Managers
 
         #region Events methods
 
-        private void OnCardClicked(object sender, CardClickedEventArgs e)
+        private void OnCardSelectClicked(object sender, CardSelectClickedEventArgs e)
         {
-            CardClicked?.Invoke(this, e);
+            CardSelectClicked?.Invoke(this, e);
+        }
+
+        private void OnCardMarkClicked(object sender, CardMarkClickedEventArgs e)
+        {
+            CardMarkClicked?.Invoke(this, e);
         }
 
         private void OnCardsSelectionCleared(object sender, CardsSelectionClearedEventArgs e)
@@ -193,10 +210,12 @@ namespace SDRGames.Whist.DomainModule.Managers
             float totalCost = 0;
 
             List<Card> selectedCards = _deckOnHandsManager.PopSelectedCards();
-            if (selectedCards != null)
+            List<Card> markedForDisenchantCards = _deckOnHandsManager.PopCardsForDisenchant();
+            if (selectedCards.Count > 0 || markedForDisenchantCards.Count > 0)
             {
                 HidePlayerUI();
                 totalCost = selectedCards.Where(item => item != null).Sum(item => item.Cost);
+                totalCost -= markedForDisenchantCards.Where(item => item != null).Sum(item => item.Cost);
                 CardsTurnEnd?.Invoke(this, new CardsEndTurnEventArgs(totalCost, selectedCards));
                 return;
             }
@@ -235,7 +254,7 @@ namespace SDRGames.Whist.DomainModule.Managers
             _selectedDeckManager.EmptyDeckViewClicked -= OnEmptyDeckViewClicked;
             _selectedDeckManager.SelectedDeckViewClicked -= OnSelectedDeckViewClicked;
             _decksPreviewWindowManager.DeckSelected -= OnDeckSelected;
-            _deckOnHandsManager.CardClicked -= OnCardClicked;
+            _deckOnHandsManager.CardSelectClicked -= OnCardSelectClicked;
             _deckOnHandsManager.SelectedCardsCountChanged -= _combatUIView.OnSelectedCardsCountChanged;
             _combatUIView.EndTurnButtonClicked -= OnEndTurnButtonClicked;
             _combatUIView.ClearButtonClicked -= OnClearButtonClicked;

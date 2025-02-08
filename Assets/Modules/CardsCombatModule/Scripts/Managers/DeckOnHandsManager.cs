@@ -21,10 +21,12 @@ namespace SDRGames.Whist.CardsCombatModule.Managers
         private UserInputController _userInputController;
         private List<CardManager> _cards;
         private List<CardManager> _selectedCardsManagers;
+        private List<CardManager> _markedForDisenchantCardsManagers;
 
         public bool IsEmpty => _selectedCardsManagers.Count == 0;
 
-        public event EventHandler<CardClickedEventArgs> CardClicked;
+        public event EventHandler<CardSelectClickedEventArgs> CardSelectClicked;
+        public event EventHandler<CardMarkClickedEventArgs> CardMarkClicked;
         public event EventHandler<CardsSelectionClearedEventArgs> CardsSelectionCleared;
         public event EventHandler<SelectedCardsCountChangedEventArgs> SelectedCardsCountChanged;
 
@@ -32,6 +34,7 @@ namespace SDRGames.Whist.CardsCombatModule.Managers
         {
             _cards = new List<CardManager>();
             _selectedCardsManagers = new List<CardManager>();
+            _markedForDisenchantCardsManagers = new List<CardManager>();
 
             _userInputController = userInputController;
         }
@@ -45,7 +48,8 @@ namespace SDRGames.Whist.CardsCombatModule.Managers
                 int index = UnityEngine.Random.Range(0, _deck.Cards.Count - 1);
                 CardManager cardManager = _deckOnHandView.DrawCard(count, i);
                 cardManager.Initialize(_userInputController, _deck.Cards[index], _deck.Cards.Count - i - 1);
-                cardManager.CardClicked += OnCardClicked;
+                cardManager.CardSelectClicked += OnCardSelectClicked;
+                cardManager.CardMarkClicked += OnCardMarkClicked;
                 _cards.Add(cardManager);
             }
         }
@@ -56,9 +60,10 @@ namespace SDRGames.Whist.CardsCombatModule.Managers
             {
                 return false;
             }
+            TryUnmarkCardForDisenchant(cardManager);
             _selectedCardsManagers.Add(cardManager);
             cardManager.Select();
-            SelectedCardsCountChanged?.Invoke(this, new SelectedCardsCountChangedEventArgs(_selectedCardsManagers.Count <= 0));
+            SelectedCardsCountChanged?.Invoke(this, new SelectedCardsCountChangedEventArgs(_selectedCardsManagers.Count <= 0 || _markedForDisenchantCardsManagers.Count <= 0));
             return true;
         }
 
@@ -70,7 +75,32 @@ namespace SDRGames.Whist.CardsCombatModule.Managers
             }
             _selectedCardsManagers.Remove(cardManager);
             cardManager.Deselect();
-            SelectedCardsCountChanged?.Invoke(this, new SelectedCardsCountChangedEventArgs(_selectedCardsManagers.Count <= 0));
+            SelectedCardsCountChanged?.Invoke(this, new SelectedCardsCountChangedEventArgs(_selectedCardsManagers.Count <= 0 || _markedForDisenchantCardsManagers.Count <= 0));
+            return true;
+        }
+
+        public bool TryMarkCardForDisenchant(CardManager cardManager)
+        {
+            if (_markedForDisenchantCardsManagers.Contains(cardManager))
+            {
+                return false;
+            }
+            TryDeselectCard(cardManager);
+            _markedForDisenchantCardsManagers.Add(cardManager);
+            cardManager.MarkForDisenchant();
+            SelectedCardsCountChanged?.Invoke(this, new SelectedCardsCountChangedEventArgs(_selectedCardsManagers.Count <= 0 || _markedForDisenchantCardsManagers.Count <= 0));
+            return true;
+        }
+
+        public bool TryUnmarkCardForDisenchant(CardManager cardManager)
+        {
+            if (!_markedForDisenchantCardsManagers.Contains(cardManager))
+            {
+                return false;
+            }
+            _markedForDisenchantCardsManagers.Remove(cardManager);
+            cardManager.UnmarkForDisenchant();
+            SelectedCardsCountChanged?.Invoke(this, new SelectedCardsCountChangedEventArgs(_selectedCardsManagers.Count <= 0 || _markedForDisenchantCardsManagers.Count <= 0));
             return true;
         }
 
@@ -80,7 +110,18 @@ namespace SDRGames.Whist.CardsCombatModule.Managers
             {
                 return false;
             }
-            cardManager.CardClicked -= OnCardClicked;
+            cardManager.CardSelectClicked -= OnCardSelectClicked;
+            cardManager.Destroy();
+            return true;
+        }
+
+        public bool TryRemoveMarkedCard(CardManager cardManager)
+        {
+            if (!TryUnmarkCardForDisenchant(cardManager))
+            {
+                return false;
+            }
+            cardManager.CardMarkClicked -= OnCardMarkClicked;
             cardManager.Destroy();
             return true;
         }
@@ -100,11 +141,6 @@ namespace SDRGames.Whist.CardsCombatModule.Managers
 
         public List<Card> PopSelectedCards()
         {
-            if(_selectedCardsManagers.Count == 0)
-            {
-                return null;
-            }
-
             List<Card> selectedCards = new List<Card>();
             List<CardManager> selectedCardsManagers = new List<CardManager>(_selectedCardsManagers);
             foreach(CardManager cardManager in selectedCardsManagers)
@@ -113,6 +149,18 @@ namespace SDRGames.Whist.CardsCombatModule.Managers
                 TryRemoveSelectedCard(cardManager);
             }
             return selectedCards;
+        }
+
+        public List<Card> PopCardsForDisenchant()
+        {
+            List<Card> markedCards = new List<Card>();
+            List<CardManager> markedCardsManagers = new List<CardManager>(_markedForDisenchantCardsManagers);
+            foreach (CardManager cardManager in markedCardsManagers)
+            {
+                markedCards.Add(cardManager.Card);
+                TryRemoveMarkedCard(cardManager);
+            } 
+            return markedCards;
         }
 
         public void ShowView()
@@ -130,9 +178,14 @@ namespace SDRGames.Whist.CardsCombatModule.Managers
             SelectedCardsCountChanged?.Invoke(this, new SelectedCardsCountChangedEventArgs(_selectedCardsManagers.Count <= 0));
         }
 
-        private void OnCardClicked(object sender, CardClickedEventArgs e)
+        private void OnCardSelectClicked(object sender, CardSelectClickedEventArgs e)
         {
-            CardClicked?.Invoke(this, new CardClickedEventArgs(e.CardManager, e.IsSelected));
+            CardSelectClicked?.Invoke(this, e);
+        }
+
+        private void OnCardMarkClicked(object sender, CardMarkClickedEventArgs e)
+        {
+            CardMarkClicked?.Invoke(this, e);
         }
 
         private void OnEnable()
@@ -144,7 +197,8 @@ namespace SDRGames.Whist.CardsCombatModule.Managers
         {
             foreach(CardManager cardManager in _cards)
             {
-                cardManager.CardClicked -= OnCardClicked;
+                cardManager.CardSelectClicked -= OnCardSelectClicked;
+                cardManager.CardMarkClicked -= OnCardMarkClicked;
             } 
         }
     }
