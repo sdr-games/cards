@@ -14,7 +14,6 @@ namespace SDRGames.Whist.HelpersModule.Views
 
         public void Initialize(UserInputController userInputController, bool interactable = false)
         {
-            ButtonClicked = null;
             _userInputController = userInputController;
             if(interactable)
             {

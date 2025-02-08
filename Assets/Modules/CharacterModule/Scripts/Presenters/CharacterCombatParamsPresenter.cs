@@ -32,27 +32,27 @@ namespace SDRGames.Whist.CharacterModule.Presenters
             _characterParamsModel.TakeTrueDamage(damage);
         }
 
-        public void RestoreArmor(int restoration)
+        public void RestoreArmor(float restoration)
         {
             _characterParamsModel.RestoreArmor(restoration);
         }
 
-        public void RestoreBarrier(int restoration)
+        public void RestoreBarrier(float restoration)
         {
             _characterParamsModel.RestoreBarrier(restoration);
         }
 
-        public void RestoreHealth(int restoration)
+        public void RestoreHealth(float restoration)
         {
             _characterParamsModel.RestoreHealth(restoration);
         }
 
-        public void RestoreStamina(int restoration)
+        public void RestoreStamina(float restoration)
         {
             _characterParamsModel.RestoreStamina(restoration);
         }
 
-        public void RestoreBreath(int restoration)
+        public void RestoreBreath(float restoration)
         {
             _characterParamsModel.RestoreBreath(restoration);
         }

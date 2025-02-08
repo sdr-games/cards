@@ -7,12 +7,10 @@ namespace SDRGames.Whist.AbilitiesQueueModule.Managers
 {
     public class MeleeEndTurnEventArgs : EventArgs
     {
-        public float TotalCost { get; private set; }
         public List<Ability> Abilities { get; private set; }
 
-        public MeleeEndTurnEventArgs(float totalCost, List<Ability> abilities)
+        public MeleeEndTurnEventArgs(List<Ability> abilities)
         {
-            TotalCost = totalCost;
             Abilities = abilities;
         }
     }

@@ -116,6 +116,7 @@ namespace SDRGames.Whist.DomainModule.Managers
             {
                 if (ability == null)
                 {
+                    _playerCombatManager.RestoreStaminaPoints();
                     continue;
                 }
                 ability.ApplyLogics(
@@ -124,8 +125,8 @@ namespace SDRGames.Whist.DomainModule.Managers
                     e.Abilities.Count,
                     new List<int>() { 0 }
                 );
+                _playerCombatManager.SpendStaminaPoints(ability.Cost);
             }
-            _playerCombatManager.SpendStaminaPoints(e.TotalCost);
             _turnsQueueManager.SwitchTurn();
         }
 

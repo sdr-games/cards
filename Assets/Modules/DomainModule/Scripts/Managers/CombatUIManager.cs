@@ -12,8 +12,6 @@ using SDRGames.Whist.RestorationModule.Managers;
 using SDRGames.Whist.UserInputModule.Controller;
 
 using UnityEngine;
-using SDRGames.Whist.AbilitiesModule.ScriptableObjects;
-using SDRGames.Whist.CardsCombatModule.ScriptableObjects;
 using SDRGames.Whist.CardsCombatModule.Models;
 using SDRGames.Whist.AbilitiesModule.Models;
 
@@ -197,19 +195,15 @@ namespace SDRGames.Whist.DomainModule.Managers
             List<Card> selectedCards = _deckOnHandsManager.PopSelectedCards();
             if (selectedCards != null)
             {
-                totalCost = selectedCards.Where(item => item != null).Sum(item => item.Cost);
                 HidePlayerUI();
+                totalCost = selectedCards.Where(item => item != null).Sum(item => item.Cost);
                 CardsTurnEnd?.Invoke(this, new CardsEndTurnEventArgs(totalCost, selectedCards));
                 return;
             }
 
             List<Ability> selectedAbilities = _abilitiesQueueManager.PopSelectedAbilities();
-            if (selectedAbilities != null)
-            {
-                HidePlayerUI();
-                totalCost = selectedAbilities.Where(item => item != null).Sum(item => item.Cost);
-                MeleeTurnEnd?.Invoke(this, new MeleeEndTurnEventArgs(totalCost, selectedAbilities));
-            }
+            HidePlayerUI();
+            MeleeTurnEnd?.Invoke(this, new MeleeEndTurnEventArgs(selectedAbilities));
         }
 
         private void OnClearButtonClicked(object sender, EventArgs e)

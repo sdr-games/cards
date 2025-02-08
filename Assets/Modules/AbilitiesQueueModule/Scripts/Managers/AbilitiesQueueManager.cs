@@ -22,7 +22,7 @@ namespace SDRGames.Whist.AbilitiesQueueModule.Managers
         public bool IsFull => FindFirstEmptySlot() == null;
 
         public event EventHandler<AbilityQueueClearedEventArgs> AbilityQueueCleared;
-        public event EventHandler<AbilityQueueCountChangedEventArgs> AbilityQueueCountChanged;
+        public EventHandler<AbilityQueueCountChangedEventArgs> AbilityQueueCountChanged { get; set; }
 
         public void Initialize(UserInputController userInputController)
         {
@@ -46,13 +46,7 @@ namespace SDRGames.Whist.AbilitiesQueueModule.Managers
         }
 
         public List<Ability> PopSelectedAbilities()
-        {
-            if(_abilitySlotManagers.All(item => item.Ability == null))
-            {
-                return null;
-            }
-
-            List<Ability> selectedAbilities = new List<Ability>();
+        {   List<Ability> selectedAbilities = new List<Ability>();
             foreach (AbilitySlotManager abilitySlotManager in _abilitySlotManagers)
             {
                 selectedAbilities.Add(abilitySlotManager.Ability);

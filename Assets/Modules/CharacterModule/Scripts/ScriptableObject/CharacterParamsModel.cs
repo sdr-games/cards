@@ -33,7 +33,7 @@ namespace SDRGames.Whist.CharacterModule.ScriptableObjects
         [field: SerializeField][field: ReadOnly] public int MagicalDamage { get; protected set; }
         [field: SerializeField][field: ReadOnly] public int PhysicalHitChance { get; protected set; }
         [field: SerializeField][field: ReadOnly] public int MagicalHitChance { get; protected set; }
-        [field: SerializeField][field: ReadOnly] public float StaminaRestorationPower { get => StaminaPoints.RestorationPower; }
+        [field: SerializeField][field: ReadOnly] public float StaminaRestorationPower { get => StaminaPoints.RestorationPowerPercent; }
         [field: SerializeField][field: ReadOnly] public int Piercing { get; protected set; }
 
         #endregion
@@ -170,27 +170,27 @@ namespace SDRGames.Whist.CharacterModule.ScriptableObjects
             HealthPoints.DecreaseCurrentValue(damage);
         }
 
-        public void RestoreArmor(int restoration)
+        public void RestoreArmor(float restoration)
         {
             ArmorPoints.IncreaseCurrentValue(restoration);
         }
 
-        public void RestoreBarrier(int restoration)
+        public void RestoreBarrier(float restoration)
         {
             BarrierPoints.IncreaseCurrentValue(restoration);
         }
 
-        public void RestoreHealth(int restoration)
+        public void RestoreHealth(float restoration)
         {
             HealthPoints.IncreaseCurrentValue(restoration);
         }
 
-        public void RestoreStamina(int restoration)
+        public void RestoreStamina(float restoration)
         {
             StaminaPoints.IncreaseCurrentValue(restoration);
         }
 
-        public void RestoreBreath(int restoration)
+        public void RestoreBreath(float restoration)
         {
             BreathPoints.IncreaseCurrentValue(restoration);
         }
