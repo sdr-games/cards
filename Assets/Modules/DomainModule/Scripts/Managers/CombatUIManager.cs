@@ -12,8 +12,6 @@ using SDRGames.Whist.RestorationModule.Managers;
 using SDRGames.Whist.UserInputModule.Controller;
 
 using UnityEngine;
-using SDRGames.Whist.AbilitiesModule.ScriptableObjects;
-using SDRGames.Whist.CardsCombatModule.ScriptableObjects;
 using SDRGames.Whist.CardsCombatModule.Models;
 using SDRGames.Whist.AbilitiesModule.Models;
 

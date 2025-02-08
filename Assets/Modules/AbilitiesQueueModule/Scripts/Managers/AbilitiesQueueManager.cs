@@ -22,7 +22,7 @@ namespace SDRGames.Whist.AbilitiesQueueModule.Managers
         public bool IsFull => FindFirstEmptySlot() == null;
 
         public event EventHandler<AbilityQueueClearedEventArgs> AbilityQueueCleared;
-        public event EventHandler<AbilityQueueCountChangedEventArgs> AbilityQueueCountChanged;
+        public EventHandler<AbilityQueueCountChangedEventArgs> AbilityQueueCountChanged { get; set; }
 
         public void Initialize(UserInputController userInputController)
         {

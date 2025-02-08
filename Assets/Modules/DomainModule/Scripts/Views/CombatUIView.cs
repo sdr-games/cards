@@ -20,7 +20,7 @@ namespace SDRGames.Whist.DomainModule.Views
 
         public void Initialize(UserInputController userInputController)
         {
-            _endTurnButton.Initialize(userInputController);
+            _endTurnButton.Initialize(userInputController, true);
             _endTurnButton.ButtonClicked += OnEndTurnButtonClicked;
 
             _clearButton.Initialize(userInputController);
@@ -51,11 +51,9 @@ namespace SDRGames.Whist.DomainModule.Views
         {
             if (isEmpty)
             {
-                _endTurnButton.Deactivate();
                 _clearButton.Deactivate();
                 return;
             }
-            _endTurnButton.Activate();
             _clearButton.Activate();
         }
 
