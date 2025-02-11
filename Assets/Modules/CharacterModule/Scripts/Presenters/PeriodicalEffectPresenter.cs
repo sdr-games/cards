@@ -17,6 +17,10 @@ namespace SDRGames.Whist.CharacterModule.Presenters
             _periodicalEffect = new PeriodicalEffect(duration, action);
             _periodicalEffect.DurationChanged += OnDurationChanged;
 
+            if(periodicalEffectView == null)
+            {
+                return;
+            }
             _periodicalEffectView = periodicalEffectView;
             _periodicalEffectView.Initialize(effectIcon, duration);
         }

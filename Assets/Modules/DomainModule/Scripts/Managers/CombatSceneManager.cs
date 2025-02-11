@@ -67,7 +67,8 @@ namespace SDRGames.Whist.DomainModule.Managers
 
             _combatUIManager.Initialize(_userInputController);
             _combatUIManager.AbilityQueueCleared += OnAbilityQueueCleared;
-            _combatUIManager.CardClicked += OnCardClicked;
+            _combatUIManager.CardSelectClicked += OnCardSelectClicked;
+            _combatUIManager.CardMarkClicked += OnCardMarkClicked;
             _combatUIManager.MeleeAttackClicked += OnMeleeAttackClicked;
             _combatUIManager.CardsTurnEnd += OnCardsTurnEnd;
             _combatUIManager.MeleeTurnEnd += OnMeleeTurnEnd;
@@ -79,19 +80,37 @@ namespace SDRGames.Whist.DomainModule.Managers
             _turnsQueueManager.Run();
         }
 
-        private void OnCardClicked(object sender, CardClickedEventArgs e)
+        private void OnCardSelectClicked(object sender, CardSelectClickedEventArgs e)
         {
             if(!e.IsSelected && _playerCombatManager.HasEnoughBreathPoints(e.CardManager.Card.Cost))
             {
                 if (_combatUIManager.TrySelectCard(e.CardManager))
                 {
-                    _playerCombatManager.ReserveBreathPoints(e.CardManager.Card.Cost);
+                    int cost = e.MarkedForDisenchant ? e.CardManager.Card.Cost * 2 : e.CardManager.Card.Cost; // multiplication by 2 required because first we have to revert reserve by card's mark and after then add reserve by card's selection
+                    _playerCombatManager.ReserveBreathPoints(cost);
                 }
                 return;
             }
             if(_combatUIManager.TryDeselectCard(e.CardManager))
             {
                 _playerCombatManager.ResetBreathReservedPoints(e.CardManager.Card.Cost);
+            }
+        }
+
+        private void OnCardMarkClicked(object sender, CardMarkClickedEventArgs e)
+        {
+            if(!e.MarkedForDisenchant)
+            {
+                if (_combatUIManager.TryMarkCard(e.CardManager))
+                {
+                    int cost = e.IsSelected ? e.CardManager.Card.Cost * 2 : e.CardManager.Card.Cost; // multiplication by 2 required because first we have to revert reserve by card's selection and after then add reserve by card's mark
+                    _playerCombatManager.ReserveBreathPoints(-cost);
+                }
+                return;
+            }
+            if(_combatUIManager.TryUnmarkCard(e.CardManager))
+            {
+                _playerCombatManager.ResetBreathReservedPoints(-e.CardManager.Card.Cost);
             }
         }
 
@@ -134,17 +153,17 @@ namespace SDRGames.Whist.DomainModule.Managers
         {
             List<CharacterCombatManager> enemyCharacterCombatManagers = new List<CharacterCombatManager>(_enemyCombatManagers);
 
-            for(int i = 0; i < e.Cards.Count; i++)
+            for(int i = 0; i < e.SelectedCards.Count; i++)
             {
-                Card card = e.Cards[i];
+                Card card = e.SelectedCards[i];
                 if(card == null)
                 {
                     continue;
                 }
 
-                if(i < e.Cards.Count && card.CardModifiersScriptableObjects.Length > 0)
+                if(i < e.SelectedCards.Count && card.CardModifiersScriptableObjects.Length > 0)
                 {
-                    List<Card> affectedCards = new List<Card>(e.Cards);
+                    List<Card> affectedCards = new List<Card>(e.SelectedCards);
                     affectedCards.Remove(card);
                     card.ApplyModifier(affectedCards.Count - 1, _playerCombatManager, enemyCharacterCombatManagers, affectedCards);
                     continue;
@@ -153,11 +172,18 @@ namespace SDRGames.Whist.DomainModule.Managers
                 card.ApplyLogics(
                     _playerCombatManager,
                     enemyCharacterCombatManagers, 
-                    e.Cards.Count, 
+                    e.SelectedCards.Count, 
                     new List<int>() { 0 }
                 );
             }
-            _playerCombatManager.SpendBreathPoints(e.TotalCost);
+            if (e.TotalCost > 0)
+            {
+                _playerCombatManager.SpendBreathPoints(e.TotalCost);
+            }
+            else
+            {
+                _playerCombatManager.RestoreBreathPoints(-e.TotalCost);
+            }
             _turnsQueueManager.SwitchTurn();
         }
 
@@ -207,7 +233,8 @@ namespace SDRGames.Whist.DomainModule.Managers
         private void OnDestroy()
         {
             _combatUIManager.AbilityQueueCleared -= OnAbilityQueueCleared;
-            _combatUIManager.CardClicked -= OnCardClicked;
+            _combatUIManager.CardSelectClicked -= OnCardSelectClicked;
+            _combatUIManager.CardMarkClicked -= OnCardMarkClicked;
             _combatUIManager.MeleeAttackClicked -= OnMeleeAttackClicked;
             _combatUIManager.CardsTurnEnd -= OnCardsTurnEnd;
             _combatUIManager.MeleeTurnEnd -= OnMeleeTurnEnd;

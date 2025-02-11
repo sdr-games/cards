@@ -59,7 +59,7 @@ namespace SDRGames.Whist.PointsModule.Presenters
 
         private void OnReservedValueChanged(object sender, ValueChangedEventArgs e)
         {
-            float currentValue = e.CurrentValueInPercents / 100 * e.MaxValue;
+            float currentValue = e.CurrentValueInPercents < 100 ? e.CurrentValueInPercents / 100 * e.MaxValue : e.MaxValue;
             _pointsView.ChangeReservedFillerValue(e.CurrentValueInPercents);
             _pointsView.SetPointsText(currentValue, e.MaxValue);
         }

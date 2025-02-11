@@ -16,12 +16,13 @@ namespace SDRGames.Whist.CardsCombatModule.Managers
         [SerializeField] private CardView _cardView;
 
         private UserInputController _userInputController;
-        private int _siblingIndex;
-        private bool _isSelected;
+        private bool _isPicked;
+        private bool _isMarkedForDisenchant;
 
         public Card Card { get; private set; }
 
-        public event EventHandler<CardClickedEventArgs> CardClicked;
+        public event EventHandler<CardSelectClickedEventArgs> CardPicked;
+        public event EventHandler<CardMarkClickedEventArgs> CardMarked;
 
         public void Initialize(UserInputController userInputController, Card card, int siblingIndex)
         {
@@ -29,48 +30,71 @@ namespace SDRGames.Whist.CardsCombatModule.Managers
 
             _userInputController = userInputController;
             _userInputController.LeftMouseButtonClickedOnUI += OnLeftMouseButtonClickedOnUI;
+            _userInputController.RightMouseButtonClickedOnUI += OnRightMouseButtonClickedOnUI;
 
-            _siblingIndex = siblingIndex;
-
-            new CardPresenter(Card, _cardView);
+            new CardPresenter(Card, _cardView, siblingIndex);
         }
 
-        public void SetPosition(Vector2 position)
+        public void UpdateView(Vector2 position, int siblingIndex)
         {
             _cardView.transform.localPosition = position;
+            _cardView.UpdatePositionAndRotation(siblingIndex);
         }
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            if (!_isSelected)
+            if (!_isPicked && !_isMarkedForDisenchant)
             {
-                _cardView.Highlight();
+                _cardView.HoverHighlight();
             }
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            if (!_isSelected)
+            if (!_isPicked && !_isMarkedForDisenchant)
             {
-                _cardView.Unhighlight(_siblingIndex);
+                _cardView.HoverUnhighlight();
             }
         }
 
-        public void Select()
+        public void Pick()
         {
-            _isSelected = true;
-            _cardView.Select();
+            _isPicked = true;
+            _isMarkedForDisenchant = false;
+            _cardView.Pick();
+            if (_isMarkedForDisenchant)
+            {
+                _cardView.UnmarkForDisenchant();
+            }
         }
 
-        public void Deselect()
+        public void CancelPick()
         {
-            _isSelected = false;
-            _cardView.Deselect();
+            _isPicked = false;
+            _cardView.CancelPick();
+        }
+
+        public void MarkForDisenchant()
+        {
+            _isPicked = false;
+            _isMarkedForDisenchant = true;
+            _cardView.MarkForDisenchant();
+            if (_isPicked)
+            {
+                _cardView.CancelPick();
+            }
+        }
+
+        public void UnmarkForDisenchant()
+        {
+            _isMarkedForDisenchant = false;
+            _cardView.UnmarkForDisenchant();
         }
 
         public void Destroy()
         {
-            Deselect();
+            CancelPick();
+            UnmarkForDisenchant();
             Destroy(gameObject);
         }
 
@@ -78,7 +102,15 @@ namespace SDRGames.Whist.CardsCombatModule.Managers
         {
             if(e.GameObject == gameObject)
             {
-                CardClicked?.Invoke(this, new CardClickedEventArgs(this, _isSelected));
+                CardPicked?.Invoke(this, new CardSelectClickedEventArgs(this, _isPicked, _isMarkedForDisenchant));
+            }
+        }
+
+        private void OnRightMouseButtonClickedOnUI(object sender, RightMouseButtonUIClickEventArgs e)
+        {
+            if (e.GameObject == gameObject)
+            {
+                CardMarked?.Invoke(this, new CardMarkClickedEventArgs(this, _isMarkedForDisenchant, _isPicked));
             }
         }
 
@@ -90,6 +122,7 @@ namespace SDRGames.Whist.CardsCombatModule.Managers
         private void OnDestroy()
         {
             _userInputController.LeftMouseButtonClickedOnUI -= OnLeftMouseButtonClickedOnUI;
+            _userInputController.RightMouseButtonClickedOnUI -= OnRightMouseButtonClickedOnUI;
         }
     }
 }

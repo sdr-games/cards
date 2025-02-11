@@ -23,8 +23,8 @@ namespace SDRGames.Whist.CardsCombatModule.Managers
 
         private bool IsEmpty => _deck == null;
 
-        public event EventHandler EmptyDeckViewClicked;
-        public event EventHandler<SelectedDeckViewClickedEventArgs> SelectedDeckViewClicked;
+        public event EventHandler EmptyDeckClicked;
+        public event EventHandler<SelectedDeckViewClickedEventArgs> SelectedDeckClicked;
 
         public void Initialize(UserInputController userInputController)
         {
@@ -34,10 +34,28 @@ namespace SDRGames.Whist.CardsCombatModule.Managers
             _selectedDeckPresenter = new SelectedDeckPresenter(_selectedDeckView);
         }
 
-        public void SetSelectedDeck(DeckScriptableObject deckScriptableObject)
+        public void SetSelectedDeck(Deck deck)
         {
-            _deck = new Deck(deckScriptableObject);
+            _deck = deck;
             _selectedDeckPresenter.SetSelectedDeck(_deck);
+        }
+
+        public void UnsetSelectedDeck()
+        {
+            _deck = null;
+            _selectedDeckPresenter.UnsetSelectedDeck();
+        }
+
+        public override void Hide()
+        {
+            _visible = false;
+            base.Hide();
+        }
+
+        public void Disable()
+        {
+            Hide();
+            gameObject.SetActive(false);
         }
 
         private void OnLeftMouseButtonClickedOnUI(object sender, LeftMouseButtonUIClickEventArgs e)
@@ -46,11 +64,11 @@ namespace SDRGames.Whist.CardsCombatModule.Managers
             {
                 if (IsEmpty)
                 {
-                    EmptyDeckViewClicked?.Invoke(this, EventArgs.Empty);
+                    EmptyDeckClicked?.Invoke(this, EventArgs.Empty);
                     return;
                 }
                 _visible = !_visible;
-                SelectedDeckViewClicked?.Invoke(this, new SelectedDeckViewClickedEventArgs(_visible));
+                SelectedDeckClicked?.Invoke(this, new SelectedDeckViewClickedEventArgs(_visible));
             }
         }
 

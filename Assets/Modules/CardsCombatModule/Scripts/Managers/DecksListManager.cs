@@ -1,58 +1,68 @@
 using System;
+using System.Collections.Generic;
 
+using SDRGames.Whist.CardsCombatModule.Models;
 using SDRGames.Whist.CardsCombatModule.ScriptableObjects;
 using SDRGames.Whist.UserInputModule.Controller;
-
-using UnityEditor;
+using SDRGames.Whist.HelpersModule;
 
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace SDRGames.Whist.CardsCombatModule.Managers
 {
     public class DecksListManager : MonoBehaviour
     {
-        [SerializeField] private DeckPreviewManager[] _deckPreviewManagers;
+        [SerializeField] private DeckPreviewManager _deckPreviewManagerPrefab;
+        [SerializeField] private GridLayoutGroup _grid;
         
+        private List<DeckPreviewManager> _deckPreviewManagers;
         private CardsListManager _cardsListManager;
-        private DeckScriptableObject[] _decks;
 
-        public DeckScriptableObject SelectedDeck { get; private set; }
+        public DeckPreviewManager SelectedDeckPreview { get; private set; }
 
-        public event EventHandler DeckPreviewClicked;
-
-        public void Initialize(UserInputController userInputController, CardsListManager cardsListManager, DeckScriptableObject[] decks)
+        public void Initialize(UserInputController userInputController, CardsListManager cardsListManager, DeckScriptableObject[] decksScriptableObject)
         {
-            _decks = decks;
-            _cardsListManager = cardsListManager;
-            for(int i = 0; i < _decks.Length; i++)
+            _deckPreviewManagers = new List<DeckPreviewManager>();
+            foreach (DeckScriptableObject deckScriptableObject in decksScriptableObject)
             {
-                _deckPreviewManagers[i].Initialize(userInputController, _decks[i]);
-                _deckPreviewManagers[i].DeckPreviewClicked += OnDeckPreviewClicked;
-            }
+                Deck deck = new Deck(deckScriptableObject);
+                DeckPreviewManager deckPreviewManager = Instantiate(_deckPreviewManagerPrefab, _grid.transform, false);
+                deckPreviewManager.Initialize(userInputController, deck);
+                deckPreviewManager.DeckPreviewClicked += OnDeckPreviewClicked;
+                _deckPreviewManagers.Add(deckPreviewManager);
+            } 
+            _cardsListManager = cardsListManager;
             ResetSelection();
         }
 
         public void ResetSelection()
         {
-            SelectedDeck = _decks[0];
-            _cardsListManager.Initialize(SelectedDeck.Cards);
+            SelectedDeckPreview = _deckPreviewManagers[0];
+            _cardsListManager.Initialize(SelectedDeckPreview.Deck.Cards);
+        }
+
+        public void RemoveSelectedDeckFromList()
+        {
+            _deckPreviewManagers.Remove(SelectedDeckPreview);
+            Destroy(SelectedDeckPreview.gameObject);
+        }
+
+        public bool HasAvailableDecks()
+        {
+            return _deckPreviewManagers.Count > 0;
         }
 
         private void OnDeckPreviewClicked(object sender, DeckPreviewClickedEventArgs e)
         {
-            SelectedDeck = e.DeckScriptableObject;
-            _cardsListManager.Initialize(e.DeckScriptableObject.Cards);
+            SelectedDeckPreview = e.DeckPreviewManager;
+            _cardsListManager.Initialize(e.DeckPreviewManager.Deck.Cards);
         }
 
         private void OnEnable()
         {
-            if (_deckPreviewManagers.Length == 0)
-            {
-                Debug.LogError("Deck Preview Managers не были назначены");
-                #if UNITY_EDITOR
-                    EditorApplication.isPlaying = false;
-                #endif
-            }
+            this.CheckFieldValueIsNotNull(nameof(_deckPreviewManagerPrefab),_deckPreviewManagerPrefab);
+            this.CheckFieldValueIsNotNull(nameof(_grid), _grid);
         }
 
         private void OnDisable()

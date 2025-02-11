@@ -3,6 +3,7 @@ using System;
 using SDRGames.Whist.CardsCombatModule.ScriptableObjects;
 using SDRGames.Whist.HelpersModule.Views;
 using SDRGames.Whist.UserInputModule.Controller;
+using SDRGames.Whist.HelpersModule;
 
 using UnityEditor;
 
@@ -33,7 +34,9 @@ namespace SDRGames.Whist.CardsCombatModule.Managers
         {
             if(e.GameObject == _selectButton.gameObject)
             {
-                DeckSelected?.Invoke(this, new DeckPreviewClickedEventArgs(_decksListManager.SelectedDeck));
+                DeckPreviewManager selectedDeck = _decksListManager.SelectedDeckPreview;
+                _decksListManager.RemoveSelectedDeckFromList();
+                DeckSelected?.Invoke(this, new DeckPreviewClickedEventArgs(selectedDeck));
                 Hide();
             }
         }
@@ -44,35 +47,20 @@ namespace SDRGames.Whist.CardsCombatModule.Managers
             base.Show();
         }
 
+        public bool HasAvailableDecks()
+        {
+            return _decksListManager.HasAvailableDecks();
+        }
+
         private void OnEnable()
         {
-            if (_cardsListManager == null)
-            {
-                Debug.LogError("Cards List Manager не был назначен");
-                #if UNITY_EDITOR
-                    EditorApplication.isPlaying = false;
-                #endif
-            }
-
-            if (_decksListManager == null)
-            {
-                Debug.LogError("Deck List Manager не были назначен");
-                #if UNITY_EDITOR
-                    EditorApplication.isPlaying = false;
-                #endif
-            }
+            this.CheckFieldValueIsNotNull(nameof(_cardsListManager), _cardsListManager);
+            this.CheckFieldValueIsNotNull(nameof(_decksListManager), _decksListManager);
+            this.CheckFieldValueIsNotNull(nameof(_selectButton), _selectButton);
 
             if (_decks.Length == 0)
             {
                 Debug.LogError("Decks не были назначены");
-                #if UNITY_EDITOR
-                    EditorApplication.isPlaying = false;
-                #endif
-            }
-
-            if (_selectButton == null)
-            {
-                Debug.LogError("Select Button не была назначена ");
                 #if UNITY_EDITOR
                     EditorApplication.isPlaying = false;
                 #endif
