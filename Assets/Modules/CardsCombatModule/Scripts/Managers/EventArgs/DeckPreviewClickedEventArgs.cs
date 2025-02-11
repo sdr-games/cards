@@ -1,16 +1,14 @@
 ﻿using System;
 
-using SDRGames.Whist.CardsCombatModule.ScriptableObjects;
-
 namespace SDRGames.Whist.CardsCombatModule.Managers
 {
     public class DeckPreviewClickedEventArgs : EventArgs
     {
-        public DeckScriptableObject DeckScriptableObject { get; private set; }
+        public DeckPreviewManager DeckPreviewManager { get; private set; }
 
-        public DeckPreviewClickedEventArgs(DeckScriptableObject deckScriptableObject)
+        public DeckPreviewClickedEventArgs(DeckPreviewManager deckPreviewManager)
         {
-            DeckScriptableObject = deckScriptableObject;
+            DeckPreviewManager = deckPreviewManager;
         }
     }
 }

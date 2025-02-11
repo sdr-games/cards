@@ -17,5 +17,10 @@ namespace SDRGames.Whist.CardsCombatModule.Presenters
         {
             _selectedDeckView.SetBacksideImage(deck.Backside);
         }
+
+        public void UnsetSelectedDeck()
+        {
+            _selectedDeckView.SetBacksideImage(null);
+        }
     }
 }

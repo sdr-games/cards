@@ -1,11 +1,10 @@
 using System;
 
+using SDRGames.Whist.CardsCombatModule.Models;
 using SDRGames.Whist.CardsCombatModule.Presenters;
-using SDRGames.Whist.CardsCombatModule.ScriptableObjects;
 using SDRGames.Whist.CardsCombatModule.Views;
 using SDRGames.Whist.UserInputModule.Controller;
-
-using UnityEditor;
+using SDRGames.Whist.HelpersModule;
 
 using UnityEngine;
 
@@ -14,18 +13,18 @@ namespace SDRGames.Whist.CardsCombatModule.Managers
     public class DeckPreviewManager : MonoBehaviour
     {
         [SerializeField] private DeckPreviewView _deckPreviewView;
-
-        private DeckScriptableObject _deck;
         private UserInputController _userInputController;
+
+        public Deck Deck { get; private set; }
 
         public event EventHandler<DeckPreviewClickedEventArgs> DeckPreviewClicked;
 
-        public void Initialize(UserInputController userInputController, DeckScriptableObject deck)
+        public void Initialize(UserInputController userInputController, Deck deck)
         {
             _userInputController = userInputController;
             _userInputController.LeftMouseButtonClickedOnUI += OnLeftMouseButtonClickedOnUI;
 
-            _deck = deck;
+            Deck = deck;
 
             new DeckPreviewPresenter(_deckPreviewView, deck);
         }
@@ -34,19 +33,13 @@ namespace SDRGames.Whist.CardsCombatModule.Managers
         {
             if (e.GameObject == gameObject)
             {
-                DeckPreviewClicked?.Invoke(this, new DeckPreviewClickedEventArgs(_deck));
+                DeckPreviewClicked?.Invoke(this, new DeckPreviewClickedEventArgs(this));
             }
         }
 
         private void OnEnable()
         {
-            if (_deckPreviewView == null)
-            {
-                Debug.LogError("Deck Preview View не был назначен");
-                #if UNITY_EDITOR
-                    EditorApplication.isPlaying = false;
-                #endif
-            }
+            this.CheckFieldValueIsNotNull(nameof(_deckPreviewView), _deckPreviewView);
         }
 
         private void OnDisable()

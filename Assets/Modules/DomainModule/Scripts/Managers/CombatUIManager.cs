@@ -58,17 +58,18 @@ namespace SDRGames.Whist.DomainModule.Managers
             _potionListManager.PotionClicked += OnPotionClicked;
 
             _selectedDeckManager.Initialize(_userInputController);
-            _selectedDeckManager.EmptyDeckViewClicked += OnEmptyDeckViewClicked;
-            _selectedDeckManager.SelectedDeckViewClicked += OnSelectedDeckViewClicked;
+            _selectedDeckManager.EmptyDeckClicked += OnEmptyDeckClicked;
+            _selectedDeckManager.SelectedDeckClicked += OnSelectedDeckClicked;
 
             _decksPreviewWindowManager.Initialize(_userInputController);
             _decksPreviewWindowManager.DeckSelected += OnDeckSelected;
 
             _deckOnHandsManager.Initialize(_userInputController);
+            _deckOnHandsManager.DeckUnsetted += OnDeckUnsetted;
             _deckOnHandsManager.CardSelectClicked += OnCardSelectClicked;
             _deckOnHandsManager.CardMarkClicked += OnCardMarkClicked;
             _deckOnHandsManager.CardsSelectionCleared += OnCardsSelectionCleared;
-            _deckOnHandsManager.SelectedCardsCountChanged += _combatUIView.OnSelectedCardsCountChanged;
+            _deckOnHandsManager.PickedCardsCountChanged += _combatUIView.OnSelectedCardsCountChanged;
 
             _combatUIView.Initialize(_userInputController);
             _combatUIView.EndTurnButtonClicked += OnEndTurnButtonClicked;
@@ -84,6 +85,7 @@ namespace SDRGames.Whist.DomainModule.Managers
             {
                 _meleeAttackListManager.Show();
                 _selectedDeckManager.Show();
+                _deckOnHandsManager.PullCardsFromDeck();
                 _potionListManager.Hide();
             }
             else
@@ -99,22 +101,23 @@ namespace SDRGames.Whist.DomainModule.Managers
         public void HidePlayerUI()
         {
             _abilitiesQueueManager.ClearBindedAbilities();
-            _deckOnHandsManager.ClearCardsSelection();
+            _deckOnHandsManager.ClearPickedCards();
             _abilitiesQueueManager.Hide();
             _playerSwitchableUI.Hide();
             _deckOnHandsManager.HideView();
             _potionListManager.Hide();
+            _selectedDeckManager.Hide();
             _decksPreviewWindowManager.Hide();
         }
 
         public bool TrySelectCard(CardManager cardManager)
         {
-            return _deckOnHandsManager.TryAddSelectedCard(cardManager);       
+            return _deckOnHandsManager.TryPickCard(cardManager);       
         }
 
         public bool TryDeselectCard(CardManager cardManager)
         {
-            return _deckOnHandsManager.TryDeselectCard(cardManager);
+            return _deckOnHandsManager.TryCancelPickCard(cardManager);
         }
 
         public bool TryMarkCard(CardManager cardManager)
@@ -129,7 +132,7 @@ namespace SDRGames.Whist.DomainModule.Managers
 
         public bool TryRemoveCard(CardManager cardManager)
         {
-            return _deckOnHandsManager.TryRemoveSelectedCard(cardManager);
+            return _deckOnHandsManager.TryRemovePickedCard(cardManager);
         } 
 
         public bool TryAddAbilityToQueue(Ability ability)
@@ -173,11 +176,11 @@ namespace SDRGames.Whist.DomainModule.Managers
             AbilityQueueCleared?.Invoke(this, e);
         }
 
-        private void OnSelectedDeckViewClicked(object sender, SelectedDeckViewClickedEventArgs e)
+        private void OnSelectedDeckClicked(object sender, SelectedDeckViewClickedEventArgs e)
         {
             if (!e.Visible)
             {
-                _deckOnHandsManager.ClearCardsSelection();
+                _deckOnHandsManager.ClearPickedCards();
                 _abilitiesQueueManager.Show();
                 _meleeAttackListManager.Show();
                 _deckOnHandsManager.HideView();
@@ -189,7 +192,7 @@ namespace SDRGames.Whist.DomainModule.Managers
             _deckOnHandsManager.ShowView();
         }
 
-        private void OnEmptyDeckViewClicked(object sender, EventArgs e)
+        private void OnEmptyDeckClicked(object sender, EventArgs e)
         {
             _abilitiesQueueManager.Hide();
             _meleeAttackListManager.Hide();
@@ -201,16 +204,25 @@ namespace SDRGames.Whist.DomainModule.Managers
             _abilitiesQueueManager.Show();
             _meleeAttackListManager.Show();
             _decksPreviewWindowManager.Hide();
-            _selectedDeckManager.SetSelectedDeck(e.DeckScriptableObject);
-            _deckOnHandsManager.SetSelectedDeck(e.DeckScriptableObject);
+            _selectedDeckManager.SetSelectedDeck(e.DeckPreviewManager.Deck);
+            _deckOnHandsManager.SetSelectedDeck(e.DeckPreviewManager.Deck);
+        }
+
+        private void OnDeckUnsetted(object sender, EventArgs e)
+        {
+            _selectedDeckManager.UnsetSelectedDeck();
+            if(!_decksPreviewWindowManager.HasAvailableDecks())
+            {
+                _selectedDeckManager.Disable();
+            }
         }
 
         private void OnEndTurnButtonClicked(object sender, EventArgs e)
         {
             float totalCost = 0;
 
-            List<Card> selectedCards = _deckOnHandsManager.PopSelectedCards();
-            List<Card> markedForDisenchantCards = _deckOnHandsManager.PopCardsForDisenchant();
+            List<Card> selectedCards = _deckOnHandsManager.PopPickedCards();
+            List<Card> markedForDisenchantCards = _deckOnHandsManager.PopCardsMarkedForDisenchant();
             if (selectedCards.Count > 0 || markedForDisenchantCards.Count > 0)
             {
                 HidePlayerUI();
@@ -251,11 +263,11 @@ namespace SDRGames.Whist.DomainModule.Managers
             _abilitiesQueueManager.AbilityQueueCountChanged -= _combatUIView.OnAbilityQueueCountChanged;
             _meleeAttackListManager.MeleeAttackClicked -= OnMeleeAttackClicked;
             _potionListManager.PotionClicked -= OnPotionClicked;
-            _selectedDeckManager.EmptyDeckViewClicked -= OnEmptyDeckViewClicked;
-            _selectedDeckManager.SelectedDeckViewClicked -= OnSelectedDeckViewClicked;
+            _selectedDeckManager.EmptyDeckClicked -= OnEmptyDeckClicked;
+            _selectedDeckManager.SelectedDeckClicked -= OnSelectedDeckClicked;
             _decksPreviewWindowManager.DeckSelected -= OnDeckSelected;
             _deckOnHandsManager.CardSelectClicked -= OnCardSelectClicked;
-            _deckOnHandsManager.SelectedCardsCountChanged -= _combatUIView.OnSelectedCardsCountChanged;
+            _deckOnHandsManager.PickedCardsCountChanged -= _combatUIView.OnSelectedCardsCountChanged;
             _combatUIView.EndTurnButtonClicked -= OnEndTurnButtonClicked;
             _combatUIView.ClearButtonClicked -= OnClearButtonClicked;
         }

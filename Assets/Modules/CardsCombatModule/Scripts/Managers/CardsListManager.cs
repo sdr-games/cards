@@ -1,4 +1,6 @@
-using SDRGames.Whist.CardsCombatModule.ScriptableObjects;
+using System.Collections.Generic;
+
+using SDRGames.Whist.CardsCombatModule.Models;
 using SDRGames.Whist.CardsCombatModule.Views;
 
 using UnityEditor;
@@ -11,11 +13,11 @@ namespace SDRGames.Whist.CardsCombatModule.Managers
     {
         [SerializeField] private CardPreviewView[] _cardPreviewViews;
 
-        public void Initialize(CardScriptableObject[] cards)
+        public void Initialize(List<Card> cards)
         {
-            for (int i = 0; i < cards.Length; i++)
+            for (int i = 0; i < cards.Count; i++)
             {
-                CardScriptableObject card = cards[i];
+                Card card = cards[i];
                 _cardPreviewViews[i].Initialize(card.Name, card.Description, card.Icon);
             }
         }

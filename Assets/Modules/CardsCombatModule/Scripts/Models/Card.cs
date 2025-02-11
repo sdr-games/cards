@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 
 using SDRGames.Whist.AbilitiesModule.Models;
-using SDRGames.Whist.AbilitiesModule.ScriptableObjects;
 using SDRGames.Whist.CardsCombatModule.ScriptableObjects;
 using SDRGames.Whist.CharacterModule.Managers;
 

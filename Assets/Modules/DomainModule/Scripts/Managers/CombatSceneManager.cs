@@ -103,8 +103,8 @@ namespace SDRGames.Whist.DomainModule.Managers
             {
                 if (_combatUIManager.TryMarkCard(e.CardManager))
                 {
-                    int cost = e.IsSelected ? -e.CardManager.Card.Cost * 2 : -e.CardManager.Card.Cost; // multiplication by 2 required because first we have to revert reserve by card's selection and after then add reserve by card's mark
-                    _playerCombatManager.ReserveBreathPoints(cost);
+                    int cost = e.IsSelected ? e.CardManager.Card.Cost * 2 : e.CardManager.Card.Cost; // multiplication by 2 required because first we have to revert reserve by card's selection and after then add reserve by card's mark
+                    _playerCombatManager.ReserveBreathPoints(-cost);
                 }
                 return;
             }
@@ -176,7 +176,14 @@ namespace SDRGames.Whist.DomainModule.Managers
                     new List<int>() { 0 }
                 );
             }
-            _playerCombatManager.SpendBreathPoints(e.TotalCost);
+            if (e.TotalCost > 0)
+            {
+                _playerCombatManager.SpendBreathPoints(e.TotalCost);
+            }
+            else
+            {
+                _playerCombatManager.RestoreBreathPoints(-e.TotalCost);
+            }
             _turnsQueueManager.SwitchTurn();
         }
 

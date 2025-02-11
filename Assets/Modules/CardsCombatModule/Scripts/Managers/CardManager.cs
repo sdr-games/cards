@@ -16,13 +16,13 @@ namespace SDRGames.Whist.CardsCombatModule.Managers
         [SerializeField] private CardView _cardView;
 
         private UserInputController _userInputController;
-        private bool _isSelected;
-        private bool _markedForDisenchant;
+        private bool _isPicked;
+        private bool _isMarkedForDisenchant;
 
         public Card Card { get; private set; }
 
-        public event EventHandler<CardSelectClickedEventArgs> CardSelectClicked;
-        public event EventHandler<CardMarkClickedEventArgs> CardMarkClicked;
+        public event EventHandler<CardSelectClickedEventArgs> CardPicked;
+        public event EventHandler<CardMarkClickedEventArgs> CardMarked;
 
         public void Initialize(UserInputController userInputController, Card card, int siblingIndex)
         {
@@ -35,14 +35,15 @@ namespace SDRGames.Whist.CardsCombatModule.Managers
             new CardPresenter(Card, _cardView, siblingIndex);
         }
 
-        public void SetPosition(Vector2 position)
+        public void UpdateView(Vector2 position, int siblingIndex)
         {
             _cardView.transform.localPosition = position;
+            _cardView.UpdatePositionAndRotation(siblingIndex);
         }
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            if (!_isSelected && !_markedForDisenchant)
+            if (!_isPicked && !_isMarkedForDisenchant)
             {
                 _cardView.HoverHighlight();
             }
@@ -50,49 +51,49 @@ namespace SDRGames.Whist.CardsCombatModule.Managers
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            if (!_isSelected && !_markedForDisenchant)
+            if (!_isPicked && !_isMarkedForDisenchant)
             {
                 _cardView.HoverUnhighlight();
             }
         }
 
-        public void Select()
+        public void Pick()
         {
-            _isSelected = true;
-            _markedForDisenchant = false;
-            _cardView.Select();
-            if (_markedForDisenchant)
+            _isPicked = true;
+            _isMarkedForDisenchant = false;
+            _cardView.Pick();
+            if (_isMarkedForDisenchant)
             {
                 _cardView.UnmarkForDisenchant();
             }
         }
 
-        public void Deselect()
+        public void CancelPick()
         {
-            _isSelected = false;
-            _cardView.Deselect();
+            _isPicked = false;
+            _cardView.CancelPick();
         }
 
         public void MarkForDisenchant()
         {
-            _isSelected = false;
-            _markedForDisenchant = true;
+            _isPicked = false;
+            _isMarkedForDisenchant = true;
             _cardView.MarkForDisenchant();
-            if (_isSelected)
+            if (_isPicked)
             {
-                _cardView.Deselect();
+                _cardView.CancelPick();
             }
         }
 
         public void UnmarkForDisenchant()
         {
-            _markedForDisenchant = false;
+            _isMarkedForDisenchant = false;
             _cardView.UnmarkForDisenchant();
         }
 
         public void Destroy()
         {
-            Deselect();
+            CancelPick();
             UnmarkForDisenchant();
             Destroy(gameObject);
         }
@@ -101,7 +102,7 @@ namespace SDRGames.Whist.CardsCombatModule.Managers
         {
             if(e.GameObject == gameObject)
             {
-                CardSelectClicked?.Invoke(this, new CardSelectClickedEventArgs(this, _isSelected, _markedForDisenchant));
+                CardPicked?.Invoke(this, new CardSelectClickedEventArgs(this, _isPicked, _isMarkedForDisenchant));
             }
         }
 
@@ -109,7 +110,7 @@ namespace SDRGames.Whist.CardsCombatModule.Managers
         {
             if (e.GameObject == gameObject)
             {
-                CardMarkClicked?.Invoke(this, new CardMarkClickedEventArgs(this, _markedForDisenchant, _isSelected));
+                CardMarked?.Invoke(this, new CardMarkClickedEventArgs(this, _isMarkedForDisenchant, _isPicked));
             }
         }
 

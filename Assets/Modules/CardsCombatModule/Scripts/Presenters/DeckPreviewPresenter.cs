@@ -1,4 +1,4 @@
-using SDRGames.Whist.CardsCombatModule.ScriptableObjects;
+using SDRGames.Whist.CardsCombatModule.Models;
 using SDRGames.Whist.CardsCombatModule.Views;
 
 namespace SDRGames.Whist.CardsCombatModule.Presenters
@@ -7,7 +7,7 @@ namespace SDRGames.Whist.CardsCombatModule.Presenters
     {
         private DeckPreviewView _deckPreviewView;
 
-        public DeckPreviewPresenter(DeckPreviewView deckPreviewView, DeckScriptableObject deck)
+        public DeckPreviewPresenter(DeckPreviewView deckPreviewView, Deck deck)
         {
             _deckPreviewView = deckPreviewView;
             _deckPreviewView.Initialize(deck.Backside);

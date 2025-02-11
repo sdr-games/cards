@@ -23,14 +23,18 @@ namespace SDRGames.Whist.CardsCombatModule.Views
 
         public void Initialize(int siblingIndex, LocalizedString nameText, LocalizedString descriptionText, Sprite illustrationSprite, string costText)
         {
-            _siblingIndex = siblingIndex;
-
-            SetRotation();
-            transform.SetAsFirstSibling();
-            _defaultPosition = transform.localPosition;
+            UpdatePositionAndRotation(siblingIndex);
 
             base.Initialize(nameText, descriptionText, illustrationSprite);
             _costText.text = costText;
+        }
+
+        public void UpdatePositionAndRotation(int siblingIndex)
+        {
+            _siblingIndex = siblingIndex;
+            SetRotation();
+            transform.SetAsFirstSibling();
+            _defaultPosition = transform.localPosition;
         }
 
         public void HoverHighlight()
@@ -46,14 +50,14 @@ namespace SDRGames.Whist.CardsCombatModule.Views
             _outline.enabled = false;
         }
 
-        public void Select()
+        public void Pick()
         {
             SetSelectedAndMarkedPosition();
             _outline.effectColor = _selectedOutlineColor;
             _outline.enabled = true;
         }
 
-        public void Deselect()
+        public void CancelPick()
         {
             SetDefaultPosition();
             _outline.enabled = false;

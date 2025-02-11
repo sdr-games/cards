@@ -14,9 +14,14 @@ namespace SDRGames.Whist.CardsCombatModule.Views
         public CardManager DrawCard(int maxCount, int index)
         {
             CardManager cardManager = Instantiate(_cardManagerPrefab, transform, false);
-            Vector2 position = CalculatePosition(maxCount, index);
-            cardManager.SetPosition(position);
+            RedrawCard(cardManager, maxCount, index);
             return cardManager;
+        }
+
+        public void RedrawCard(CardManager cardManager, int maxCount, int index)
+        {
+            Vector2 position = CalculatePosition(maxCount, index);
+            cardManager.UpdateView(position, index);
         }
 
         private Vector2 CalculatePosition(int maxCount, int currentIndex)

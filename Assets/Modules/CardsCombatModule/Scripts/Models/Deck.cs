@@ -21,5 +21,10 @@ namespace SDRGames.Whist.CardsCombatModule.Models
                 Cards.Add(card);
             } 
         }
+
+        public void RemoveCard(Card card)
+        {
+            Cards.Remove(card);
+        }
     }
 }
