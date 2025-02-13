@@ -45,17 +45,24 @@ namespace SDRGames.Whist.AbilitiesQueueModule.Managers
             return true;
         }
 
-        public List<Ability> PopSelectedAbilities()
+        public List<Ability> GetSelectedAbilities()
         {   List<Ability> selectedAbilities = new List<Ability>();
             foreach (AbilitySlotManager abilitySlotManager in _abilitySlotManagers)
             {
                 selectedAbilities.Add(abilitySlotManager.Ability);
-                abilitySlotManager.Unbind();
             }
             return selectedAbilities;
         }
 
-        public void ClearBindedAbilities()
+        public void UnbindAbilities()
+        {
+            foreach (AbilitySlotManager abilitySlotManager in _abilitySlotManagers)
+            {
+                abilitySlotManager.Unbind();
+            }
+        }
+
+        public void ClearQueue()
         {
             float reverseAmount = 0;
             foreach (AbilitySlotManager abilitySlotManager in _abilitySlotManagers)

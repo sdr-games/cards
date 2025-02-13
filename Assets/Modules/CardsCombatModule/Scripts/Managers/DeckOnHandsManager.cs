@@ -146,7 +146,7 @@ namespace SDRGames.Whist.CardsCombatModule.Managers
             return true;
         }
 
-        public void ClearPickedCards()
+        public void ClearCardsQueue()
         {
             float reverseAmount = 0;
             List<CardManager> pickedCardsManagers = new List<CardManager>(_pickedCardsManagers);
@@ -155,32 +155,48 @@ namespace SDRGames.Whist.CardsCombatModule.Managers
                 TryCancelPickCard(cardManager);
                 reverseAmount += cardManager.Card.Cost;
             }
+            List<CardManager> markedForDisenchantCardsManagers = new List<CardManager>(_markedForDisenchantCardsManagers);
+            foreach(CardManager cardManager in markedForDisenchantCardsManagers)
+            {
+                TryUnmarkCardForDisenchant(cardManager);
+                reverseAmount -= cardManager.Card.Cost;
+            } 
             CardsSelectionCleared?.Invoke(this, new CardsSelectionClearedEventArgs(reverseAmount));
-            PickedCardsCountChanged?.Invoke(this, new SelectedCardsCountChangedEventArgs(_pickedCardsManagers.Count <= 0));
+            PickedCardsCountChanged?.Invoke(this, new SelectedCardsCountChangedEventArgs(_pickedCardsManagers.Count <= 0 && _markedForDisenchantCardsManagers.Count <= 0));
         }
 
-        public List<Card> PopPickedCards()
+        public List<Card> GetPickedCards()
         {
             List<Card> pickedCards = new List<Card>();
-            List<CardManager> pickedCardsManagers = new List<CardManager>(_pickedCardsManagers);
-            foreach(CardManager cardManager in pickedCardsManagers)
+            foreach(CardManager cardManager in _pickedCardsManagers)
             {
                 pickedCards.Add(cardManager.Card);
-                TryRemovePickedCard(cardManager);
             }
             return pickedCards;
         }
 
-        public List<Card> PopCardsMarkedForDisenchant()
+        public List<Card> GetCardsMarkedForDisenchant()
         {
             List<Card> markedCards = new List<Card>();
-            List<CardManager> markedCardsManagers = new List<CardManager>(_markedForDisenchantCardsManagers);
-            foreach (CardManager cardManager in markedCardsManagers)
+            foreach (CardManager cardManager in _markedForDisenchantCardsManagers)
             {
                 markedCards.Add(cardManager.Card);
-                TryRemoveMarkedCard(cardManager);
             } 
             return markedCards;
+        }
+
+        public void RemoveUsedCards()
+        {
+            List<CardManager> pickedCardsManagers = new List<CardManager>(_pickedCardsManagers);
+            foreach(CardManager cardManager in pickedCardsManagers)
+            {
+                TryRemovePickedCard(cardManager);
+            }
+            List<CardManager> markedCardsManagers = new List<CardManager>(_markedForDisenchantCardsManagers);
+            foreach(CardManager cardManager in markedCardsManagers)
+            {
+                TryRemoveMarkedCard(cardManager);
+            }
         }
 
         public void ShowView()

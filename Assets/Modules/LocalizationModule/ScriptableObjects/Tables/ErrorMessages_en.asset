@@ -30,6 +30,10 @@ MonoBehaviour:
     m_Localized: Not enough breath points!
     m_Metadata:
       m_Items: []
+  - m_Id: 100397282890657792
+    m_Localized: Need a target!
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

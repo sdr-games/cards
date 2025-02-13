@@ -1,7 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
-
 using SDRGames.Whist.CharacterModule.Managers;
+using SDRGames.Whist.UserInputModule.Controller;
 
 using UnityEngine;
 
@@ -15,11 +13,11 @@ namespace SDRGames.Whist.AIBehaviorModule.Managers
 
         private PlayerCombatManager _playerCombatManager;
 
-        public void Initialize(PlayerCombatManager playerCombatManager)
+        public void Initialize(PlayerCombatManager playerCombatManager, UserInputController userInputController)
         {
             _playerCombatManager = playerCombatManager;
 
-            EnemyCombatManager.Initialize();
+            EnemyCombatManager.Initialize(userInputController);
             _meleeBehaviorManager.Initialize(EnemyCombatManager, playerCombatManager);
         }
     }

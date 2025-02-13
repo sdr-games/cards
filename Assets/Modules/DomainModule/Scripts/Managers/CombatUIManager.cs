@@ -100,8 +100,8 @@ namespace SDRGames.Whist.DomainModule.Managers
 
         public void HidePlayerUI()
         {
-            _abilitiesQueueManager.ClearBindedAbilities();
-            _deckOnHandsManager.ClearPickedCards();
+            _abilitiesQueueManager.ClearQueue();
+            _deckOnHandsManager.ClearCardsQueue();
             _abilitiesQueueManager.Hide();
             _playerSwitchableUI.Hide();
             _deckOnHandsManager.HideView();
@@ -138,6 +138,21 @@ namespace SDRGames.Whist.DomainModule.Managers
         public bool TryAddAbilityToQueue(Ability ability)
         {
             return _abilitiesQueueManager.TryAddAbilityToQueue(ability);
+        }
+
+        public void RemoveUsedCards()
+        {
+            _deckOnHandsManager.RemoveUsedCards();
+        }
+
+        public void UnbindAbilitiesInQueue()
+        {
+            _abilitiesQueueManager.UnbindAbilities();
+        }
+
+        public void ShowNoTargetError()
+        {
+            _combatUIView.ShowNoTargetError();
         }
 
         #region Events methods
@@ -180,13 +195,13 @@ namespace SDRGames.Whist.DomainModule.Managers
         {
             if (!e.Visible)
             {
-                _deckOnHandsManager.ClearPickedCards();
+                _deckOnHandsManager.ClearCardsQueue();
                 _abilitiesQueueManager.Show();
                 _meleeAttackListManager.Show();
                 _deckOnHandsManager.HideView();
                 return;
             }
-            _abilitiesQueueManager.ClearBindedAbilities();
+            _abilitiesQueueManager.ClearQueue();
             _abilitiesQueueManager.Hide();
             _meleeAttackListManager.Hide();
             _deckOnHandsManager.ShowView();
@@ -221,25 +236,23 @@ namespace SDRGames.Whist.DomainModule.Managers
         {
             float totalCost = 0;
 
-            List<Card> selectedCards = _deckOnHandsManager.PopPickedCards();
-            List<Card> markedForDisenchantCards = _deckOnHandsManager.PopCardsMarkedForDisenchant();
+            List<Card> selectedCards = _deckOnHandsManager.GetPickedCards();
+            List<Card> markedForDisenchantCards = _deckOnHandsManager.GetCardsMarkedForDisenchant();
             if (selectedCards.Count > 0 || markedForDisenchantCards.Count > 0)
             {
-                HidePlayerUI();
                 totalCost = selectedCards.Where(item => item != null).Sum(item => item.Cost);
                 totalCost -= markedForDisenchantCards.Where(item => item != null).Sum(item => item.Cost);
                 CardsTurnEnd?.Invoke(this, new CardsEndTurnEventArgs(totalCost, selectedCards));
                 return;
             }
 
-            List<Ability> selectedAbilities = _abilitiesQueueManager.PopSelectedAbilities();
-            HidePlayerUI();
+            List<Ability> selectedAbilities = _abilitiesQueueManager.GetSelectedAbilities();
             MeleeTurnEnd?.Invoke(this, new MeleeEndTurnEventArgs(selectedAbilities));
         }
 
         private void OnClearButtonClicked(object sender, EventArgs e)
         {
-            _abilitiesQueueManager.ClearBindedAbilities();
+            _abilitiesQueueManager.ClearQueue();
             ClearButtonClicked?.Invoke(this, e);
         }
 

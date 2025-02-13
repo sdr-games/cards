@@ -45,7 +45,7 @@ namespace SDRGames.Whist.AbilitiesModule.Models
             }
         }
 
-        public void ApplyLogics(CharacterCombatManager casterCombatManager, CharacterCombatManager targetCombatManager, int totalSelectedAbilitiesCount)
+        public void ApplyLogics(CharacterCombatManager casterCombatManager, CharacterCombatManager targetCombatManager)
         {
             foreach (AbilityLogic logic in AbilityLogics)
             {
@@ -58,7 +58,7 @@ namespace SDRGames.Whist.AbilitiesModule.Models
             }
         }
 
-        public void ApplyLogics(CharacterCombatManager casterCombatManager, List<CharacterCombatManager> targetsCombatManager, int totalSelectedAbilitiesCount, List<int> selectedTargetsIndexes)
+        public void ApplyLogics(CharacterCombatManager casterCombatManager, List<CharacterCombatManager> targetsCombatManager)
         {
             foreach (AbilityLogic logic in AbilityLogics)
             {
@@ -67,9 +67,9 @@ namespace SDRGames.Whist.AbilitiesModule.Models
                     logic.Apply(casterCombatManager);
                     continue;
                 }
-                foreach (int index in selectedTargetsIndexes)
+                foreach (CharacterCombatManager targetCombatManager in targetsCombatManager)
                 {
-                    logic.Apply(targetsCombatManager[index]);
+                    logic.Apply(targetCombatManager);
                 }
             }
         }

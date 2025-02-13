@@ -27,6 +27,10 @@ MonoBehaviour:
     m_Key: NotEnoughBreath
     m_Metadata:
       m_Items: []
+  - m_Id: 100397282890657792
+    m_Key: NoTargetSelected
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

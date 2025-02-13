@@ -5,6 +5,7 @@ using System.Linq;
 using SDRGames.Whist.CharacterModule.Presenters;
 using SDRGames.Whist.CharacterModule.ScriptableObjects;
 using SDRGames.Whist.CharacterModule.Views;
+using SDRGames.Whist.UserInputModule.Controller;
 
 using UnityEngine;
 
@@ -18,12 +19,13 @@ namespace SDRGames.Whist.CharacterModule.Managers
         protected Dictionary<PeriodicalEffectPresenter, int> _periodicalBuffs;
         protected Dictionary<PeriodicalEffectPresenter, int> _periodicalDebuffs;
 
-        public virtual void Initialize()
+        public virtual void Initialize(UserInputController userInputController = null)
         {
             _periodicalEffects = new Dictionary<PeriodicalEffectPresenter, int>();
             _periodicalBuffs = new Dictionary<PeriodicalEffectPresenter, int>();
             _periodicalDebuffs = new Dictionary<PeriodicalEffectPresenter, int>();
         }
+
         public abstract CharacterParamsModel GetParams();
         protected abstract CharacterCombatParamsView GetView();
         public abstract void TakePhysicalDamage(int damage);
