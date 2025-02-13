@@ -7,6 +7,7 @@ using SDRGames.Whist.NotificationsModule;
 using UnityEditor;
 
 using UnityEngine;
+using SDRGames.Whist.UserInputModule.Controller;
 
 namespace SDRGames.Whist.CharacterModule.Managers
 {
@@ -17,7 +18,7 @@ namespace SDRGames.Whist.CharacterModule.Managers
 
         private PlayerCharacterCombatParamsPresenter _playerCharacterCombatParamsPresenter;
 
-        public override void Initialize()
+        public override void Initialize(UserInputController userInputController = null)
         {
             base.Initialize();
             _playerCharacterCombatParamsPresenter = new PlayerCharacterCombatParamsPresenter(_playerCharacterParamsModel, _playerCharacterCombatParamsView);

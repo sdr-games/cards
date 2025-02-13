@@ -4,6 +4,8 @@ using SDRGames.Whist.AbilitiesQueueModule.Managers;
 using SDRGames.Whist.CardsCombatModule.Managers;
 using SDRGames.Whist.HelpersModule;
 using SDRGames.Whist.HelpersModule.Views;
+using SDRGames.Whist.LocalizationModule.Models;
+using SDRGames.Whist.NotificationsModule;
 using SDRGames.Whist.UserInputModule.Controller;
 
 using UnityEngine;
@@ -14,6 +16,8 @@ namespace SDRGames.Whist.DomainModule.Views
     {
         [SerializeField] private ButtonView _endTurnButton;
         [SerializeField] private ButtonView _clearButton;
+
+        [SerializeField] private LocalizedString _noTargetErrorMessage;
 
         public event EventHandler EndTurnButtonClicked;
         public event EventHandler ClearButtonClicked;
@@ -35,6 +39,11 @@ namespace SDRGames.Whist.DomainModule.Views
         public void OnAbilityQueueCountChanged(object sender, AbilityQueueCountChangedEventArgs e)
         {
             SwitchButtonsActivity(e.IsEmpty);
+        }
+
+        public void ShowNoTargetError()
+        {
+            Notification.Show(_noTargetErrorMessage.GetLocalizedText());
         }
 
         private void OnEndTurnButtonClicked(object sender, EventArgs e)

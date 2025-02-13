@@ -4,6 +4,8 @@ using SDRGames.Whist.CharacterModule.Views;
 using SDRGames.Whist.HelpersModule;
 
 using UnityEngine;
+using SDRGames.Whist.UserInputModule.Controller;
+using System;
 
 namespace SDRGames.Whist.CharacterModule.Managers
 {
@@ -11,13 +13,19 @@ namespace SDRGames.Whist.CharacterModule.Managers
     {
         [SerializeField] private CharacterParamsModel _characterParamsModel;
         [SerializeField] private CharacterCombatParamsView _characterCombatParamsView;
+        [SerializeField] private EnemyMeshManager _enemyMeshManager;
 
         private CharacterCombatParamsPresenter _characterCombatParamsPresenter;
 
-        public override void Initialize()
+        public event EventHandler<MeshClickedEventArgs> EnemySelected;
+
+        public override void Initialize(UserInputController userInputController)
         {
             base.Initialize();
             _characterCombatParamsPresenter = new CharacterCombatParamsPresenter(_characterParamsModel, _characterCombatParamsView);
+
+            _enemyMeshManager.Initialize(userInputController);
+            _enemyMeshManager.MeshClicked += OnMeshClicked;
         }
 
         public override CharacterParamsModel GetParams()
@@ -96,6 +104,17 @@ namespace SDRGames.Whist.CharacterModule.Managers
         protected void OnEnable()
         {
             this.CheckFieldValueIsNotNull(nameof(_characterCombatParamsView), _characterCombatParamsView);
+            this.CheckFieldValueIsNotNull(nameof(_enemyMeshManager), _enemyMeshManager);
+        }
+
+        private void OnMeshClicked(object sender, MeshClickedEventArgs e)
+        {
+            EnemySelected?.Invoke(this, e);
+        }
+
+        private void OnDisable()
+        {
+            _enemyMeshManager.MeshClicked -= OnMeshClicked;
         }
     }
 }

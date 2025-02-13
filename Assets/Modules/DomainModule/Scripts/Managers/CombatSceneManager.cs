@@ -32,6 +32,8 @@ namespace SDRGames.Whist.DomainModule.Managers
         [Header("ENEMIES")][SerializeField] private EnemyBehaviorManager[] _enemyBehaviorManagers;
 
         private List<EnemyCombatManager> _enemyCombatManagers;
+        private List<CharacterCombatManager> _selectedEnemyCombatManagers;
+        private bool _targetCheckRequired;
 
         private void OnValidate()
         {
@@ -47,6 +49,7 @@ namespace SDRGames.Whist.DomainModule.Managers
             this.CheckFieldValueIsNotNull(nameof(_characterParametersScalingSettings), _characterParametersScalingSettings);
             this.CheckFieldValueIsNotNull(nameof(_cardsScalingScriptableObject), _cardsScalingScriptableObject);
             this.CheckFieldValueIsNotNull(nameof(_meleeAttacksScalingScriptableObject), _meleeAttacksScalingScriptableObject);
+            this.CheckFieldValueIsNotNull(nameof(_combatUIManager), _combatUIManager);
             this.CheckFieldValueIsNotNull(nameof(_playerCombatManager), _playerCombatManager);
             this.CheckFieldValueIsNotNull(nameof(_enemyBehaviorManagers), _enemyBehaviorManagers);
 
@@ -55,14 +58,23 @@ namespace SDRGames.Whist.DomainModule.Managers
             _meleeAttacksScalingScriptableObject.Initialize();
 
             _playerCombatManager.Initialize();
+
             _enemyCombatManagers = new List<EnemyCombatManager>();
+            _selectedEnemyCombatManagers = new List<CharacterCombatManager>();
             List<CharacterParamsModel> characterInfoScriptableObjects = new List<CharacterParamsModel>();
             characterInfoScriptableObjects.Add(_playerCombatManager.GetParams());
             foreach (EnemyBehaviorManager enemyBehaviorManager in _enemyBehaviorManagers)
             {
-                enemyBehaviorManager.Initialize(_playerCombatManager);
+                enemyBehaviorManager.Initialize(_playerCombatManager, _userInputController);
+                enemyBehaviorManager.EnemyCombatManager.EnemySelected += OnEnemySelected;
                 _enemyCombatManagers.Add(enemyBehaviorManager.EnemyCombatManager);
                 characterInfoScriptableObjects.Add(enemyBehaviorManager.EnemyCombatManager.GetParams());   
+            }
+            _targetCheckRequired = false;
+            if(_enemyBehaviorManagers.Length <= 1)
+            {
+                _targetCheckRequired = true;
+                _selectedEnemyCombatManagers.Add(_enemyCombatManagers[0]);
             }
 
             _combatUIManager.Initialize(_userInputController);
@@ -129,8 +141,14 @@ namespace SDRGames.Whist.DomainModule.Managers
 
         private void OnMeleeTurnEnd(object sender, MeleeEndTurnEventArgs e)
         {
-            List<CharacterCombatManager> enemyCharacterCombatManagers = new List<CharacterCombatManager>(_enemyCombatManagers);
+            if (e.Abilities.Count > 0 && _selectedEnemyCombatManagers.Count == 0 && _targetCheckRequired)
+            {
+                _combatUIManager.ShowNoTargetError();
+                return;
+            }
 
+            _combatUIManager.UnbindAbilitiesInQueue();
+            _combatUIManager.HidePlayerUI();
             foreach (Ability ability in e.Abilities)
             {
                 if (ability == null)
@@ -140,9 +158,7 @@ namespace SDRGames.Whist.DomainModule.Managers
                 }
                 ability.ApplyLogics(
                     _playerCombatManager,
-                    enemyCharacterCombatManagers,
-                    e.Abilities.Count,
-                    new List<int>() { 0 }
+                    _selectedEnemyCombatManagers
                 );
                 _playerCombatManager.SpendStaminaPoints(ability.Cost);
             }
@@ -151,9 +167,15 @@ namespace SDRGames.Whist.DomainModule.Managers
 
         private void OnCardsTurnEnd(object sender, CardsEndTurnEventArgs e)
         {
-            List<CharacterCombatManager> enemyCharacterCombatManagers = new List<CharacterCombatManager>(_enemyCombatManagers);
+            if(e.SelectedCards.Count > 0 && _selectedEnemyCombatManagers.Count == 0 && _targetCheckRequired)
+            {
+                _combatUIManager.ShowNoTargetError();
+                return;
+            }
 
-            for(int i = 0; i < e.SelectedCards.Count; i++)
+            _combatUIManager.RemoveUsedCards();
+            _combatUIManager.HidePlayerUI();
+            for (int i = 0; i < e.SelectedCards.Count; i++)
             {
                 Card card = e.SelectedCards[i];
                 if(card == null)
@@ -165,15 +187,13 @@ namespace SDRGames.Whist.DomainModule.Managers
                 {
                     List<Card> affectedCards = new List<Card>(e.SelectedCards);
                     affectedCards.Remove(card);
-                    card.ApplyModifier(affectedCards.Count - 1, _playerCombatManager, enemyCharacterCombatManagers, affectedCards);
+                    card.ApplyModifier(affectedCards.Count - 1, _playerCombatManager, _selectedEnemyCombatManagers, affectedCards);
                     continue;
                 }
 
                 card.ApplyLogics(
                     _playerCombatManager,
-                    enemyCharacterCombatManagers, 
-                    e.SelectedCards.Count, 
-                    new List<int>() { 0 }
+                    _selectedEnemyCombatManagers
                 );
             }
             if (e.TotalCost > 0)
@@ -190,6 +210,19 @@ namespace SDRGames.Whist.DomainModule.Managers
         private void OnAbilityQueueCleared(object sender, AbilityQueueClearedEventArgs e)
         {
             _playerCombatManager.ResetStaminaReservedPoints(e.ReverseAmount);
+        }
+
+        private void OnEnemySelected(object sender, MeshClickedEventArgs e)
+        {
+            EnemyCombatManager enemyCombatManager = (EnemyCombatManager)sender;
+            if(e.IsSelected && !_selectedEnemyCombatManagers.Contains(enemyCombatManager))
+            {
+                _selectedEnemyCombatManagers.Add(enemyCombatManager);
+            }
+            else if(!e.IsSelected && _selectedEnemyCombatManagers.Contains(enemyCombatManager))
+            {
+                _selectedEnemyCombatManagers.Remove(enemyCombatManager);
+            }
         }
 
         private void OnTurnSwitched(object sender, TurnSwitchedEventArgs e)
@@ -224,8 +257,8 @@ namespace SDRGames.Whist.DomainModule.Managers
 
         private void StartEnemyTurn(EnemyCombatManager enemyCharacterCombatManager)
         {
-            enemyCharacterCombatManager?.ApplyPeriodicalEffects();
             _playerCombatManager.UpdateBonusesEffects();
+            enemyCharacterCombatManager?.ApplyPeriodicalEffects();
             //_enemyMeleeBehaviorManager.ChooseAndAppyAbilities();
             _turnsQueueManager.SwitchTurn();
         }
