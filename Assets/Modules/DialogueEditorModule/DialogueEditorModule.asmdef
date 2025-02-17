@@ -1,0 +1,23 @@
+{
+    "name": "DialogueEditorModule",
+    "rootNamespace": "SDRGames.Whist.DialogueEditorModule",
+    "references": [
+        "GUID:df3e9bc81cfaeb44aac86061400f6ae1",
+        "GUID:0b17ab7a9acfafd4a8338fd368170845",
+        "GUID:93e0ad40b1227c94bbc216fd4643284f",
+        "GUID:eec0964c48f6f4e40bc3ec2257ccf8c5",
+        "GUID:2e77701fe0ceda44fb763f03ee704c37",
+        "GUID:e41ff2de5c626d64f9b1425803813a35"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

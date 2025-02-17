@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
+  m_Name: CharacterNames Shared Data
+  m_EditorClassIdentifier: 
+  m_TableCollectionName: CharacterNames
+  m_TableCollectionNameGuidString: 179cb9af71b3dc749946d07fca3d67d4
+  m_Entries:
+  - m_Id: 549234827264
+    m_Key: "Valior\t"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1308420111228928
+    m_Key: Teofrast
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5643169906712576
+    m_Key: Test
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6741295845498880
+    m_Key: Slime
+    m_Metadata:
+      m_Items: []
+  m_Metadata:
+    m_Items: []
+  m_KeyGenerator:
+    rid: 2958832034406465571
+  references:
+    version: 2
+    RefIds:
+    - rid: 2958832034406465571
+      type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables,
+        asm: Unity.Localization}
+      data:
+        m_CustomEpoch: 1709545932474

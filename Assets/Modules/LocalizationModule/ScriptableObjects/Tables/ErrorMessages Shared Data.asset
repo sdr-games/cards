@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
+  m_Name: ErrorMessages Shared Data
+  m_EditorClassIdentifier: 
+  m_TableCollectionName: ErrorMessages
+  m_TableCollectionNameGuidString: 2f778a2bec4417b41b6ad50bdbac269f
+  m_Entries:
+  - m_Id: 12120645632
+    m_Key: NotEnoughStamina
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96233218048
+    m_Key: QueueIsFull
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15246926453825536
+    m_Key: NotEnoughBreath
+    m_Metadata:
+      m_Items: []
+  - m_Id: 100397282890657792
+    m_Key: NoTargetSelected
+    m_Metadata:
+      m_Items: []
+  m_Metadata:
+    m_Items: []
+  m_KeyGenerator:
+    rid: 3228231182608498947
+  references:
+    version: 2
+    RefIds:
+    - rid: 3228231182608498947
+      type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables,
+        asm: Unity.Localization}
+      data:
+        m_CustomEpoch: 1715428665744

@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a33062fd4de85c42b79ad801a237c36, type: 3}
+  m_Name: SlimeInfo
+  m_EditorClassIdentifier: 
+  <CharacterPortrait>k__BackingField: {fileID: 21300000, guid: 8fb7d9ccdfae0b5438098f7990b0ace3,
+    type: 3}
+  <CharacterNameLocalization>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: GUID:179cb9af71b3dc749946d07fca3d67d4
+    m_TableEntryReference:
+      m_KeyId: 6741295845498880
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  <CharacterDescriptionLocalization>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: GUID:9001e27a929312d4287b19b4f3688071
+    m_TableEntryReference:
+      m_KeyId: 53329682432
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  references:
+    version: 2
+    RefIds: []
