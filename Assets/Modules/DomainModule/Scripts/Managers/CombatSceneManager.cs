@@ -227,12 +227,18 @@ namespace SDRGames.Whist.DomainModule.Managers
 
         private void OnTurnSwitched(object sender, TurnSwitchedEventArgs e)
         {
-            if (e.IsPlayerTurn)
+            if(!e.IsCombatTurn)
             {
-                StartPlayerTurn(e.IsCombatTurn);
+                _combatUIManager.ShowPlayerUI(false);
                 return;
             }
-            StartEnemyTurn(_enemyCombatManagers[0]);
+
+            if (e.IsPlayerTurn)
+            {
+                StartPlayerTurn();
+                return;
+            }
+            StartEnemyTurn(_enemyBehaviorManagers[e.EnemyIndex]);
         }
 
         private void OnClearButtonClicked(object sender, EventArgs e)
@@ -245,21 +251,21 @@ namespace SDRGames.Whist.DomainModule.Managers
             _playerCombatManager.ResetBreathReservedPoints(e.ReverseAmount);
         }
 
-        private void StartPlayerTurn(bool isCombatTurn)
+        private void StartPlayerTurn()
         {
             _playerCombatManager.ApplyPeriodicalEffects();
             foreach (EnemyCombatManager enemyCharacterCombatManager in _enemyCombatManagers)
             {
                 enemyCharacterCombatManager.UpdateBonusesEffects();
             }
-            _combatUIManager.ShowPlayerUI(isCombatTurn);
+            _combatUIManager.ShowPlayerUI(true);
         }
 
-        private void StartEnemyTurn(EnemyCombatManager enemyCharacterCombatManager)
+        private void StartEnemyTurn(EnemyBehaviorManager enemyBehaviorManager)
         {
             _playerCombatManager.UpdateBonusesEffects();
-            enemyCharacterCombatManager?.ApplyPeriodicalEffects();
-            //_enemyMeleeBehaviorManager.ChooseAndAppyAbilities();
+            enemyBehaviorManager.EnemyCombatManager.ApplyPeriodicalEffects();
+            enemyBehaviorManager.MakeMove();
             _turnsQueueManager.SwitchTurn();
         }
 

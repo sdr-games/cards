@@ -1,3 +1,5 @@
+using System.Linq;
+
 using SDRGames.Whist.HelpersModule;
 using SDRGames.Whist.LocalizationModule.Models;
 
@@ -14,6 +16,16 @@ namespace SDRGames.Whist.AbilitiesModule.ScriptableObjects
         [field: SerializeField] public Sprite Icon { get; private set; }
         [field: SerializeField] public int Cost { get; private set; }
         [field: SerializeField] public AbilityLogicScriptableObject[] AbilityLogics { get; private set; }
+
+        public float GetAverageDamage()
+        {
+            int totalDamage = 0;
+            foreach(DamageLogicScriptableObject damageLogicScriptableObject in AbilityLogics)
+            {
+                totalDamage += damageLogicScriptableObject.DamageValue;
+            }
+            return totalDamage / AbilityLogics.Length;
+        }
 
         private void OnEnable()
         {

@@ -15,8 +15,9 @@ namespace SDRGames.Whist.PointsModule.Models
         [field: SerializeField][field: ReadOnly] public float PermanentBonus { get; private set; }
         [field: SerializeField][field: ReadOnly] public float TemporaryBonus { get; private set; }
         [field: SerializeField][field: ReadOnly][field: Range(0, 100)] public float RestorationPowerPercent { get; private set; }
-
         [field: SerializeField][field: ReadOnly] public float MaxValue { get; private set; }
+
+        public float RestorationPower => MaxValue / 100 * RestorationPowerPercent;
         public float CurrentValue { get; private set; }
         public float CurrentValueInPercents { get; private set; }
         public float ReservedValue { get; private set; }

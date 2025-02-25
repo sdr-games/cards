@@ -3,7 +3,6 @@ using System.Linq;
 
 using SDRGames.Whist.AbilitiesModule.ScriptableObjects;
 using SDRGames.Whist.AIBehaviorModule.ScriptableObjects;
-using SDRGames.Whist.CharacterModule.Managers;
 
 using UnityEngine;
 
@@ -11,30 +10,21 @@ namespace SDRGames.Whist.AIBehaviorModule.Managers
 {
     public class EnemyMeleeBehaviorManager : MonoBehaviour
     {
-        [SerializeField] private EnemyCombatManager _combatManager;
         [SerializeField] private BehaviorScriptableObject[] _behaviors;
 
-        private PlayerCombatManager _playerCombatManager;
-
-        public void Initialize(EnemyCombatManager combatManager, PlayerCombatManager playerCombatManager)
-        {
-            _combatManager = combatManager;
-            _playerCombatManager = playerCombatManager;
-        }
-
-        public void ChooseAndAppyAbilities(float currentResourceValue, float currentPlayerDefencePercents)
+        public List<AbilityScriptableObject> SelectAbilities(float currentResourceValue, float currentPlayerDefencePercents)
         {
             if (currentResourceValue <= 0)
             {
-                return;
+                return null;
             }
 
             List<AbilityScriptableObject> abilities = new List<AbilityScriptableObject>();
             BehaviorScriptableObject selectedBehavior = _behaviors.Where(
-                behavior => behavior.CheckIfAppliableByArmor(currentPlayerDefencePercents)
+                behavior => behavior.CheckIfAppliableByArmor(currentPlayerDefencePercents) && behavior.CheckIfAppliableByResource(currentResourceValue)
             ).FirstOrDefault();
 
-            if(selectedBehavior is null || !selectedBehavior.CheckIfAppliableByResource(currentResourceValue))
+            if(selectedBehavior is null)
             {
                 selectedBehavior = _behaviors.OrderBy(behavior => behavior.MinimalAttacksCost).FirstOrDefault();
                 abilities = selectedBehavior.MinimalCostAttacks;
@@ -43,16 +33,24 @@ namespace SDRGames.Whist.AIBehaviorModule.Managers
             {
                 abilities = selectedBehavior.ChooseRandomAttacks();
             }
-            ApplyAbilities(abilities);
+            return abilities;
         }
 
-        private void ApplyAbilities(List<AbilityScriptableObject> abilities)
+        public List<AbilityScriptableObject> GetAllAbilties()
         {
-            foreach (AbilityScriptableObject ability in abilities)
+            List<AbilityScriptableObject> abilities = new List<AbilityScriptableObject>();
+            foreach (BehaviorScriptableObject behavior in _behaviors)
             {
-                //ability.ApplyLogics(_combatManager, _playerCombatManager, abilities.Count);
+                foreach(AbilityScriptableObject abilityScriptableObject in behavior.GetAllAttacks())
+                {
+                    if(abilities.Contains(abilityScriptableObject))
+                    {
+                        continue;
+                    }
+                    abilities.Add(abilityScriptableObject);
+                }
             }
-            _combatManager.SpendStaminaPoints(abilities.Sum(ability => ability.Cost));
+            return abilities;
         }
     }
 }
