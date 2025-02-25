@@ -53,6 +53,23 @@ namespace SDRGames.Whist.AIBehaviorModule.ScriptableObjects
             return result;
         }
 
+        public List<AbilityScriptableObject> GetAllAttacks()
+        {
+            List<AbilityScriptableObject> abilities = new List<AbilityScriptableObject>();
+            foreach (List<AbilityScriptableObject> attacks in _meleeAttacks.Values)
+            {
+                foreach(AbilityScriptableObject attack in attacks)
+                {
+                    if (abilities.Contains(attack))
+                    {
+                        continue;
+                    }
+                    abilities.Add(attack);
+                }
+            }
+            return abilities;
+        }
+
         private void OnEnable()
         {
             MinimalAttacksCost = 0;
@@ -70,6 +87,15 @@ namespace SDRGames.Whist.AIBehaviorModule.ScriptableObjects
 
         private void OnValidate()
         {
+            if(_playerArmorPercentFrom < 0)
+            {
+                _playerArmorPercentFrom = 0;
+            }
+            if(_playerArmorPercentTo > 100)
+            {
+                _playerArmorPercentTo = 100;
+            }
+
             if (_playerArmorPercentFrom < _playerArmorPercentTo)
             {
                 _playerArmorPercentTo = _playerArmorPercentFrom;

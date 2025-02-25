@@ -27,6 +27,10 @@ MonoBehaviour:
     m_Key: HeavyStrike
     m_Metadata:
       m_Items: []
+  - m_Id: 7982112633864192
+    m_Key: _
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

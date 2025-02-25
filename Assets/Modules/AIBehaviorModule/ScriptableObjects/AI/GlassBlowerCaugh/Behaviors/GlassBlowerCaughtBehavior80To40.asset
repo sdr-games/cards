@@ -10,13 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c342f85b5cc74c146a4415ea43bfb817, type: 3}
-  m_Name: EnemyBehaviorScriptableObject
+  m_Name: GlassBlowerCaughtBehavior80To40
   m_EditorClassIdentifier: 
-  _playerArmorPercentFrom: 100
-  _playerArmorPercentTo: 80
+  _playerArmorPercentFrom: 80
+  _playerArmorPercentTo: 40
   _meleeAttacks:
     list:
-    - Key: 100
+    - Key: 40
       Value:
-      - {fileID: 11400000, guid: 0084636326e86804386c7d737f95eeb6, type: 2}
-      - {fileID: 11400000, guid: 0084636326e86804386c7d737f95eeb6, type: 2}
+      - {fileID: 11400000, guid: a560b73aa71bfcb4bb7853e69092ab58, type: 2}
+    - Key: 30
+      Value:
+      - {fileID: 11400000, guid: fff3b2876c2078346b4493536517d42d, type: 2}
+    - Key: 30
+      Value:
+      - {fileID: 11400000, guid: 4037f627d9783c44daa5d6767205c035, type: 2}
