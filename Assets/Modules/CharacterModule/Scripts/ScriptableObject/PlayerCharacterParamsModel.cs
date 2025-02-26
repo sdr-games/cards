@@ -1,6 +1,7 @@
 using System;
 
 using SDRGames.Whist.CharacterModule.Models;
+using SDRGames.Whist.DiceModule.Models;
 
 using UnityEngine;
 
@@ -94,7 +95,39 @@ namespace SDRGames.Whist.CharacterModule.ScriptableObjects
             ExperienceChanged?.Invoke(this, new ExperienceChangedEventArgs(Experience, CharacterParametersScaling.Instance.ExperienceRequiredPerLevel[Level - 1]));
         }
 
-        protected override void OnValidate()
+        private void CalculateParameters()
+        {
+            int physicalDamageLevelScaling = Level / CharacterParametersScaling.Instance.LevelsCountForMultiplier * CharacterParametersScaling.Instance.LevelsToPhysicalDamageMultiplier;
+            int magicalDamageLevelScaling = Level / CharacterParametersScaling.Instance.LevelsCountForMultiplier * CharacterParametersScaling.Instance.LevelsToMagicalDamageMultiplier;
+
+            PhysicalDamage = Strength * CharacterParametersScaling.Instance.StrengthToPhysicalDamage;
+            PhysicalDamage *= physicalDamageLevelScaling > 0 ? physicalDamageLevelScaling : 1;
+            MagicalDamage = Intelligence * CharacterParametersScaling.Instance.IntelligenceToMagicalDamage;
+            MagicalDamage *= magicalDamageLevelScaling > 0 ? magicalDamageLevelScaling : 1;
+            PhysicalHitChance = Strength * CharacterParametersScaling.Instance.StrengthToPhysicalHitChance;
+            MagicalHitChance = Intelligence * CharacterParametersScaling.Instance.IntelligenceToMagicalHitChance;
+            Piercing = Agility * CharacterParametersScaling.Instance.AgilityToPiercing;
+
+            DodgeChance = Agility * CharacterParametersScaling.Instance.AgilityToDodgeChance;
+            BlockChance = Strength * CharacterParametersScaling.Instance.StrengthToBlockChance;
+            OnslaughtChance = Stamina * CharacterParametersScaling.Instance.StaminaToOnslaughtChance;
+            CriticalStrikeChance = (Strength + Agility) / 2 * CharacterParametersScaling.Instance.StrengthAndAgilityToCriticalStrikeChance;
+            Resilience = Stamina * CharacterParametersScaling.Instance.StaminaToResilience;
+            Weakening = 0;
+            Amplification = 0;
+            Initiative = new Dice("Initiative", 1, 21 - Agility * CharacterParametersScaling.Instance.AgilityToInitiative);
+
+            HealthPoints.SetPermanentBonus(Strength * CharacterParametersScaling.Instance.StrengthToHealthPoints + Stamina * CharacterParametersScaling.Instance.StaminaToHealthPoints);
+            StaminaPoints.SetPermanentBonus(Stamina * CharacterParametersScaling.Instance.StaminaToStaminaPoints);
+            BreathPoints.SetPermanentBonus(Intelligence * CharacterParametersScaling.Instance.IntelligenceToBreathPoints);
+            ArmorPoints.SetPermanentBonus(Level * CharacterParametersScaling.Instance.LevelToArmorPoints);
+            BarrierPoints.SetPermanentBonus(Level * CharacterParametersScaling.Instance.LevelToBarrierPoints);
+
+            StaminaPoints.SetRestorationPower(StaminaPoints.MaxValue * (CharacterParametersScaling.Instance.BaseStaminaRestorationPowerPercent / 100) + Agility * CharacterParametersScaling.Instance.AgilityToStaminaRestorationPerRound);
+            StunResistance = ArmorPoints.CurrentValue > 0 ? CharacterParametersScaling.Instance.BaseStunResistance : CharacterParametersScaling.Instance.BaseStunResistanceWithoutArmor;
+        }
+
+        private void OnValidate()
         {
             if (Strength <= 0)
             {
@@ -112,10 +145,10 @@ namespace SDRGames.Whist.CharacterModule.ScriptableObjects
             {
                 Intelligence = 1;
             }
-            base.OnValidate();
+            CalculateParameters();
         }
 
-        protected override void OnDisable()
+        private void OnDisable()
         {
             Level = 1;
             Strength = 1;
@@ -124,7 +157,7 @@ namespace SDRGames.Whist.CharacterModule.ScriptableObjects
             Intelligence = 1;
             Experience = 0;
             TalentPoints = 0;
-            base.OnDisable();
+            CalculateParameters();
         }
     }
 }

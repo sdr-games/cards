@@ -15,19 +15,20 @@ MonoBehaviour:
   <Description>k__BackingField:
     <Entity>k__BackingField:
       m_TableReference:
-        m_TableCollectionName: 
+        m_TableCollectionName: GUID:fe72a131280f9df42b6389b94bd56136
       m_TableEntryReference:
-        m_KeyId: 0
+        m_KeyId: 2163871358976
         m_Key: 
       m_FallbackState: 0
       m_WaitForCompletion: 0
       m_LocalVariables: []
-  <EffectIcon>k__BackingField: {fileID: 0}
+  <EffectIcon>k__BackingField: {fileID: 21300000, guid: e2ecf1466d2cba146ab4b8681c5371f3,
+    type: 3}
   <TargetsCount>k__BackingField: 1
   <Chance>k__BackingField: 100
   <RoundsCount>k__BackingField: 0
-  <RestorationType>k__BackingField: 0
-  <RestorationValue>k__BackingField: 0
+  <RestorationType>k__BackingField: 4
+  <RestorationValue>k__BackingField: 50
   references:
     version: 2
     RefIds: []

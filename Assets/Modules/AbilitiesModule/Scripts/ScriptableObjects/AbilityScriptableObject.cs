@@ -15,6 +15,7 @@ namespace SDRGames.Whist.AbilitiesModule.ScriptableObjects
         [field: SerializeField] public LocalizedString Description { get; private set; }
         [field: SerializeField] public Sprite Icon { get; private set; }
         [field: SerializeField] public int Cost { get; private set; }
+        [field: SerializeField] public AnimationClip AnimationClip { get; private set; }
         [field: SerializeField] public AbilityLogicScriptableObject[] AbilityLogics { get; private set; }
 
         public float GetAverageDamage()

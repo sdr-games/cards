@@ -3,11 +3,9 @@ using SDRGames.Whist.CharacterModule.Presenters;
 using SDRGames.Whist.CharacterModule.ScriptableObjects;
 using SDRGames.Whist.CharacterModule.Views;
 using SDRGames.Whist.NotificationsModule;
-
-using UnityEditor;
+using SDRGames.Whist.UserInputModule.Controller;
 
 using UnityEngine;
-using SDRGames.Whist.UserInputModule.Controller;
 
 namespace SDRGames.Whist.CharacterModule.Managers
 {
@@ -53,7 +51,7 @@ namespace SDRGames.Whist.CharacterModule.Managers
         {
             if(restoration < 0)
             {
-                restoration = _playerCharacterParamsModel.ArmorPoints.RestorationPowerPercent;
+                restoration = _playerCharacterParamsModel.ArmorPoints.RestorationPower;
             } 
             _playerCharacterCombatParamsPresenter.RestoreArmor(restoration);
         }
@@ -62,7 +60,7 @@ namespace SDRGames.Whist.CharacterModule.Managers
         {
             if(restoration < 0)
             {
-                restoration = _playerCharacterParamsModel.BarrierPoints.RestorationPowerPercent;
+                restoration = _playerCharacterParamsModel.BarrierPoints.RestorationPower;
             } 
             _playerCharacterCombatParamsPresenter.RestoreBarrier(restoration);
         }
@@ -71,7 +69,7 @@ namespace SDRGames.Whist.CharacterModule.Managers
         {
             if(restoration < 0)
             {
-                restoration = _playerCharacterParamsModel.HealthPoints.RestorationPowerPercent;
+                restoration = _playerCharacterParamsModel.HealthPoints.RestorationPower;
             }
             _playerCharacterCombatParamsPresenter.RestoreHealth(restoration);
         }
@@ -80,7 +78,7 @@ namespace SDRGames.Whist.CharacterModule.Managers
         {
             if(restoration < 0)
             {
-                restoration = _playerCharacterParamsModel.StaminaPoints.RestorationPowerPercent;
+                restoration = _playerCharacterParamsModel.StaminaPoints.RestorationPower;
             }
             _playerCharacterCombatParamsPresenter.RestoreStamina(restoration);
         }
@@ -89,7 +87,7 @@ namespace SDRGames.Whist.CharacterModule.Managers
         {
             if(restoration < 0)
             {
-                restoration = _playerCharacterParamsModel.BreathPoints.RestorationPowerPercent;
+                restoration = _playerCharacterParamsModel.BreathPoints.RestorationPower;
             }
             _playerCharacterCombatParamsPresenter.RestoreBreath(restoration);
         }
