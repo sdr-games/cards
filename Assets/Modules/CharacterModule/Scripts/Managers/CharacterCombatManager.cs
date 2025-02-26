@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
+using SDRGames.Whist.AnimationsModule;
 using SDRGames.Whist.CharacterModule.Presenters;
 using SDRGames.Whist.CharacterModule.ScriptableObjects;
 using SDRGames.Whist.CharacterModule.Views;
@@ -18,6 +19,8 @@ namespace SDRGames.Whist.CharacterModule.Managers
         protected Dictionary<PeriodicalEffectPresenter, int> _periodicalEffects;
         protected Dictionary<PeriodicalEffectPresenter, int> _periodicalBuffs;
         protected Dictionary<PeriodicalEffectPresenter, int> _periodicalDebuffs;
+
+        [field: SerializeField] public AnimationsController AnimationsController { get; protected set; }
 
         public virtual void Initialize(UserInputController userInputController = null)
         {

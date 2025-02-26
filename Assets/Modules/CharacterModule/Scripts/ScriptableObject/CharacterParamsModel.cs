@@ -29,27 +29,27 @@ namespace SDRGames.Whist.CharacterModule.ScriptableObjects
         #region Visible Parameters
 
         [field: Header("Visible Parameters")]
-        [field: SerializeField][field: ReadOnly] public int PhysicalDamage { get; protected set; }
-        [field: SerializeField][field: ReadOnly] public int MagicalDamage { get; protected set; }
-        [field: SerializeField][field: ReadOnly] public int PhysicalHitChance { get; protected set; }
-        [field: SerializeField][field: ReadOnly] public int MagicalHitChance { get; protected set; }
-        [field: SerializeField][field: ReadOnly] public float StaminaRestorationPower { get => StaminaPoints.RestorationPowerPercent; }
-        [field: SerializeField][field: ReadOnly] public int Piercing { get; protected set; }
+        [field: SerializeField] public int PhysicalDamage { get; protected set; }
+        [field: SerializeField] public int MagicalDamage { get; protected set; }
+        [field: SerializeField] public int PhysicalHitChance { get; protected set; }
+        [field: SerializeField] public int MagicalHitChance { get; protected set; }
+        [field: SerializeField] public float StaminaRestorationPower { get => StaminaPoints.RestorationPower; }
+        [field: SerializeField] public int Piercing { get; protected set; }
 
         #endregion
 
         #region Hidden Parameters
 
         [field: Header("Hidden Parameters")]
-        [field: SerializeField][field: ReadOnly] public int DodgeChance { get; protected set; }
-        [field: SerializeField][field: ReadOnly] public int BlockChance { get; protected set; }
-        [field: SerializeField][field: ReadOnly] public int OnslaughtChance { get; protected set; }
-        [field: SerializeField][field: ReadOnly] public int CriticalStrikeChance { get; protected set; }
-        [field: SerializeField][field: ReadOnly] public int Resilience { get; protected set; }
-        [field: SerializeField][field: ReadOnly] public int Weakening { get; protected set; }
-        [field: SerializeField][field: ReadOnly] public int Amplification { get; protected set; }
-        [field: SerializeField][field: ReadOnly] public Dice Initiative { get; protected set; }
-        [field: SerializeField][field: ReadOnly] public int StunResistance { get; protected set; }
+        [field: SerializeField] public int DodgeChance { get; protected set; }
+        [field: SerializeField] public int BlockChance { get; protected set; }
+        [field: SerializeField] public int OnslaughtChance { get; protected set; }
+        [field: SerializeField] public int CriticalStrikeChance { get; protected set; }
+        [field: SerializeField] public int Resilience { get; protected set; }
+        [field: SerializeField] public int Weakening { get; protected set; }
+        [field: SerializeField] public int Amplification { get; protected set; }
+        [field: SerializeField] public Dice Initiative { get; protected set; }
+        [field: SerializeField] public int StunResistance { get; protected set; }
 
         #endregion
 
@@ -208,48 +208,6 @@ namespace SDRGames.Whist.CharacterModule.ScriptableObjects
             BreathPoints.Reset();
             ArmorPoints.Reset();
             BarrierPoints.Reset();
-        }
-
-        protected virtual void OnValidate()
-        {
-            CalculateParameters();
-        }
-
-        protected virtual void OnDisable()
-        {
-            CalculateParameters();
-        }
-
-        protected void CalculateParameters()
-        {
-            int physicalDamageLevelScaling = Level / CharacterParametersScaling.Instance.LevelsCountForMultiplier * CharacterParametersScaling.Instance.LevelsToPhysicalDamageMultiplier;
-            int magicalDamageLevelScaling = Level / CharacterParametersScaling.Instance.LevelsCountForMultiplier * CharacterParametersScaling.Instance.LevelsToMagicalDamageMultiplier;
-
-            PhysicalDamage = Strength * CharacterParametersScaling.Instance.StrengthToPhysicalDamage;
-            PhysicalDamage *= physicalDamageLevelScaling > 0 ? physicalDamageLevelScaling : 1;
-            MagicalDamage = Intelligence * CharacterParametersScaling.Instance.IntelligenceToMagicalDamage;
-            MagicalDamage *= magicalDamageLevelScaling > 0 ? magicalDamageLevelScaling : 1;
-            PhysicalHitChance = Strength * CharacterParametersScaling.Instance.StrengthToPhysicalHitChance;
-            MagicalHitChance = Intelligence * CharacterParametersScaling.Instance.IntelligenceToMagicalHitChance;
-            Piercing = Agility * CharacterParametersScaling.Instance.AgilityToPiercing;
-
-            DodgeChance = Agility * CharacterParametersScaling.Instance.AgilityToDodgeChance;
-            BlockChance = Strength * CharacterParametersScaling.Instance.StrengthToBlockChance;
-            OnslaughtChance = Stamina * CharacterParametersScaling.Instance.StaminaToOnslaughtChance;
-            CriticalStrikeChance = (Strength + Agility) / 2 * CharacterParametersScaling.Instance.StrengthAndAgilityToCriticalStrikeChance;
-            Resilience = Stamina * CharacterParametersScaling.Instance.StaminaToResilience;
-            Weakening = 0;
-            Amplification = 0;
-            Initiative = new Dice("Initiative", 1, 21 - Agility * CharacterParametersScaling.Instance.AgilityToInitiative);
-
-            HealthPoints.SetPermanentBonus(Strength * CharacterParametersScaling.Instance.StrengthToHealthPoints + Stamina * CharacterParametersScaling.Instance.StaminaToHealthPoints);
-            StaminaPoints.SetPermanentBonus(Stamina * CharacterParametersScaling.Instance.StaminaToStaminaPoints);
-            BreathPoints.SetPermanentBonus(Intelligence * CharacterParametersScaling.Instance.IntelligenceToBreathPoints);
-            ArmorPoints.SetPermanentBonus(Level * CharacterParametersScaling.Instance.LevelToArmorPoints);
-            BarrierPoints.SetPermanentBonus(Level * CharacterParametersScaling.Instance.LevelToBarrierPoints);
-
-            StaminaPoints.SetRestorationPower(StaminaPoints.MaxValue * (CharacterParametersScaling.Instance.BaseStaminaRestorationPowerPercent / 100) + Agility * CharacterParametersScaling.Instance.AgilityToStaminaRestorationPerRound);
-            StunResistance = ArmorPoints.CurrentValue > 0 ? CharacterParametersScaling.Instance.BaseStunResistance : CharacterParametersScaling.Instance.BaseStunResistanceWithoutArmor;
         }
     }
 }

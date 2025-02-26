@@ -38,6 +38,6 @@ MonoBehaviour:
     <LevelsToMagicalDamageMultiplier>k__BackingField: 5
     <WeakeningMaxPercent>k__BackingField: 10
     <AmplificationMaxPercent>k__BackingField: 10
-    <BaseStaminaRestorationPowerPercent>k__BackingField: 30
+    <BaseStaminaRestorationPowerPercent>k__BackingField: 29
     <BaseStunResistance>k__BackingField: 50
     <BaseStunResistanceWithoutArmor>k__BackingField: 20

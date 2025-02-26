@@ -15,9 +15,9 @@ MonoBehaviour:
   <Description>k__BackingField:
     <Entity>k__BackingField:
       m_TableReference:
-        m_TableCollectionName: 
+        m_TableCollectionName: GUID:fe72a131280f9df42b6389b94bd56136
       m_TableEntryReference:
-        m_KeyId: 0
+        m_KeyId: 2158339072000
         m_Key: 
       m_FallbackState: 0
       m_WaitForCompletion: 0
@@ -26,8 +26,8 @@ MonoBehaviour:
   <TargetsCount>k__BackingField: 1
   <Chance>k__BackingField: 100
   <RoundsCount>k__BackingField: 0
-  <RestorationType>k__BackingField: 0
-  <RestorationValue>k__BackingField: 0
+  <RestorationType>k__BackingField: 3
+  <RestorationValue>k__BackingField: 20
   references:
     version: 2
     RefIds: []

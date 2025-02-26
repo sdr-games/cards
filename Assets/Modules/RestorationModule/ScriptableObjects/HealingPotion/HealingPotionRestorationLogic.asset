@@ -12,10 +12,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0989f3ee4f5bce740acddfc6017a852e, type: 3}
   m_Name: HealingPotionRestorationLogic
   m_EditorClassIdentifier: 
-  <Description>k__BackingField: Restores health points
+  <Description>k__BackingField:
+    <Entity>k__BackingField:
+      m_TableReference:
+        m_TableCollectionName: GUID:fe72a131280f9df42b6389b94bd56136
+      m_TableEntryReference:
+        m_KeyId: 180246585344
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
   <EffectIcon>k__BackingField: {fileID: 21300000, guid: ff26c8119a049334e90354bf02ae7cc4,
     type: 3}
   <TargetsCount>k__BackingField: 1
-  _restorationType: 2
-  <RestorationValue>k__BackingField: 10
+  <Chance>k__BackingField: 100
   <RoundsCount>k__BackingField: 0
+  <RestorationType>k__BackingField: 2
+  <RestorationValue>k__BackingField: 50
+  references:
+    version: 2
+    RefIds: []
