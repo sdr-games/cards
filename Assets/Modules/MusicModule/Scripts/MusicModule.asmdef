@@ -1,0 +1,14 @@
+{
+    "name": "MusicModule",
+    "rootNamespace": "SDRGames.Whist.MusicModule",
+    "references": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
