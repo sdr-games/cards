@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections;
 
 using SDRGames.Whist.AbilitiesQueueModule.Managers;
 using SDRGames.Whist.AIBehaviorModule.Managers;
@@ -10,13 +11,14 @@ using SDRGames.Whist.HelpersModule;
 using SDRGames.Whist.MeleeCombatModule.Managers;
 using SDRGames.Whist.TurnSwitchModule.Managers;
 using SDRGames.Whist.UserInputModule.Controller;
-
-using UnityEngine;
 using SDRGames.Whist.CardsCombatModule.ScriptableObjects;
 using SDRGames.Whist.MeleeCombatModule.ScriptableObjects;
 using SDRGames.Whist.AbilitiesModule.Models;
 using SDRGames.Whist.CardsCombatModule.Models;
-using System.Collections;
+using SDRGames.Whist.MusicModule.Managers;
+
+using UnityEngine;
+using SDRGames.Whist.MusicModule.ScriptableObjects;
 
 namespace SDRGames.Whist.DomainModule.Managers
 {
@@ -31,6 +33,8 @@ namespace SDRGames.Whist.DomainModule.Managers
         [Header("UI")][SerializeField] private CombatUIManager _combatUIManager;
         [Header("PLAYER")][SerializeField] private PlayerCombatManager _playerCombatManager;
         [Header("ENEMIES")][SerializeField] private EnemyBehaviorManager[] _enemyBehaviorManagers;
+
+        [SerializeField] private MusicClipScriptableObject _temporaryPlacedAudioClip;
 
         private List<EnemyCombatManager> _enemyCombatManagers;
         private List<CharacterCombatManager> _selectedEnemyCombatManagers;
@@ -91,6 +95,8 @@ namespace SDRGames.Whist.DomainModule.Managers
             _turnsQueueManager.Initialize(characterInfoScriptableObjects);
             _turnsQueueManager.TurnSwitched += OnTurnSwitched;
             _turnsQueueManager.Run();
+
+            MusicGlobalManager.Play(_temporaryPlacedAudioClip);
         }
 
         private void OnCardSelectClicked(object sender, CardSelectClickedEventArgs e)
