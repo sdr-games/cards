@@ -21,7 +21,7 @@ namespace SDRGames.Whist.CardsCombatModule.Views
         [SerializeField] private Color _selectedOutlineColor;
         [SerializeField] private Color _disenchantOutlineColor;
 
-        public void Initialize(int siblingIndex, LocalizedString nameText, LocalizedString descriptionText, Sprite illustrationSprite, string costText)
+        public void Initialize(int siblingIndex, LocalizedString nameText, string descriptionText, Sprite illustrationSprite, string costText)
         {
             UpdatePositionAndRotation(siblingIndex);
 

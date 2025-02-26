@@ -8,9 +8,9 @@ namespace SDRGames.Whist.MeleeCombatModule.Presenters
         private MeleeAttack _meleeAttack;
         private MeleeAttackView _meleeAttackView;
 
-        public MeleeAttackPresenter(MeleeAttack meleeAttackScriptableObject, MeleeAttackView meleeAttackView)
+        public MeleeAttackPresenter(MeleeAttack meleeAttack, MeleeAttackView meleeAttackView)
         {
-            _meleeAttack = meleeAttackScriptableObject;
+            _meleeAttack = meleeAttack;
 
             _meleeAttackView = meleeAttackView;
             _meleeAttackView.Initialize(_meleeAttack);

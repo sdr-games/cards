@@ -14,10 +14,10 @@ namespace SDRGames.Whist.CardsCombatModule.Views
         [SerializeField] protected Image _illustrationImage;
         [SerializeField] protected TextMeshProUGUI _descriptionText;
 
-        public virtual void Initialize(LocalizedString nameText, LocalizedString descriptionText, Sprite illustrationSprite)
+        public virtual void Initialize(LocalizedString nameText, string descriptionText, Sprite illustrationSprite)
         {
             _illustrationImage.sprite = illustrationSprite;
-            _descriptionText.text = descriptionText.GetLocalizedText();
+            _descriptionText.text = descriptionText;
         }
 
         private void OnEnable()

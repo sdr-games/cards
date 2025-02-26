@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 using UnityEngine;
 
@@ -9,6 +11,8 @@ namespace SDRGames.Whist.LocalizationModule.Models
     {
         [field: SerializeField] public UnityEngine.Localization.LocalizedString Entity { get; private set; }
 
+        private Dictionary<string, object> _params;
+
         public LocalizedString(UnityEngine.Localization.LocalizedString entity)
         {
             Entity = entity;
@@ -16,7 +20,31 @@ namespace SDRGames.Whist.LocalizationModule.Models
 
         public string GetLocalizedText()
         {
-            return Entity.GetLocalizedString();
+            string result = Entity.GetLocalizedString();
+            if(_params != null && _params.Count > 0)
+            {
+                Match match = Regex.Match(result, @"\{(.*?)\}");
+                if(_params.ContainsKey(match.Groups[1].Value))
+                {
+                    result = result.Replace(match.Groups[0].Value, _params[match.Groups[1].Value].ToString());
+                }
+            }
+            return result;
+        }
+
+        public void SetParam(string paramName, object paramValue)
+        {
+            if(_params == null)
+            {
+                _params = new Dictionary<string, object>();
+            } 
+
+            if(_params.ContainsKey(paramName))
+            {
+                _params[paramName] = paramValue;
+                return;
+            }
+            _params.Add(paramName, paramValue);
         }
     }
 }

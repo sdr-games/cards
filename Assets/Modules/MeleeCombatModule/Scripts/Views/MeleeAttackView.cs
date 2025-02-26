@@ -1,8 +1,7 @@
 using SDRGames.Whist.MeleeCombatModule.Models;
+using SDRGames.Whist.HelpersModule;
 
 using TMPro;
-
-using UnityEditor;
 
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -10,78 +9,27 @@ using UnityEngine.UI;
 
 namespace SDRGames.Whist.MeleeCombatModule.Views
 {
-    public class MeleeAttackView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+    public class MeleeAttackView : MonoBehaviour
     {
         [SerializeField] private TextMeshProUGUI _nameText;
         [SerializeField] private TextMeshProUGUI _descriptionText;
         [SerializeField] private TextMeshProUGUI _costText;
         [SerializeField] private Image _iconImage;
-        [SerializeField] private CanvasGroup _tooltipCanvasGroup;
 
-        public void Initialize(MeleeAttack meleeAttackScriptableObject)
+        public void Initialize(MeleeAttack meleeAttack)
         {
-            _nameText.text = meleeAttackScriptableObject.Name.GetLocalizedText();
-            _descriptionText.text = meleeAttackScriptableObject.Description.GetLocalizedText();
-            _costText.text = $"Cost :{meleeAttackScriptableObject.Cost}";
-            _iconImage.sprite = meleeAttackScriptableObject.Icon;
-        }
-
-        public void OnPointerEnter(PointerEventData eventData)
-        {
-            _tooltipCanvasGroup.alpha = 1;
-        }
-
-        public void OnPointerExit(PointerEventData eventData)
-        {
-            _tooltipCanvasGroup.alpha = 0;
+            _nameText.text = meleeAttack.Name.GetLocalizedText();
+            _descriptionText.text = meleeAttack.GetLocalizedDescription();
+            _costText.text = meleeAttack.Cost.ToString();
+            _iconImage.sprite = meleeAttack.Icon;
         }
 
         private void OnEnable()
         {
-            if (_nameText == null)
-            {
-                Debug.LogError("Name Text не был назначен");
-                #if UNITY_EDITOR
-                    EditorApplication.isPlaying = false;
-                #endif
-                Application.Quit();
-            }
-
-            if (_descriptionText == null)
-            {
-                Debug.LogError("Description Text не был назначен");
-                #if UNITY_EDITOR
-                    EditorApplication.isPlaying = false;
-                #endif
-                Application.Quit();
-            }
-
-            if (_costText == null)
-            {
-                Debug.LogError("Cost Text не был назначен");
-                #if UNITY_EDITOR
-                    EditorApplication.isPlaying = false;
-                #endif
-                Application.Quit();
-            }
-
-            if (_iconImage == null)
-            {
-                Debug.LogError("Icon Image не был назначен");
-                #if UNITY_EDITOR
-                    EditorApplication.isPlaying = false;
-                #endif
-                Application.Quit();
-            }
-
-            if (_tooltipCanvasGroup == null)
-            {
-                Debug.LogError("Tooltip Canvas Group не был назначен");
-                #if UNITY_EDITOR
-                    EditorApplication.isPlaying = false;
-                #endif
-                Application.Quit();
-            }
+            this.CheckFieldValueIsNotNull(nameof(_nameText), _nameText);
+            this.CheckFieldValueIsNotNull(nameof(_descriptionText), _descriptionText);
+            this.CheckFieldValueIsNotNull(nameof(_costText), _costText);
+            this.CheckFieldValueIsNotNull(nameof(_iconImage), _iconImage);
         }
 
     }

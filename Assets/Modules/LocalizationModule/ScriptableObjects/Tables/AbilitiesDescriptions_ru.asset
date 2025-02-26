@@ -10,14 +10,24 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
-  m_Name: CardsDescriptions_en
+  m_Name: AbilitiesDescriptions_ru
   m_EditorClassIdentifier: 
   m_LocaleId:
-    m_Code: en
+    m_Code: ru
   m_SharedData: {fileID: 11400000, guid: 97e717d9ce1b3904ca88636a60d4bcd7, type: 2}
   m_Metadata:
     m_Items: []
-  m_TableData: []
+  m_TableData:
+  - m_Id: 41737241933463552
+    m_Localized: "\u041D\u0430\u043D\u043E\u0441\u0438\u0442 {damage} \u0444\u0438\u0437\u0438\u0447\u0435\u0441\u043A\u043E\u0433\u043E
+      \u0443\u0440\u043E\u043D\u0430"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41737368140070912
+    m_Localized: "\u041D\u0430\u043D\u043E\u0441\u0438\u0442 {damage} \u043C\u0430\u0433\u0438\u0447\u0435\u0441\u043A\u043E\u0433\u043E
+      \u0443\u0440\u043E\u043D\u0430"
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

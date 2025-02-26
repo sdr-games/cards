@@ -67,5 +67,10 @@ namespace SDRGames.Whist.AbilitiesModule.Models
             }
             _restorationValue += cardModifier.Value;
         }
+
+        public override string GetLocalizedDescription()
+        {
+            return "";
+        }
     }
 }

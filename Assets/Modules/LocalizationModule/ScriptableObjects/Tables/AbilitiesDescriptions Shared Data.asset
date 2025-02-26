@@ -10,11 +10,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
-  m_Name: CardsDescriptions Shared Data
+  m_Name: AbilitiesDescriptions Shared Data
   m_EditorClassIdentifier: 
-  m_TableCollectionName: CardsDescriptions
+  m_TableCollectionName: AbilitiesDescriptions
   m_TableCollectionNameGuidString: 97e717d9ce1b3904ca88636a60d4bcd7
-  m_Entries: []
+  m_Entries:
+  - m_Id: 41737241933463552
+    m_Key: PhysicalFlatDamageDescription
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41737368140070912
+    m_Key: MagicalFlatDamageDescription
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
