@@ -8,10 +8,5 @@ namespace SDRGames.Whist.RestorationModule.Models
         public Potion(PotionScriptableObject potionScriptableObject) : base(potionScriptableObject)
         {
         }
-
-        public string GetEffectDescription()
-        {
-            return "";
-        }
     }
 }

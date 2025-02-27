@@ -70,7 +70,8 @@ namespace SDRGames.Whist.AbilitiesModule.Models
 
         public override string GetLocalizedDescription()
         {
-            return "";
+            _description.SetParam("restore", _restorationValue);
+            return _description.GetLocalizedText();
         }
     }
 }

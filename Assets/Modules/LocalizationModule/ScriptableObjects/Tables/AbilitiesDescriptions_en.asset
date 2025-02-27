@@ -26,6 +26,26 @@ MonoBehaviour:
     m_Localized: Deals {damage} magical damage
     m_Metadata:
       m_Items: []
+  - m_Id: 42009438958731264
+    m_Localized: Restores {restore} health points
+    m_Metadata:
+      m_Items: []
+  - m_Id: 42009620672757760
+    m_Localized: Restores {restore} stamina points
+    m_Metadata:
+      m_Items: []
+  - m_Id: 42009623944314880
+    m_Localized: Restores {restore} breath points
+    m_Metadata:
+      m_Items: []
+  - m_Id: 42009628977479680
+    m_Localized: Restores {restore} armor points
+    m_Metadata:
+      m_Items: []
+  - m_Id: 42009631179489280
+    m_Localized: Restores {restore} barrier points
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

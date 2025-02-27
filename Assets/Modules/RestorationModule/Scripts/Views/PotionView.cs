@@ -18,7 +18,7 @@ namespace SDRGames.Whist.RestorationModule.Views
         public void Initialize(Potion potion)
         {
             _nameText.text = potion.Name.GetLocalizedText();
-            _effectText.text = potion.GetEffectDescription();
+            _effectText.text = potion.GetLocalizedDescription();
             _iconImage.sprite = potion.Icon;
         }
 

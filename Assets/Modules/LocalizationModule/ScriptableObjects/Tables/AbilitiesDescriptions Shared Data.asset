@@ -23,6 +23,26 @@ MonoBehaviour:
     m_Key: MagicalFlatDamageDescription
     m_Metadata:
       m_Items: []
+  - m_Id: 42009438958731264
+    m_Key: HealthPointsRestorationDescription
+    m_Metadata:
+      m_Items: []
+  - m_Id: 42009620672757760
+    m_Key: StaminaPointsRestorationDescription
+    m_Metadata:
+      m_Items: []
+  - m_Id: 42009623944314880
+    m_Key: BreathPointsRestorationDescription
+    m_Metadata:
+      m_Items: []
+  - m_Id: 42009628977479680
+    m_Key: ArmorPointsRestorationDescription
+    m_Metadata:
+      m_Items: []
+  - m_Id: 42009631179489280
+    m_Key: BarrierPointsRestorationDescription
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
