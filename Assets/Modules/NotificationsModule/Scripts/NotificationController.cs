@@ -6,16 +6,26 @@ using UnityEngine;
 
 namespace SDRGames.Whist.NotificationsModule
 {
-    public class Notification : MonoBehaviour
+    public class NotificationController : MonoBehaviour
     {
         private const float FADING_TIMER = 1.0f;
 
-        public static Notification Instance { get; private set; }
+        public static NotificationController Instance { get; private set; }
 
         [SerializeField] private CanvasGroup _canvasGroup;
         [SerializeField] private TextMeshProUGUI _notificationText;
 
         private Coroutine _timerCoroutine;
+
+        public void Initialize()
+        {
+            if (Instance != null && Instance != this)
+            {
+                Destroy(this);
+                return;
+            }
+            Instance = this;
+        }
 
         public static void Show(string message)
         {
@@ -28,15 +38,6 @@ namespace SDRGames.Whist.NotificationsModule
             Instance._timerCoroutine = Instance.StartCoroutine(Instance.StartTimer());
         }
 
-        private void OnEnable()
-        {
-            if (Instance != null && Instance != this)
-            {
-                Destroy(this);
-                return;
-            }
-            Instance = this;
-        }
 
         private IEnumerator StartTimer()
         {

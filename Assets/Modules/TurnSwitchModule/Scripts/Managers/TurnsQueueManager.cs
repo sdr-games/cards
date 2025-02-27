@@ -51,7 +51,7 @@ namespace SDRGames.Whist.TurnSwitchModule.Managers
             bool isPlayerTurn = _charactersInfos[0].IsPlayer;
             int enemyIndex = isPlayerTurn ? -1 : 0;
             string turnSwitchMessage = isPlayerTurn ? _playerTurnSwitchMessage.GetLocalizedText() : _enemyTurnSwitchMessage.GetLocalizedText();
-            Notification.Show(turnSwitchMessage);
+            NotificationController.Show(turnSwitchMessage);
             _timerManager.StartCombatTimer();
 
             TurnSwitched?.Invoke(this, new TurnSwitchedEventArgs(isPlayerTurn, _isCombatTurn, enemyIndex));
@@ -135,13 +135,13 @@ namespace SDRGames.Whist.TurnSwitchModule.Managers
                 isPlayerTurn = _charactersInfos[e.CurrentIndex].IsPlayer;
                 _timerManager.StartCombatTimer();
                 string turnSwitchMessage = isPlayerTurn ? _playerTurnSwitchMessage.GetLocalizedText() : _enemyTurnSwitchMessage.GetLocalizedText();
-                Notification.Show(turnSwitchMessage);
+                NotificationController.Show(turnSwitchMessage);
             }
             else
             {
                 isPlayerTurn = true;
                 _timerManager.StartRestorationTimer();
-                Notification.Show(_restorationTurnSwitchMessage.GetLocalizedText());
+                NotificationController.Show(_restorationTurnSwitchMessage.GetLocalizedText());
             }
             int enemyIndex = isPlayerTurn ? -1 : e.CurrentIndex;
             if(enemyIndex > _playerTurnIndex)

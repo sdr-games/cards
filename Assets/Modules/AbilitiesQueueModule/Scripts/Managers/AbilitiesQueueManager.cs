@@ -83,7 +83,7 @@ namespace SDRGames.Whist.AbilitiesQueueModule.Managers
             AbilitySlotManager abilitySlotManager = _abilitySlotManagers.FirstOrDefault(item => item.Ability == null);
             if(abilitySlotManager == null)
             {
-                Notification.Show(_errorMessage.GetLocalizedText());
+                NotificationController.Show(_errorMessage.GetLocalizedText());
             }
             return abilitySlotManager;
         }

@@ -279,7 +279,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 58664046}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c28a081c0e4dde94b896c13e0fdedd67, type: 3}
+  m_Script: {fileID: 11500000, guid: a2a26e2ef2a601449af85cd5a8eba506, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _canvasGroup: {fileID: 58664050}
@@ -393,6 +393,110 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 58664046}
   m_CullTransparentMesh: 1
+--- !u!1 &74645333
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 74645335}
+  - component: {fileID: 74645334}
+  m_Layer: 0
+  m_Name: GameInitializer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &74645334
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 74645333}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89bac68b1202d4242b6badaffcabf973, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _musicGlobalManager: {fileID: 1273604894}
+  _notificationController: {fileID: 58664048}
+  _combatSceneInitializer: {fileID: 92579018}
+--- !u!4 &74645335
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 74645333}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &92579017
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 92579019}
+  - component: {fileID: 92579018}
+  m_Layer: 0
+  m_Name: CombatSceneInitializer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &92579018
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 92579017}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4413e162a2c68b64fa9938848b7f0e01, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _combatSceneManager: {fileID: 322147489}
+  _userInputController: {fileID: 1847108587}
+  _turnsQueueManager: {fileID: 675783145}
+  _combatUIManager: {fileID: 1915771327}
+  _playerCombatManager: {fileID: 1174818902}
+  _enemyBehaviorManagers:
+  - {fileID: 1490765131}
+  _characterParametersScalingSettings: {fileID: 11400000, guid: 62163cb19208e9d418f6090db59f0ed4,
+    type: 2}
+  _cardsScalingScriptableObject: {fileID: 11400000, guid: d7235515501a41441b4744416ff645b3,
+    type: 2}
+  _meleeAttacksScalingScriptableObject: {fileID: 11400000, guid: 5edbc78c63d1f4c47907d1e75345bfe1,
+    type: 2}
+--- !u!4 &92579019
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 92579017}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &173645347
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -766,7 +870,7 @@ GameObject:
   - component: {fileID: 322147488}
   - component: {fileID: 322147489}
   m_Layer: 5
-  m_Name: SceneInitializer
+  m_Name: CombatSceneManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -803,18 +907,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6cfeb4dadf47ae44a0d50146fde8957, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _userInputController: {fileID: 1847108587}
-  _turnsQueueManager: {fileID: 675783145}
-  _characterParametersScalingSettings: {fileID: 11400000, guid: 62163cb19208e9d418f6090db59f0ed4,
-    type: 2}
-  _cardsScalingScriptableObject: {fileID: 11400000, guid: d7235515501a41441b4744416ff645b3,
-    type: 2}
-  _meleeAttacksScalingScriptableObject: {fileID: 11400000, guid: 5edbc78c63d1f4c47907d1e75345bfe1,
-    type: 2}
-  _combatUIManager: {fileID: 1915771327}
-  _playerCombatManager: {fileID: 1174818902}
-  _enemyBehaviorManagers:
-  - {fileID: 1490765131}
   _temporaryPlacedAudioClip: {fileID: 11400000, guid: a7996119519dde242849f001c088af9a,
     type: 2}
 --- !u!1 &354583934
@@ -12466,6 +12558,7 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 489934689}
+  - {fileID: 92579019}
   - {fileID: 322147488}
   - {fileID: 1915771325}
   - {fileID: 1319196825}
@@ -12473,3 +12566,4 @@ SceneRoots:
   - {fileID: 1490765129}
   - {fileID: 1950234593}
   - {fileID: 1273604893}
+  - {fileID: 74645335}

@@ -96,7 +96,7 @@ namespace SDRGames.Whist.CharacterModule.Managers
         {
             if(_playerCharacterParamsModel.StaminaPoints.CurrentValue < _playerCharacterParamsModel.StaminaPoints.ReservedValue + cost)
             {
-                Notification.Show(_playerCharacterCombatParamsPresenter.GetNotEnoughStaminaErrorMessage());
+                NotificationController.Show(_playerCharacterCombatParamsPresenter.GetNotEnoughStaminaErrorMessage());
                 return false;
             }
             return true;
@@ -121,7 +121,7 @@ namespace SDRGames.Whist.CharacterModule.Managers
         {
             if (_playerCharacterParamsModel.BreathPoints.CurrentValue < _playerCharacterParamsModel.BreathPoints.ReservedValue + cost)
             {
-                Notification.Show(_playerCharacterCombatParamsPresenter.GetNotEnoughBreathErrorMessage());
+                NotificationController.Show(_playerCharacterCombatParamsPresenter.GetNotEnoughBreathErrorMessage());
                 return false;
             }
             return true;

@@ -6,13 +6,9 @@ using SDRGames.Whist.AbilitiesQueueModule.Managers;
 using SDRGames.Whist.AIBehaviorModule.Managers;
 using SDRGames.Whist.CardsCombatModule.Managers;
 using SDRGames.Whist.CharacterModule.Managers;
-using SDRGames.Whist.CharacterModule.ScriptableObjects;
-using SDRGames.Whist.HelpersModule;
 using SDRGames.Whist.MeleeCombatModule.Managers;
 using SDRGames.Whist.TurnSwitchModule.Managers;
 using SDRGames.Whist.UserInputModule.Controller;
-using SDRGames.Whist.CardsCombatModule.ScriptableObjects;
-using SDRGames.Whist.MeleeCombatModule.ScriptableObjects;
 using SDRGames.Whist.AbilitiesModule.Models;
 using SDRGames.Whist.CardsCombatModule.Models;
 using SDRGames.Whist.MusicModule.Managers;
@@ -24,57 +20,32 @@ namespace SDRGames.Whist.DomainModule.Managers
 {
     public class CombatSceneManager : MonoBehaviour
     {
-        [SerializeField] private UserInputController _userInputController;
-        [SerializeField] private TurnsQueueManager _turnsQueueManager;
-        [SerializeField] private CharacterParametersScalingScriptableObject _characterParametersScalingSettings;
-        [SerializeField] private CardsScalingScriptableObject _cardsScalingScriptableObject;
-        [SerializeField] private MeleeAttacksScalingScriptableObject _meleeAttacksScalingScriptableObject;
-
-        [Header("UI")][SerializeField] private CombatUIManager _combatUIManager;
-        [Header("PLAYER")][SerializeField] private PlayerCombatManager _playerCombatManager;
-        [Header("ENEMIES")][SerializeField] private EnemyBehaviorManager[] _enemyBehaviorManagers;
-
         [SerializeField] private MusicClipScriptableObject _temporaryPlacedAudioClip;
+
+        private UserInputController _userInputController;
+        private TurnsQueueManager _turnsQueueManager;
+
+        private CombatUIManager _combatUIManager;
+        private PlayerCombatManager _playerCombatManager;
+        private EnemyBehaviorManager[] _enemyBehaviorManagers;
 
         private List<EnemyCombatManager> _enemyCombatManagers;
         private List<CharacterCombatManager> _selectedEnemyCombatManagers;
         private bool _targetCheckRequired;
 
-        private void OnValidate()
+        public void Initialize(UserInputController userInputController, TurnsQueueManager turnsQueueManager, CombatUIManager combatUIManager, PlayerCombatManager playerCombatManager, EnemyBehaviorManager[] enemyBehaviorManagers, List<EnemyCombatManager> enemyCombatManagers)
         {
-            _characterParametersScalingSettings.Initialize();
-            _cardsScalingScriptableObject.Initialize();
-            _meleeAttacksScalingScriptableObject.Initialize();
-        }
+            _userInputController = userInputController;
+            _playerCombatManager = playerCombatManager;
 
-        private void OnEnable()
-        {
-            this.CheckFieldValueIsNotNull(nameof(_userInputController), _userInputController);
-            this.CheckFieldValueIsNotNull(nameof(_turnsQueueManager), _turnsQueueManager);
-            this.CheckFieldValueIsNotNull(nameof(_characterParametersScalingSettings), _characterParametersScalingSettings);
-            this.CheckFieldValueIsNotNull(nameof(_cardsScalingScriptableObject), _cardsScalingScriptableObject);
-            this.CheckFieldValueIsNotNull(nameof(_meleeAttacksScalingScriptableObject), _meleeAttacksScalingScriptableObject);
-            this.CheckFieldValueIsNotNull(nameof(_combatUIManager), _combatUIManager);
-            this.CheckFieldValueIsNotNull(nameof(_playerCombatManager), _playerCombatManager);
-            this.CheckFieldValueIsNotNull(nameof(_enemyBehaviorManagers), _enemyBehaviorManagers);
-
-            _characterParametersScalingSettings.Initialize();
-            _cardsScalingScriptableObject.Initialize();
-            _meleeAttacksScalingScriptableObject.Initialize();
-
-            _playerCombatManager.Initialize();
-
-            _enemyCombatManagers = new List<EnemyCombatManager>();
-            _selectedEnemyCombatManagers = new List<CharacterCombatManager>();
-            List<CharacterParamsModel> characterInfoScriptableObjects = new List<CharacterParamsModel>();
-            characterInfoScriptableObjects.Add(_playerCombatManager.GetParams());
+            _enemyBehaviorManagers = enemyBehaviorManagers;
             foreach (EnemyBehaviorManager enemyBehaviorManager in _enemyBehaviorManagers)
             {
-                enemyBehaviorManager.Initialize(_playerCombatManager, _userInputController);
-                enemyBehaviorManager.EnemyCombatManager.EnemySelected += OnEnemySelected;
-                _enemyCombatManagers.Add(enemyBehaviorManager.EnemyCombatManager);
-                characterInfoScriptableObjects.Add(enemyBehaviorManager.EnemyCombatManager.GetParams());   
+                enemyBehaviorManager.EnemyCombatManager.EnemySelected += OnEnemySelected;   
             }
+            _enemyCombatManagers = enemyCombatManagers;
+
+            _selectedEnemyCombatManagers = new List<CharacterCombatManager>();
             _targetCheckRequired = false;
             if(_enemyBehaviorManagers.Length <= 1)
             {
@@ -82,7 +53,7 @@ namespace SDRGames.Whist.DomainModule.Managers
                 _selectedEnemyCombatManagers.Add(_enemyCombatManagers[0]);
             }
 
-            _combatUIManager.Initialize(_userInputController);
+            _combatUIManager = combatUIManager;
             _combatUIManager.AbilityQueueCleared += OnAbilityQueueCleared;
             _combatUIManager.CardSelectClicked += OnCardSelectClicked;
             _combatUIManager.CardMarkClicked += OnCardMarkClicked;
@@ -92,7 +63,7 @@ namespace SDRGames.Whist.DomainModule.Managers
             _combatUIManager.ClearButtonClicked += OnClearButtonClicked;
             _combatUIManager.CardsSelectionCleared += OnCardsSelectionCleared;
 
-            _turnsQueueManager.Initialize(characterInfoScriptableObjects);
+            _turnsQueueManager = turnsQueueManager;
             _turnsQueueManager.TurnSwitched += OnTurnSwitched;
             _turnsQueueManager.Run();
 
