@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5be51871efa6c3e4eae1703925c8f5ac, type: 3}
-  m_Name: MeleeAttacksNames
+  m_Name: AbilitiesDescriptions
   m_EditorClassIdentifier: 
-  m_SharedTableData: {fileID: 11400000, guid: 3b397188346b9fe4d87595afe2d9bae6, type: 2}
+  m_SharedTableData: {fileID: 11400000, guid: 97e717d9ce1b3904ca88636a60d4bcd7, type: 2}
   m_Tables:
-  - {fileID: 11400000, guid: 3b7be31a39a4b3441b6c188b1421705d, type: 2}
-  - {fileID: 11400000, guid: b1c461561301d0640bb5c0adf0ce630e, type: 2}
+  - {fileID: 11400000, guid: 175538ef3d8d21e49924f044408fd77a, type: 2}
+  - {fileID: 11400000, guid: 06951e5b29c726e4095bf2fd0ddc4f55, type: 2}
   m_Extensions: []
   m_Group: String Table
   references:

@@ -24,7 +24,7 @@ RenderSettings:
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
   m_AmbientIntensity: 1
-  m_AmbientMode: 4
+  m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
   m_SkyboxMaterial: {fileID: 0}
   m_HaloStrength: 0.5
@@ -566,7 +566,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: -10, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &192223895
 MonoBehaviour:
@@ -1805,7 +1805,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 300, y: 380}
+  m_SizeDelta: {x: 325, y: 270}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &589486331
 MonoBehaviour:
@@ -2601,7 +2601,6 @@ GameObject:
   m_Component:
   - component: {fileID: 682386466}
   - component: {fileID: 682386468}
-  - component: {fileID: 682386467}
   m_Layer: 5
   m_Name: Content
   m_TagString: Untagged
@@ -2626,22 +2625,8 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 270}
   m_Pivot: {x: 0, y: 1}
---- !u!114 &682386467
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 682386465}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_HorizontalFit: 0
-  m_VerticalFit: 2
 --- !u!114 &682386468
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2666,7 +2651,7 @@ MonoBehaviour:
   m_ChildControlWidth: 1
   m_ChildControlHeight: 0
   m_ChildScaleWidth: 0
-  m_ChildScaleHeight: 0
+  m_ChildScaleHeight: 1
   m_ReverseArrangement: 0
 --- !u!1 &748878983
 GameObject:
@@ -7265,7 +7250,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 380}
+  m_SizeDelta: {x: 0, y: 270}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1961955914
 MonoBehaviour:
@@ -7285,7 +7270,7 @@ MonoBehaviour:
     m_Top: 0
     m_Bottom: 0
   m_ChildAlignment: 4
-  m_Spacing: 10
+  m_Spacing: 5
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 0
   m_ChildControlWidth: 1
@@ -7468,7 +7453,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 300, y: 380}
+  m_SizeDelta: {x: 325, y: 270}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &2135899557
 MonoBehaviour:
@@ -7567,7 +7552,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 1f23b4415995c5a4eb9cb91116a2323b, type: 2}
   - {fileID: 11400000, guid: 6189847699fd0c3409d0879430a8ea49, type: 2}
   - {fileID: 11400000, guid: 8b06e738609c7004ca8dfe2795858865, type: 2}
-  _potionPrefab: {fileID: -367647775692945327, guid: 4ce568524d021b845bb1036eb4fe1162,
+  _potionPrefab: {fileID: -2872756306823017407, guid: e7ff81052683c994298cd7c52db07f79,
     type: 3}
   _contentRectTransform: {fileID: 682386466}
 --- !u!1001 &2141565653

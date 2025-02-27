@@ -15,9 +15,9 @@ MonoBehaviour:
   <Description>k__BackingField:
     <Entity>k__BackingField:
       m_TableReference:
-        m_TableCollectionName: 
+        m_TableCollectionName: GUID:97e717d9ce1b3904ca88636a60d4bcd7
       m_TableEntryReference:
-        m_KeyId: 0
+        m_KeyId: 41737368140070912
         m_Key: 
       m_FallbackState: 0
       m_WaitForCompletion: 0

@@ -1,5 +1,3 @@
-using System.Linq;
-
 using SDRGames.Whist.HelpersModule;
 using SDRGames.Whist.LocalizationModule.Models;
 
@@ -12,7 +10,6 @@ namespace SDRGames.Whist.AbilitiesModule.ScriptableObjects
     public class AbilityScriptableObject : ScriptableObject
     {
         [field: SerializeField] public LocalizedString Name { get; private set; }
-        [field: SerializeField] public LocalizedString Description { get; private set; }
         [field: SerializeField] public Sprite Icon { get; private set; }
         [field: SerializeField] public int Cost { get; private set; }
         [field: SerializeField] public AnimationClip AnimationClip { get; private set; }
@@ -31,7 +28,6 @@ namespace SDRGames.Whist.AbilitiesModule.ScriptableObjects
         private void OnEnable()
         {
             this.CheckFieldValueIsNotNull(nameof(Name), Name);
-            this.CheckFieldValueIsNotNull(nameof(Description), Description);
             this.CheckFieldValueIsNotNull(nameof(Icon), Icon);
 
             if (AbilityLogics.Length == 0)

@@ -11,7 +11,6 @@ namespace SDRGames.Whist.AbilitiesModule.Models
     public class Ability
     {
         public LocalizedString Name { get; private set; }
-        public LocalizedString Description { get; private set; }
         public Sprite Icon { get; private set; }
         public int Cost { get; private set; }
         public AnimationClip AnimationClip { get; private set; }
@@ -20,7 +19,6 @@ namespace SDRGames.Whist.AbilitiesModule.Models
         public Ability(AbilityScriptableObject abilityScriptableObject)
         {
             Name = abilityScriptableObject.Name;
-            Description = abilityScriptableObject.Description;
             Icon = abilityScriptableObject.Icon;
             Cost = abilityScriptableObject.Cost;
             AnimationClip = abilityScriptableObject.AnimationClip;
@@ -74,6 +72,16 @@ namespace SDRGames.Whist.AbilitiesModule.Models
                     logic.Apply(targetCombatManager);
                 }
             }
+        }
+
+        public string GetLocalizedDescription()
+        {
+            string localizedDescription = "";
+            foreach (AbilityLogic abilityLogic in AbilityLogics)
+            {
+                localizedDescription += abilityLogic.GetLocalizedDescription();
+            }
+            return localizedDescription;
         }
     }
 }

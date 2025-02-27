@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-
 using SDRGames.Whist.MusicModule.ScriptableObjects;
 
 using UnityEngine;
@@ -22,7 +19,7 @@ namespace SDRGames.Whist.MusicModule.Managers
             Instance._audioSource.Play();
         }
 
-        private void OnEnable()
+        private void Awake()
         {
             if (Instance != null && Instance != this)
             {
