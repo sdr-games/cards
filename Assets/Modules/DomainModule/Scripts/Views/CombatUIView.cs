@@ -43,7 +43,7 @@ namespace SDRGames.Whist.DomainModule.Views
 
         public void ShowNoTargetError()
         {
-            Notification.Show(_noTargetErrorMessage.GetLocalizedText());
+            NotificationController.Show(_noTargetErrorMessage.GetLocalizedText());
         }
 
         private void OnEndTurnButtonClicked(object sender, EventArgs e)

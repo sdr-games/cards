@@ -12,14 +12,7 @@ namespace SDRGames.Whist.MusicModule.Managers
 
         [SerializeField] private AudioSource _audioSource;
 
-        public static void Play(MusicClipScriptableObject musicClipScriptableObject)
-        {
-            Instance._audioSource.clip = musicClipScriptableObject.AudioClip;
-            Instance._audioSource.loop = musicClipScriptableObject.Loop;
-            Instance._audioSource.Play();
-        }
-
-        private void Awake()
+        public void Initialize()
         {
             if (Instance != null && Instance != this)
             {
@@ -28,6 +21,13 @@ namespace SDRGames.Whist.MusicModule.Managers
             }
             Instance = this;
             DontDestroyOnLoad(Instance);
+        }
+
+        public static void Play(MusicClipScriptableObject musicClipScriptableObject)
+        {
+            Instance._audioSource.clip = musicClipScriptableObject.AudioClip;
+            Instance._audioSource.loop = musicClipScriptableObject.Loop;
+            Instance._audioSource.Play();
         }
     }
 }
