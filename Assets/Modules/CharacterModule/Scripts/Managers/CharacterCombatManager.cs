@@ -6,6 +6,7 @@ using SDRGames.Whist.AnimationsModule;
 using SDRGames.Whist.CharacterModule.Presenters;
 using SDRGames.Whist.CharacterModule.ScriptableObjects;
 using SDRGames.Whist.CharacterModule.Views;
+using SDRGames.Whist.SoundModule.Controllers;
 using SDRGames.Whist.UserInputModule.Controller;
 
 using UnityEngine;
@@ -21,6 +22,7 @@ namespace SDRGames.Whist.CharacterModule.Managers
         protected Dictionary<PeriodicalEffectPresenter, int> _periodicalDebuffs;
 
         [field: SerializeField] public AnimationsController AnimationsController { get; protected set; }
+        [field: SerializeField] public CharacterSoundController SoundController { get; protected set; }
 
         public virtual void Initialize(UserInputController userInputController = null)
         {
@@ -31,7 +33,10 @@ namespace SDRGames.Whist.CharacterModule.Managers
 
         public abstract CharacterParamsModel GetParams();
         protected abstract CharacterCombatParamsView GetView();
-        public abstract void TakePhysicalDamage(int damage);
+        public virtual void TakePhysicalDamage(int damage)
+        {
+            SoundController.PlayImpact();
+        }
         public abstract void TakeMagicalDamage(int damage);
         public abstract void TakeTrueDamage(int damage);
         public abstract void RestoreArmorPoints(float restoration = -1);

@@ -35,6 +35,7 @@ namespace SDRGames.Whist.CharacterModule.Managers
         public override void TakePhysicalDamage(int damage)
         {
             _playerCharacterCombatParamsPresenter.TakePhysicalDamage(damage);
+            base.TakePhysicalDamage(damage);
         }
 
         public override void TakeMagicalDamage(int damage)

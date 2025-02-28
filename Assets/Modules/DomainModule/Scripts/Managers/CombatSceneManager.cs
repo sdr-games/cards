@@ -140,12 +140,18 @@ namespace SDRGames.Whist.DomainModule.Managers
                     _playerCombatManager.RestoreStaminaPoints();
                     continue;
                 }
-                while(!_playerCombatManager.AnimationsController.IsReady)
+
+                while (!_playerCombatManager.AnimationsController.IsReady)
                 {
                     yield return null;
                 }
                 _playerCombatManager.SpendStaminaPoints(ability.Cost);
                 _playerCombatManager.AnimationsController.PlayAnimation(ability.AnimationClip);
+                _playerCombatManager.SoundController.Play(ability.SoundClip);
+                if (ability.AnimationClip != null)
+                {
+                    yield return new WaitForSeconds(ability.AnimationClip.averageDuration / 5);
+                }
                 ability.ApplyLogics(
                     _playerCombatManager,
                     _selectedEnemyCombatManagers

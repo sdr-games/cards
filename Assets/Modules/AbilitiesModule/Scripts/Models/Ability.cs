@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using SDRGames.Whist.AbilitiesModule.ScriptableObjects;
 using SDRGames.Whist.CharacterModule.Managers;
 using SDRGames.Whist.LocalizationModule.Models;
+using SDRGames.Whist.SoundModule.ScriptableObjects;
 
 using UnityEngine;
 
@@ -15,6 +16,7 @@ namespace SDRGames.Whist.AbilitiesModule.Models
         public int Cost { get; private set; }
         public AnimationClip AnimationClip { get; private set; }
         public List<AbilityLogic> AbilityLogics { get; protected set; }
+        public SoundClipScriptableObject SoundClip { get; private set; }
 
         public Ability(AbilityScriptableObject abilityScriptableObject)
         {
@@ -22,6 +24,7 @@ namespace SDRGames.Whist.AbilitiesModule.Models
             Icon = abilityScriptableObject.Icon;
             Cost = abilityScriptableObject.Cost;
             AnimationClip = abilityScriptableObject.AnimationClip;
+            SoundClip = abilityScriptableObject.SoundClip;
             AbilityLogics = new List<AbilityLogic>();
             foreach (AbilityLogicScriptableObject abilityLogicScriptableObject in abilityScriptableObject.AbilityLogics)
             {

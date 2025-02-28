@@ -423,6 +423,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _musicGlobalManager: {fileID: 1273604894}
+  _soundGlobalManager: {fileID: 440636722}
   _notificationController: {fileID: 58664048}
   _combatSceneInitializer: {fileID: 92579018}
 --- !u!4 &74645335
@@ -1415,6 +1416,52 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c5ec6c274ee4b440a7759c3e196cc1e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &440636721
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 440636724}
+  - component: {fileID: 440636722}
+  m_Layer: 0
+  m_Name: SoundGlobalManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &440636722
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 440636721}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 49a3e68690d28b446be61a3e936b32ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _soundEmitterPrefab: {fileID: 6667069972702447553, guid: d976db072e999b142b2d55610cdb4063,
+    type: 3}
+--- !u!4 &440636724
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 440636721}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &489934687
 GameObject:
   m_ObjectHideFlags: 0
@@ -3330,8 +3377,9 @@ GameObject:
   - component: {fileID: 1174818901}
   - component: {fileID: 1174818902}
   - component: {fileID: 1174818903}
+  - component: {fileID: 1174818904}
   m_Layer: 0
-  m_Name: PlayerManager
+  m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3368,6 +3416,7 @@ MonoBehaviour:
   _periodicalEffectViewPrefab: {fileID: 6722016241835193376, guid: 15982c4cf1d501247b07ae7bf0dc50b7,
     type: 3}
   <AnimationsController>k__BackingField: {fileID: 1174818903}
+  <SoundController>k__BackingField: {fileID: 1174818904}
   _playerCharacterParamsModel: {fileID: 11400000, guid: 1755d9fb95f659b4d9614cf02827ef19,
     type: 2}
   _playerCharacterCombatParamsView: {fileID: 1770317873}
@@ -3384,6 +3433,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _animator: {fileID: 919132148031357553}
+--- !u!114 &1174818904
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1174818899}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20fc7808278bfeb48aecd5ee762977fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _impactSoundClip: {fileID: 11400000, guid: 2bbed835a60198e43b59185c3d17993d, type: 2}
 --- !u!1001 &1193900654
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4658,7 +4720,7 @@ GameObject:
   - component: {fileID: 1273604895}
   - component: {fileID: 1273604894}
   m_Layer: 0
-  m_Name: GlobalMusicManager
+  m_Name: MusicGlobalManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5365,8 +5427,9 @@ GameObject:
   - component: {fileID: 1490765131}
   - component: {fileID: 1490765130}
   - component: {fileID: 1490765132}
+  - component: {fileID: 1490765133}
   m_Layer: 0
-  m_Name: EnemyManager
+  m_Name: GlassBlowerCaugh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5386,7 +5449,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _periodicalEffectViewPrefab: {fileID: 6722016241835193376, guid: df78d23cc311ddb49b0bb61ea33fc6f8,
     type: 3}
-  <AnimationsController>k__BackingField: {fileID: 0}
+  <AnimationsController>k__BackingField: {fileID: 1490765132}
+  <SoundController>k__BackingField: {fileID: 1490765133}
   _characterParamsModel: {fileID: 11400000, guid: ce7a9ca9dcc0d7e4bb8c0dec638ef1d8,
     type: 2}
   _characterCombatParamsView: {fileID: 373230523}
@@ -5450,6 +5514,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _animator: {fileID: 1625275321}
+--- !u!114 &1490765133
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1490765127}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20fc7808278bfeb48aecd5ee762977fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _impactSoundClip: {fileID: 11400000, guid: f4519c4b4525d8c48bdb988219c809e5, type: 2}
 --- !u!1 &1625275315
 GameObject:
   m_ObjectHideFlags: 0
@@ -12566,4 +12643,5 @@ SceneRoots:
   - {fileID: 1490765129}
   - {fileID: 1950234593}
   - {fileID: 1273604893}
+  - {fileID: 440636724}
   - {fileID: 74645335}
