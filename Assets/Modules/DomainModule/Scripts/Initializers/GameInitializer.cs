@@ -1,8 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
-
 using SDRGames.Whist.MusicModule.Managers;
 using SDRGames.Whist.NotificationsModule;
+using SDRGames.Whist.SoundModule.Managers;
+using SDRGames.Whist.HelpersModule;
 
 using UnityEngine;
 
@@ -11,6 +10,7 @@ namespace SDRGames.Whist.DomainModule
     public class GameInitializer : MonoBehaviour
     {
         [SerializeField] private MusicGlobalManager _musicGlobalManager;
+        [SerializeField] private SoundGlobalManager _soundGlobalManager;
         [SerializeField] private NotificationController _notificationController;
         //temp
         [SerializeField] private CombatSceneInitializer _combatSceneInitializer;
@@ -19,6 +19,10 @@ namespace SDRGames.Whist.DomainModule
 
         private void OnEnable()
         {
+            this.CheckFieldValueIsNotNull(nameof(_musicGlobalManager), _musicGlobalManager);
+            this.CheckFieldValueIsNotNull(nameof(_soundGlobalManager), _soundGlobalManager);
+            this.CheckFieldValueIsNotNull(nameof(_notificationController), _notificationController);
+
             if (Instance != null && Instance != this)
             {
                 Destroy(this);
@@ -28,6 +32,7 @@ namespace SDRGames.Whist.DomainModule
             DontDestroyOnLoad(Instance);
 
             _musicGlobalManager.Initialize();
+            _soundGlobalManager.Initialize();
             _notificationController.Initialize();
             _combatSceneInitializer.Initialize();
         }

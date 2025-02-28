@@ -22,21 +22,13 @@ MonoBehaviour:
       m_FallbackState: 0
       m_WaitForCompletion: 0
       m_LocalVariables: []
-  <Description>k__BackingField:
-    <Entity>k__BackingField:
-      m_TableReference:
-        m_TableCollectionName: GUID:3b397188346b9fe4d87595afe2d9bae6
-      m_TableEntryReference:
-        m_KeyId: 7982112633864192
-        m_Key: 
-      m_FallbackState: 0
-      m_WaitForCompletion: 0
-      m_LocalVariables: []
   <Icon>k__BackingField: {fileID: 0}
   <Cost>k__BackingField: 50
-  <AnimationClip>k__BackingField: {fileID: 0}
   <AbilityLogics>k__BackingField:
   - {fileID: 11400000, guid: fa1604ea4f46455458e74186a412dd4b, type: 2}
+  <AnimationClip>k__BackingField: {fileID: 0}
+  <SoundClip>k__BackingField: {fileID: 11400000, guid: 2bbed835a60198e43b59185c3d17993d,
+    type: 2}
   references:
     version: 2
     RefIds: []

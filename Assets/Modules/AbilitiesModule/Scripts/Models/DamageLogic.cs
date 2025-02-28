@@ -23,6 +23,7 @@ namespace SDRGames.Whist.AbilitiesModule.Models
         public override void Apply(CharacterCombatManager targetCharacterCombatManager)
         {
             int randomInt = UnityEngine.Random.Range(0, 100);
+            int chance = _chance - targetCharacterCombatManager.GetParams().DodgeChance;
             if (_chance < randomInt)
             {
                 return;

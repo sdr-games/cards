@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -43,10 +44,7 @@ namespace SDRGames.Whist.AIBehaviorModule.Managers
                     EnemyCombatManager.GetParams().StaminaPoints.CurrentValue,
                     _playerCombatManager.GetParams().ArmorPoints.CurrentValueInPercents
                 );
-                foreach (AbilityScriptableObject abilitySO in selectedAbilities)
-                {
-                    new Ability(abilitySO).ApplyLogics(EnemyCombatManager, _playerCombatManager);
-                }
+                StartCoroutine(ApplySelectedAbilities(selectedAbilities));
                 EnemyCombatManager.SpendStaminaPoints(selectedAbilities.Sum(ability => ability.Cost));
                 EnemyCombatManager.RestoreStaminaPoints((MAX_MELEE_ABILITIES_COUNT_PER_ROUND - selectedAbilities.Count) * _enemyParams.StaminaPoints.RestorationPower);
             }
@@ -75,6 +73,17 @@ namespace SDRGames.Whist.AIBehaviorModule.Managers
             float totalMagicalDifference = _playerParams.BarrierPoints.CurrentValue + _playerParams.HealthPoints.CurrentValue - totalMagicalDamage;
 
             return totalPhysicalDifference < totalMagicalDifference ? PreferrableDamageTypes.Physical : PreferrableDamageTypes.Magical;
+        }
+
+        private IEnumerator ApplySelectedAbilities(List<AbilityScriptableObject> selectedAbilities)
+        {
+            yield return null;
+            foreach (AbilityScriptableObject abilitySO in selectedAbilities)
+            {
+                EnemyCombatManager.SoundController.Play(abilitySO.SoundClip);
+                new Ability(abilitySO).ApplyLogics(EnemyCombatManager, _playerCombatManager);
+                yield return new WaitForSeconds(abilitySO.SoundClip.AudioClip.length);
+            }
         }
     }
 }
