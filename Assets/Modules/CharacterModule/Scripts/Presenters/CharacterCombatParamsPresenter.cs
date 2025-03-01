@@ -1,4 +1,5 @@
 using SDRGames.Whist.PointsModule.Presenters;
+using SDRGames.Whist.PointsModule.Models;
 using SDRGames.Whist.CharacterModule.ScriptableObjects;
 using SDRGames.Whist.CharacterModule.Views;
 
@@ -7,14 +8,16 @@ namespace SDRGames.Whist.CharacterModule.Presenters
     public class CharacterCombatParamsPresenter
     {
         private CharacterParamsModel _characterParamsModel;
+        private CharacterCombatUIView _characterCombatUIView;
 
-        public CharacterCombatParamsPresenter(CharacterParamsModel characterParamsModel, CharacterCombatParamsView characterCombatParamsView)
+        public CharacterCombatParamsPresenter(CharacterParamsModel characterParamsModel, CharacterCombatUIView characterCombatUIView)
         {
             _characterParamsModel = characterParamsModel;
+            _characterCombatUIView = characterCombatUIView;
 
-            new PointsBarPresenter(_characterParamsModel.HealthPoints, characterCombatParamsView.HealthPointsBarView);
-            new PointsBarPresenter(_characterParamsModel.ArmorPoints, characterCombatParamsView.ArmorPointsBarView);
-            new PointsBarPresenter(_characterParamsModel.BarrierPoints, characterCombatParamsView.BarrierPointsBarView);
+            new PointsBarPresenter(_characterParamsModel.HealthPoints, _characterCombatUIView.HealthPointsBarView);
+            new PointsBarPresenter(_characterParamsModel.ArmorPoints, _characterCombatUIView.ArmorPointsBarView);
+            new PointsBarPresenter(_characterParamsModel.BarrierPoints, _characterCombatUIView.BarrierPointsBarView);
         }
 
         public void TakePhysicalDamage(int damage)

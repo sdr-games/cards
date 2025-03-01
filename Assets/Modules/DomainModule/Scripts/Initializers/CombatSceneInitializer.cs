@@ -5,6 +5,7 @@ using SDRGames.Whist.CardsCombatModule.ScriptableObjects;
 using SDRGames.Whist.CharacterModule.Managers;
 using SDRGames.Whist.CharacterModule.ScriptableObjects;
 using SDRGames.Whist.DomainModule.Managers;
+using SDRGames.Whist.FloatingTextModule.Managers;
 using SDRGames.Whist.HelpersModule;
 using SDRGames.Whist.MeleeCombatModule.ScriptableObjects;
 using SDRGames.Whist.TurnSwitchModule.Managers;
@@ -21,6 +22,7 @@ namespace SDRGames.Whist.DomainModule
         [SerializeField] private TurnsQueueManager _turnsQueueManager;
 
         [Header("UI")][SerializeField] private CombatUIManager _combatUIManager;
+        [SerializeField] private FloatingTextManager _floatingTextManager;
         [Header("PLAYER")][SerializeField] private PlayerCombatManager _playerCombatManager;
         [Header("ENEMIES")][SerializeField] private EnemyBehaviorManager[] _enemyBehaviorManagers;
 
@@ -35,6 +37,7 @@ namespace SDRGames.Whist.DomainModule
             _characterParametersScalingSettings.Initialize();
             _cardsScalingScriptableObject.Initialize();
             _meleeAttacksScalingScriptableObject.Initialize();
+            _floatingTextManager.Initialize();
 
             _playerCombatManager.Initialize();
 
@@ -61,6 +64,7 @@ namespace SDRGames.Whist.DomainModule
             this.CheckFieldValueIsNotNull(nameof(_cardsScalingScriptableObject), _cardsScalingScriptableObject);
             this.CheckFieldValueIsNotNull(nameof(_meleeAttacksScalingScriptableObject), _meleeAttacksScalingScriptableObject);
             this.CheckFieldValueIsNotNull(nameof(_combatUIManager), _combatUIManager);
+            this.CheckFieldValueIsNotNull(nameof(_floatingTextManager), _floatingTextManager);
             this.CheckFieldValueIsNotNull(nameof(_playerCombatManager), _playerCombatManager);
             this.CheckFieldValueIsNotNull(nameof(_enemyBehaviorManagers), _enemyBehaviorManagers);
         }

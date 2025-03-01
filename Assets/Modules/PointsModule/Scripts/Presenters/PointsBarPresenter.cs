@@ -53,14 +53,14 @@ namespace SDRGames.Whist.PointsModule.Presenters
 
         private void OnPointsCurrentValueChanged(object sender, ValueChangedEventArgs e)
         {
-            _pointsView.ChangeSpentFillerValue(e.CurrentValueInPercents);
-            _pointsView.SetPointsText(e.CurrentValue, e.MaxValue);
+            _pointsView.ChangeSpentFillerValue(e.NewValueInPercents);
+            _pointsView.SetPointsText(e.NewValue, e.MaxValue);
         }
 
         private void OnReservedValueChanged(object sender, ValueChangedEventArgs e)
         {
-            float currentValue = e.CurrentValueInPercents < 100 ? e.CurrentValueInPercents / 100 * e.MaxValue : e.MaxValue;
-            _pointsView.ChangeReservedFillerValue(e.CurrentValueInPercents);
+            float currentValue = e.NewValueInPercents < 100 ? e.NewValueInPercents / 100 * e.MaxValue : e.MaxValue;
+            _pointsView.ChangeReservedFillerValue(e.NewValueInPercents);
             _pointsView.SetPointsText(currentValue, e.MaxValue);
         }
     }

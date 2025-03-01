@@ -6,6 +6,7 @@ using SDRGames.Whist.AnimationsModule;
 using SDRGames.Whist.CharacterModule.Presenters;
 using SDRGames.Whist.CharacterModule.ScriptableObjects;
 using SDRGames.Whist.CharacterModule.Views;
+using SDRGames.Whist.PointsModule.Models;
 using SDRGames.Whist.SoundModule.Controllers;
 using SDRGames.Whist.UserInputModule.Controller;
 
@@ -29,14 +30,17 @@ namespace SDRGames.Whist.CharacterModule.Managers
             _periodicalEffects = new Dictionary<PeriodicalEffectPresenter, int>();
             _periodicalBuffs = new Dictionary<PeriodicalEffectPresenter, int>();
             _periodicalDebuffs = new Dictionary<PeriodicalEffectPresenter, int>();
+
+            GetView().Initialize(transform);
+
+            GetParams().HealthPoints.CurrentValueChanged += OnHealthPointsCurrentValueChanged;
+            GetParams().ArmorPoints.CurrentValueChanged += OnArmorPointsCurrentValueChanged;
+            GetParams().BarrierPoints.CurrentValueChanged += OnBarrierPointsCurrentValueChanged;
         }
 
         public abstract CharacterParamsModel GetParams();
-        protected abstract CharacterCombatParamsView GetView();
-        public virtual void TakePhysicalDamage(int damage)
-        {
-            SoundController.PlayImpact();
-        }
+        protected abstract CharacterCombatUIView GetView();
+        public abstract void TakePhysicalDamage(int damage);
         public abstract void TakeMagicalDamage(int damage);
         public abstract void TakeTrueDamage(int damage);
         public abstract void RestoreArmorPoints(float restoration = -1);
@@ -106,6 +110,53 @@ namespace SDRGames.Whist.CharacterModule.Managers
                     item.Key.Delete();
                 }
             }
+        }
+
+        private void OnHealthPointsCurrentValueChanged(object sender, ValueChangedEventArgs e)
+        {
+            if(e.Difference == 0)
+            {
+                return;
+            }
+
+            if(e.Difference > 0)
+            {
+                GetView().ShowFloatingText($"+{e.Difference}", GetView().HealthPointsBarView.GetColor());
+                return;
+            }
+            SoundController.PlayImpact();
+            GetView().ShowFloatingText($"{e.Difference}", GetView().HealthPointsBarView.GetColor());
+        }
+
+        private void OnArmorPointsCurrentValueChanged(object sender, ValueChangedEventArgs e)
+        {
+            if (e.Difference == 0)
+            {
+                return;
+            }
+
+            if (e.Difference > 0)
+            {
+                GetView().ShowFloatingText($"+{e.Difference}", GetView().ArmorPointsBarView.GetColor());
+                return;
+            }
+            SoundController.PlayArmorImpact();
+            GetView().ShowFloatingText($"{e.Difference}", GetView().ArmorPointsBarView.GetColor());
+        }
+
+        private void OnBarrierPointsCurrentValueChanged(object sender, ValueChangedEventArgs e)
+        {
+            if (e.Difference == 0)
+            {
+                return;
+            }
+
+            if (e.Difference > 0)
+            {
+                GetView().ShowFloatingText($"+{e.Difference}", GetView().BarrierPointsBarView.GetColor());
+                return;
+            }
+            GetView().ShowFloatingText($"{e.Difference}", GetView().BarrierPointsBarView.GetColor());
         }
     }
 }

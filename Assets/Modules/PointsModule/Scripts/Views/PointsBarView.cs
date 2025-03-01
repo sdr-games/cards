@@ -53,6 +53,11 @@ namespace SDRGames.Whist.PointsModule.Views
             _pointsValueText.text = $"{currentPointsValue} / {maxPointsValue}";
         }
 
+        public Color GetColor()
+        {
+            return _spentFillerColor;
+        }
+
         #region MonoBehaviour methods
         private void OnEnable()
         {

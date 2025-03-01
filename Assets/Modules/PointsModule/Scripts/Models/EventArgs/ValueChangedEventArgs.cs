@@ -1,19 +1,20 @@
 using System;
 
-using UnityEngine;
-
 namespace SDRGames.Whist.PointsModule.Models
 {
     public class ValueChangedEventArgs : EventArgs
     {
-        [field: SerializeField] public float CurrentValue { get; }
-        [field: SerializeField] public float CurrentValueInPercents { get; }
-        [field: SerializeField] public float MaxValue { get; }
+        public float OriginalValue { get; private set; }
+        public float NewValue { get; private set; }
+        public float NewValueInPercents { get; private set; }
+        public float Difference => NewValue - OriginalValue;
+        public float MaxValue { get; private set; }
 
-        public ValueChangedEventArgs(float currentValue, float currentValueInPercents, float maxValue)
+        public ValueChangedEventArgs(float originalValue, float newValue, float newValueInPercents, float maxValue)
         {
-            CurrentValue = currentValue;
-            CurrentValueInPercents = currentValueInPercents;
+            OriginalValue = originalValue;
+            NewValue = newValue;
+            NewValueInPercents = newValueInPercents;
             MaxValue = maxValue;
         }
     }

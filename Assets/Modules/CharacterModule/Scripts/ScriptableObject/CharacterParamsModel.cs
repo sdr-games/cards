@@ -146,7 +146,10 @@ namespace SDRGames.Whist.CharacterModule.ScriptableObjects
         public void TakePhysicalDamage(int damage)
         {
             float trueDamage = damage - ArmorPoints.CurrentValue;
-            ArmorPoints.DecreaseCurrentValue(damage);
+            if (ArmorPoints.CurrentValue > 0)
+            {
+                ArmorPoints.DecreaseCurrentValue(damage);
+            }
             if(trueDamage <= 0)
             {
                 return;
@@ -157,7 +160,10 @@ namespace SDRGames.Whist.CharacterModule.ScriptableObjects
         public void TakeMagicalDamage(int damage)
         {
             float trueDamage = damage - BarrierPoints.CurrentValue;
-            BarrierPoints.DecreaseCurrentValue(damage);
+            if (BarrierPoints.CurrentValue > 0)
+            {
+                BarrierPoints.DecreaseCurrentValue(damage);
+            }
             if (trueDamage <= 0)
             {
                 return;

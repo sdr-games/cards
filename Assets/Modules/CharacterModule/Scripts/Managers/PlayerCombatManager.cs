@@ -6,20 +6,24 @@ using SDRGames.Whist.NotificationsModule;
 using SDRGames.Whist.UserInputModule.Controller;
 
 using UnityEngine;
+using SDRGames.Whist.PointsModule.Models;
 
 namespace SDRGames.Whist.CharacterModule.Managers
 {
     public class PlayerCombatManager : CharacterCombatManager
     {
         [SerializeField] private PlayerCharacterParamsModel _playerCharacterParamsModel;
-        [SerializeField] private PlayerCharacterCombatParamsView _playerCharacterCombatParamsView;
+        [SerializeField] private PlayerCharacterCombatUIView _playerCharacterCombatUIView;
 
         private PlayerCharacterCombatParamsPresenter _playerCharacterCombatParamsPresenter;
 
         public override void Initialize(UserInputController userInputController = null)
         {
             base.Initialize();
-            _playerCharacterCombatParamsPresenter = new PlayerCharacterCombatParamsPresenter(_playerCharacterParamsModel, _playerCharacterCombatParamsView);
+            _playerCharacterCombatParamsPresenter = new PlayerCharacterCombatParamsPresenter(_playerCharacterParamsModel, _playerCharacterCombatUIView);
+
+            _playerCharacterParamsModel.StaminaPoints.CurrentValueChanged += OnStaminaPointsCurrentValueChanged;
+            _playerCharacterParamsModel.BreathPoints.CurrentValueChanged += OnBreathPointsCurrentValueChanged;
         }
 
         public override CharacterParamsModel GetParams()
@@ -27,15 +31,14 @@ namespace SDRGames.Whist.CharacterModule.Managers
             return _playerCharacterParamsModel;
         }
 
-        protected override CharacterCombatParamsView GetView()
+        protected override CharacterCombatUIView GetView()
         {
-            return _playerCharacterCombatParamsView;
+            return _playerCharacterCombatUIView;
         }
 
         public override void TakePhysicalDamage(int damage)
         {
             _playerCharacterCombatParamsPresenter.TakePhysicalDamage(damage);
-            base.TakePhysicalDamage(damage);
         }
 
         public override void TakeMagicalDamage(int damage)
@@ -146,7 +149,23 @@ namespace SDRGames.Whist.CharacterModule.Managers
         protected void OnEnable()
         {
             this.CheckFieldValueIsNotNull(nameof(_playerCharacterParamsModel), _playerCharacterParamsModel);
-            this.CheckFieldValueIsNotNull(nameof(_playerCharacterCombatParamsView), _playerCharacterCombatParamsView);
+            this.CheckFieldValueIsNotNull(nameof(_playerCharacterCombatUIView), _playerCharacterCombatUIView);
+        }
+
+        private void OnStaminaPointsCurrentValueChanged(object sender, ValueChangedEventArgs e)
+        {
+            if (e.Difference > 0)
+            {
+                _playerCharacterCombatUIView.ShowFloatingText($"+{e.Difference}", _playerCharacterCombatUIView.StaminaPointsBarView.GetColor());
+            }
+        }
+
+        private void OnBreathPointsCurrentValueChanged(object sender, ValueChangedEventArgs e)
+        {
+            if (e.Difference > 0)
+            {
+                _playerCharacterCombatUIView.ShowFloatingText($"+{e.Difference}", _playerCharacterCombatUIView.BreathPointsBarView.GetColor());
+            }
         }
     }
 }
