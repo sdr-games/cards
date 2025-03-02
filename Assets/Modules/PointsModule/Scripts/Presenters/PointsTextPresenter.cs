@@ -22,12 +22,12 @@ namespace SDRGames.Whist.PointsModule.Presenters
 
         private void OnPointsCurrentValueChanged(object sender, ValueChangedEventArgs e)
         {
-            _pointsView.SetPointsText(e.CurrentValue);
+            _pointsView.SetPointsText(e.NewValue);
         }
 
         private void OnMaxValueChanged(object sender, ValueChangedEventArgs e)
         {
-            _pointsView.SetMaxPointsText(e.MaxValue, e.CurrentValueInPercents);
+            _pointsView.SetMaxPointsText(e.MaxValue, e.NewValueInPercents);
         }
     }
 }

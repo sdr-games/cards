@@ -12,7 +12,7 @@ namespace SDRGames.Whist.CharacterModule.Managers
     public class EnemyCombatManager : CharacterCombatManager
     {
         [SerializeField] private CharacterParamsModel _characterParamsModel;
-        [SerializeField] private CharacterCombatParamsView _characterCombatParamsView;
+        [SerializeField] private CharacterCombatUIView _characterCombatParamsView;
         [SerializeField] private EnemyMeshManager _enemyMeshManager;
 
         private CharacterCombatParamsPresenter _characterCombatParamsPresenter;
@@ -33,7 +33,7 @@ namespace SDRGames.Whist.CharacterModule.Managers
             return _characterParamsModel;
         }
 
-        protected override CharacterCombatParamsView GetView()
+        protected override CharacterCombatUIView GetView()
         {
             return _characterCombatParamsView;
         }
@@ -41,7 +41,6 @@ namespace SDRGames.Whist.CharacterModule.Managers
         public override void TakePhysicalDamage(int damage)
         {
             _characterCombatParamsPresenter.TakePhysicalDamage(damage);
-            base.TakePhysicalDamage(damage);
         }
 
         public override void TakeMagicalDamage(int damage)
