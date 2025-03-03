@@ -1,0 +1,125 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
+  m_Name: DialogueGlassBlower Shared Data
+  m_EditorClassIdentifier: 
+  m_TableCollectionName: DialogueGlassBlower
+  m_TableCollectionNameGuidString: 27c99a6cb2fb8914581524da8fd99608
+  m_Entries:
+  - m_Id: 700302766080
+    m_Key: DialogueGBAvrosA
+    m_Metadata:
+      m_Items: []
+  - m_Id: 706892017664
+    m_Key: DialogueGBTheophrastusA
+    m_Metadata:
+      m_Items: []
+  - m_Id: 713372217344
+    m_Key: DialogueGBAvrosB
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1401959493632
+    m_Key: DialogueGBTheophrastusB
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1407219150848
+    m_Key: DialogueGBAvrosC
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1414504656896
+    m_Key: DialogueGBTheophrastusC
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2141587255296
+    m_Key: DialogueGBAvrosD
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2146947575808
+    m_Key: DialogueGBTheophrastusD
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2465664348160
+    m_Key: 'DialogueGBTheophrastusE
+
+'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3991170461696
+    m_Key: DialogueGBValiorEA
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3993456357376
+    m_Key: 'DialogueGBValiorEB
+
+
+'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3994601402368
+    m_Key: DialogueGBAvrosF
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3995649978368
+    m_Key: DialogueGBTheophrastusF
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3996534976512
+    m_Key: 'DialogueGBAvrosG
+
+'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4478619889664
+    m_Key: 'DialogueGBTheophrastusG
+
+'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4480087896064
+    m_Key: 'DialogueGBValiorHA
+
+'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5030917451776
+    m_Key: 'DialogueGBValiorHB
+
+'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5033274650624
+    m_Key: 'DialogueGBTheophrastusI
+
+
+'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6590997213184
+    m_Key: DialogueGBTheophrastusJ
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6740134080512
+    m_Key: New Entry 1
+    m_Metadata:
+      m_Items: []
+  m_Metadata:
+    m_Items: []
+  m_KeyGenerator:
+    rid: 4582864586225483777
+  references:
+    version: 2
+    RefIds:
+    - rid: 4582864586225483777
+      type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables,
+        asm: Unity.Localization}
+      data:
+        m_CustomEpoch: 1740955374230

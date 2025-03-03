@@ -1,0 +1,58 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: DialogueGlassBlower_en
+  m_EditorClassIdentifier: 
+  m_LocaleId:
+    m_Code: en
+  m_SharedData: {fileID: 11400000, guid: 27c99a6cb2fb8914581524da8fd99608, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 700302766080
+    m_Localized: What wonderful people are on the steps of the glass steeple! Ahem-ahem.
+      How long has it been since we last saw each other, my friend!?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 706892017664
+    m_Localized: The last time I stopped by was when Olivia was in charge of your
+      kitchen.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 713372217344
+    m_Localized: A lot of water has flowed under the bridge since then. Ahem-ahem.
+      Two marriages have already been washed away by that water. Ahem. Now I have
+      a new love. You would be surprised, ahem-ahem, what fantastic figures she draws
+      with her hips when she serves beer in the tavern. What kind of youth is that
+      with you?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1401959493632
+    m_Localized: This is my student Valior. I hope you don't mind such company? A
+      smart guy, I'm sure he'll make an excellent doctor.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1407219150848
+    m_Localized: As for me, it would be better if you brought a girl with a sensible
+      figure. Ha-ha-ha. Cough-cough-cough. Welcome! Pleased to meet you! Ahem. Are
+      you here for the treasure or for the pleasure? Ha-ha-ha. Cough-cough-cough.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1414504656896
+    m_Localized: We need to replenish the supply of test tubes and ampoules. But
+      I see that first we need to deal with your cough. How long has it been bothering
+      you?
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds: []
