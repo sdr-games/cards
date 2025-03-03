@@ -16,6 +16,7 @@ using SDRGames.Whist.CardsCombatModule.ScriptableObjects;
 using SDRGames.Whist.MeleeCombatModule.ScriptableObjects;
 using SDRGames.Whist.AbilitiesModule.Models;
 using SDRGames.Whist.CardsCombatModule.Models;
+using System.Collections;
 
 namespace SDRGames.Whist.DomainModule.Managers
 {
@@ -149,18 +150,29 @@ namespace SDRGames.Whist.DomainModule.Managers
 
             _combatUIManager.UnbindAbilitiesInQueue();
             _combatUIManager.HidePlayerUI();
-            foreach (Ability ability in e.Abilities)
+            StartCoroutine(UseMeleeAbilities(e.Abilities));
+        }
+
+        private IEnumerator UseMeleeAbilities(List<Ability> abilities)
+        {
+            foreach (Ability ability in abilities)
             {
+                yield return null;
                 if (ability == null)
                 {
                     _playerCombatManager.RestoreStaminaPoints();
                     continue;
                 }
+                while (!_playerCombatManager.AnimationsController.IsReady)
+                {
+                    yield return null;
+                }
+                _playerCombatManager.SpendStaminaPoints(ability.Cost);
+                _playerCombatManager.AnimationsController.PlayAnimation(ability.AnimationClip);
                 ability.ApplyLogics(
                     _playerCombatManager,
                     _selectedEnemyCombatManagers
                 );
-                _playerCombatManager.SpendStaminaPoints(ability.Cost);
             }
             _turnsQueueManager.SwitchTurn();
         }

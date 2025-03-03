@@ -14,6 +14,7 @@ namespace SDRGames.Whist.AbilitiesModule.Models
         public LocalizedString Description { get; private set; }
         public Sprite Icon { get; private set; }
         public int Cost { get; private set; }
+        public AnimationClip AnimationClip { get; private set; }
         public List<AbilityLogic> AbilityLogics { get; protected set; }
 
         public Ability(AbilityScriptableObject abilityScriptableObject)
@@ -22,6 +23,7 @@ namespace SDRGames.Whist.AbilitiesModule.Models
             Description = abilityScriptableObject.Description;
             Icon = abilityScriptableObject.Icon;
             Cost = abilityScriptableObject.Cost;
+            AnimationClip = abilityScriptableObject.AnimationClip;
             AbilityLogics = new List<AbilityLogic>();
             foreach (AbilityLogicScriptableObject abilityLogicScriptableObject in abilityScriptableObject.AbilityLogics)
             {
