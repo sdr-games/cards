@@ -9,10 +9,11 @@ using SDRGames.Whist.UserInputModule.Controller;
 using UnityEditor;
 
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace SDRGames.Whist.MeleeCombatModule.Managers
 {
-    public class MeleeAttackManager : MonoBehaviour
+    public class MeleeAttackManager : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
         [SerializeField] private MeleeAttackView _meleeAttackView;
 
@@ -20,6 +21,8 @@ namespace SDRGames.Whist.MeleeCombatModule.Managers
         private UserInputController _userInputController;
 
         public event EventHandler<MeleeAttackClickedEventArgs> MeleeAttackClicked;
+        public event EventHandler<MeleeAttackClickedEventArgs> MeleeAttackPointerEnter;
+        public event EventHandler<MeleeAttackClickedEventArgs> MeleeAttackPointerExit;
 
         public void Initialize(UserInputController userInputController, MeleeAttackScriptableObject meleeAttackScriptableObject)
         {
@@ -29,6 +32,16 @@ namespace SDRGames.Whist.MeleeCombatModule.Managers
 
             _userInputController = userInputController;
             _userInputController.LeftMouseButtonClickedOnUI += OnLeftMouseButtonClickedOnUI;
+        }
+
+        public void OnPointerEnter(PointerEventData eventData)
+        {
+            MeleeAttackPointerEnter?.Invoke(this, new MeleeAttackClickedEventArgs(_meleeAttack));
+        }
+
+        public void OnPointerExit(PointerEventData eventData)
+        {
+            MeleeAttackPointerExit?.Invoke(this, new MeleeAttackClickedEventArgs(_meleeAttack));
         }
 
         private void OnLeftMouseButtonClickedOnUI(object sender, LeftMouseButtonUIClickEventArgs e)

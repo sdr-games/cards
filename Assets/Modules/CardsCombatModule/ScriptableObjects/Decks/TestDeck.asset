@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0c08a056b016e845adb5621f9f7c077, type: 3}
   m_Name: TestDeck
   m_EditorClassIdentifier: 
-  <Backside>k__BackingField: {fileID: 21300000, guid: 255aeab2e4faf134eb0a9ef94bf6f250,
+  <Backside>k__BackingField: {fileID: 21300000, guid: 5915cdc174101e540b3349e21ee2cd74,
     type: 3}
   <Cards>k__BackingField:
   - {fileID: 11400000, guid: f41aa10296fb42d4eb07f4c213652bf7, type: 2}

@@ -10,11 +10,11 @@ namespace SDRGames.Whist.HelpersModule
         {
             if (fieldValue == null)
             {
-                #if UNITY_EDITOR
+                //#if UNITY_EDITOR
                     Debug.LogError($"Поле {fieldName} не заполнено у {sender}!");
-                    EditorApplication.isPlaying = false;
-                #endif
-                Application.Quit();
+                //    EditorApplication.isPlaying = false;
+                //#endif
+                //Application.Quit();
             }
         }
 
@@ -22,11 +22,11 @@ namespace SDRGames.Whist.HelpersModule
         {
             if (fieldValue == null)
             {
-                #if UNITY_EDITOR
+                //#if UNITY_EDITOR
                     Debug.LogError($"Поле {fieldName} не заполнено у {sender}!");
-                    EditorApplication.isPlaying = false;
-                #endif
-                Application.Quit();
+                //    EditorApplication.isPlaying = false;
+                //#endif
+                //Application.Quit();
             }
         }
     }

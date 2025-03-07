@@ -8,14 +8,18 @@ using SDRGames.Whist.UserInputModule.Controller;
 using UnityEditor;
 
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 namespace SDRGames.Whist.MeleeCombatModule.Managers
 {
     public class MeleeAttackListManager : HideableUIView
     {
-        [SerializeField] private MeleeAttackScriptableObject[] _meleeAttackScriptableObjects;
         [SerializeField] private MeleeAttackManager _meleeAttackPrefab;
-        [SerializeField] private RectTransform _contentRectTransform;
+        [SerializeField] private GridLayoutGroup _buttonsGridLayoutGroup;
+        [SerializeField] private TextMeshProUGUI _descriptionText;
+        [SerializeField] private TextMeshProUGUI _costText;
+        [SerializeField] private MeleeAttackScriptableObject[] _meleeAttackScriptableObjects;
 
         private List<MeleeAttackManager> _createdManagers;
 
@@ -26,11 +30,25 @@ namespace SDRGames.Whist.MeleeCombatModule.Managers
             _createdManagers = new List<MeleeAttackManager>();
             foreach (MeleeAttackScriptableObject meleeAttackScriptableObject in _meleeAttackScriptableObjects)
             {
-                MeleeAttackManager meleeAttackManager = Instantiate(_meleeAttackPrefab, _contentRectTransform);
+                MeleeAttackManager meleeAttackManager = Instantiate(_meleeAttackPrefab, _buttonsGridLayoutGroup.transform);
                 meleeAttackManager.Initialize(userInputController, meleeAttackScriptableObject);
+                meleeAttackManager.MeleeAttackPointerEnter += OnMeleeAttackPointerEnter;
+                meleeAttackManager.MeleeAttackPointerExit += OnMeleeAttackPointerExit;
                 meleeAttackManager.MeleeAttackClicked += OnMeleeAttackClicked;
                 _createdManagers.Add(meleeAttackManager);
             }
+        }
+
+        private void OnMeleeAttackPointerEnter(object sender, MeleeAttackClickedEventArgs e)
+        {
+            _descriptionText.text = e.MeleeAttack.GetLocalizedDescription();
+            _costText.text = e.MeleeAttack.Cost.ToString();
+        }
+
+        private void OnMeleeAttackPointerExit(object sender, MeleeAttackClickedEventArgs e)
+        {
+            _descriptionText.text = "";
+            _costText.text = "";
         }
 
         private void OnMeleeAttackClicked(object sender, MeleeAttackClickedEventArgs e)
@@ -49,7 +67,7 @@ namespace SDRGames.Whist.MeleeCombatModule.Managers
                 Application.Quit();
             }
 
-            if (_contentRectTransform == null)
+            if (_buttonsGridLayoutGroup == null)
             {
                 Debug.LogError("Content Rect Transform не был назначен");
                 #if UNITY_EDITOR

@@ -44,9 +44,14 @@ namespace SDRGames.Whist.AIBehaviorModule.Managers
                     EnemyCombatManager.GetParams().StaminaPoints.CurrentValue,
                     _playerCombatManager.GetParams().ArmorPoints.CurrentValueInPercents
                 );
-                StartCoroutine(ApplySelectedAbilities(selectedAbilities));
-                EnemyCombatManager.SpendStaminaPoints(selectedAbilities.Sum(ability => ability.Cost));
-                EnemyCombatManager.RestoreStaminaPoints((MAX_MELEE_ABILITIES_COUNT_PER_ROUND - selectedAbilities.Count) * _enemyParams.StaminaPoints.RestorationPower);
+                int count = 0;
+                if(selectedAbilities != null)
+                {
+                    StartCoroutine(ApplySelectedAbilities(selectedAbilities));
+                    EnemyCombatManager.SpendStaminaPoints(selectedAbilities.Sum(ability => ability.Cost));
+                    count = selectedAbilities.Count;
+                }
+                EnemyCombatManager.RestoreStaminaPoints((MAX_MELEE_ABILITIES_COUNT_PER_ROUND - count) * _enemyParams.StaminaPoints.RestorationPower);
             }
         }
 
