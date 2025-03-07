@@ -27,7 +27,8 @@ MonoBehaviour:
   <Cost>k__BackingField: 0
   <AbilityLogics>k__BackingField:
   - {fileID: 11400000, guid: 9783f8e02b55ed64ebe1db6eaa8d1561, type: 2}
-  <AnimationClip>k__BackingField: {fileID: 0}
+  <AnimationClip>k__BackingField: {fileID: 7400000, guid: bd4e0d9f1e40fd841880d19a66722d1b,
+    type: 2}
   <SoundClip>k__BackingField: {fileID: 11400000, guid: 948570fba4db18f49acf764eb347739e,
     type: 2}
   references:

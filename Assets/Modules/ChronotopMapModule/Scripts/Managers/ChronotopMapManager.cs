@@ -136,6 +136,7 @@ namespace SDRGames.Whist.ChronotopMapModule.Managers
                 return;
             } 
             _chronotopMapPinManagers[_currentPinIndex].MarkAsAvailable();
+
             _chronotopMapPinManagers[_currentPinIndex].AvailablePinClicked += OnAvailablePinClick;
         }
     }

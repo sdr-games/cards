@@ -194,6 +194,7 @@ namespace SDRGames.Whist.DomainModule.Managers
             if (e.TotalCost > 0)
             {
                 _playerCombatManager.SpendBreathPoints(e.TotalCost);
+                _playerCombatManager.AnimationsController.PlayAnimation("PlayerMagic");
             }
             else
             {

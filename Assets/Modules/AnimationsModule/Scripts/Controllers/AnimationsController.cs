@@ -16,5 +16,10 @@ namespace SDRGames.Whist.AnimationsModule
             }
             _animator.Play(animationClip.name);
         }
+
+        public void PlayAnimation(string animationClip)
+        {
+            _animator.Play(animationClip);
+        }
     }
 }
