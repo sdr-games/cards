@@ -13,6 +13,7 @@ namespace SDRGames.Whist.CardsCombatModule.Views
     {
         [SerializeField] private RectTransform _rectTransform;
         [SerializeField] private Image _backsideImage;
+        [SerializeField] private Outline _outline;
         [SerializeField] private float _hoverOffset;
         [SerializeField] private float _hoverOffsetSpeed;
         private Vector3 _middlePosition;
@@ -29,12 +30,14 @@ namespace SDRGames.Whist.CardsCombatModule.Views
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            _rectTransform.anchoredPosition = new Vector3(_rectTransform.anchoredPosition.x, _middlePosition.y + _hoverOffset / 2, 0);
+            //_outline.enabled = true;
+            //_rectTransform.anchoredPosition = new Vector3(_rectTransform.anchoredPosition.x, _middlePosition.y + _hoverOffset / 2, 0);
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            _rectTransform.anchoredPosition = new Vector3(_rectTransform.anchoredPosition.x, _middlePosition.y - _hoverOffset / 2, 0);
+            //_outline.enabled = false;
+            //_rectTransform.anchoredPosition = new Vector3(_rectTransform.anchoredPosition.x, _middlePosition.y - _hoverOffset / 2, 0);
         }        
 
         private IEnumerator SetOffsetSmoothlyCoroutine(float hoverOffset, float hoverOffsetSpeed)

@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 
 using SDRGames.Whist.RestorationModule.Models;
 using SDRGames.Whist.RestorationModule.Presenters;
@@ -12,10 +10,11 @@ using SDRGames.Whist.UserInputModule.Controller;
 using UnityEditor;
 
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace SDRGames.Whist.RestorationModule.Managers
 {
-    public class PotionManager : MonoBehaviour
+    public class PotionManager : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
         [SerializeField] private PotionView _potionView;
 
@@ -23,6 +22,8 @@ namespace SDRGames.Whist.RestorationModule.Managers
         private UserInputController _userInputController;
 
         public event EventHandler<PotionClickedEventArgs> PotionClicked;
+        public event EventHandler<PotionClickedEventArgs> PotionPointerEnter;
+        public event EventHandler<PotionClickedEventArgs> PotionPointerExit;
 
         public void Initialize(UserInputController userInputController, PotionScriptableObject potionScriptableObject)
         {
@@ -32,6 +33,16 @@ namespace SDRGames.Whist.RestorationModule.Managers
 
             _userInputController = userInputController;
             _userInputController.LeftMouseButtonClickedOnUI += OnLeftMouseButtonClickedOnUI;
+        }
+
+        public void OnPointerEnter(PointerEventData eventData)
+        {
+            PotionPointerEnter?.Invoke(this, new PotionClickedEventArgs(_potion));
+        }
+
+        public void OnPointerExit(PointerEventData eventData)
+        {
+            PotionPointerExit?.Invoke(this, new PotionClickedEventArgs(_potion));
         }
 
         private void OnLeftMouseButtonClickedOnUI(object sender, LeftMouseButtonUIClickEventArgs e)

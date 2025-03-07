@@ -14,7 +14,7 @@ namespace SDRGames.Whist.TurnSwitchModule
 {
     public class TurnsQueueView : MonoBehaviour
     {
-        [SerializeField] private HorizontalLayoutGroup _horizontalLayoutGroup;
+        [SerializeField] private GridLayoutGroup _gridLayoutGroup;
         [SerializeField] private TurnsQueuePortraitView _turnsQueuePortraitViewPrefab;
         [SerializeField] private int _shiftingSpeed = 2;
         [SerializeField] private int _portraitsLimit = 8;
@@ -31,7 +31,7 @@ namespace SDRGames.Whist.TurnSwitchModule
         public void Initialize(List<CharacterInfoScriptableObject> characterInfoScriptableObjects)
         {
             _currentTemplateIndex = 0;
-            _defaultLeftPadding = _horizontalLayoutGroup.padding.left;
+            _defaultLeftPadding = _gridLayoutGroup.padding.left;
             _turnsQueuePortraitViewList = new LinkedList<TurnsQueuePortraitView>();
             _queueTemplate = characterInfoScriptableObjects;
             for(int i = 0; i < _portraitsLimit; i++)
@@ -74,10 +74,10 @@ namespace SDRGames.Whist.TurnSwitchModule
 
         private IEnumerator NaturalShiftQueueCoroutine(Sprite portrait)
         {
-            while (_horizontalLayoutGroup.padding.left > _shiftedLeftPadding)
+            while (_gridLayoutGroup.padding.left > _shiftedLeftPadding)
             {
                 yield return null;
-                SetRectOffsetLeftPadding(_horizontalLayoutGroup.padding.left - _shiftingSpeed);
+                SetRectOffsetLeftPadding(_gridLayoutGroup.padding.left - _shiftingSpeed);
             }
             TurnsQueuePortraitView turnsQueuePortraitView = _turnsQueuePortraitViewList.First.Value;
             Destroy(turnsQueuePortraitView.gameObject);
@@ -89,20 +89,20 @@ namespace SDRGames.Whist.TurnSwitchModule
 
         private IEnumerator ForceShiftQueueCoroutine(Sprite portrait)
         {
-            while (_horizontalLayoutGroup.padding.left > _shiftedLeftPadding)
+            while (_gridLayoutGroup.padding.left > _shiftedLeftPadding)
             {
                 yield return null;
-                SetRectOffsetLeftPadding(_horizontalLayoutGroup.padding.left - _shiftingSpeed);
+                SetRectOffsetLeftPadding(_gridLayoutGroup.padding.left - _shiftingSpeed);
             }
             TurnsQueuePortraitView turnsQueuePortraitView = _turnsQueuePortraitViewList.First.Value;
             Destroy(turnsQueuePortraitView.gameObject);
             _turnsQueuePortraitViewList.RemoveFirst();
             AddPortraitToQueue(portrait, true);
             yield return new WaitForSeconds(0.5f);
-            while (_horizontalLayoutGroup.padding.left < _defaultLeftPadding)
+            while (_gridLayoutGroup.padding.left < _defaultLeftPadding)
             {
                 yield return null;
-                SetRectOffsetLeftPadding(_horizontalLayoutGroup.padding.left + _shiftingSpeed);
+                SetRectOffsetLeftPadding(_gridLayoutGroup.padding.left + _shiftingSpeed);
             }
             ShiftDone?.Invoke(this, new ShiftDoneEventArgs(_currentTemplateIndex));
         }
@@ -111,16 +111,16 @@ namespace SDRGames.Whist.TurnSwitchModule
         {
             RectOffset tmpRectOffset = new RectOffset(
                     leftPadding,
-                    _horizontalLayoutGroup.padding.right,
-                    _horizontalLayoutGroup.padding.top,
-                    _horizontalLayoutGroup.padding.bottom
+                    _gridLayoutGroup.padding.right,
+                    _gridLayoutGroup.padding.top,
+                    _gridLayoutGroup.padding.bottom
                 );
-            _horizontalLayoutGroup.padding = tmpRectOffset;
+            _gridLayoutGroup.padding = tmpRectOffset;
         }
 
         private void OnEnable()
         {
-            if (_horizontalLayoutGroup == null)
+            if (_gridLayoutGroup == null)
             {
                 Debug.LogError("Horizontal Layout Group не был назначен");
                 #if UNITY_EDITOR

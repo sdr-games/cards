@@ -40,7 +40,7 @@ namespace SDRGames.Whist.TalentsModule.Views
 
             //_image.color = _inactiveColor;
             _currentPointsText.text = $"0/{cost}";
-            _tooltipText.text = description;
+            //_tooltipText.text = description;
 
             ((RectTransform)transform).anchoredPosition = position;
 

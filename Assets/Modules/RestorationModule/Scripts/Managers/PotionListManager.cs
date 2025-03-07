@@ -5,17 +5,21 @@ using SDRGames.Whist.HelpersModule.Views;
 using SDRGames.Whist.RestorationModule.ScriptableObjects;
 using SDRGames.Whist.UserInputModule.Controller;
 
+using TMPro;
+
 using UnityEditor;
 
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace SDRGames.Whist.RestorationModule.Managers
 {
     public class PotionListManager : HideableUIView
     {
+        [SerializeField] private PotionManager _potionPrefab; 
+        [SerializeField] private GridLayoutGroup _buttonsGridLayoutGroup;
+        [SerializeField] private TextMeshProUGUI _descriptionText;
         [SerializeField] private PotionScriptableObject[] _potionScriptableObjects;
-        [SerializeField] private PotionManager _potionPrefab;
-        [SerializeField] private RectTransform _contentRectTransform;
 
         private List<PotionManager> _createdManagers;
 
@@ -26,11 +30,23 @@ namespace SDRGames.Whist.RestorationModule.Managers
             _createdManagers = new List<PotionManager>();
             foreach (PotionScriptableObject potionScriptableObject in _potionScriptableObjects)
             {
-                PotionManager PotionManager = Instantiate(_potionPrefab, _contentRectTransform);
-                PotionManager.Initialize(userInputController, potionScriptableObject);
-                PotionManager.PotionClicked += OnPotionClicked;
-                _createdManagers.Add(PotionManager);
+                PotionManager potionManager = Instantiate(_potionPrefab, _buttonsGridLayoutGroup.transform);
+                potionManager.Initialize(userInputController, potionScriptableObject);
+                potionManager.PotionPointerEnter += OnPotionPointerEnter;
+                potionManager.PotionPointerExit += OnPotionPointerExit;
+                potionManager.PotionClicked += OnPotionClicked;
+                _createdManagers.Add(potionManager);
             }
+        }
+
+        private void OnPotionPointerEnter(object sender, PotionClickedEventArgs e)
+        {
+            _descriptionText.text = e.Potion.GetLocalizedDescription();
+        }
+
+        private void OnPotionPointerExit(object sender, PotionClickedEventArgs e)
+        {
+            _descriptionText.text = "";
         }
 
         private void OnPotionClicked(object sender, PotionClickedEventArgs e)
@@ -49,7 +65,7 @@ namespace SDRGames.Whist.RestorationModule.Managers
                 Application.Quit();
             }
 
-            if (_contentRectTransform == null)
+            if (_buttonsGridLayoutGroup == null)
             {
                 Debug.LogError("Content Rect Transform не был назначен");
                 #if UNITY_EDITOR

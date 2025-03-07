@@ -30,8 +30,8 @@ namespace SDRGames.Whist.AbilitiesModule.ScriptableObjects
         private void OnEnable()
         {
             this.CheckFieldValueIsNotNull(nameof(Name), Name);
-            this.CheckFieldValueIsNotNull(nameof(Icon), Icon);
-            this.CheckFieldValueIsNotNull(nameof(AnimationClip), AnimationClip);
+            //this.CheckFieldValueIsNotNull(nameof(Icon), Icon);
+            //this.CheckFieldValueIsNotNull(nameof(AnimationClip), AnimationClip);
             //this.CheckFieldValueIsNotNull(nameof(SoundClip), SoundClip);
 
             if (AbilityLogics.Length == 0)

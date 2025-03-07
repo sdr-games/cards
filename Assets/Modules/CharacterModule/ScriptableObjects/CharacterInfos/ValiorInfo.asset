@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: ValiorInfo
   m_EditorClassIdentifier: 
   <IsPlayer>k__BackingField: 1
-  <CharacterPortrait>k__BackingField: {fileID: 21300000, guid: ff26c8119a049334e90354bf02ae7cc4,
+  <CharacterPortrait>k__BackingField: {fileID: 21300000, guid: 7c200815f2078b14292b8620ce8b2620,
     type: 3}
   <CharacterNameLocalization>k__BackingField:
     m_TableReference:
