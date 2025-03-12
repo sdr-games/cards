@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-using SDRGames.Whist.AIBehaviorModule.Managers;
+using SDRGames.Whist.EnemyBehaviorModule.Managers;
 using SDRGames.Whist.CardsCombatModule.ScriptableObjects;
 using SDRGames.Whist.CharacterModule.Managers;
 using SDRGames.Whist.CharacterModule.ScriptableObjects;

@@ -92,6 +92,11 @@ namespace SDRGames.Whist.CharacterModule.Managers
             _characterParamsModel.StaminaPoints.DecreaseCurrentValue(totalCost);
         }
 
+        public void SpendBreathPoints(float totalCost)
+        {
+            _characterParamsModel.BreathPoints.DecreaseCurrentValue(totalCost);
+        }
+
         public bool HasEnoughBreathPoints(float cost)
         {
             if (_characterParamsModel.BreathPoints.CurrentValue < _characterParamsModel.BreathPoints.ReservedValue + cost)

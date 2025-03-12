@@ -6,57 +6,64 @@ using SDRGames.Whist.HelpersModule;
 
 using UnityEngine;
 
-namespace SDRGames.Whist.AIBehaviorModule.ScriptableObjects
+namespace SDRGames.Whist.EnemyBehaviorModule.ScriptableObjects
 {
     [CreateAssetMenu(fileName = "EnemyBehaviorScriptableObject", menuName = "SDRGames/Combat/AI/Behavior")]
     public class BehaviorScriptableObject : ScriptableObject
     {
-        [SerializeField][Range(0, 100)] private int _playerArmorPercentFrom = 100;
-        [SerializeField][Range(0, 100)] private int _playerArmorPercentTo;
-        [SerializeField] private SerializableDictionary<int, List<AbilityScriptableObject>> _meleeAttacks;
+        [SerializeField][Range(0, 100)] private int _playerDefencePercentFrom = 100;
+        [SerializeField][Range(0, 100)] private int _playerDefencePercentTo;
+        [SerializeField] private SerializableDictionary<int, List<AbilityScriptableObject>> _abilitiesSets;
 
-        public float MinimalAttacksCost { get; private set; }
+        public float MinimalCost { get; private set; }
         public List<AbilityScriptableObject> MinimalCostAttacks { get; private set; }
 
-        public bool CheckIfAppliableByArmor(float paramValue)
+        public void Initialize()
         {
-            return _playerArmorPercentTo >= paramValue || _playerArmorPercentFrom <= paramValue;
-        }
-
-        public bool CheckIfAppliableByResource(float currentResourceAmount)
-        {
-            foreach (KeyValuePair<int, List<AbilityScriptableObject>> attack in _meleeAttacks)
+            MinimalCost = int.MaxValue;
+            foreach (KeyValuePair<int, List<AbilityScriptableObject>> attack in _abilitiesSets)
             {
                 int totalCost = attack.Value.Sum(x => x.Cost);
-                if (totalCost < currentResourceAmount)
+                if (totalCost < MinimalCost)
                 {
-                    return true;
+                    MinimalCost = totalCost;
+                    MinimalCostAttacks = attack.Value;
                 }
             }
-            return false;
         }
 
-        public List<AbilityScriptableObject> ChooseRandomAttacks()
+        public bool CheckIfAppliableByDefence(float defenceCurrentValuePercent)
         {
-            List<AbilityScriptableObject> result = new List<AbilityScriptableObject>();
-            int chance = Random.Range(0, 100);
+            return _playerDefencePercentFrom >= defenceCurrentValuePercent && _playerDefencePercentTo <= defenceCurrentValuePercent;
+        }
+
+        public List<AbilityScriptableObject> ChooseRandomAttacks(float currentResourceValue)
+        {
+            List<AbilityScriptableObject> result = null;
             int offset = 0;
-            foreach(KeyValuePair<int, List<AbilityScriptableObject>> attack in _meleeAttacks)
+            Dictionary<List<AbilityScriptableObject>, int> abilitiesSets = _abilitiesSets.Where(set => set.Value.Sum(ability => ability.Cost) <= currentResourceValue).ToDictionary(set => set.Value, set => set.Key);
+            int chance = Random.Range(0, abilitiesSets.Values.Sum());
+            foreach (KeyValuePair<List<AbilityScriptableObject>, int> set in abilitiesSets)
             {
-                if(chance > (attack.Key + offset))
+                if(chance > (set.Value + offset))
                 {
-                    offset += attack.Key;
+                    offset += set.Value;
                     continue;
                 }
-                result = attack.Value;
+                result = set.Key;
+                continue;
+            }
+            if(result == null && MinimalCost < currentResourceValue)
+            {
+                result = MinimalCostAttacks;
             }
             return result;
         }
 
-        public List<AbilityScriptableObject> GetAllAttacks()
+        public List<AbilityScriptableObject> GetAllAbilities()
         {
             List<AbilityScriptableObject> abilities = new List<AbilityScriptableObject>();
-            foreach (List<AbilityScriptableObject> attacks in _meleeAttacks.Values)
+            foreach (List<AbilityScriptableObject> attacks in _abilitiesSets.Values)
             {
                 foreach(AbilityScriptableObject attack in attacks)
                 {
@@ -70,35 +77,20 @@ namespace SDRGames.Whist.AIBehaviorModule.ScriptableObjects
             return abilities;
         }
 
-        private void OnEnable()
-        {
-            MinimalAttacksCost = 0;
-            foreach (KeyValuePair<int, List<AbilityScriptableObject>> attack in _meleeAttacks)
-            {
-                int totalCost = attack.Value.Sum(x => x.Cost);
-                if (totalCost < MinimalAttacksCost)
-                {
-                    MinimalAttacksCost = totalCost;
-                    MinimalCostAttacks = attack.Value;
-                }
-            }
-        }
-
-
         private void OnValidate()
         {
-            if(_playerArmorPercentFrom < 0)
+            if(_playerDefencePercentFrom < 0)
             {
-                _playerArmorPercentFrom = 0;
+                _playerDefencePercentFrom = 0;
             }
-            if(_playerArmorPercentTo > 100)
+            if(_playerDefencePercentTo > 100)
             {
-                _playerArmorPercentTo = 100;
+                _playerDefencePercentTo = 100;
             }
 
-            if (_playerArmorPercentFrom < _playerArmorPercentTo)
+            if (_playerDefencePercentFrom < _playerDefencePercentTo)
             {
-                _playerArmorPercentTo = _playerArmorPercentFrom;
+                _playerDefencePercentTo = _playerDefencePercentFrom;
             }
         }
     }

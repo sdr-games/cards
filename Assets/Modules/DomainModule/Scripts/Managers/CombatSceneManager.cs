@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Collections;
 
 using SDRGames.Whist.AbilitiesQueueModule.Managers;
-using SDRGames.Whist.AIBehaviorModule.Managers;
+using SDRGames.Whist.EnemyBehaviorModule.Managers;
 using SDRGames.Whist.CardsCombatModule.Managers;
 using SDRGames.Whist.CharacterModule.Managers;
 using SDRGames.Whist.MeleeCombatModule.Managers;
