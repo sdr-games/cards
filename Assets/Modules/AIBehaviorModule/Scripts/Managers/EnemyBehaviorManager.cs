@@ -39,7 +39,7 @@ namespace SDRGames.Whist.EnemyBehaviorModule.Managers
             InitializeBehaviors(_magicBehaviors);
         }
 
-        public virtual void MakeMove()
+        public void MakeMove()
         {
             List<AbilityScriptableObject> selectedAbilities;
             int count = 0;
