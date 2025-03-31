@@ -27,7 +27,7 @@ namespace SDRGames.Whist.AbilitiesModule.ScriptableObjects
             return totalDamage / AbilityLogics.Length;
         }
 
-        private void OnEnable()
+        protected virtual void OnEnable()
         {
             this.CheckFieldValueIsNotNull(nameof(Name), Name);
             //this.CheckFieldValueIsNotNull(nameof(Icon), Icon);

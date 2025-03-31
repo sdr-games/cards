@@ -30,6 +30,10 @@ MonoBehaviour:
     m_Localized: Have a rest now
     m_Metadata:
       m_Items: []
+  - m_Id: 76045996800716800
+    m_Localized: COMA!!!
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

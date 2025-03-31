@@ -2,6 +2,7 @@ using System;
 
 using SDRGames.Whist.CharacterModule.Models;
 using SDRGames.Whist.DiceModule.Models;
+using SDRGames.Whist.PointsModule.Models;
 
 using UnityEngine;
 
@@ -11,6 +12,7 @@ namespace SDRGames.Whist.CharacterModule.ScriptableObjects
     [CreateAssetMenu(fileName = "PlayerParameters", menuName = "SDRGames/Characters/Player Parameters")]
     public class PlayerCharacterParamsModel : CharacterParamsModel
     {
+        [field: SerializeField] public Points PatientHealthPoints { get; private set; }
         [field: SerializeField] public int Experience { get; private set; } = 0;
         [field: SerializeField] public int TalentPoints { get; private set; } = 0;
 
@@ -93,6 +95,45 @@ namespace SDRGames.Whist.CharacterModule.ScriptableObjects
                 }
             } 
             ExperienceChanged?.Invoke(this, new ExperienceChangedEventArgs(Experience, CharacterParametersScaling.Instance.ExperienceRequiredPerLevel[Level - 1]));
+        }
+
+        public void TakePatientDamage(int damage)
+        {
+            PatientHealthPoints.DecreaseCurrentValue(damage);
+        }
+
+        public override void TakePhysicalDamage(int damage)
+        {
+            if(PatientHealthPoints.CurrentValue <= 0)
+            {
+                damage = (int)(damage * 1.5f);
+            }
+            base.TakePhysicalDamage(damage);
+        }
+
+        public override void TakeMagicalDamage(int damage)
+        {
+            if (PatientHealthPoints.CurrentValue <= 0)
+            {
+                damage = (int)(damage * 1.5f);
+            }
+            base.TakeMagicalDamage(damage);
+        }
+
+        public override void TakeTrueDamage(int damage)
+        {
+            if (PatientHealthPoints.CurrentValue <= 0)
+            {
+                damage = (int)(damage * 1.5f);
+            }
+            base.TakeTrueDamage(damage);
+        }
+
+        protected override void OnEnable()
+        {
+            base.OnEnable();
+            PatientHealthPoints.SetName(nameof(PatientHealthPoints));
+            PatientHealthPoints.Reset();
         }
 
         private void CalculateParameters()

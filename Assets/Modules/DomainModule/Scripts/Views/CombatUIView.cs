@@ -18,6 +18,7 @@ namespace SDRGames.Whist.DomainModule.Views
         [SerializeField] private ButtonView _clearButton;
 
         [SerializeField] private LocalizedString _noTargetErrorMessage;
+        [SerializeField] private LocalizedString _comaMessage;
 
         public event EventHandler EndTurnButtonClicked;
         public event EventHandler ClearButtonClicked;
@@ -44,6 +45,11 @@ namespace SDRGames.Whist.DomainModule.Views
         public void ShowNoTargetError()
         {
             NotificationController.Show(_noTargetErrorMessage.GetLocalizedText());
+        }
+
+        public void ShowComaNotification()
+        {
+            NotificationController.Show(_comaMessage.GetLocalizedText());
         }
 
         private void OnEndTurnButtonClicked(object sender, EventArgs e)

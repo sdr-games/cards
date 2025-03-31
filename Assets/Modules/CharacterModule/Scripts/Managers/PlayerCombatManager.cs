@@ -7,6 +7,7 @@ using SDRGames.Whist.UserInputModule.Controller;
 
 using UnityEngine;
 using SDRGames.Whist.PointsModule.Models;
+using System;
 
 namespace SDRGames.Whist.CharacterModule.Managers
 {
@@ -17,6 +18,8 @@ namespace SDRGames.Whist.CharacterModule.Managers
 
         private PlayerCharacterCombatParamsPresenter _playerCharacterCombatParamsPresenter;
 
+        public event EventHandler<PatientHealthChangedEventArgs> PatientHealthChanged;
+
         public override void Initialize(UserInputController userInputController = null)
         {
             base.Initialize();
@@ -24,6 +27,7 @@ namespace SDRGames.Whist.CharacterModule.Managers
 
             _playerCharacterParamsModel.StaminaPoints.CurrentValueChanged += OnStaminaPointsCurrentValueChanged;
             _playerCharacterParamsModel.BreathPoints.CurrentValueChanged += OnBreathPointsCurrentValueChanged;
+            _playerCharacterParamsModel.PatientHealthPoints.CurrentValueChanged += OnPatientHealthPointsChanged;
         }
 
         public override CharacterParamsModel GetParams()
@@ -49,6 +53,11 @@ namespace SDRGames.Whist.CharacterModule.Managers
         public override void TakeTrueDamage(int damage)
         {
             _playerCharacterCombatParamsPresenter.TakeTrueDamage(damage);
+        }
+
+        public void TakePatientDamage(int damage)
+        {
+            _playerCharacterCombatParamsPresenter.TakePatientDamage(damage);
         }
 
         public override void RestoreArmorPoints(float restoration = -1)
@@ -165,6 +174,14 @@ namespace SDRGames.Whist.CharacterModule.Managers
             if (e.Difference > 0)
             {
                 _playerCharacterCombatUIView.ShowFloatingText($"+{e.Difference}", _playerCharacterCombatUIView.BreathPointsBarView.GetColor());
+            }
+        }
+
+        private void OnPatientHealthPointsChanged(object sender, ValueChangedEventArgs e)
+        {
+            if(e.Difference > 0)
+            {
+                PatientHealthChanged?.Invoke(this, new PatientHealthChangedEventArgs((int)e.NewValue));
             }
         }
     }

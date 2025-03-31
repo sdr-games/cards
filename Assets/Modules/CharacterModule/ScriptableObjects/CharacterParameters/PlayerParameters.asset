@@ -41,31 +41,37 @@ MonoBehaviour:
     <BaseValue>k__BackingField: 435
     <PermanentBonus>k__BackingField: 15
     <TemporaryBonus>k__BackingField: 0
-    <RestorationPowerPercent>k__BackingField: 0
+    <RestorationPower>k__BackingField: 0
     <MaxValue>k__BackingField: 450
   <StaminaPoints>k__BackingField:
     <BaseValue>k__BackingField: 90
     <PermanentBonus>k__BackingField: 10
     <TemporaryBonus>k__BackingField: 0
-    <RestorationPowerPercent>k__BackingField: 31
+    <RestorationPower>k__BackingField: 30
     <MaxValue>k__BackingField: 100
   <BreathPoints>k__BackingField:
     <BaseValue>k__BackingField: 240
     <PermanentBonus>k__BackingField: 10
     <TemporaryBonus>k__BackingField: 0
-    <RestorationPowerPercent>k__BackingField: 0
+    <RestorationPower>k__BackingField: 0
     <MaxValue>k__BackingField: 250
   <ArmorPoints>k__BackingField:
     <BaseValue>k__BackingField: 90
     <PermanentBonus>k__BackingField: 10
     <TemporaryBonus>k__BackingField: 0
-    <RestorationPowerPercent>k__BackingField: 0
+    <RestorationPower>k__BackingField: 0
     <MaxValue>k__BackingField: 100
   <BarrierPoints>k__BackingField:
     <BaseValue>k__BackingField: 90
     <PermanentBonus>k__BackingField: 10
     <TemporaryBonus>k__BackingField: 0
-    <RestorationPowerPercent>k__BackingField: 0
+    <RestorationPower>k__BackingField: 0
     <MaxValue>k__BackingField: 100
+  <PatientHealthPoints>k__BackingField:
+    <BaseValue>k__BackingField: 100
+    <PermanentBonus>k__BackingField: 0
+    <TemporaryBonus>k__BackingField: 0
+    <RestorationPower>k__BackingField: 0
+    <MaxValue>k__BackingField: 0
   <Experience>k__BackingField: 0
   <TalentPoints>k__BackingField: 0
