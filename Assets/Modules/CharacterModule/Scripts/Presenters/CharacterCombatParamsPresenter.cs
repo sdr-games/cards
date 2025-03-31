@@ -7,7 +7,7 @@ namespace SDRGames.Whist.CharacterModule.Presenters
 {
     public class CharacterCombatParamsPresenter
     {
-        private CharacterParamsModel _characterParamsModel;
+        protected CharacterParamsModel _characterParamsModel;
         private CharacterCombatUIView _characterCombatUIView;
 
         public CharacterCombatParamsPresenter(CharacterParamsModel characterParamsModel, CharacterCombatUIView characterCombatUIView)

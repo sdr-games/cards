@@ -41,6 +41,9 @@ namespace SDRGames.Whist.AbilitiesModule.Models
                 case DamageTypes.True:
                     action = (int value) => targetCharacterCombatManager.TakeTrueDamage(value);
                     break;
+                case DamageTypes.TruePatient:
+                    action = (int value) => ((PlayerCombatManager)targetCharacterCombatManager).TakePatientDamage(value);
+                    break;
                 default:
                     break;
             }

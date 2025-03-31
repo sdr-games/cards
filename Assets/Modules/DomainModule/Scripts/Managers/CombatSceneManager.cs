@@ -37,6 +37,7 @@ namespace SDRGames.Whist.DomainModule.Managers
         {
             _userInputController = userInputController;
             _playerCombatManager = playerCombatManager;
+            _playerCombatManager.PatientHealthChanged += OnPatientHealthChanged;
 
             _enemyBehaviorManagers = enemyBehaviorManagers;
             foreach (EnemyBehaviorManager enemyBehaviorManager in _enemyBehaviorManagers)
@@ -246,6 +247,11 @@ namespace SDRGames.Whist.DomainModule.Managers
             _playerCombatManager.ResetBreathReservedPoints(e.ReverseAmount);
         }
 
+        private void OnPatientHealthChanged(object sender, PatientHealthChangedEventArgs e)
+        {
+            _combatUIManager.ShowComaNotification();
+        }
+
         private void StartPlayerTurn()
         {
             _playerCombatManager.ApplyPeriodicalEffects();
@@ -266,6 +272,11 @@ namespace SDRGames.Whist.DomainModule.Managers
 
         private void OnDestroy()
         {
+            _playerCombatManager.PatientHealthChanged -= OnPatientHealthChanged;
+            foreach (EnemyBehaviorManager enemyBehaviorManager in _enemyBehaviorManagers)
+            {
+                enemyBehaviorManager.EnemyCombatManager.EnemySelected -= OnEnemySelected;
+            }
             _combatUIManager.AbilityQueueCleared -= OnAbilityQueueCleared;
             _combatUIManager.CardSelectClicked -= OnCardSelectClicked;
             _combatUIManager.CardMarkClicked -= OnCardMarkClicked;

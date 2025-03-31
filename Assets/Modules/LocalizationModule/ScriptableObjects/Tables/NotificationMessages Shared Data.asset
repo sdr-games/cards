@@ -27,6 +27,10 @@ MonoBehaviour:
     m_Key: RestorationTurn
     m_Metadata:
       m_Items: []
+  - m_Id: 76045996800716800
+    m_Key: Coma
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

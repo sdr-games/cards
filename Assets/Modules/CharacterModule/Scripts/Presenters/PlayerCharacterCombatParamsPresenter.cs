@@ -10,10 +10,16 @@ namespace SDRGames.Whist.CharacterModule.Presenters
         private PointsBarPresenter _staminaPointsBarPresenter;
         private PointsBarPresenter _breathPointsBarPresenter;
 
-        public PlayerCharacterCombatParamsPresenter(CharacterParamsModel characterParamsModel, PlayerCharacterCombatUIView playerCharacterCombatParamsView) : base(characterParamsModel, playerCharacterCombatParamsView)
+        public PlayerCharacterCombatParamsPresenter(PlayerCharacterParamsModel characterParamsModel, PlayerCharacterCombatUIView playerCharacterCombatParamsView) : base(characterParamsModel, playerCharacterCombatParamsView)
         {
             _staminaPointsBarPresenter = new PointsBarPresenter(characterParamsModel.StaminaPoints, playerCharacterCombatParamsView.StaminaPointsBarView);
             _breathPointsBarPresenter = new PointsBarPresenter(characterParamsModel.BreathPoints, playerCharacterCombatParamsView.BreathPointsBarView);
+            new PointsBarPresenter(characterParamsModel.PatientHealthPoints, playerCharacterCombatParamsView.PatientHealthPointsBarView);
+        }
+
+        public void TakePatientDamage(int damage)
+        {
+            ((PlayerCharacterParamsModel)_characterParamsModel).TakePatientDamage(damage);
         }
 
         public void ReserveStaminaPoints(float cost)

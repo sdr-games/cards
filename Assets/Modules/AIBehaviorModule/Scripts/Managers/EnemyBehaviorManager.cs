@@ -18,6 +18,7 @@ namespace SDRGames.Whist.EnemyBehaviorModule.Managers
         private const int MAX_MELEE_ABILITIES_COUNT_PER_ROUND = 3;
         private const int MAX_MAGICAL_ABILITIES_COUNT_PER_ROUND = 3;
 
+        [SerializeField] private SpecialAbilityScriptableObject[] _specialAbilitiesScriptableObjects;
         [SerializeField] private BehaviorScriptableObject[] _meleeBehaviors;
         [SerializeField] private BehaviorScriptableObject[] _magicBehaviors;
 
@@ -28,6 +29,7 @@ namespace SDRGames.Whist.EnemyBehaviorModule.Managers
         private PlayerCombatManager _playerCombatManager;
         private CharacterParamsModel _enemyParams;
         private CharacterParamsModel _playerParams;
+        private List<SpecialAbility> _specialAbilities;
 
         public void Initialize(PlayerCombatManager playerCombatManager, UserInputController userInputController)
         {
@@ -35,15 +37,21 @@ namespace SDRGames.Whist.EnemyBehaviorModule.Managers
             EnemyCombatManager.Initialize(userInputController);
             _enemyParams = EnemyCombatManager.GetParams();
             _playerParams = _playerCombatManager.GetParams();
+            InitializeSpecialAbilities();
             InitializeBehaviors(_meleeBehaviors);
             InitializeBehaviors(_magicBehaviors);
         }
 
         public virtual void MakeMove()
         {
+            if(UseSpecialAbility())
+            {
+                return;
+            }
+
             List<AbilityScriptableObject> selectedAbilities;
             int count = 0;
-            if (DefinePreferrableDamageType() == PreferrableDamageTypes.Physical)
+            if (PreferPhysicalDamage())
             {
                 selectedAbilities = SelectAbilities(
                     _meleeBehaviors,
@@ -70,32 +78,7 @@ namespace SDRGames.Whist.EnemyBehaviorModule.Managers
                 EnemyCombatManager.SpendBreathPoints(selectedAbilities.Sum(ability => ability.Cost));
                 count = selectedAbilities.Count;
             }
-            EnemyCombatManager.RestoreBreathPoints((MAX_MAGICAL_ABILITIES_COUNT_PER_ROUND + 1 - count) * _enemyParams.StaminaPoints.RestorationPower);
-        }
-
-        private PreferrableDamageTypes DefinePreferrableDamageType()
-        {
-            List<AbilityScriptableObject> availableMeleeAbilities = GetAllAbilties(_meleeBehaviors);
-            float physicalAverageDamage = availableMeleeAbilities.Sum(ability => ability.GetAverageDamage());
-            int totalMeleeAbilitiesCost = availableMeleeAbilities.Sum(ability => ability.Cost);
-
-            float meleeAbilitiesCountWithoutRestoration = _enemyParams.StaminaPoints.MaxValue / totalMeleeAbilitiesCost;
-            float maxMeleeRoundsWithoutRestoration = _enemyParams.StaminaPoints.MaxValue / totalMeleeAbilitiesCost / (MAX_MELEE_ABILITIES_COUNT_PER_ROUND - 1);
-            float meleeAbilitiesCountWithRestoration = meleeAbilitiesCountWithoutRestoration + (maxMeleeRoundsWithoutRestoration * _enemyParams.StaminaPoints.RestorationPower / totalMeleeAbilitiesCost);
-            float totalPhysicalDamage = physicalAverageDamage * meleeAbilitiesCountWithRestoration;
-            float totalPhysicalDifference = _playerParams.ArmorPoints.CurrentValue + _playerParams.HealthPoints.CurrentValue - totalPhysicalDamage;
-
-            List<AbilityScriptableObject> availableMagicAbilities = GetAllAbilties(_magicBehaviors);
-            float magicalAverageDamage = availableMagicAbilities.Sum(ability => ability.GetAverageDamage());
-            int totalMagicalAbilitiesCost = availableMagicAbilities.Sum(ability => ability.Cost);
-
-            float magicalAbilitiesCountWithoutRestoration = _enemyParams.BreathPoints.MaxValue / totalMagicalAbilitiesCost;
-            float maxMagicalRoundsWithoutRestoration = _enemyParams.BreathPoints.MaxValue / totalMagicalAbilitiesCost / (MAX_MAGICAL_ABILITIES_COUNT_PER_ROUND - 1);
-            float magicalAbilitiesCountWithRestoration = magicalAbilitiesCountWithoutRestoration + (maxMagicalRoundsWithoutRestoration * _enemyParams.BreathPoints.RestorationPower / totalMagicalAbilitiesCost);
-            float totalMagicalDamage = magicalAverageDamage * magicalAbilitiesCountWithRestoration;
-            float totalMagicalDifference = _playerParams.BarrierPoints.CurrentValue + _playerParams.HealthPoints.CurrentValue - totalMagicalDamage;
-
-            return totalPhysicalDifference < totalMagicalDifference ? PreferrableDamageTypes.Physical : PreferrableDamageTypes.Magical;
+            EnemyCombatManager.RestoreBreathPoints((MAX_MAGICAL_ABILITIES_COUNT_PER_ROUND + 1 - count) * _enemyParams.BreathPoints.RestorationPower);
         }
 
         public List<AbilityScriptableObject> SelectAbilities(BehaviorScriptableObject[] behaviors, float currentResourceValue, float currentPlayerDefencePercents)
@@ -151,15 +134,82 @@ namespace SDRGames.Whist.EnemyBehaviorModule.Managers
             }
         }
 
+        private void InitializeSpecialAbilities()
+        {
+            _specialAbilities = new List<SpecialAbility>();
+            foreach (SpecialAbilityScriptableObject specialAbilitySO in _specialAbilitiesScriptableObjects)
+            {
+                SpecialAbility specialAbility = new SpecialAbility(specialAbilitySO);
+                _specialAbilities.Add(specialAbility);
+            }
+        }
+
+        private bool PreferPhysicalDamage()
+        {
+            if (_meleeBehaviors == null || _meleeBehaviors.Length == 0)
+            {
+                return false;
+            }
+
+            if (_magicBehaviors == null || _magicBehaviors.Length == 0)
+            {
+                return true;
+            }
+
+            List<AbilityScriptableObject> availableMeleeAbilities = GetAllAbilties(_meleeBehaviors);
+            float physicalAverageDamage = availableMeleeAbilities.Sum(ability => ability.GetAverageDamage());
+            int totalMeleeAbilitiesCost = availableMeleeAbilities.Sum(ability => ability.Cost);
+
+            float meleeAbilitiesCountWithoutRestoration = _enemyParams.StaminaPoints.MaxValue / totalMeleeAbilitiesCost;
+            float maxMeleeRoundsWithoutRestoration = _enemyParams.StaminaPoints.MaxValue / totalMeleeAbilitiesCost / (MAX_MELEE_ABILITIES_COUNT_PER_ROUND - 1);
+            float meleeAbilitiesCountWithRestoration = meleeAbilitiesCountWithoutRestoration + (maxMeleeRoundsWithoutRestoration * _enemyParams.StaminaPoints.RestorationPower / totalMeleeAbilitiesCost);
+            float totalPhysicalDamage = physicalAverageDamage * meleeAbilitiesCountWithRestoration;
+            float totalPhysicalDifference = _playerParams.ArmorPoints.CurrentValue + _playerParams.HealthPoints.CurrentValue - totalPhysicalDamage;
+
+            List<AbilityScriptableObject> availableMagicAbilities = GetAllAbilties(_magicBehaviors);
+            float magicalAverageDamage = availableMagicAbilities.Sum(ability => ability.GetAverageDamage());
+            int totalMagicalAbilitiesCost = availableMagicAbilities.Sum(ability => ability.Cost);
+
+            float magicalAbilitiesCountWithoutRestoration = _enemyParams.BreathPoints.MaxValue / totalMagicalAbilitiesCost;
+            float maxMagicalRoundsWithoutRestoration = _enemyParams.BreathPoints.MaxValue / totalMagicalAbilitiesCost / (MAX_MAGICAL_ABILITIES_COUNT_PER_ROUND - 1);
+            float magicalAbilitiesCountWithRestoration = magicalAbilitiesCountWithoutRestoration + (maxMagicalRoundsWithoutRestoration * _enemyParams.BreathPoints.RestorationPower / totalMagicalAbilitiesCost);
+            float totalMagicalDamage = magicalAverageDamage * magicalAbilitiesCountWithRestoration;
+            float totalMagicalDifference = _playerParams.BarrierPoints.CurrentValue + _playerParams.HealthPoints.CurrentValue - totalMagicalDamage;
+
+            return totalPhysicalDifference < totalMagicalDifference;
+        }
+
+        private bool UseSpecialAbility()
+        {
+            foreach(SpecialAbility specialAbility in _specialAbilities)
+            {
+                if (specialAbility.CurrentCooldown > 0)
+                {
+                    specialAbility.DecreaseCooldown();
+                    continue;
+                }
+                StartCoroutine(ApplySelectedAbility(specialAbility));
+                specialAbility.SetCooldown();
+                return true;
+            }
+            return false;
+        }
+
         private IEnumerator ApplySelectedAbilities(List<AbilityScriptableObject> selectedAbilities)
         {
             yield return null;
             foreach (AbilityScriptableObject abilitySO in selectedAbilities)
             {
-                EnemyCombatManager.SoundController.Play(abilitySO.SoundClip);
-                new Ability(abilitySO).ApplyLogics(EnemyCombatManager, _playerCombatManager);
-                yield return new WaitForSeconds(abilitySO.SoundClip.AudioClip.length);
+                Ability ability = new Ability(abilitySO);
+                yield return ApplySelectedAbility(ability);
             }
+        }
+
+        private IEnumerator ApplySelectedAbility(Ability ability)
+        {
+            EnemyCombatManager.SoundController.Play(ability.SoundClip);
+            ability.ApplyLogics(EnemyCombatManager, _playerCombatManager);
+            yield return new WaitForSeconds(ability.SoundClip.AudioClip.length);
         }
     }
 }

@@ -143,9 +143,9 @@ namespace SDRGames.Whist.CharacterModule.ScriptableObjects
             MagicalDamage += magicalDamage;
         }
 
-        public void TakePhysicalDamage(int damage)
+        public virtual void TakePhysicalDamage(int damage)
         {
-            float trueDamage = damage - ArmorPoints.CurrentValue;
+            int trueDamage = damage - (int)ArmorPoints.CurrentValue;
             if (ArmorPoints.CurrentValue > 0)
             {
                 ArmorPoints.DecreaseCurrentValue(damage);
@@ -157,9 +157,9 @@ namespace SDRGames.Whist.CharacterModule.ScriptableObjects
             TakeTrueDamage(trueDamage);
         }
 
-        public void TakeMagicalDamage(int damage)
+        public virtual void TakeMagicalDamage(int damage)
         {
-            float trueDamage = damage - BarrierPoints.CurrentValue;
+            int trueDamage = damage - (int)BarrierPoints.CurrentValue;
             if (BarrierPoints.CurrentValue > 0)
             {
                 BarrierPoints.DecreaseCurrentValue(damage);
@@ -171,7 +171,7 @@ namespace SDRGames.Whist.CharacterModule.ScriptableObjects
             TakeTrueDamage(trueDamage);
         }
 
-        public void TakeTrueDamage(float damage)
+        public virtual void TakeTrueDamage(int damage)
         {
             HealthPoints.DecreaseCurrentValue(damage);
         }
@@ -201,7 +201,7 @@ namespace SDRGames.Whist.CharacterModule.ScriptableObjects
             BreathPoints.IncreaseCurrentValue(restoration);
         }
 
-        private void OnEnable()
+        protected virtual void OnEnable()
         {
             HealthPoints.SetName(nameof(HealthPoints));
             StaminaPoints.SetName(nameof(StaminaPoints));

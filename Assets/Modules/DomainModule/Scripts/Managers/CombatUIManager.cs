@@ -155,6 +155,11 @@ namespace SDRGames.Whist.DomainModule.Managers
             _combatUIView.ShowNoTargetError();
         }
 
+        public void ShowComaNotification()
+        {
+            _combatUIView.ShowComaNotification();
+        }
+
         #region Events methods
 
         private void OnCardSelectClicked(object sender, CardSelectClickedEventArgs e)
