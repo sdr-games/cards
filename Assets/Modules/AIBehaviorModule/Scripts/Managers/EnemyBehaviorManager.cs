@@ -10,6 +10,7 @@ using SDRGames.Whist.CharacterModule.ScriptableObjects;
 using SDRGames.Whist.UserInputModule.Controller;
 
 using UnityEngine;
+using System;
 
 namespace SDRGames.Whist.EnemyBehaviorModule.Managers
 {
@@ -30,6 +31,8 @@ namespace SDRGames.Whist.EnemyBehaviorModule.Managers
         private CharacterParamsModel _enemyParams;
         private CharacterParamsModel _playerParams;
         private List<SpecialAbility> _specialAbilities;
+
+        public event EventHandler AbilityUsed;
 
         public void Initialize(PlayerCombatManager playerCombatManager, UserInputController userInputController)
         {
@@ -126,6 +129,11 @@ namespace SDRGames.Whist.EnemyBehaviorModule.Managers
             return abilities;
         }
 
+        public void Stop()
+        {
+            StopAllCoroutines();
+        }
+
         private void InitializeBehaviors(BehaviorScriptableObject[] _behaviors)
         {
             foreach(BehaviorScriptableObject behavior in _behaviors)
@@ -209,6 +217,7 @@ namespace SDRGames.Whist.EnemyBehaviorModule.Managers
         {
             EnemyCombatManager.SoundController.Play(ability.SoundClip);
             ability.ApplyLogics(EnemyCombatManager, _playerCombatManager);
+            AbilityUsed?.Invoke(this, EventArgs.Empty);
             yield return new WaitForSeconds(ability.SoundClip.AudioClip.length);
         }
     }

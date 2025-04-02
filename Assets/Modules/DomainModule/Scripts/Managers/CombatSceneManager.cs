@@ -15,6 +15,7 @@ using SDRGames.Whist.MusicModule.Managers;
 
 using UnityEngine;
 using SDRGames.Whist.MusicModule.ScriptableObjects;
+using SDRGames.Whist.CharacterModule.ScriptableObjects;
 
 namespace SDRGames.Whist.DomainModule.Managers
 {
@@ -42,15 +43,16 @@ namespace SDRGames.Whist.DomainModule.Managers
             _enemyBehaviorManagers = enemyBehaviorManagers;
             foreach (EnemyBehaviorManager enemyBehaviorManager in _enemyBehaviorManagers)
             {
+                enemyBehaviorManager.AbilityUsed += OnEnemyAbilityUsed;
                 enemyBehaviorManager.EnemyCombatManager.EnemySelected += OnEnemySelected;   
             }
             _enemyCombatManagers = enemyCombatManagers;
 
             _selectedEnemyCombatManagers = new List<CharacterCombatManager>();
-            _targetCheckRequired = false;
+            _targetCheckRequired = true;
             if(_enemyBehaviorManagers.Length <= 1)
             {
-                _targetCheckRequired = true;
+                _targetCheckRequired = false;
                 _selectedEnemyCombatManagers.Add(_enemyCombatManagers[0]);
             }
 
@@ -157,6 +159,11 @@ namespace SDRGames.Whist.DomainModule.Managers
                     _playerCombatManager,
                     _selectedEnemyCombatManagers
                 );
+                if (CheckVictoryConditions())
+                {
+                    EndBattle(true);
+                    yield break;
+                }
             }
             _turnsQueueManager.SwitchTurn();
         }
@@ -191,6 +198,11 @@ namespace SDRGames.Whist.DomainModule.Managers
                     _playerCombatManager,
                     _selectedEnemyCombatManagers
                 );
+                if(CheckVictoryConditions())
+                {
+                    EndBattle(true);
+                    return;
+                }
             }
             if (e.TotalCost > 0)
             {
@@ -249,7 +261,21 @@ namespace SDRGames.Whist.DomainModule.Managers
 
         private void OnPatientHealthChanged(object sender, PatientHealthChangedEventArgs e)
         {
-            _combatUIManager.ShowComaNotification();
+            if (e.CurrentHealth <= 0)
+            {
+                _combatUIManager.ShowComaStartNotification();
+                return;
+            }
+            _combatUIManager.ShowComaStopNotification();
+        }
+
+        private void OnEnemyAbilityUsed(object sender, EventArgs e)
+        {
+            if(CheckDefeatConditions())
+            {
+                ((EnemyBehaviorManager)sender).Stop();
+                EndBattle(false);
+            }
         }
 
         private void StartPlayerTurn()
@@ -268,6 +294,32 @@ namespace SDRGames.Whist.DomainModule.Managers
             enemyBehaviorManager.EnemyCombatManager.ApplyPeriodicalEffects();
             enemyBehaviorManager.MakeMove();
             _turnsQueueManager.SwitchTurn();
+        }
+
+        private bool CheckVictoryConditions()
+        {
+            int totalEnemiesHealth = 0;
+            foreach (EnemyCombatManager enemyCombatManager in _enemyCombatManagers)
+            {
+                totalEnemiesHealth += (int)enemyCombatManager.GetParams().HealthPoints.CurrentValue;
+            }
+            return totalEnemiesHealth <= 0;
+        }
+
+        private bool CheckDefeatConditions()
+        {
+            PlayerCharacterParamsModel playerCharacterParamsModel = (PlayerCharacterParamsModel)_playerCombatManager.GetParams(); 
+            return playerCharacterParamsModel.HealthPoints.CurrentValue <= 0 || (playerCharacterParamsModel.PatientHealthPoints.CurrentValue <= 0 && !_combatUIManager.PlayerHasAnyCardsOnHands());
+        }
+
+        private void EndBattle(bool victory)
+        {
+            if(victory)
+            {
+                _combatUIManager.ShowVictoryPanel();
+                return;
+            }
+            _combatUIManager.ShowDefeatPanel();
         }
 
         private void OnDestroy()

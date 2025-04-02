@@ -28,7 +28,39 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 76045996800716800
-    m_Key: Coma
+    m_Key: ComaStart
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76082221544747008
+    m_Key: ComaStop
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76426910571540480
+    m_Key: VictoryHeader
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76426962765459456
+    m_Key: VictoryDescription
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76427003882221568
+    m_Key: VictoryEndButtonText
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76427082470895616
+    m_Key: DefeatHeader
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76427100489625600
+    m_Key: DefeatDescription
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76427121347899392
+    m_Key: DefeatEndButtonText
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76427323282665472
+    m_Key: DefeatRestartButtonText
     m_Metadata:
       m_Items: []
   m_Metadata:
