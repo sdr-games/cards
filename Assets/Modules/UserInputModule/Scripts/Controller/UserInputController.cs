@@ -39,8 +39,20 @@ namespace SDRGames.Whist.UserInputModule.Controller
 
         public event EventHandler<MiddleMouseButtonScrollEventArgs>? MiddleMouseButtonScrollStarted;
         public event EventHandler<MiddleMouseButtonScrollEventArgs>? MiddleMouseButtonScrollEnded;
-        
+
+        public static UserInputController Instance { get; private set; }
         public static string LastPressedKey { get; private set; }
+
+        public void Initialize()
+        {
+            if (Instance != null && Instance != this)
+            {
+                Destroy(gameObject);
+                return;
+            }
+            Instance = this;
+            DontDestroyOnLoad(this);
+        }
 
         public static bool KeyIsPressed(string keyCode)
         {

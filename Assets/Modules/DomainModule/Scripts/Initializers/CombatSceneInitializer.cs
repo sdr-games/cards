@@ -12,13 +12,14 @@ using SDRGames.Whist.TurnSwitchModule.Managers;
 using SDRGames.Whist.UserInputModule.Controller;
 
 using UnityEngine;
+using SDRGames.Whist.NotificationsModule;
 
 namespace SDRGames.Whist.DomainModule
 {
     public class CombatSceneInitializer : MonoBehaviour
     {
         [SerializeField] private CombatSceneManager _combatSceneManager;
-        [SerializeField] private UserInputController _userInputController;
+        [SerializeField] private NotificationController _notificationController;
         [SerializeField] private TurnsQueueManager _turnsQueueManager;
 
         [Header("UI")][SerializeField] private CombatUIManager _combatUIManager;
@@ -32,8 +33,10 @@ namespace SDRGames.Whist.DomainModule
 
         private List<EnemyCombatManager> _enemyCombatManagers;
 
-        public void Initialize()
+        public void OnEnable()
         {
+            _notificationController.Initialize();
+
             _characterParametersScalingSettings.Initialize();
             _cardsScalingScriptableObject.Initialize();
             _meleeAttacksScalingScriptableObject.Initialize();
@@ -46,19 +49,17 @@ namespace SDRGames.Whist.DomainModule
             characterInfoScriptableObjects.Add(_playerCombatManager.GetParams());
             foreach (EnemyBehaviorManager enemyBehaviorManager in _enemyBehaviorManagers)
             {
-                enemyBehaviorManager.Initialize(_playerCombatManager, _userInputController);
+                enemyBehaviorManager.Initialize(_playerCombatManager, UserInputController.Instance);
                 _enemyCombatManagers.Add(enemyBehaviorManager.EnemyCombatManager);
                 characterInfoScriptableObjects.Add(enemyBehaviorManager.EnemyCombatManager.GetParams());
             }
-            _combatUIManager.Initialize(_userInputController);
+            _combatUIManager.Initialize(UserInputController.Instance);
             _turnsQueueManager.Initialize(characterInfoScriptableObjects);
 
-            _combatSceneManager.Initialize(_userInputController, _turnsQueueManager, _combatUIManager, _playerCombatManager, _enemyBehaviorManagers, _enemyCombatManagers);
-        }
+            _combatSceneManager.Initialize(UserInputController.Instance, _turnsQueueManager, _combatUIManager, _playerCombatManager, _enemyBehaviorManagers, _enemyCombatManagers);
 
-        private void OnEnable()
-        {
-            this.CheckFieldValueIsNotNull(nameof(_userInputController), _userInputController);
+            this.CheckFieldValueIsNotNull(nameof(_combatSceneManager), _combatSceneManager);
+            this.CheckFieldValueIsNotNull(nameof(_notificationController), _notificationController);
             this.CheckFieldValueIsNotNull(nameof(_turnsQueueManager), _turnsQueueManager);
             this.CheckFieldValueIsNotNull(nameof(_characterParametersScalingSettings), _characterParametersScalingSettings);
             this.CheckFieldValueIsNotNull(nameof(_cardsScalingScriptableObject), _cardsScalingScriptableObject);

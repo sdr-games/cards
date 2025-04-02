@@ -17,8 +17,11 @@ namespace SDRGames.Whist.DomainModule.Views
         [SerializeField] private ButtonView _endTurnButton;
         [SerializeField] private ButtonView _clearButton;
 
+        [SerializeField] private EndBattlePanelView _endBattlePanelView;
+
         [SerializeField] private LocalizedString _noTargetErrorMessage;
-        [SerializeField] private LocalizedString _comaMessage;
+        [SerializeField] private LocalizedString _comaStartMessage;
+        [SerializeField] private LocalizedString _comaStopMessage;
 
         public event EventHandler EndTurnButtonClicked;
         public event EventHandler ClearButtonClicked;
@@ -47,9 +50,24 @@ namespace SDRGames.Whist.DomainModule.Views
             NotificationController.Show(_noTargetErrorMessage.GetLocalizedText());
         }
 
-        public void ShowComaNotification()
+        public void ShowComaStartNotification()
         {
-            NotificationController.Show(_comaMessage.GetLocalizedText());
+            NotificationController.Show(_comaStartMessage.GetLocalizedText());
+        }
+
+        public void ShowComaStopNotification()
+        {
+            NotificationController.Show(_comaStopMessage.GetLocalizedText());
+        }
+
+        public void ShowVictoryPanel()
+        {
+            _endBattlePanelView.ShowVictory();
+        }
+
+        public void ShowDefeatPanel()
+        {
+            _endBattlePanelView.ShowDefeat();
         }
 
         private void OnEndTurnButtonClicked(object sender, EventArgs e)

@@ -155,9 +155,29 @@ namespace SDRGames.Whist.DomainModule.Managers
             _combatUIView.ShowNoTargetError();
         }
 
-        public void ShowComaNotification()
+        public void ShowComaStartNotification()
         {
-            _combatUIView.ShowComaNotification();
+            _combatUIView.ShowComaStartNotification();
+        }
+
+        public void ShowComaStopNotification()
+        {
+            _combatUIView.ShowComaStopNotification();
+        }
+
+        public void ShowVictoryPanel()
+        {
+            _combatUIView.ShowVictoryPanel();
+        }
+
+        public void ShowDefeatPanel()
+        {
+            _combatUIView.ShowDefeatPanel();
+        }
+
+        public bool PlayerHasAnyCardsOnHands()
+        {
+            return _deckOnHandsManager.IsEmpty;
         }
 
         #region Events methods

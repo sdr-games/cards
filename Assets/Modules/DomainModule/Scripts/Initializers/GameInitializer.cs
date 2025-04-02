@@ -1,9 +1,9 @@
 using SDRGames.Whist.MusicModule.Managers;
-using SDRGames.Whist.NotificationsModule;
 using SDRGames.Whist.SoundModule.Managers;
 using SDRGames.Whist.HelpersModule;
 
 using UnityEngine;
+using SDRGames.Whist.UserInputModule.Controller;
 
 namespace SDRGames.Whist.DomainModule
 {
@@ -11,9 +11,7 @@ namespace SDRGames.Whist.DomainModule
     {
         [SerializeField] private MusicGlobalManager _musicGlobalManager;
         [SerializeField] private SoundGlobalManager _soundGlobalManager;
-        [SerializeField] private NotificationController _notificationController;
-        //temp
-        [SerializeField] private CombatSceneInitializer _combatSceneInitializer;
+        [SerializeField] private UserInputController _userInputController;
 
         public static GameInitializer Instance { get; private set; }
 
@@ -21,11 +19,11 @@ namespace SDRGames.Whist.DomainModule
         {
             this.CheckFieldValueIsNotNull(nameof(_musicGlobalManager), _musicGlobalManager);
             this.CheckFieldValueIsNotNull(nameof(_soundGlobalManager), _soundGlobalManager);
-            this.CheckFieldValueIsNotNull(nameof(_notificationController), _notificationController);
+            this.CheckFieldValueIsNotNull(nameof(_userInputController), _userInputController);
 
             if (Instance != null && Instance != this)
             {
-                Destroy(this);
+                Destroy(gameObject);
                 return;
             }
             Instance = this;
@@ -33,8 +31,7 @@ namespace SDRGames.Whist.DomainModule
 
             _musicGlobalManager.Initialize();
             _soundGlobalManager.Initialize();
-            _notificationController.Initialize();
-            _combatSceneInitializer.Initialize();
+            _userInputController.Initialize();
         }
     }
 }

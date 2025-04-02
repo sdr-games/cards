@@ -31,7 +31,40 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 76045996800716800
-    m_Localized: COMA!!!
+    m_Localized: PATIENT IN COMA!!!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76082221544747008
+    m_Localized: Crisis over, for now
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76426910571540480
+    m_Localized: Victory!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76426962765459456
+    m_Localized: You have won this disease! Your rewads are {rewards}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76427003882221568
+    m_Localized: Continue
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76427082470895616
+    m_Localized: Defeat!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76427100489625600
+    m_Localized: This time disease was stronger. But that's good that it is only
+      your fantasy.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76427121347899392
+    m_Localized: Return
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76427323282665472
+    m_Localized: Try again
     m_Metadata:
       m_Items: []
   references:
