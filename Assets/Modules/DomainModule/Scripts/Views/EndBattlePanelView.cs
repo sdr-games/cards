@@ -1,5 +1,7 @@
 using SDRGames.Whist.HelpersModule.Views;
 using SDRGames.Whist.LocalizationModule.Models;
+using SDRGames.Whist.SceneManagementModule.Managers;
+using SDRGames.Whist.SceneManagementModule.Models;
 
 using TMPro;
 
@@ -61,9 +63,8 @@ namespace SDRGames.Whist.DomainModule
 
         private void RestartGame()
         {
-            string currentSceneName = SceneManager.GetActiveScene().name;
-            SceneManager.UnloadSceneAsync(currentSceneName);
-            SceneManager.LoadScene(currentSceneName);
+            SceneData currentSceneData = ScenesManager.GetCurrentSceneData();
+            ScenesManager.Instance.LoadScene(currentSceneData);
         }
 
         private void LeaveLostGame()
