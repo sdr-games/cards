@@ -1,3 +1,5 @@
+using SDRGames.Whist.HelpersModule.Views;
+
 using TMPro;
 
 using UnityEngine;
@@ -6,7 +8,7 @@ using UnityEngine.UI;
 namespace SDRGames.Whist.SceneManagementModule.Views
 {
     [RequireComponent(typeof(Canvas))]
-    public class LoadingScreenUIView : MonoBehaviour
+    public class LoadingScreenUIView : HideableUIView
     {
         [SerializeField] private Image _backgroundImage;
         [SerializeField] private ProgressBarView _progressBar;
@@ -18,8 +20,9 @@ namespace SDRGames.Whist.SceneManagementModule.Views
             FillBar(0);
         }
 
-        public void ShowProgressBar()
+        public override void Show()
         {
+            base.Show();
             _progressBar.Show();
         }
 

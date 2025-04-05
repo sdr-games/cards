@@ -36,7 +36,6 @@ namespace SDRGames.Whist.DomainModule
         [SerializeField] private MeleeAttacksScalingScriptableObject _meleeAttacksScalingScriptableObject;
 
         private List<EnemyCombatManager> _enemyCombatManagers;
-        private SceneData _sceneCurrentData;
 
         public override IEnumerator InitializeCoroutine()
         {
@@ -67,11 +66,6 @@ namespace SDRGames.Whist.DomainModule
         public override void Run()
         {
             _combatSceneManager.StartCombat();
-        }
-
-        public void SetCurrentSceneData(SceneData sceneData)
-        {
-            _sceneCurrentData = sceneData;
         }
 
         private void OnEnable()

@@ -153,51 +153,7 @@ MonoBehaviour:
   _musicGlobalManager: {fileID: 1273604894}
   _soundGlobalManager: {fileID: 440636722}
   _userInputController: {fileID: 1847108587}
-  _entryScene:
-    <LoadingScreenBackgroundSprite>k__BackingField: {fileID: 21300000, guid: d5d9caf237f56554588334c07d19f342,
-      type: 3}
-    <LoadingScreenMusic>k__BackingField: {fileID: 0}
-    <LoadingScreenBackgroundHeader>k__BackingField:
-      <Entity>k__BackingField:
-        m_TableReference:
-          m_TableCollectionName: GUID:9f4cc72b538bc4045913e8992afb419a
-        m_TableEntryReference:
-          m_KeyId: 7199895552
-          m_Key: 
-        m_FallbackState: 0
-        m_WaitForCompletion: 0
-        m_LocalVariables: []
-    <LoadingScreenBackgroundTooltip>k__BackingField:
-      <Entity>k__BackingField:
-        m_TableReference:
-          m_TableCollectionName: GUID:9f4cc72b538bc4045913e8992afb419a
-        m_TableEntryReference:
-          m_KeyId: 88695222272
-          m_Key: 
-        m_FallbackState: 0
-        m_WaitForCompletion: 0
-        m_LocalVariables: []
-    <SceneName>k__BackingField: CombatScene
-    <StringParameters>k__BackingField:
-      list:
-      - Key: 
-        Value:
-          <Entity>k__BackingField:
-            m_TableReference:
-              m_TableCollectionName: 
-            m_TableEntryReference:
-              m_KeyId: 0
-              m_Key: 
-            m_FallbackState: 0
-            m_WaitForCompletion: 0
-            m_LocalVariables: []
-    <NumericParameters>k__BackingField:
-      list: []
-    <ReferenceParameters>k__BackingField:
-      list: []
-  references:
-    version: 2
-    RefIds: []
+  _entrySceneName: 2
 --- !u!4 &74645335
 Transform:
   m_ObjectHideFlags: 0
@@ -288,6 +244,167 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07a6fb2b9d667124ba70f619e945bcfe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _scenesData:
+    list:
+    - Key: 0
+      Value:
+        <LoadingScreenBackgroundSprite>k__BackingField: {fileID: 21300000, guid: d5d9caf237f56554588334c07d19f342,
+          type: 3}
+        <LoadingScreenMusic>k__BackingField: {fileID: 0}
+        <LoadingScreenBackgroundHeader>k__BackingField:
+          <Entity>k__BackingField:
+            m_TableReference:
+              m_TableCollectionName: GUID:9f4cc72b538bc4045913e8992afb419a
+            m_TableEntryReference:
+              m_KeyId: 7199895552
+              m_Key: 
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+        <LoadingScreenBackgroundTooltip>k__BackingField:
+          <Entity>k__BackingField:
+            m_TableReference:
+              m_TableCollectionName: GUID:9f4cc72b538bc4045913e8992afb419a
+            m_TableEntryReference:
+              m_KeyId: 88695222272
+              m_Key: 
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+        <StringParameters>k__BackingField:
+          list: []
+        <NumericParameters>k__BackingField:
+          list: []
+        <ReferenceParameters>k__BackingField:
+          list: []
+    - Key: 1
+      Value:
+        <LoadingScreenBackgroundSprite>k__BackingField: {fileID: 21300000, guid: d5d9caf237f56554588334c07d19f342,
+          type: 3}
+        <LoadingScreenMusic>k__BackingField: {fileID: 0}
+        <LoadingScreenBackgroundHeader>k__BackingField:
+          <Entity>k__BackingField:
+            m_TableReference:
+              m_TableCollectionName: GUID:9f4cc72b538bc4045913e8992afb419a
+            m_TableEntryReference:
+              m_KeyId: 7199895552
+              m_Key: 
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+        <LoadingScreenBackgroundTooltip>k__BackingField:
+          <Entity>k__BackingField:
+            m_TableReference:
+              m_TableCollectionName: GUID:9f4cc72b538bc4045913e8992afb419a
+            m_TableEntryReference:
+              m_KeyId: 88695222272
+              m_Key: 
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+        <StringParameters>k__BackingField:
+          list: []
+        <NumericParameters>k__BackingField:
+          list: []
+        <ReferenceParameters>k__BackingField:
+          list: []
+    - Key: 2
+      Value:
+        <LoadingScreenBackgroundSprite>k__BackingField: {fileID: 21300000, guid: d5d9caf237f56554588334c07d19f342,
+          type: 3}
+        <LoadingScreenMusic>k__BackingField: {fileID: 11400000, guid: a7996119519dde242849f001c088af9a,
+          type: 2}
+        <LoadingScreenBackgroundHeader>k__BackingField:
+          <Entity>k__BackingField:
+            m_TableReference:
+              m_TableCollectionName: GUID:9f4cc72b538bc4045913e8992afb419a
+            m_TableEntryReference:
+              m_KeyId: 7199895552
+              m_Key: 
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+        <LoadingScreenBackgroundTooltip>k__BackingField:
+          <Entity>k__BackingField:
+            m_TableReference:
+              m_TableCollectionName: 
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: 
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+        <StringParameters>k__BackingField:
+          list: []
+        <NumericParameters>k__BackingField:
+          list: []
+        <ReferenceParameters>k__BackingField:
+          list: []
+    - Key: 3
+      Value:
+        <LoadingScreenBackgroundSprite>k__BackingField: {fileID: 21300000, guid: d5d9caf237f56554588334c07d19f342,
+          type: 3}
+        <LoadingScreenMusic>k__BackingField: {fileID: 0}
+        <LoadingScreenBackgroundHeader>k__BackingField:
+          <Entity>k__BackingField:
+            m_TableReference:
+              m_TableCollectionName: GUID:9f4cc72b538bc4045913e8992afb419a
+            m_TableEntryReference:
+              m_KeyId: 7199895552
+              m_Key: 
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+        <LoadingScreenBackgroundTooltip>k__BackingField:
+          <Entity>k__BackingField:
+            m_TableReference:
+              m_TableCollectionName: GUID:9f4cc72b538bc4045913e8992afb419a
+            m_TableEntryReference:
+              m_KeyId: 88695222272
+              m_Key: 
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+        <StringParameters>k__BackingField:
+          list: []
+        <NumericParameters>k__BackingField:
+          list: []
+        <ReferenceParameters>k__BackingField:
+          list: []
+    - Key: 4
+      Value:
+        <LoadingScreenBackgroundSprite>k__BackingField: {fileID: 21300000, guid: d5d9caf237f56554588334c07d19f342,
+          type: 3}
+        <LoadingScreenMusic>k__BackingField: {fileID: 0}
+        <LoadingScreenBackgroundHeader>k__BackingField:
+          <Entity>k__BackingField:
+            m_TableReference:
+              m_TableCollectionName: GUID:9f4cc72b538bc4045913e8992afb419a
+            m_TableEntryReference:
+              m_KeyId: 7199895552
+              m_Key: 
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+        <LoadingScreenBackgroundTooltip>k__BackingField:
+          <Entity>k__BackingField:
+            m_TableReference:
+              m_TableCollectionName: GUID:9f4cc72b538bc4045913e8992afb419a
+            m_TableEntryReference:
+              m_KeyId: 88695222272
+              m_Key: 
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+        <StringParameters>k__BackingField:
+          list: []
+        <NumericParameters>k__BackingField:
+          list: []
+        <ReferenceParameters>k__BackingField:
+          list: []
+  references:
+    version: 2
+    RefIds: []
 --- !u!4 &746549793
 Transform:
   m_ObjectHideFlags: 0

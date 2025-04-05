@@ -20,8 +20,6 @@ namespace SDRGames.Whist.DomainModule.Managers
 {
     public class CombatSceneManager : MonoBehaviour
     {
-        [SerializeField] private MusicClipScriptableObject _temporaryPlacedAudioClip;
-
         private TurnsQueueManager _turnsQueueManager;
 
         private CombatUIManager _combatUIManager;
@@ -71,8 +69,6 @@ namespace SDRGames.Whist.DomainModule.Managers
         {
             _combatUIManager.gameObject.SetActive(true);
             _turnsQueueManager.Run();
-
-            MusicGlobalManager.Play(_temporaryPlacedAudioClip);
         }
 
         private void OnCardSelectClicked(object sender, CardSelectClickedEventArgs e)

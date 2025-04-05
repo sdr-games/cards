@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 
+using SDRGames.Whist.HelpersModule;
 using SDRGames.Whist.SceneManagementModule.Initializers;
 using SDRGames.Whist.SceneManagementModule.Models;
 using SDRGames.Whist.SceneManagementModule.Views;
@@ -11,9 +12,13 @@ namespace SDRGames.Whist.SceneManagementModule.Managers
 {
     public class ScenesManager : MonoBehaviour
     {
+        [SerializeField] private SerializableDictionary<ScenesNames, SceneData> _scenesData;
+
         private LoadingScreenInitializer _loadingScreenInitializer;
         private LoadingScreenUIView _loadingScreenUIView;
         private SceneData _currentSceneData;
+
+        public enum ScenesNames { MainMenu, LocationMap, Combat, Talents, PlayerParameters }
 
         public static ScenesManager Instance { get; private set; }
 
@@ -31,6 +36,13 @@ namespace SDRGames.Whist.SceneManagementModule.Managers
             }
             Instance = this;
             DontDestroyOnLoad(Instance);
+        }
+
+        public static SceneData GetSceneData(ScenesNames sceneName)
+        {
+            SceneData sceneData = Instance._scenesData[sceneName];
+            sceneData.SetName($"{sceneName}Scene");
+            return sceneData;
         }
 
         public void LoadScene(SceneData sceneData)
@@ -71,6 +83,7 @@ namespace SDRGames.Whist.SceneManagementModule.Managers
             sceneInitializer.PartInitialized += OnPartInitialized;
             yield return sceneInitializer.InitializeCoroutine();
             yield return SceneManager.UnloadSceneAsync("LoadingScreenScene");
+            sceneInitializer.PartInitialized -= OnPartInitialized;
             sceneInitializer.Run();
             _currentSceneData = sceneData;
         }

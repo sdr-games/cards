@@ -1,5 +1,6 @@
 using System.Collections;
 
+using SDRGames.Whist.LocalizationModule.Models;
 using SDRGames.Whist.MusicModule.Managers;
 using SDRGames.Whist.MusicModule.ScriptableObjects;
 using SDRGames.Whist.SceneManagementModule.Views;
@@ -11,6 +12,7 @@ namespace SDRGames.Whist.SceneManagementModule.Initializers
     public class LoadingScreenInitializer : SceneInitializer
     {
         [SerializeField] private LoadingScreenUIView _loadingScreenUIView;
+        [SerializeField] private LocalizedString[] _tooltips;
 
         public override IEnumerator InitializeCoroutine()
         {
@@ -21,9 +23,8 @@ namespace SDRGames.Whist.SceneManagementModule.Initializers
             }
             _loadingScreenUIView.Initialize();
             _loadingScreenUIView.SetHeaderText(_sceneInitializationStringParameters["headerText"].GetLocalizedText());
-            _loadingScreenUIView.SetTooltipText(_sceneInitializationStringParameters["tooltipText"].GetLocalizedText());
+            _loadingScreenUIView.SetTooltipText(GetTooltipString());
             _loadingScreenUIView.SetBackgroundSprite((Sprite)_sceneInitializationReferenceParameters["backgroundSprite"]);
-            yield return null;
         }
 
         public LoadingScreenUIView GetLoadingScreenUIView()
@@ -33,8 +34,19 @@ namespace SDRGames.Whist.SceneManagementModule.Initializers
 
         public override void Run()
         {
-            _loadingScreenUIView.ShowProgressBar();
-            _loadingScreenUIView.gameObject.SetActive(true);
+            _loadingScreenUIView.Show();
+        }
+
+        private string GetTooltipString()
+        {
+            try
+            {
+                return _sceneInitializationStringParameters["tooltipText"].GetLocalizedText();
+            }
+            catch
+            {
+                return _tooltips[Random.Range(0, _tooltips.Length)].GetLocalizedText();
+            }
         }
     }
 }

@@ -58,7 +58,8 @@ namespace SDRGames.Whist.DomainModule
 
         private void EndVictoriousGame()
         {
-            SceneManager.LoadScene("LocationMapScene");
+            SceneData locationMapData = ScenesManager.GetSceneData(ScenesManager.ScenesNames.LocationMap);
+            ScenesManager.Instance.LoadScene(locationMapData);
         }
 
         private void RestartGame()
@@ -69,7 +70,8 @@ namespace SDRGames.Whist.DomainModule
 
         private void LeaveLostGame()
         {
-            SceneManager.LoadScene("LocationMapScene");
+            SceneData locationMapData = ScenesManager.GetSceneData(ScenesManager.ScenesNames.LocationMap);
+            ScenesManager.Instance.LoadScene(locationMapData);
         }
 
         private void OnDestroy()

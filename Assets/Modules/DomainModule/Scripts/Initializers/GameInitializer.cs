@@ -7,6 +7,7 @@ using SDRGames.Whist.UserInputModule.Controller;
 using SDRGames.Whist.SceneManagementModule.Managers;
 using SDRGames.Whist.SceneManagementModule.Models;
 using System.Collections;
+using static SDRGames.Whist.SceneManagementModule.Managers.ScenesManager;
 
 namespace SDRGames.Whist.DomainModule
 {
@@ -16,7 +17,7 @@ namespace SDRGames.Whist.DomainModule
         [SerializeField] private MusicGlobalManager _musicGlobalManager;
         [SerializeField] private SoundGlobalManager _soundGlobalManager;
         [SerializeField] private UserInputController _userInputController;
-        [SerializeField] private SceneData _entryScene;
+        [SerializeField] private ScenesNames _entrySceneName;
 
         public static GameInitializer Instance { get; private set; }
 
@@ -44,7 +45,8 @@ namespace SDRGames.Whist.DomainModule
         private IEnumerator Start()
         {
             yield return null;
-            ScenesManager.Instance.LoadScene(_entryScene);
+            SceneData entrySceneData = GetSceneData(_entrySceneName);
+            ScenesManager.Instance.LoadScene(entrySceneData);
         }
     }
 }
