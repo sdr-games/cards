@@ -10,13 +10,17 @@ using SDRGames.Whist.HelpersModule;
 using SDRGames.Whist.MeleeCombatModule.ScriptableObjects;
 using SDRGames.Whist.TurnSwitchModule.Managers;
 using SDRGames.Whist.UserInputModule.Controller;
+using SDRGames.Whist.NotificationsModule;
+using SDRGames.Whist.SceneManagementModule.Initializers;
 
 using UnityEngine;
-using SDRGames.Whist.NotificationsModule;
+using System;
+using System.Collections;
+using SDRGames.Whist.SceneManagementModule.Models;
 
 namespace SDRGames.Whist.DomainModule
 {
-    public class CombatSceneInitializer : MonoBehaviour
+    public class CombatSceneInitializer : SceneInitializer
     {
         [SerializeField] private CombatSceneManager _combatSceneManager;
         [SerializeField] private NotificationController _notificationController;
@@ -33,31 +37,39 @@ namespace SDRGames.Whist.DomainModule
 
         private List<EnemyCombatManager> _enemyCombatManagers;
 
-        public void OnEnable()
+        public override IEnumerator InitializeCoroutine()
         {
-            _notificationController.Initialize();
+            _totalWeight = 13.5f + _enemyBehaviorManagers.Length * 0.5f;
 
-            _characterParametersScalingSettings.Initialize();
-            _cardsScalingScriptableObject.Initialize();
-            _meleeAttacksScalingScriptableObject.Initialize();
-            _floatingTextManager.Initialize();
-
-            _playerCombatManager.Initialize();
+            yield return InitializePart(() => _notificationController.Initialize(), 0.5f);
+            yield return InitializePart(() => _characterParametersScalingSettings.Initialize(), 1f);
+            yield return InitializePart(() => _cardsScalingScriptableObject.Initialize(), 1f);
+            yield return InitializePart(() => _meleeAttacksScalingScriptableObject.Initialize(), 1f);
+            yield return InitializePart(() => _floatingTextManager.Initialize(), 1f);
+            yield return InitializePart(() => _playerCombatManager.Initialize(), 1f);
 
             _enemyCombatManagers = new List<EnemyCombatManager>();
             List<CharacterParamsModel> characterInfoScriptableObjects = new List<CharacterParamsModel>();
             characterInfoScriptableObjects.Add(_playerCombatManager.GetParams());
             foreach (EnemyBehaviorManager enemyBehaviorManager in _enemyBehaviorManagers)
             {
-                enemyBehaviorManager.Initialize(_playerCombatManager, UserInputController.Instance);
+                yield return InitializePart(() => enemyBehaviorManager.Initialize(_playerCombatManager, UserInputController.Instance), 0.5f);
                 _enemyCombatManagers.Add(enemyBehaviorManager.EnemyCombatManager);
                 characterInfoScriptableObjects.Add(enemyBehaviorManager.EnemyCombatManager.GetParams());
             }
-            _combatUIManager.Initialize(UserInputController.Instance);
-            _turnsQueueManager.Initialize(characterInfoScriptableObjects);
+            yield return InitializePart(() => _combatUIManager.Initialize(UserInputController.Instance), 1f);
+            yield return InitializePart(() => _turnsQueueManager.Initialize(characterInfoScriptableObjects), 1f);
 
-            _combatSceneManager.Initialize(UserInputController.Instance, _turnsQueueManager, _combatUIManager, _playerCombatManager, _enemyBehaviorManagers, _enemyCombatManagers);
+            yield return InitializePart(() => _combatSceneManager.Initialize(_turnsQueueManager, _combatUIManager, _playerCombatManager, _enemyBehaviorManagers, _enemyCombatManagers), 6.5f);
+        }
 
+        public override void Run()
+        {
+            _combatSceneManager.StartCombat();
+        }
+
+        private void OnEnable()
+        { 
             this.CheckFieldValueIsNotNull(nameof(_combatSceneManager), _combatSceneManager);
             this.CheckFieldValueIsNotNull(nameof(_notificationController), _notificationController);
             this.CheckFieldValueIsNotNull(nameof(_turnsQueueManager), _turnsQueueManager);

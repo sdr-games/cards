@@ -1,0 +1,177 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
+  m_Name: LoadingScreens Shared Data
+  m_EditorClassIdentifier: 
+  m_TableCollectionName: LoadingScreens
+  m_TableCollectionNameGuidString: 9f4cc72b538bc4045913e8992afb419a
+  m_Entries:
+  - m_Id: 7199895552
+    m_Key: GameEntryLoadingScreenHeader
+    m_Metadata:
+      m_Items: []
+  - m_Id: 88695222272
+    m_Key: GameTooltip1
+    m_Metadata:
+      m_Items: []
+  - m_Id: 873215012745216
+    m_Key: GameTooltip2
+    m_Metadata:
+      m_Items: []
+  - m_Id: 873231366336512
+    m_Key: GameTooltip3
+    m_Metadata:
+      m_Items: []
+  - m_Id: 873243953442816
+    m_Key: GameTooltip4
+    m_Metadata:
+      m_Items: []
+  - m_Id: 873254904770560
+    m_Key: GameTooltip5
+    m_Metadata:
+      m_Items: []
+  - m_Id: 873268745973760
+    m_Key: GameTooltip6
+    m_Metadata:
+      m_Items: []
+  - m_Id: 873279344979968
+    m_Key: GameTooltip7
+    m_Metadata:
+      m_Items: []
+  - m_Id: 873301490905088
+    m_Key: GameTooltip8
+    m_Metadata:
+      m_Items: []
+  - m_Id: 873321875222528
+    m_Key: GameTooltip9
+    m_Metadata:
+      m_Items: []
+  - m_Id: 873357174484992
+    m_Key: GameTooltip10
+    m_Metadata:
+      m_Items: []
+  - m_Id: 873392058511360
+    m_Key: WiseTooltip1
+    m_Metadata:
+      m_Items: []
+  - m_Id: 873419678003200
+    m_Key: WiseTooltip2
+    m_Metadata:
+      m_Items: []
+  - m_Id: 873443619090432
+    m_Key: WiseTooltip3
+    m_Metadata:
+      m_Items: []
+  - m_Id: 873452397768704
+    m_Key: WiseTooltip4
+    m_Metadata:
+      m_Items: []
+  - m_Id: 873460954148864
+    m_Key: WiseTooltip5
+    m_Metadata:
+      m_Items: []
+  - m_Id: 873484765212672
+    m_Key: WiseTooltip6
+    m_Metadata:
+      m_Items: []
+  - m_Id: 873511285796864
+    m_Key: WiseTooltip7
+    m_Metadata:
+      m_Items: []
+  - m_Id: 873519494049792
+    m_Key: WiseTooltip8
+    m_Metadata:
+      m_Items: []
+  - m_Id: 873527110905856
+    m_Key: WiseTooltip9
+    m_Metadata:
+      m_Items: []
+  - m_Id: 873534849396736
+    m_Key: WiseTooltip10
+    m_Metadata:
+      m_Items: []
+  - m_Id: 873640868818944
+    m_Key: BadAdviceTooltip1
+    m_Metadata:
+      m_Items: []
+  - m_Id: 873919626457088
+    m_Key: BadAdviceTooltip2
+    m_Metadata:
+      m_Items: []
+  - m_Id: 873927239118848
+    m_Key: BadAdviceTooltip3
+    m_Metadata:
+      m_Items: []
+  - m_Id: 873936202346496
+    m_Key: BadAdviceTooltip4
+    m_Metadata:
+      m_Items: []
+  - m_Id: 873948126752768
+    m_Key: BadAdviceTooltip5
+    m_Metadata:
+      m_Items: []
+  - m_Id: 873955898798080
+    m_Key: BadAdviceTooltip6
+    m_Metadata:
+      m_Items: []
+  - m_Id: 873963071057920
+    m_Key: BadAdviceTooltip7
+    m_Metadata:
+      m_Items: []
+  - m_Id: 873970650165248
+    m_Key: BadAdviceTooltip8
+    m_Metadata:
+      m_Items: []
+  - m_Id: 873978736783360
+    m_Key: BadAdviceTooltip9
+    m_Metadata:
+      m_Items: []
+  - m_Id: 873988136218624
+    m_Key: BadAdviceTooltip10
+    m_Metadata:
+      m_Items: []
+  - m_Id: 873997074280448
+    m_Key: BadAdviceTooltip11
+    m_Metadata:
+      m_Items: []
+  - m_Id: 874021044727808
+    m_Key: FactsTooltip1
+    m_Metadata:
+      m_Items: []
+  - m_Id: 874061410709504
+    m_Key: FactsTooltip2
+    m_Metadata:
+      m_Items: []
+  - m_Id: 874067886714880
+    m_Key: FactsTooltip3
+    m_Metadata:
+      m_Items: []
+  - m_Id: 874074463383552
+    m_Key: FactsTooltip4
+    m_Metadata:
+      m_Items: []
+  - m_Id: 874081543368704
+    m_Key: FactsTooltip5
+    m_Metadata:
+      m_Items: []
+  m_Metadata:
+    m_Items: []
+  m_KeyGenerator:
+    rid: 5759543213249265806
+  references:
+    version: 2
+    RefIds:
+    - rid: 5759543213249265806
+      type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables,
+        asm: Unity.Localization}
+      data:
+        m_CustomEpoch: 1743658881426

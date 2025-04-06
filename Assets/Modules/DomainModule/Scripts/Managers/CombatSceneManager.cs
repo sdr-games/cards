@@ -8,7 +8,6 @@ using SDRGames.Whist.CardsCombatModule.Managers;
 using SDRGames.Whist.CharacterModule.Managers;
 using SDRGames.Whist.MeleeCombatModule.Managers;
 using SDRGames.Whist.TurnSwitchModule.Managers;
-using SDRGames.Whist.UserInputModule.Controller;
 using SDRGames.Whist.AbilitiesModule.Models;
 using SDRGames.Whist.CardsCombatModule.Models;
 using SDRGames.Whist.MusicModule.Managers;
@@ -21,9 +20,6 @@ namespace SDRGames.Whist.DomainModule.Managers
 {
     public class CombatSceneManager : MonoBehaviour
     {
-        [SerializeField] private MusicClipScriptableObject _temporaryPlacedAudioClip;
-
-        private UserInputController _userInputController;
         private TurnsQueueManager _turnsQueueManager;
 
         private CombatUIManager _combatUIManager;
@@ -34,9 +30,8 @@ namespace SDRGames.Whist.DomainModule.Managers
         private List<CharacterCombatManager> _selectedEnemyCombatManagers;
         private bool _targetCheckRequired;
 
-        public void Initialize(UserInputController userInputController, TurnsQueueManager turnsQueueManager, CombatUIManager combatUIManager, PlayerCombatManager playerCombatManager, EnemyBehaviorManager[] enemyBehaviorManagers, List<EnemyCombatManager> enemyCombatManagers)
+        public void Initialize(TurnsQueueManager turnsQueueManager, CombatUIManager combatUIManager, PlayerCombatManager playerCombatManager, EnemyBehaviorManager[] enemyBehaviorManagers, List<EnemyCombatManager> enemyCombatManagers)
         {
-            _userInputController = userInputController;
             _playerCombatManager = playerCombatManager;
             _playerCombatManager.PatientHealthChanged += OnPatientHealthChanged;
 
@@ -68,9 +63,12 @@ namespace SDRGames.Whist.DomainModule.Managers
 
             _turnsQueueManager = turnsQueueManager;
             _turnsQueueManager.TurnSwitched += OnTurnSwitched;
-            _turnsQueueManager.Run();
+        }
 
-            MusicGlobalManager.Play(_temporaryPlacedAudioClip);
+        public void StartCombat()
+        {
+            _combatUIManager.gameObject.SetActive(true);
+            _turnsQueueManager.Run();
         }
 
         private void OnCardSelectClicked(object sender, CardSelectClickedEventArgs e)
