@@ -1,16 +1,15 @@
 using SDRGames.Whist.PointsModule.Presenters;
-using SDRGames.Whist.CharacterModule.ScriptableObjects;
 using SDRGames.Whist.CharacterModule.Views;
-using UnityEngine;
+using SDRGames.Whist.CharacterModule.Models;
 
 namespace SDRGames.Whist.CharacterModule.Presenters
 {
-    public class PlayerCharacterCombatParamsPresenter : CharacterCombatParamsPresenter
+    public class PlayerCombatParamsPresenter : CharacterCombatParamsPresenter
     {
         private PointsBarPresenter _staminaPointsBarPresenter;
         private PointsBarPresenter _breathPointsBarPresenter;
 
-        public PlayerCharacterCombatParamsPresenter(PlayerCharacterParamsModel characterParamsModel, PlayerCharacterCombatUIView playerCharacterCombatParamsView) : base(characterParamsModel, playerCharacterCombatParamsView)
+        public PlayerCombatParamsPresenter(PlayerParamsModel characterParamsModel, PlayerCharacterCombatUIView playerCharacterCombatParamsView) : base(characterParamsModel, playerCharacterCombatParamsView)
         {
             _staminaPointsBarPresenter = new PointsBarPresenter(characterParamsModel.StaminaPoints, playerCharacterCombatParamsView.StaminaPointsBarView);
             _breathPointsBarPresenter = new PointsBarPresenter(characterParamsModel.BreathPoints, playerCharacterCombatParamsView.BreathPointsBarView);
@@ -19,7 +18,7 @@ namespace SDRGames.Whist.CharacterModule.Presenters
 
         public void TakePatientDamage(int damage)
         {
-            ((PlayerCharacterParamsModel)_characterParamsModel).TakePatientDamage(damage);
+            ((PlayerParamsModel)_characterParamsModel).TakePatientDamage(damage);
         }
 
         public void ReserveStaminaPoints(float cost)

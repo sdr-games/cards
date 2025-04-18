@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64c1a72ec4240c74f8a4e339d4a6dfce, type: 3}
+  m_Name: GlassBlowerCoughEnemyData
+  m_EditorClassIdentifier: 
+  <EnemyParamsScriptableObject>k__BackingField: {fileID: 11400000, guid: ce7a9ca9dcc0d7e4bb8c0dec638ef1d8,
+    type: 2}
+  <SpecialAbilitiesScriptableObjects>k__BackingField:
+  - {fileID: 11400000, guid: 303977eee976f3e438b37cff6f669a38, type: 2}
+  <MeleeBehaviors>k__BackingField:
+  - {fileID: 11400000, guid: cf49bb78856c9e447948cc3377b43853, type: 2}
+  - {fileID: 11400000, guid: bf0ee52aecfddd645a48bf334b67a9df, type: 2}
+  - {fileID: 11400000, guid: cfc1e267a68c52e4b97575a8c1160399, type: 2}
+  <MagicBehaviors>k__BackingField: []

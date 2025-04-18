@@ -8,6 +8,11 @@ namespace SDRGames.Whist.AnimationsModule
 
         public bool IsReady => _animator.GetCurrentAnimatorStateInfo(0).IsName("PlayerIdle");
 
+        public void Initialize(Animator animator)
+        {
+            _animator = animator;
+        }
+
         public void PlayAnimation(AnimationClip animationClip)
         {
             if(animationClip == null)

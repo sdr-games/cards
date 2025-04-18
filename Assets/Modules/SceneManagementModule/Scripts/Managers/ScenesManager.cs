@@ -76,6 +76,7 @@ namespace SDRGames.Whist.SceneManagementModule.Managers
 
             _loadingScreenUIView.FillBar(0);
 
+            SceneManager.SetActiveScene(SceneManager.GetSceneByName(sceneData.SceneName));
             SceneInitializer sceneInitializer = FindFirstObjectByType<SceneInitializer>();
             sceneInitializer.SetInitializationParameters(sceneData.StringParameters);
             sceneInitializer.SetInitializationParameters(sceneData.NumericParameters);

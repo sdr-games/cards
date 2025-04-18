@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f1f775978b49ebc49b9343250ae61b99, type: 3}
-  m_Name: PlayerParameters
+  m_Name: ValiorParameters
   m_EditorClassIdentifier: 
   <CharacterInfo>k__BackingField: {fileID: 11400000, guid: 2138c702e452a7846b480e13bc6087ab,
     type: 2}

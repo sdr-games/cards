@@ -7,10 +7,10 @@ namespace SDRGames.Whist.CharacterModule.Presenters
 {
     public class PlayerCharacterParamsPresenter
     {
-        private PlayerCharacterParamsModel _playerCharacterParams;
+        private PlayerParamsScriptableObject _playerCharacterParams;
         private PlayerCharacterParamsView _playerCharacterParamsView;
 
-        public PlayerCharacterParamsPresenter(PlayerCharacterParamsModel playerCharacterParams, PlayerCharacterParamsView playerCharacterParamsView)
+        public PlayerCharacterParamsPresenter(PlayerParamsScriptableObject playerCharacterParams, PlayerCharacterParamsView playerCharacterParamsView)
         {
             _playerCharacterParams = playerCharacterParams;
             _playerCharacterParamsView = playerCharacterParamsView;

@@ -2,7 +2,7 @@ using System;
 
 using SDRGames.Whist.AbilitiesModule.ScriptableObjects;
 using SDRGames.Whist.CharacterModule.Managers;
-using SDRGames.Whist.CharacterModule.ScriptableObjects;
+using SDRGames.Whist.CharacterModule.Models;
 
 using static SDRGames.Whist.AbilitiesModule.ScriptableObjects.BuffLogicScriptableObject;
 

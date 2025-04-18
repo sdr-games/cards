@@ -28,6 +28,17 @@ namespace SDRGames.Whist.PointsModule.Models
         public event EventHandler<ValueChangedEventArgs> ReservedValueChanged;
         public event EventHandler<ValueChangedEventArgs> MaxValueChanged;
 
+        public Points(Points points)
+        {
+            Name = points.Name;
+            BaseValue = points.BaseValue;
+            PermanentBonus = points.PermanentBonus;
+            TemporaryBonus = points.TemporaryBonus;
+            RestorationPower = points.RestorationPower;
+            MaxValue = points.MaxValue;
+            Reset();
+        }
+
         public void SetName(string name)
         {
             Name = name;

@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9a33062fd4de85c42b79ad801a237c36, type: 3}
-  m_Name: TeofrastInfo
+  m_Name: TheophrastusInfo
   m_EditorClassIdentifier: 
   <CharacterPortrait>k__BackingField: {fileID: 0}
   <CharacterNameLocalization>k__BackingField:

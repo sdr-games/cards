@@ -9,11 +9,14 @@ using SDRGames.Whist.NotificationsModule;
 using SDRGames.Whist.UserInputModule.Controller;
 
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace SDRGames.Whist.DomainModule.Views
 {
     public class CombatUIView : MonoBehaviour
     {
+        [SerializeField] private GridLayoutGroup _enemiesBarsGrid;
+
         [SerializeField] private ButtonView _endTurnButton;
         [SerializeField] private ButtonView _clearButton;
 
@@ -43,6 +46,11 @@ namespace SDRGames.Whist.DomainModule.Views
         public void OnAbilityQueueCountChanged(object sender, AbilityQueueCountChangedEventArgs e)
         {
             SwitchButtonsActivity(e.IsEmpty);
+        }
+
+        public void SetAsParent(Transform enemyBarsTransform)
+        {
+            enemyBarsTransform.SetParent(_enemiesBarsGrid.transform, false);
         }
 
         public void ShowNoTargetError()

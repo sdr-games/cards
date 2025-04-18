@@ -9,7 +9,7 @@ namespace SDRGames.Whist.CharacterModule.Managers
 {
     public class PlayerCharacterManager : MonoBehaviour
     {
-        [SerializeField] private PlayerCharacterParamsModel _playerCharacterParamsModel;
+        [SerializeField] private PlayerParamsScriptableObject _playerCharacterParamsModel;
         [SerializeField] private PlayerCharacterParamsView _playerCharacterParamsView;
 
         private PlayerCharacterParamsPresenter _playerCharacterParamsPresenter;

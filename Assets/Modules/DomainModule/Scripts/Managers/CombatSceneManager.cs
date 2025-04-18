@@ -15,6 +15,7 @@ using SDRGames.Whist.MusicModule.Managers;
 using UnityEngine;
 using SDRGames.Whist.MusicModule.ScriptableObjects;
 using SDRGames.Whist.CharacterModule.ScriptableObjects;
+using SDRGames.Whist.CharacterModule.Models;
 
 namespace SDRGames.Whist.DomainModule.Managers
 {
@@ -24,13 +25,13 @@ namespace SDRGames.Whist.DomainModule.Managers
 
         private CombatUIManager _combatUIManager;
         private PlayerCombatManager _playerCombatManager;
-        private EnemyBehaviorManager[] _enemyBehaviorManagers;
+        private List<EnemyBehaviorManager> _enemyBehaviorManagers;
 
         private List<EnemyCombatManager> _enemyCombatManagers;
         private List<CharacterCombatManager> _selectedEnemyCombatManagers;
         private bool _targetCheckRequired;
 
-        public void Initialize(TurnsQueueManager turnsQueueManager, CombatUIManager combatUIManager, PlayerCombatManager playerCombatManager, EnemyBehaviorManager[] enemyBehaviorManagers, List<EnemyCombatManager> enemyCombatManagers)
+        public void Initialize(TurnsQueueManager turnsQueueManager, CombatUIManager combatUIManager, PlayerCombatManager playerCombatManager, List<EnemyBehaviorManager> enemyBehaviorManagers, List<EnemyCombatManager> enemyCombatManagers)
         {
             _playerCombatManager = playerCombatManager;
             _playerCombatManager.PatientHealthChanged += OnPatientHealthChanged;
@@ -45,7 +46,7 @@ namespace SDRGames.Whist.DomainModule.Managers
 
             _selectedEnemyCombatManagers = new List<CharacterCombatManager>();
             _targetCheckRequired = true;
-            if(_enemyBehaviorManagers.Length <= 1)
+            if(_enemyBehaviorManagers.Count <= 1)
             {
                 _targetCheckRequired = false;
                 _selectedEnemyCombatManagers.Add(_enemyCombatManagers[0]);
@@ -306,7 +307,7 @@ namespace SDRGames.Whist.DomainModule.Managers
 
         private bool CheckDefeatConditions()
         {
-            PlayerCharacterParamsModel playerCharacterParamsModel = (PlayerCharacterParamsModel)_playerCombatManager.GetParams(); 
+            PlayerParamsModel playerCharacterParamsModel = (PlayerParamsModel)_playerCombatManager.GetParams(); 
             return playerCharacterParamsModel.HealthPoints.CurrentValue <= 0 || (playerCharacterParamsModel.PatientHealthPoints.CurrentValue <= 0 && !_combatUIManager.PlayerHasAnyCardsOnHands());
         }
 
