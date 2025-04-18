@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using SDRGames.Whist.AnimationsModule;
+using SDRGames.Whist.CharacterModule.Models;
 using SDRGames.Whist.CharacterModule.Presenters;
 using SDRGames.Whist.CharacterModule.ScriptableObjects;
 using SDRGames.Whist.CharacterModule.Views;
@@ -21,12 +22,16 @@ namespace SDRGames.Whist.CharacterModule.Managers
         protected Dictionary<PeriodicalEffectPresenter, int> _periodicalEffects;
         protected Dictionary<PeriodicalEffectPresenter, int> _periodicalBuffs;
         protected Dictionary<PeriodicalEffectPresenter, int> _periodicalDebuffs;
+        protected GameObject _model;
 
         [field: SerializeField] public AnimationsController AnimationsController { get; protected set; }
         [field: SerializeField] public CharacterSoundController SoundController { get; protected set; }
 
-        public virtual void Initialize(UserInputController userInputController = null)
+        public virtual void Initialize(CharacterParamsScriptableObject characterParamsScriptableObject, UserInputController userInputController = null)
         {
+            _model = Instantiate(characterParamsScriptableObject.CharacterInfo.Character3DModelData.Model, transform, false);
+            AnimationsController.Initialize(_model.GetComponent<Animator>());
+
             _periodicalEffects = new Dictionary<PeriodicalEffectPresenter, int>();
             _periodicalBuffs = new Dictionary<PeriodicalEffectPresenter, int>();
             _periodicalDebuffs = new Dictionary<PeriodicalEffectPresenter, int>();
@@ -39,7 +44,7 @@ namespace SDRGames.Whist.CharacterModule.Managers
         }
 
         public abstract CharacterParamsModel GetParams();
-        protected abstract CharacterCombatUIView GetView();
+        public abstract CharacterCombatUIView GetView();
         public abstract void TakePhysicalDamage(int damage);
         public abstract void TakeMagicalDamage(int damage);
         public abstract void TakeTrueDamage(int damage);

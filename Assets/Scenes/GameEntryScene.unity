@@ -339,7 +339,11 @@ MonoBehaviour:
         <NumericParameters>k__BackingField:
           list: []
         <ReferenceParameters>k__BackingField:
-          list: []
+          list:
+          - Key: playerParams
+            Value: {fileID: 11400000, guid: 1755d9fb95f659b4d9614cf02827ef19, type: 2}
+          - Key: enemiesList
+            Value: {fileID: 11400000, guid: 74a05a7c2c6b9da4e8fda21ea6c070b0, type: 2}
     - Key: 3
       Value:
         <LoadingScreenBackgroundSprite>k__BackingField: {fileID: 21300000, guid: d5d9caf237f56554588334c07d19f342,

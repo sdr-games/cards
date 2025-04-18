@@ -11,7 +11,7 @@ namespace SDRGames.Whist.ChronotopMapModule.Models
     public class ChronotopMapFightPinModel
     {
         [field: SerializeField] public string PrefightText { get; private set; }
-        [field: SerializeField] public CharacterParamsModel EnemyCharacterParams { get; private set; }
+        [field: SerializeField] public CharacterParamsScriptableObject EnemyCharacterParams { get; private set; }
         [field: SerializeField] public DialogueContainerScriptableObject DialogueContainerScriptableObject { get; private set; }
         //TODO: add dialogue
         //TODO: add loot and rewards

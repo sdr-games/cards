@@ -1,29 +1,36 @@
+using System;
+
 using SDRGames.Whist.CharacterModule.ScriptableObjects;
 using SDRGames.Whist.CharacterModule.Presenters;
 using SDRGames.Whist.CharacterModule.Views;
 using SDRGames.Whist.HelpersModule;
+using SDRGames.Whist.UserInputModule.Controller;
+using SDRGames.Whist.CharacterModule.Models;
 
 using UnityEngine;
-using SDRGames.Whist.UserInputModule.Controller;
-using System;
 
 namespace SDRGames.Whist.CharacterModule.Managers
 {
     public class EnemyCombatManager : CharacterCombatManager
     {
-        [SerializeField] private CharacterParamsModel _characterParamsModel;
-        [SerializeField] private CharacterCombatUIView _characterCombatParamsView;
-        [SerializeField] private EnemyMeshManager _enemyMeshManager;
+        [SerializeField] private CharacterCombatUIView _characterCombatParamsViewPrefab;
 
+        private CharacterParamsModel _characterParamsModel;
+        private CharacterCombatUIView _characterCombatParamsView;
         private CharacterCombatParamsPresenter _characterCombatParamsPresenter;
+        private EnemyMeshManager _enemyMeshManager;
 
         public event EventHandler<MeshClickedEventArgs> EnemySelected;
 
-        public override void Initialize(UserInputController userInputController)
+        public override void Initialize(CharacterParamsScriptableObject enemyParamsScriptableObject, UserInputController userInputController)
         {
-            base.Initialize();
+            _characterParamsModel = new CharacterParamsModel(enemyParamsScriptableObject);
+            _characterCombatParamsView = Instantiate(_characterCombatParamsViewPrefab);
             _characterCombatParamsPresenter = new CharacterCombatParamsPresenter(_characterParamsModel, _characterCombatParamsView);
 
+            base.Initialize(enemyParamsScriptableObject);
+
+            _enemyMeshManager = _model.GetComponent<EnemyMeshManager>();
             _enemyMeshManager.Initialize(userInputController);
             _enemyMeshManager.MeshClicked += OnMeshClicked;
         }
@@ -33,7 +40,7 @@ namespace SDRGames.Whist.CharacterModule.Managers
             return _characterParamsModel;
         }
 
-        protected override CharacterCombatUIView GetView()
+        public override CharacterCombatUIView GetView()
         {
             return _characterCombatParamsView;
         }
@@ -106,15 +113,14 @@ namespace SDRGames.Whist.CharacterModule.Managers
             return true;
         }
 
-        protected void OnEnable()
-        {
-            this.CheckFieldValueIsNotNull(nameof(_characterCombatParamsView), _characterCombatParamsView);
-            this.CheckFieldValueIsNotNull(nameof(_enemyMeshManager), _enemyMeshManager);
-        }
-
         private void OnMeshClicked(object sender, MeshClickedEventArgs e)
         {
             EnemySelected?.Invoke(this, e);
+        }
+
+        private void OnEnable()
+        {
+            this.CheckFieldValueIsNotNull(nameof(_characterCombatParamsViewPrefab), _characterCombatParamsViewPrefab);
         }
 
         private void OnDisable()

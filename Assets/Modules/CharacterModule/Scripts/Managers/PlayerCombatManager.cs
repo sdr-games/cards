@@ -1,41 +1,45 @@
+using System;
+
 using SDRGames.Whist.HelpersModule;
 using SDRGames.Whist.CharacterModule.Presenters;
-using SDRGames.Whist.CharacterModule.ScriptableObjects;
 using SDRGames.Whist.CharacterModule.Views;
 using SDRGames.Whist.NotificationsModule;
 using SDRGames.Whist.UserInputModule.Controller;
+using SDRGames.Whist.PointsModule.Models;
+using SDRGames.Whist.CharacterModule.Models;
 
 using UnityEngine;
-using SDRGames.Whist.PointsModule.Models;
-using System;
+using SDRGames.Whist.CharacterModule.ScriptableObjects;
 
 namespace SDRGames.Whist.CharacterModule.Managers
 {
     public class PlayerCombatManager : CharacterCombatManager
     {
-        [SerializeField] private PlayerCharacterParamsModel _playerCharacterParamsModel;
+        [SerializeField] private PlayerParamsModel _playerParamsModel;
         [SerializeField] private PlayerCharacterCombatUIView _playerCharacterCombatUIView;
 
-        private PlayerCharacterCombatParamsPresenter _playerCharacterCombatParamsPresenter;
+        private PlayerCombatParamsPresenter _playerCharacterCombatParamsPresenter;
 
         public event EventHandler<PatientHealthChangedEventArgs> PatientHealthChanged;
 
-        public override void Initialize(UserInputController userInputController = null)
+        public override void Initialize(CharacterParamsScriptableObject playerParamsScriptableObject, UserInputController userInputController = null)
         {
-            base.Initialize();
-            _playerCharacterCombatParamsPresenter = new PlayerCharacterCombatParamsPresenter(_playerCharacterParamsModel, _playerCharacterCombatUIView);
+            _playerParamsModel = new PlayerParamsModel((PlayerParamsScriptableObject)playerParamsScriptableObject);
+            _playerCharacterCombatParamsPresenter = new PlayerCombatParamsPresenter(_playerParamsModel, _playerCharacterCombatUIView);
 
-            _playerCharacterParamsModel.StaminaPoints.CurrentValueChanged += OnStaminaPointsCurrentValueChanged;
-            _playerCharacterParamsModel.BreathPoints.CurrentValueChanged += OnBreathPointsCurrentValueChanged;
-            _playerCharacterParamsModel.PatientHealthPoints.CurrentValueChanged += OnPatientHealthPointsChanged;
+            _playerParamsModel.StaminaPoints.CurrentValueChanged += OnStaminaPointsCurrentValueChanged;
+            _playerParamsModel.BreathPoints.CurrentValueChanged += OnBreathPointsCurrentValueChanged;
+            _playerParamsModel.PatientHealthPoints.CurrentValueChanged += OnPatientHealthPointsChanged;
+
+            base.Initialize(playerParamsScriptableObject);
         }
 
         public override CharacterParamsModel GetParams()
         {
-            return _playerCharacterParamsModel;
+            return _playerParamsModel;
         }
 
-        protected override CharacterCombatUIView GetView()
+        public override CharacterCombatUIView GetView()
         {
             return _playerCharacterCombatUIView;
         }
@@ -64,7 +68,7 @@ namespace SDRGames.Whist.CharacterModule.Managers
         {
             if(restoration < 0)
             {
-                restoration = _playerCharacterParamsModel.ArmorPoints.RestorationPower;
+                restoration = _playerParamsModel.ArmorPoints.RestorationPower;
             } 
             _playerCharacterCombatParamsPresenter.RestoreArmor(restoration);
         }
@@ -73,7 +77,7 @@ namespace SDRGames.Whist.CharacterModule.Managers
         {
             if(restoration < 0)
             {
-                restoration = _playerCharacterParamsModel.BarrierPoints.RestorationPower;
+                restoration = _playerParamsModel.BarrierPoints.RestorationPower;
             } 
             _playerCharacterCombatParamsPresenter.RestoreBarrier(restoration);
         }
@@ -82,7 +86,7 @@ namespace SDRGames.Whist.CharacterModule.Managers
         {
             if(restoration < 0)
             {
-                restoration = _playerCharacterParamsModel.HealthPoints.RestorationPower;
+                restoration = _playerParamsModel.HealthPoints.RestorationPower;
             }
             _playerCharacterCombatParamsPresenter.RestoreHealth(restoration);
         }
@@ -91,7 +95,7 @@ namespace SDRGames.Whist.CharacterModule.Managers
         {
             if(restoration < 0)
             {
-                restoration = _playerCharacterParamsModel.StaminaPoints.RestorationPower;
+                restoration = _playerParamsModel.StaminaPoints.RestorationPower;
             }
             _playerCharacterCombatParamsPresenter.RestoreStamina(restoration);
         }
@@ -100,14 +104,14 @@ namespace SDRGames.Whist.CharacterModule.Managers
         {
             if(restoration < 0)
             {
-                restoration = _playerCharacterParamsModel.BreathPoints.RestorationPower;
+                restoration = _playerParamsModel.BreathPoints.RestorationPower;
             }
             _playerCharacterCombatParamsPresenter.RestoreBreath(restoration);
         }
 
         public bool HasEnoughStaminaPoints(float cost)
         {
-            if(_playerCharacterParamsModel.StaminaPoints.CurrentValue < _playerCharacterParamsModel.StaminaPoints.ReservedValue + cost)
+            if(_playerParamsModel.StaminaPoints.CurrentValue < _playerParamsModel.StaminaPoints.ReservedValue + cost)
             {
                 NotificationController.Show(_playerCharacterCombatParamsPresenter.GetNotEnoughStaminaErrorMessage());
                 return false;
@@ -132,7 +136,7 @@ namespace SDRGames.Whist.CharacterModule.Managers
 
         public bool HasEnoughBreathPoints(float cost)
         {
-            if (_playerCharacterParamsModel.BreathPoints.CurrentValue < _playerCharacterParamsModel.BreathPoints.ReservedValue + cost)
+            if (_playerParamsModel.BreathPoints.CurrentValue < _playerParamsModel.BreathPoints.ReservedValue + cost)
             {
                 NotificationController.Show(_playerCharacterCombatParamsPresenter.GetNotEnoughBreathErrorMessage());
                 return false;
@@ -157,7 +161,7 @@ namespace SDRGames.Whist.CharacterModule.Managers
 
         protected void OnEnable()
         {
-            this.CheckFieldValueIsNotNull(nameof(_playerCharacterParamsModel), _playerCharacterParamsModel);
+            //this.CheckFieldValueIsNotNull(nameof(_playerParamsModel), _playerParamsModel);
             this.CheckFieldValueIsNotNull(nameof(_playerCharacterCombatUIView), _playerCharacterCombatUIView);
         }
 

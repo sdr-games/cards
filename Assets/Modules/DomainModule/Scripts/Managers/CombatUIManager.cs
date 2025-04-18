@@ -10,10 +10,10 @@ using SDRGames.Whist.HelpersModule.Views;
 using SDRGames.Whist.MeleeCombatModule.Managers;
 using SDRGames.Whist.RestorationModule.Managers;
 using SDRGames.Whist.UserInputModule.Controller;
-
-using UnityEngine;
 using SDRGames.Whist.CardsCombatModule.Models;
 using SDRGames.Whist.AbilitiesModule.Models;
+
+using UnityEngine;
 
 namespace SDRGames.Whist.DomainModule.Managers
 {
@@ -32,7 +32,7 @@ namespace SDRGames.Whist.DomainModule.Managers
 
         [Header("RESTORATION")][SerializeField] private PotionListManager _potionListManager;
 
-        [Header("PLAYER")][SerializeField] private HideableUIView _playerSwitchableUI;
+        [Header("PLAYER")][SerializeField] private HideableUIView _playerSwitchableUI; 
 
         public event EventHandler<CardSelectClickedEventArgs> CardSelectClicked;
         public event EventHandler<CardMarkClickedEventArgs> CardMarkClicked;
@@ -108,6 +108,11 @@ namespace SDRGames.Whist.DomainModule.Managers
             _potionListManager.Hide();
             _selectedDeckManager.Hide();
             _decksPreviewWindowManager.Hide();
+        }
+
+        public void AddEnemyBars(GameObject enemyBars)
+        {
+            _combatUIView.SetAsParent(enemyBars.transform);
         }
 
         public bool TrySelectCard(CardManager cardManager)

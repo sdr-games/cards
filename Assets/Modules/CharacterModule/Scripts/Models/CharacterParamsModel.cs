@@ -1,89 +1,63 @@
-using System;
-
-using SDRGames.Whist.CharacterModule.Models;
-using SDRGames.Whist.DiceModule.Models;
-using SDRGames.Whist.HelpersModule;
+using SDRGames.Whist.CharacterModule.ScriptableObjects;
 using SDRGames.Whist.PointsModule.Models;
 
-using UnityEngine;
-
-namespace SDRGames.Whist.CharacterModule.ScriptableObjects
+namespace SDRGames.Whist.CharacterModule.Models
 {
-    [Serializable]
-    [CreateAssetMenu(fileName = "CharacterParameters", menuName = "SDRGames/Characters/Character Parameters")]
-    public class CharacterParamsModel : ScriptableObject
+    public class CharacterParamsModel
     {
-        [field: SerializeField] public CharacterInfoScriptableObject CharacterInfo { get; protected set; }
-        [field: SerializeField] public int Level { get; protected set; } = 1;
+        public int Level { get; protected set; }
+        public int Strength { get; protected set; }
+        public int Agility { get; protected set; }
+        public int Stamina { get; protected set; }
+        public int Intelligence { get; protected set; }
+        public int PhysicalDamage { get; protected set; }
+        public int MagicalDamage { get; protected set; }
+        public int PhysicalHitChance { get; protected set; }
+        public int MagicalHitChance { get; protected set; }
+        public float StaminaRestorationPower { get => StaminaPoints.RestorationPower; }
+        public int Piercing { get; protected set; }
+        public int DodgeChance { get; protected set; }
+        public int BlockChance { get; protected set; }
+        public int OnslaughtChance { get; protected set; }
+        public int CriticalStrikeChance { get; protected set; }
+        public int Resilience { get; protected set; }
+        public int Weakening { get; protected set; }
+        public int Amplification { get; protected set; }
+        public int StunResistance { get; protected set; }
+        public Points HealthPoints { get; protected set; }
+        public Points StaminaPoints { get; protected set; }
+        public Points BreathPoints { get; protected set; }
+        public Points ArmorPoints { get; protected set; }
+        public Points BarrierPoints { get; protected set; }
 
-        #region Characteristics
-
-        [field: Header("Characteristics")]
-        [field: SerializeField] public int Strength { get; protected set; }
-        [field: SerializeField] public int Agility { get; protected set; }
-        [field: SerializeField] public int Stamina { get; protected set; }
-        [field: SerializeField] public int Intelligence { get; protected set; }
-
-        #endregion
-
-        #region Visible Parameters
-
-        [field: Header("Visible Parameters")]
-        [field: SerializeField] public int PhysicalDamage { get; protected set; }
-        [field: SerializeField] public int MagicalDamage { get; protected set; }
-        [field: SerializeField] public int PhysicalHitChance { get; protected set; }
-        [field: SerializeField] public int MagicalHitChance { get; protected set; }
-        [field: SerializeField] public float StaminaRestorationPower { get => StaminaPoints.RestorationPower; }
-        [field: SerializeField] public int Piercing { get; protected set; }
-
-        #endregion
-
-        #region Hidden Parameters
-
-        [field: Header("Hidden Parameters")]
-        [field: SerializeField] public int DodgeChance { get; protected set; }
-        [field: SerializeField] public int BlockChance { get; protected set; }
-        [field: SerializeField] public int OnslaughtChance { get; protected set; }
-        [field: SerializeField] public int CriticalStrikeChance { get; protected set; }
-        [field: SerializeField] public int Resilience { get; protected set; }
-        [field: SerializeField] public int Weakening { get; protected set; }
-        [field: SerializeField] public int Amplification { get; protected set; }
-        [field: SerializeField] public Dice Initiative { get; protected set; }
-        [field: SerializeField] public int StunResistance { get; protected set; }
-
-        #endregion
-
-        #region Points
-
-        [field: Header("Points")]
-        [field: SerializeField] public Points HealthPoints { get; protected set; }
-        [field: SerializeField] public Points StaminaPoints { get; protected set; }
-        [field: SerializeField] public Points BreathPoints { get; protected set; }
-        [field: SerializeField] public Points ArmorPoints { get; protected set; }
-        [field: SerializeField] public Points BarrierPoints { get; protected set; }
-
-        #endregion
-
-        #region Level changing methods
-
-        public virtual void IncreaseLevel(int level)
+        public CharacterParamsModel(CharacterParamsScriptableObject characterParamsScriptableObject)
         {
-            Level += level;
-            int physicalDamageLevelScaling = Level / CharacterParametersScaling.Instance.LevelsCountForMultiplier * CharacterParametersScaling.Instance.LevelsToPhysicalDamageMultiplier;
-            int magicalDamageLevelScaling = Level / CharacterParametersScaling.Instance.LevelsCountForMultiplier * CharacterParametersScaling.Instance.LevelsToMagicalDamageMultiplier;
+            Level = characterParamsScriptableObject.Level;
+            Strength = characterParamsScriptableObject.Strength;
+            Agility = characterParamsScriptableObject.Agility;
+            Stamina = characterParamsScriptableObject.Stamina;
+            Intelligence = characterParamsScriptableObject.Intelligence;
 
-            PhysicalDamage = Strength * CharacterParametersScaling.Instance.StrengthToPhysicalDamage;
-            PhysicalDamage *= physicalDamageLevelScaling > 0 ? physicalDamageLevelScaling : 1;
-            MagicalDamage = Intelligence * CharacterParametersScaling.Instance.IntelligenceToMagicalDamage;
-            MagicalDamage *= magicalDamageLevelScaling > 0 ? magicalDamageLevelScaling : 1;
+            PhysicalDamage = characterParamsScriptableObject.PhysicalDamage;
+            MagicalDamage = characterParamsScriptableObject.MagicalDamage;
+            PhysicalHitChance = characterParamsScriptableObject.PhysicalHitChance;
+            MagicalHitChance = characterParamsScriptableObject.MagicalHitChance;
+            Piercing = characterParamsScriptableObject.Piercing;
+            DodgeChance = characterParamsScriptableObject.DodgeChance;
+            BlockChance = characterParamsScriptableObject.BlockChance;
+            OnslaughtChance = characterParamsScriptableObject.OnslaughtChance;
+            CriticalStrikeChance = characterParamsScriptableObject.CriticalStrikeChance;
+            Resilience = characterParamsScriptableObject.Resilience;
+            Weakening = characterParamsScriptableObject.Weakening;
+            Amplification = characterParamsScriptableObject.Amplification;
+            StunResistance = characterParamsScriptableObject.StunResistance;
 
-            ArmorPoints.SetPermanentBonus(Level * CharacterParametersScaling.Instance.LevelToArmorPoints);
-            BarrierPoints.SetPermanentBonus(Level * CharacterParametersScaling.Instance.LevelToBarrierPoints);
+            HealthPoints = new Points(characterParamsScriptableObject.HealthPoints);
+            StaminaPoints = new Points(characterParamsScriptableObject.StaminaPoints);
+            BreathPoints = new Points(characterParamsScriptableObject.BreathPoints);
+            ArmorPoints = new Points(characterParamsScriptableObject.ArmorPoints);
+            BarrierPoints = new Points(characterParamsScriptableObject.BarrierPoints);
         }
-
-        #endregion
-
-        #region Characterstic changing methods
 
         public virtual void IncreaseStrength(int strength)
         {
@@ -105,7 +79,6 @@ namespace SDRGames.Whist.CharacterModule.ScriptableObjects
             DodgeChance = Agility * CharacterParametersScaling.Instance.AgilityToDodgeChance;
             CriticalStrikeChance = (Strength + Agility) / 2 * CharacterParametersScaling.Instance.StrengthAndAgilityToCriticalStrikeChance;
             StaminaPoints.SetRestorationPower(StaminaPoints.MaxValue * (CharacterParametersScaling.Instance.BaseStaminaRestorationPowerPercent / 100) + Agility * CharacterParametersScaling.Instance.AgilityToStaminaRestorationPerRound);
-            Initiative = new Dice("Initiative", 1, 20 - Agility * CharacterParametersScaling.Instance.AgilityToInitiative);
             Piercing = Agility * CharacterParametersScaling.Instance.AgilityToPiercing;
 
         }
@@ -131,8 +104,6 @@ namespace SDRGames.Whist.CharacterModule.ScriptableObjects
             BreathPoints.SetPermanentBonus(Intelligence * CharacterParametersScaling.Instance.IntelligenceToBreathPoints);
         }
 
-        #endregion
-
         public void IncreasePhysicalDamage(int physicalDamage)
         {
             PhysicalDamage += physicalDamage;
@@ -150,7 +121,7 @@ namespace SDRGames.Whist.CharacterModule.ScriptableObjects
             {
                 ArmorPoints.DecreaseCurrentValue(damage);
             }
-            if(trueDamage <= 0)
+            if (trueDamage <= 0)
             {
                 return;
             }
@@ -199,21 +170,6 @@ namespace SDRGames.Whist.CharacterModule.ScriptableObjects
         public void RestoreBreath(float restoration)
         {
             BreathPoints.IncreaseCurrentValue(restoration);
-        }
-
-        protected virtual void OnEnable()
-        {
-            HealthPoints.SetName(nameof(HealthPoints));
-            StaminaPoints.SetName(nameof(StaminaPoints));
-            BreathPoints.SetName(nameof(BreathPoints));
-            ArmorPoints.SetName(nameof(ArmorPoints));
-            BarrierPoints.SetName(nameof(BarrierPoints));
-
-            HealthPoints.Reset();
-            StaminaPoints.Reset();
-            BreathPoints.Reset();
-            ArmorPoints.Reset();
-            BarrierPoints.Reset();
         }
     }
 }

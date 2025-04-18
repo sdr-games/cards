@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,11 +7,11 @@ using SDRGames.Whist.AbilitiesModule.Models;
 using SDRGames.Whist.AbilitiesModule.ScriptableObjects;
 using SDRGames.Whist.EnemyBehaviorModule.ScriptableObjects;
 using SDRGames.Whist.CharacterModule.Managers;
-using SDRGames.Whist.CharacterModule.ScriptableObjects;
+using SDRGames.Whist.AIBehaviorModule.ScriptableObjects;
 using SDRGames.Whist.UserInputModule.Controller;
+using SDRGames.Whist.CharacterModule.Models;
 
 using UnityEngine;
-using System;
 
 namespace SDRGames.Whist.EnemyBehaviorModule.Managers
 {
@@ -18,31 +19,34 @@ namespace SDRGames.Whist.EnemyBehaviorModule.Managers
     {
         private const int MAX_MELEE_ABILITIES_COUNT_PER_ROUND = 3;
         private const int MAX_MAGICAL_ABILITIES_COUNT_PER_ROUND = 3;
-
-        [SerializeField] private SpecialAbilityScriptableObject[] _specialAbilitiesScriptableObjects;
-        [SerializeField] private BehaviorScriptableObject[] _meleeBehaviors;
-        [SerializeField] private BehaviorScriptableObject[] _magicBehaviors;
-
         [field: SerializeField] public EnemyCombatManager EnemyCombatManager { get; private set; }
-
-        private enum PreferrableDamageTypes { Physical, Magical }
+        private CharacterParamsModel _enemyParams;
 
         private PlayerCombatManager _playerCombatManager;
-        private CharacterParamsModel _enemyParams;
         private CharacterParamsModel _playerParams;
+
         private List<SpecialAbility> _specialAbilities;
+        private BehaviorScriptableObject[] _meleeBehaviors;
+        private BehaviorScriptableObject[] _magicBehaviors;
 
         public event EventHandler AbilityUsed;
 
-        public void Initialize(PlayerCombatManager playerCombatManager, UserInputController userInputController)
+        public void Initialize(EnemyDataScriptableObject enemyDataScriptableObject, PlayerCombatManager playerCombatManager, UserInputController userInputController)
         {
-            _playerCombatManager = playerCombatManager;
-            EnemyCombatManager.Initialize(userInputController);
+            EnemyCombatManager.Initialize(enemyDataScriptableObject.EnemyParamsScriptableObject, userInputController);
             _enemyParams = EnemyCombatManager.GetParams();
+
+            _playerCombatManager = playerCombatManager;
             _playerParams = _playerCombatManager.GetParams();
-            InitializeSpecialAbilities();
-            InitializeBehaviors(_meleeBehaviors);
-            InitializeBehaviors(_magicBehaviors);
+
+            _meleeBehaviors = enemyDataScriptableObject.MeleeBehaviors;
+            _magicBehaviors = enemyDataScriptableObject.MagicBehaviors;
+
+            InitializeSpecialAbilities(enemyDataScriptableObject.SpecialAbilitiesScriptableObjects);
+            InitializeBehavior(_meleeBehaviors);
+            InitializeBehavior(_magicBehaviors);
+
+            gameObject.SetActive(true);
         }
 
         public virtual void MakeMove()
@@ -59,7 +63,7 @@ namespace SDRGames.Whist.EnemyBehaviorModule.Managers
                 selectedAbilities = SelectAbilities(
                     _meleeBehaviors,
                     EnemyCombatManager.GetParams().StaminaPoints.CurrentValue,
-                    _playerCombatManager.GetParams().ArmorPoints.CurrentValueInPercents
+                    _playerParams.ArmorPoints.CurrentValueInPercents
                 );
                 if(selectedAbilities != null)
                 {
@@ -73,7 +77,7 @@ namespace SDRGames.Whist.EnemyBehaviorModule.Managers
             selectedAbilities = SelectAbilities(
                 _magicBehaviors,
                 EnemyCombatManager.GetParams().BreathPoints.CurrentValue,
-                _playerCombatManager.GetParams().BarrierPoints.CurrentValueInPercents
+                _playerParams.BarrierPoints.CurrentValueInPercents
             );
             if (selectedAbilities != null)
             {
@@ -134,18 +138,18 @@ namespace SDRGames.Whist.EnemyBehaviorModule.Managers
             StopAllCoroutines();
         }
 
-        private void InitializeBehaviors(BehaviorScriptableObject[] _behaviors)
+        private void InitializeBehavior(BehaviorScriptableObject[] behaviors)
         {
-            foreach(BehaviorScriptableObject behavior in _behaviors)
+            foreach(BehaviorScriptableObject behavior in behaviors)
             {
                 behavior.Initialize();
             }
         }
 
-        private void InitializeSpecialAbilities()
+        private void InitializeSpecialAbilities(SpecialAbilityScriptableObject[] specialAbilitiesScriptableObjects)
         {
             _specialAbilities = new List<SpecialAbility>();
-            foreach (SpecialAbilityScriptableObject specialAbilitySO in _specialAbilitiesScriptableObjects)
+            foreach (SpecialAbilityScriptableObject specialAbilitySO in specialAbilitiesScriptableObjects)
             {
                 SpecialAbility specialAbility = new SpecialAbility(specialAbilitySO);
                 _specialAbilities.Add(specialAbility);

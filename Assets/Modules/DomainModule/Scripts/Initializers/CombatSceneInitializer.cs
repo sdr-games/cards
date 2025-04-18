@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 
 using SDRGames.Whist.EnemyBehaviorModule.Managers;
@@ -12,11 +13,9 @@ using SDRGames.Whist.TurnSwitchModule.Managers;
 using SDRGames.Whist.UserInputModule.Controller;
 using SDRGames.Whist.NotificationsModule;
 using SDRGames.Whist.SceneManagementModule.Initializers;
+using SDRGames.Whist.AIBehaviorModule.ScriptableObjects;
 
 using UnityEngine;
-using System;
-using System.Collections;
-using SDRGames.Whist.SceneManagementModule.Models;
 
 namespace SDRGames.Whist.DomainModule
 {
@@ -29,43 +28,56 @@ namespace SDRGames.Whist.DomainModule
         [Header("UI")][SerializeField] private CombatUIManager _combatUIManager;
         [SerializeField] private FloatingTextManager _floatingTextManager;
         [Header("PLAYER")][SerializeField] private PlayerCombatManager _playerCombatManager;
-        [Header("ENEMIES")][SerializeField] private EnemyBehaviorManager[] _enemyBehaviorManagers;
+        [Header("ENEMIES")][SerializeField] private EnemyBehaviorManager _enemyBehaviorManagerPrefab;
 
         [Header("SCALINGS")][SerializeField] private CharacterParametersScalingScriptableObject _characterParametersScalingSettings;
         [SerializeField] private CardsScalingScriptableObject _cardsScalingScriptableObject;
         [SerializeField] private MeleeAttacksScalingScriptableObject _meleeAttacksScalingScriptableObject;
 
-        private List<EnemyCombatManager> _enemyCombatManagers;
+        private List<EnemyBehaviorManager> _enemyBehaviorManagers;
 
         public override IEnumerator InitializeCoroutine()
         {
-            _totalWeight = 13.5f + _enemyBehaviorManagers.Length * 0.5f;
+            PlayerParamsScriptableObject playerParamsScriptableObject = (PlayerParamsScriptableObject)_sceneInitializationReferenceParameters["playerParams"];
+            EnemiesListScriptableObject enemiesListScriptableObject = (EnemiesListScriptableObject)_sceneInitializationReferenceParameters["enemiesList"];
+
+            _totalWeight = 13.5f + enemiesListScriptableObject.EnemiesData.Length;
 
             yield return InitializePart(() => _notificationController.Initialize(), 0.5f);
             yield return InitializePart(() => _characterParametersScalingSettings.Initialize(), 1f);
             yield return InitializePart(() => _cardsScalingScriptableObject.Initialize(), 1f);
             yield return InitializePart(() => _meleeAttacksScalingScriptableObject.Initialize(), 1f);
             yield return InitializePart(() => _floatingTextManager.Initialize(), 1f);
-            yield return InitializePart(() => _playerCombatManager.Initialize(), 1f);
+            yield return InitializePart(() => _playerCombatManager.Initialize(playerParamsScriptableObject), 1f);
 
-            _enemyCombatManagers = new List<EnemyCombatManager>();
-            List<CharacterParamsModel> characterInfoScriptableObjects = new List<CharacterParamsModel>();
-            characterInfoScriptableObjects.Add(_playerCombatManager.GetParams());
-            foreach (EnemyBehaviorManager enemyBehaviorManager in _enemyBehaviorManagers)
+            List<CharacterParamsScriptableObject> characterParamsScriptableObjects = new List<CharacterParamsScriptableObject>();
+            characterParamsScriptableObjects.Add(playerParamsScriptableObject);
+
+            _enemyBehaviorManagers = new List<EnemyBehaviorManager>();
+            List<EnemyCombatManager> enemyCombatManagers = new List<EnemyCombatManager>();
+            for(int i = 0; i < enemiesListScriptableObject.EnemiesData.Length; i++)
             {
-                yield return InitializePart(() => enemyBehaviorManager.Initialize(_playerCombatManager, UserInputController.Instance), 0.5f);
-                _enemyCombatManagers.Add(enemyBehaviorManager.EnemyCombatManager);
-                characterInfoScriptableObjects.Add(enemyBehaviorManager.EnemyCombatManager.GetParams());
+                yield return InitializePart(() => CreateAndInitializeEnemy(enemiesListScriptableObject.EnemiesData[i], enemyCombatManagers, characterParamsScriptableObjects), 1f);
             }
             yield return InitializePart(() => _combatUIManager.Initialize(UserInputController.Instance), 1f);
-            yield return InitializePart(() => _turnsQueueManager.Initialize(characterInfoScriptableObjects), 1f);
+            yield return InitializePart(() => _turnsQueueManager.Initialize(characterParamsScriptableObjects), 1f);
 
-            yield return InitializePart(() => _combatSceneManager.Initialize(_turnsQueueManager, _combatUIManager, _playerCombatManager, _enemyBehaviorManagers, _enemyCombatManagers), 6.5f);
+            yield return InitializePart(() => _combatSceneManager.Initialize(_turnsQueueManager, _combatUIManager, _playerCombatManager, _enemyBehaviorManagers, enemyCombatManagers), 6.5f);
         }
 
         public override void Run()
         {
             _combatSceneManager.StartCombat();
+        }
+
+        private void CreateAndInitializeEnemy(EnemyDataScriptableObject enemyDataScriptableObject, List<EnemyCombatManager> enemyCombatManagers, List<CharacterParamsScriptableObject> characterParamsScriptableObjects)
+        {
+            EnemyBehaviorManager enemyBehaviorManager = Instantiate(_enemyBehaviorManagerPrefab);
+            enemyBehaviorManager.Initialize(enemyDataScriptableObject, _playerCombatManager, UserInputController.Instance);
+            _enemyBehaviorManagers.Add(enemyBehaviorManager);
+            enemyCombatManagers.Add(enemyBehaviorManager.EnemyCombatManager);
+            characterParamsScriptableObjects.Add(enemyDataScriptableObject.EnemyParamsScriptableObject);
+            _combatUIManager.AddEnemyBars(enemyBehaviorManager.EnemyCombatManager.GetView().gameObject);
         }
 
         private void OnEnable()
@@ -79,7 +91,7 @@ namespace SDRGames.Whist.DomainModule
             this.CheckFieldValueIsNotNull(nameof(_combatUIManager), _combatUIManager);
             this.CheckFieldValueIsNotNull(nameof(_floatingTextManager), _floatingTextManager);
             this.CheckFieldValueIsNotNull(nameof(_playerCombatManager), _playerCombatManager);
-            this.CheckFieldValueIsNotNull(nameof(_enemyBehaviorManagers), _enemyBehaviorManagers);
+            this.CheckFieldValueIsNotNull(nameof(_enemyBehaviorManagerPrefab), _enemyBehaviorManagerPrefab);
         }
 
         private void OnValidate()

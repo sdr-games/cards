@@ -31,7 +31,7 @@ namespace SDRGames.Whist.TurnSwitchModule.Managers
 
         public event EventHandler<TurnSwitchedEventArgs> TurnSwitched;
 
-        public void Initialize(List<CharacterParamsModel> characterParamsModels)
+        public void Initialize(List<CharacterParamsScriptableObject> characterParamsModels)
         {
             _isCombatTurn = true;
 
@@ -104,21 +104,21 @@ namespace SDRGames.Whist.TurnSwitchModule.Managers
             }
         }
 
-        private List<CharacterInfoScriptableObject> OrderByInitiative(List<CharacterParamsModel> characterParamsModels)
+        private List<CharacterInfoScriptableObject> OrderByInitiative(List<CharacterParamsScriptableObject> characterParamsModels)
         {
             List<CharacterInfoScriptableObject> result = new List<CharacterInfoScriptableObject>();
-            List<CharacterParamsModel> sortedParams = characterParamsModels.OrderByDescending(x => x.Initiative.CheckRoll()).ToList();
-            foreach (CharacterParamsModel characterParamsModel in sortedParams)
+            List<CharacterParamsScriptableObject> sortedParams = characterParamsModels.OrderByDescending(x => x.Initiative.CheckRoll()).ToList();
+            foreach (CharacterParamsScriptableObject characterParamsModel in sortedParams)
             {
                 result.Add(characterParamsModel.CharacterInfo);
             }
             return result;
         }
 
-        private List<Points> GetPointsFromParams(List<CharacterParamsModel> characterParamsModels)
+        private List<Points> GetPointsFromParams(List<CharacterParamsScriptableObject> characterParamsModels)
         {
             List<Points> result = new List<Points>();
-            foreach (CharacterParamsModel characterParamsModel in characterParamsModels)
+            foreach (CharacterParamsScriptableObject characterParamsModel in characterParamsModels)
             {
                 result.Add(characterParamsModel.ArmorPoints);
                 result.Add(characterParamsModel.BarrierPoints);

@@ -1,7 +1,6 @@
 using SDRGames.Whist.PointsModule.Presenters;
-using SDRGames.Whist.PointsModule.Models;
-using SDRGames.Whist.CharacterModule.ScriptableObjects;
 using SDRGames.Whist.CharacterModule.Views;
+using SDRGames.Whist.CharacterModule.Models;
 
 namespace SDRGames.Whist.CharacterModule.Presenters
 {

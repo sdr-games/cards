@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e8d24b482f25a7b44850f2fb509e64ac, type: 3}
-  m_Name: SlimeParameters
+  m_Script: {fileID: 11500000, guid: 23adfdc03854eef4ab4fc38cc8d3334c, type: 3}
+  m_Name: GlassBlowerCoughParameters
   m_EditorClassIdentifier: 
   <CharacterInfo>k__BackingField: {fileID: 11400000, guid: c474431b8bbfc0d42a0688abb1ab4a68,
     type: 2}
@@ -32,11 +32,11 @@ MonoBehaviour:
   <Weakening>k__BackingField: 0
   <Amplification>k__BackingField: 0
   <Initiative>k__BackingField:
-    <Name>k__BackingField: Initiative
-    <RollsCount>k__BackingField: 1
-    <SidesCount>k__BackingField: 20
+    <Name>k__BackingField: 
+    <RollsCount>k__BackingField: 0
+    <SidesCount>k__BackingField: 0
     <Modificator>k__BackingField: 0
-  <StunResistance>k__BackingField: 50
+  <StunResistance>k__BackingField: 0
   <HealthPoints>k__BackingField:
     <BaseValue>k__BackingField: 500
     <PermanentBonus>k__BackingField: 0
@@ -47,23 +47,23 @@ MonoBehaviour:
     <BaseValue>k__BackingField: 150
     <PermanentBonus>k__BackingField: 0
     <TemporaryBonus>k__BackingField: 0
-    <RestorationPower>k__BackingField: 40
+    <RestorationPower>k__BackingField: 30
     <MaxValue>k__BackingField: 150
   <BreathPoints>k__BackingField:
     <BaseValue>k__BackingField: 150
     <PermanentBonus>k__BackingField: 0
     <TemporaryBonus>k__BackingField: 0
-    <RestorationPower>k__BackingField: 0
+    <RestorationPower>k__BackingField: 25
     <MaxValue>k__BackingField: 150
   <ArmorPoints>k__BackingField:
     <BaseValue>k__BackingField: 200
-    <PermanentBonus>k__BackingField: 10
+    <PermanentBonus>k__BackingField: 0
     <TemporaryBonus>k__BackingField: 0
     <RestorationPower>k__BackingField: 0
-    <MaxValue>k__BackingField: 210
+    <MaxValue>k__BackingField: 200
   <BarrierPoints>k__BackingField:
     <BaseValue>k__BackingField: 130
-    <PermanentBonus>k__BackingField: 10
+    <PermanentBonus>k__BackingField: 0
     <TemporaryBonus>k__BackingField: 0
     <RestorationPower>k__BackingField: 0
-    <MaxValue>k__BackingField: 140
+    <MaxValue>k__BackingField: 130
