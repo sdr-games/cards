@@ -72,6 +72,6 @@ MonoBehaviour:
     <PermanentBonus>k__BackingField: 0
     <TemporaryBonus>k__BackingField: 0
     <RestorationPower>k__BackingField: 0
-    <MaxValue>k__BackingField: 0
+    <MaxValue>k__BackingField: 100
   <Experience>k__BackingField: 0
   <TalentPoints>k__BackingField: 0

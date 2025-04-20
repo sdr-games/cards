@@ -2,6 +2,9 @@ using System;
 
 using SDRGames.Whist.AbilitiesModule.ScriptableObjects;
 using SDRGames.Whist.CharacterModule.Managers;
+using SDRGames.Whist.CharacterModule.Models;
+
+using UnityEngine;
 
 using static SDRGames.Whist.AbilitiesModule.ScriptableObjects.DamageLogicScriptableObject;
 
@@ -20,23 +23,57 @@ namespace SDRGames.Whist.AbilitiesModule.Models
             _inPercents = damageLogicScriptableObject.InPercents;
         }
 
-        public override void Apply(CharacterCombatManager targetCharacterCombatManager)
+        public override void Apply(CharacterCombatManager casterCombatManager)
         {
-            int randomInt = UnityEngine.Random.Range(0, 100);
-            int chance = _chance - targetCharacterCombatManager.GetParams().DodgeChance;
-            if (_chance < randomInt)
-            {
-                return;
-            }
+            throw new NotImplementedException();
+        }
+
+        public override void Apply(CharacterCombatManager casterCharacterCombatManager, CharacterCombatManager targetCharacterCombatManager)
+        {
+            CharacterParamsModel casterParams = casterCharacterCombatManager.GetParams();
+            CharacterParamsModel targetParams = targetCharacterCombatManager.GetParams();
             Action<int> action = null;
+            int hitChance = 0;
+            int dodgeChance = 0;
+            bool isCritical = false;
 
             switch (_damageType)
             {
                 case DamageTypes.Physical:
-                    action = (int value) => targetCharacterCombatManager.TakePhysicalDamage(value);
+                    hitChance = UnityEngine.Random.Range(0, _chance + casterParams.PhysicalHitChance + casterParams.OnslaughtChance);
+                    Debug.Log($"hitchance {hitChance}");
+                    dodgeChance = UnityEngine.Random.Range(0, targetParams.DodgeChance + targetParams.BlockChance);
+                    Debug.Log($"dodgeChance {dodgeChance}");
+                    if (hitChance < dodgeChance)
+                    {
+                        return;
+                    }
+                    isCritical = UnityEngine.Random.Range(0, 100) < casterParams.CriticalStrikeChance;
+                    Debug.Log($"isCritical {isCritical}");
+                    Debug.Log($"baseDamage {_damageValue}");
+
+                    _damageValue += CalculatePhysicalDamage(casterParams, targetParams, isCritical);
+                    _damageValue = ApplyModifiers(casterParams, targetParams, _damageValue, isCritical);
+                    Debug.Log($"totalDamage {_damageValue}");
+                    action = (int value) => targetCharacterCombatManager.TakePhysicalDamage(value, isCritical);
                     break;
                 case DamageTypes.Magical:
-                    action = (int value) => targetCharacterCombatManager.TakeMagicalDamage(value);
+                    hitChance = UnityEngine.Random.Range(0, _chance + casterParams.MagicalHitChance);
+                    Debug.Log($"hitchance {hitChance}");
+                    dodgeChance = UnityEngine.Random.Range(0, targetParams.DodgeChance);
+                    Debug.Log($"dodgeChance {dodgeChance}");
+                    if (hitChance < dodgeChance)
+                    {
+                        return;
+                    }
+                    isCritical = UnityEngine.Random.Range(0, 100) < casterParams.CriticalStrikeChance;
+                    Debug.Log($"isCritical {isCritical}");
+                    Debug.Log($"baseDamage {_damageValue}");
+
+                    _damageValue += CalculateMagicalDamage(casterParams, targetParams, isCritical);
+                    _damageValue = ApplyModifiers(casterParams, targetParams, _damageValue, isCritical);
+                    Debug.Log($"totalDamage {_damageValue}");
+                    action = (int value) => targetCharacterCombatManager.TakeMagicalDamage(value, isCritical);
                     break;
                 case DamageTypes.True:
                     action = (int value) => targetCharacterCombatManager.TakeTrueDamage(value);
@@ -69,6 +106,46 @@ namespace SDRGames.Whist.AbilitiesModule.Models
         {
             _description.SetParam("damage", _damageValue);
             return _description.GetLocalizedText();
+        }
+
+        private int CalculatePhysicalDamage(CharacterParamsModel casterParams, CharacterParamsModel targetParams, bool isCritical)
+        {
+            float calculatedDamage = casterParams.Strength * CharacterParametersScaling.Instance.StrengthToPhysicalDamage;
+            Debug.Log($"calculatedDamage {calculatedDamage}");
+            calculatedDamage += calculatedDamage * casterParams.PhysicalDamageModifier;
+            Debug.Log($"calculatedDamageModified {calculatedDamage}");
+            return (int)calculatedDamage;
+        }
+
+        private int CalculateMagicalDamage(CharacterParamsModel casterParams, CharacterParamsModel targetParams, bool isCritical)
+        {
+            float calculatedDamage = casterParams.Intelligence * CharacterParametersScaling.Instance.IntelligenceToMagicalDamage;
+            calculatedDamage += calculatedDamage * casterParams.MagicalDamageModifier;
+            return (int)calculatedDamage;
+        }
+
+        private int ApplyModifiers(CharacterParamsModel casterParams, CharacterParamsModel targetParams, float calculatedDamage, bool isCritical)
+        {
+            bool isResilient = UnityEngine.Random.Range(0, 100) < targetParams.ResilienceChance;
+
+            if (isCritical)
+            {
+                calculatedDamage *= CharacterParametersScaling.Instance.CriticalStrikeModifier;
+                Debug.Log($"calculatedDamageCritical {calculatedDamage}");
+            }
+            if (isResilient)
+            {
+                calculatedDamage *= 100 - CharacterParametersScaling.Instance.ResiliencePercent / 100f;
+                Debug.Log($"calculatedDamageResilient {calculatedDamage}");
+            }
+            calculatedDamage *= 1 + targetParams.Weakening / 100f;
+            Debug.Log($"calculatedDamageWeaked {calculatedDamage}");
+            calculatedDamage *= 1 - targetParams.Amplification / 100f;
+            Debug.Log($"calculatedDamageAmplified {calculatedDamage}");
+            calculatedDamage *= 1 + casterParams.Amplification / 100f;
+            Debug.Log($"calculatedDamageTotal {calculatedDamage}");
+
+            return (int)Math.Round(calculatedDamage);
         }
     }
 }

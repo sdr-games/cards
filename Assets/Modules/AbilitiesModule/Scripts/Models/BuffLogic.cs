@@ -81,5 +81,10 @@ namespace SDRGames.Whist.AbilitiesModule.Models
         {
             return "";
         }
+
+        public override void Apply(CharacterCombatManager casterCombatManager, CharacterCombatManager targetCombatManager)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

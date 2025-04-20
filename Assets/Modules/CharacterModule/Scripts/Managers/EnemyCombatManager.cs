@@ -45,19 +45,19 @@ namespace SDRGames.Whist.CharacterModule.Managers
             return _characterCombatParamsView;
         }
 
-        public override void TakePhysicalDamage(int damage)
+        public override void TakePhysicalDamage(int damage, bool isCritical)
         {
-            _characterCombatParamsPresenter.TakePhysicalDamage(damage);
+            _characterCombatParamsPresenter.TakePhysicalDamage(damage, isCritical);
         }
 
-        public override void TakeMagicalDamage(int damage)
+        public override void TakeMagicalDamage(int damage, bool isCritical)
         {
-            _characterCombatParamsPresenter.TakeMagicalDamage(damage);
+            _characterCombatParamsPresenter.TakeMagicalDamage(damage, isCritical);
         }
 
-        public override void TakeTrueDamage(int damage)
+        public override void TakeTrueDamage(int damage, bool isCritical = false)
         {
-            _characterCombatParamsPresenter.TakeTrueDamage(damage);
+            _characterCombatParamsPresenter.TakeTrueDamage(damage, isCritical);
         }
 
         public override void RestoreArmorPoints(float restoration)

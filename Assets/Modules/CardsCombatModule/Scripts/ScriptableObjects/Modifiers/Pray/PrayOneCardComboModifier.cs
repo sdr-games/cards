@@ -18,7 +18,7 @@ namespace SDRGames.Whist.CardsCombatModule.ScriptableObjects
         {
             foreach (CharacterCombatManager targetCombatManager in targetCombatManagers)
             {
-                Action<int> action = (int percent) => { targetCombatManager.GetParams().IncreasePhysicalDamage(-(targetCombatManager.GetParams().PhysicalDamage * (percent / 100))); };
+                Action<int> action = (int percent) => { targetCombatManager.GetParams().IncreasePhysicalDamage(-(targetCombatManager.GetParams().PhysicalDamageModifier * (percent / 100))); };
                 targetCombatManager.SetDebuff(_damageReducePercent, _roundsCount, _effectIcon, "", action, true);
             }
         }
