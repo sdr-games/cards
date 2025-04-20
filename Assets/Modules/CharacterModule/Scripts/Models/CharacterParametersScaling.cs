@@ -66,9 +66,11 @@ namespace SDRGames.Whist.CharacterModule.Models
 
         [field: Header("OTHER")][field: SerializeField][field: Range(0, 100)] public int WeakeningMaxPercent { get; private set; }
         [field: SerializeField][field: Range(0, 100)] public int AmplificationMaxPercent { get; private set; }
+        [field: SerializeField][field: Range(0, 100)] public int ResiliencePercent { get; private set; }
         [field: SerializeField][field: Range(0, 100)] public float BaseStaminaRestorationPowerPercent { get; private set; }
         [field: SerializeField][field: Range(0, 100)] public int BaseStunResistance { get; private set; }
         [field: SerializeField][field: Range(0, 100)] public int BaseStunResistanceWithoutArmor { get; private set; }
+        [field: SerializeField] public float CriticalStrikeModifier { get; private set; } = 1.5f;
         
         #endregion
 

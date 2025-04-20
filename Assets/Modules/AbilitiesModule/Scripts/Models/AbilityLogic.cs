@@ -27,7 +27,9 @@ namespace SDRGames.Whist.AbilitiesModule.Models
             SelfUsable = abilityLogicScriptableObject.SelfUsable;
         }
 
-        public abstract void Apply(CharacterCombatManager characterCombatManager);
+        public abstract void Apply(CharacterCombatManager casterCombatManager);
+
+        public abstract void Apply(CharacterCombatManager casterCombatManager, CharacterCombatManager targetCombatManager);
 
         public abstract void AddEffect(AbilityModifier cardModifier);
 

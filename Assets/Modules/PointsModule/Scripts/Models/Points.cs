@@ -111,7 +111,7 @@ namespace SDRGames.Whist.PointsModule.Models
             RegenerationPowerChanged?.Invoke(this, EventArgs.Empty);
         }
 
-        public void IncreaseCurrentValue(float value)
+        public void IncreaseCurrentValue(float value, bool isCritical = false)
         {
             float originalValue = CurrentValue;
             CurrentValue += value;
@@ -121,34 +121,34 @@ namespace SDRGames.Whist.PointsModule.Models
             }
             ResetReservedValue(ReservedValue);
             CurrentValueInPercents = GetValueInPercents(CurrentValue);
-            CurrentValueChanged?.Invoke(this, new ValueChangedEventArgs(originalValue, CurrentValue, CurrentValueInPercents, MaxValue));
+            CurrentValueChanged?.Invoke(this, new ValueChangedEventArgs(originalValue, CurrentValue, CurrentValueInPercents, MaxValue, isCritical));
         }
 
-        public void DecreaseCurrentValue(float cost)
+        public void DecreaseCurrentValue(float value, bool isCritical = false)
         {
             float originalValue = CurrentValue;
-            if (cost > CurrentValue)
+            if (value > CurrentValue)
             {
-                cost = CurrentValue;
+                value = CurrentValue;
             }
-            CurrentValue -= cost;
+            CurrentValue -= value;
             ResetReservedValue(ReservedValue);
             CurrentValueInPercents = GetValueInPercents(CurrentValue);
-            CurrentValueChanged?.Invoke(this, new ValueChangedEventArgs(originalValue, CurrentValue, CurrentValueInPercents, MaxValue));
+            CurrentValueChanged?.Invoke(this, new ValueChangedEventArgs(originalValue, CurrentValue, CurrentValueInPercents, MaxValue, isCritical));
         }
 
         public void DecreaseReservedValue(float value)
         {
             float originalValue = CurrentValue;
             ReservedValue += value;
-            ReservedValueChanged?.Invoke(this, new ValueChangedEventArgs(originalValue, ReservedValue, GetValueInPercents(CurrentValue - ReservedValue), MaxValue));
+            ReservedValueChanged?.Invoke(this, new ValueChangedEventArgs(originalValue, ReservedValue, GetValueInPercents(CurrentValue - ReservedValue), MaxValue, false));
         }
 
         public void ResetReservedValue(float reverseAmount)
         {
             float originalValue = CurrentValue;
             ReservedValue -= reverseAmount;
-            ReservedValueChanged?.Invoke(this, new ValueChangedEventArgs(originalValue, ReservedValue, GetValueInPercents(CurrentValue - ReservedValue), MaxValue));
+            ReservedValueChanged?.Invoke(this, new ValueChangedEventArgs(originalValue, ReservedValue, GetValueInPercents(CurrentValue - ReservedValue), MaxValue, false));
         }
 
         public IEnumerator Regenerate(float regenerationPower = 0, float regenerationSpeed = 0, float length = 0)
@@ -189,7 +189,7 @@ namespace SDRGames.Whist.PointsModule.Models
             float originalValue = CurrentValue;
             CalculateCurrentValue(GetValueInPercents(CurrentValue));
             MaxValue = BaseValue + PermanentBonus + TemporaryBonus;
-            MaxValueChanged?.Invoke(this, new ValueChangedEventArgs(originalValue, CurrentValue, CurrentValueInPercents, MaxValue));
+            MaxValueChanged?.Invoke(this, new ValueChangedEventArgs(originalValue, CurrentValue, CurrentValueInPercents, MaxValue, false));
         }
 
         private void CalculateCurrentValue(float currentValueInPercents)
@@ -197,7 +197,7 @@ namespace SDRGames.Whist.PointsModule.Models
             float originalValue = CurrentValue;
             CurrentValue = MaxValue * currentValueInPercents / 100;
             CurrentValueInPercents = GetValueInPercents(CurrentValue);
-            CurrentValueChanged?.Invoke(this, new ValueChangedEventArgs(originalValue, CurrentValue, CurrentValueInPercents, MaxValue));
+            CurrentValueChanged?.Invoke(this, new ValueChangedEventArgs(originalValue, CurrentValue, CurrentValueInPercents, MaxValue, false));
         }
     }
 }

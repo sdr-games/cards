@@ -45,9 +45,9 @@ namespace SDRGames.Whist.CharacterModule.Managers
 
         public abstract CharacterParamsModel GetParams();
         public abstract CharacterCombatUIView GetView();
-        public abstract void TakePhysicalDamage(int damage);
-        public abstract void TakeMagicalDamage(int damage);
-        public abstract void TakeTrueDamage(int damage);
+        public abstract void TakePhysicalDamage(int damage, bool isCritical);
+        public abstract void TakeMagicalDamage(int damage, bool isCritical);
+        public abstract void TakeTrueDamage(int damage, bool isCritical = false);
         public abstract void RestoreArmorPoints(float restoration = -1);
         public abstract void RestoreBarrierPoints(float restoration = -1);
         public abstract void RestoreHealthPoints(float restoration = -1);
@@ -124,13 +124,14 @@ namespace SDRGames.Whist.CharacterModule.Managers
                 return;
             }
 
+            string criticalChar = e.IsCritical ? "!" : ""; 
             if(e.Difference > 0)
             {
-                GetView().ShowFloatingText($"+{e.Difference}", GetView().HealthPointsBarView.GetColor());
+                GetView().ShowFloatingText($"+{e.Difference}{criticalChar}", GetView().HealthPointsBarView.GetColor());
                 return;
             }
             SoundController.PlayImpact();
-            GetView().ShowFloatingText($"{e.Difference}", GetView().HealthPointsBarView.GetColor());
+            GetView().ShowFloatingText($"{e.Difference}{criticalChar}", GetView().HealthPointsBarView.GetColor());
         }
 
         private void OnArmorPointsCurrentValueChanged(object sender, ValueChangedEventArgs e)
@@ -140,13 +141,14 @@ namespace SDRGames.Whist.CharacterModule.Managers
                 return;
             }
 
+            string criticalChar = e.IsCritical ? "!" : "";
             if (e.Difference > 0)
             {
-                GetView().ShowFloatingText($"+{e.Difference}", GetView().ArmorPointsBarView.GetColor());
+                GetView().ShowFloatingText($"+{e.Difference}{criticalChar}", GetView().ArmorPointsBarView.GetColor());
                 return;
             }
             SoundController.PlayArmorImpact();
-            GetView().ShowFloatingText($"{e.Difference}", GetView().ArmorPointsBarView.GetColor());
+            GetView().ShowFloatingText($"{e.Difference}{criticalChar}", GetView().ArmorPointsBarView.GetColor());
         }
 
         private void OnBarrierPointsCurrentValueChanged(object sender, ValueChangedEventArgs e)
@@ -156,12 +158,13 @@ namespace SDRGames.Whist.CharacterModule.Managers
                 return;
             }
 
+            string criticalChar = e.IsCritical ? "!" : "";
             if (e.Difference > 0)
             {
-                GetView().ShowFloatingText($"+{e.Difference}", GetView().BarrierPointsBarView.GetColor());
+                GetView().ShowFloatingText($"+{e.Difference}{criticalChar}", GetView().BarrierPointsBarView.GetColor());
                 return;
             }
-            GetView().ShowFloatingText($"{e.Difference}", GetView().BarrierPointsBarView.GetColor());
+            GetView().ShowFloatingText($"{e.Difference}{criticalChar}", GetView().BarrierPointsBarView.GetColor());
         }
     }
 }

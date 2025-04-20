@@ -9,13 +9,15 @@ namespace SDRGames.Whist.PointsModule.Models
         public float NewValueInPercents { get; private set; }
         public float Difference => NewValue - OriginalValue;
         public float MaxValue { get; private set; }
+        public bool IsCritical { get; private set; }
 
-        public ValueChangedEventArgs(float originalValue, float newValue, float newValueInPercents, float maxValue)
+        public ValueChangedEventArgs(float originalValue, float newValue, float newValueInPercents, float maxValue, bool isCritical)
         {
             OriginalValue = originalValue;
             NewValue = newValue;
             NewValueInPercents = newValueInPercents;
             MaxValue = maxValue;
+            IsCritical = isCritical;
         }
     }
 }

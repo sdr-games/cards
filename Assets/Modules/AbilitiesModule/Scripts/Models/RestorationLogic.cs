@@ -73,5 +73,10 @@ namespace SDRGames.Whist.AbilitiesModule.Models
             _description.SetParam("restore", _restorationValue);
             return _description.GetLocalizedText();
         }
+
+        public override void Apply(CharacterCombatManager casterCombatManager, CharacterCombatManager targetCombatManager)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

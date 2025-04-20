@@ -14,25 +14,25 @@ namespace SDRGames.Whist.CharacterModule.Models
         public int Experience { get; private set; }
         public int TalentPoints { get; private set; }
 
-        public override void TakePhysicalDamage(int damage)
+        public override void TakePhysicalDamage(int damage, bool isCritical)
         {
             if (PatientHealthPoints.CurrentValue <= 0)
             {
                 damage = (int)(damage * 1.5f);
             }
-            base.TakePhysicalDamage(damage);
+            base.TakePhysicalDamage(damage, isCritical);
         }
 
-        public override void TakeMagicalDamage(int damage)
+        public override void TakeMagicalDamage(int damage, bool isCritical)
         {
             if (PatientHealthPoints.CurrentValue <= 0)
             {
                 damage = (int)(damage * 1.5f);
             }
-            base.TakeMagicalDamage(damage);
+            base.TakeMagicalDamage(damage, isCritical);
         }
 
-        public override void TakeTrueDamage(int damage)
+        public override void TakeTrueDamage(int damage, bool isCritical = false)
         {
             if (PatientHealthPoints.CurrentValue <= 0)
             {

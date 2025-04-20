@@ -57,7 +57,7 @@ namespace SDRGames.Whist.AbilitiesModule.Models
                     logic.Apply(casterCombatManager);
                     continue;
                 }
-                logic.Apply(targetCombatManager);
+                logic.Apply(casterCombatManager, targetCombatManager);
             }
         }
 
@@ -72,7 +72,7 @@ namespace SDRGames.Whist.AbilitiesModule.Models
                 }
                 foreach (CharacterCombatManager targetCombatManager in targetsCombatManager)
                 {
-                    logic.Apply(targetCombatManager);
+                    logic.Apply(casterCombatManager, targetCombatManager);
                 }
             }
         }
