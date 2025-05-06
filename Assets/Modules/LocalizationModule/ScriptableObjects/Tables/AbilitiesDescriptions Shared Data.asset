@@ -43,6 +43,166 @@ MonoBehaviour:
     m_Key: BarrierPointsRestorationDescription
     m_Metadata:
       m_Items: []
+  - m_Id: 65351554086096896
+    m_Key: TrueFlatDamageDescription
+    m_Metadata:
+      m_Items: []
+  - m_Id: 65351586206076928
+    m_Key: PhysicalMaxPercentDamageDescription
+    m_Metadata:
+      m_Items: []
+  - m_Id: 65351617315229696
+    m_Key: MagicalMaxPercentDamageDescription
+    m_Metadata:
+      m_Items: []
+  - m_Id: 65351682842841088
+    m_Key: TruePercentMaxDamageDescription
+    m_Metadata:
+      m_Items: []
+  - m_Id: 65352011181346816
+    m_Key: PhysicalCurrentPercentDamageDescription
+    m_Metadata:
+      m_Items: []
+  - m_Id: 65352034082246656
+    m_Key: MagicalCurrentPercentDamageDescription
+    m_Metadata:
+      m_Items: []
+  - m_Id: 65352065510166528
+    m_Key: TrueCurrentPercentDamageDescription
+    m_Metadata:
+      m_Items: []
+  - m_Id: 65354905733451776
+    m_Key: HealthPointsPercentRestorationDescription
+    m_Metadata:
+      m_Items: []
+  - m_Id: 65354953179418624
+    m_Key: StaminaPointsPercentRestorationDescription
+    m_Metadata:
+      m_Items: []
+  - m_Id: 65354978504626176
+    m_Key: BreathPointsPercentRestorationDescription
+    m_Metadata:
+      m_Items: []
+  - m_Id: 65355094397440000
+    m_Key: ArmorPointsPercentRestorationDescription
+    m_Metadata:
+      m_Items: []
+  - m_Id: 65355155294539776
+    m_Key: BarrierPointsPercentRestorationDescription
+    m_Metadata:
+      m_Items: []
+  - m_Id: 65356923617300480
+    m_Key: PatientHealthPointsRestorationDescription
+    m_Metadata:
+      m_Items: []
+  - m_Id: 65357126990712832
+    m_Key: PatientHealthPointsPercentRestorationDescription
+    m_Metadata:
+      m_Items: []
+  - m_Id: 65357409770688512
+    m_Key: PatientFlatDamageDescription
+    m_Metadata:
+      m_Items: []
+  - m_Id: 65357460198805504
+    m_Key: PatientMaxPercentDamageDescription
+    m_Metadata:
+      m_Items: []
+  - m_Id: 65357593737056256
+    m_Key: PatientCurrentPercentDamageDescription
+    m_Metadata:
+      m_Items: []
+  - m_Id: 65544873915338752
+    m_Key: StrengthBuffDescription
+    m_Metadata:
+      m_Items: []
+  - m_Id: 65544962406764544
+    m_Key: StrengthDebuffDescription
+    m_Metadata:
+      m_Items: []
+  - m_Id: 65546609073737728
+    m_Key: AgilityBuffDescription
+    m_Metadata:
+      m_Items: []
+  - m_Id: 65546637859246080
+    m_Key: AgilityDebuffDescription
+    m_Metadata:
+      m_Items: []
+  - m_Id: 65546783732944896
+    m_Key: IntelligenceBuffDescription
+    m_Metadata:
+      m_Items: []
+  - m_Id: 65546787218411520
+    m_Key: IntelligenceDebuffDescription
+    m_Metadata:
+      m_Items: []
+  - m_Id: 65547211505815552
+    m_Key: StaminaBuffDescription
+    m_Metadata:
+      m_Items: []
+  - m_Id: 65547214144032768
+    m_Key: StaminaDebuffDescription
+    m_Metadata:
+      m_Items: []
+  - m_Id: 65549592654139392
+    m_Key: SwapDescription
+    m_Metadata:
+      m_Items: []
+  - m_Id: 65599299392786432
+    m_Key: DebuffBlockDescription
+    m_Metadata:
+      m_Items: []
+  - m_Id: 65632930144342016
+    m_Key: PlayerConvertingBuffDescription
+    m_Metadata:
+      m_Items: []
+  - m_Id: 65632978060070912
+    m_Key: PlayerThornsBuffDescription
+    m_Metadata:
+      m_Items: []
+  - m_Id: 65666994477879296
+    m_Key: PlayerSacrificeBuffDescription
+    m_Metadata:
+      m_Items: []
+  - m_Id: 65669075339202560
+    m_Key: DispelDescription
+    m_Metadata:
+      m_Items: []
+  - m_Id: 65682616817438720
+    m_Key: PatientBlockBuffDescription
+    m_Metadata:
+      m_Items: []
+  - m_Id: 65755081434353664
+    m_Key: ArmorPointsBuffDescription
+    m_Metadata:
+      m_Items: []
+  - m_Id: 65755114707767296
+    m_Key: BarrierPointsBuffDescription
+    m_Metadata:
+      m_Items: []
+  - m_Id: 65755429263790080
+    m_Key: ArmorPointsPercentBuffDescription
+    m_Metadata:
+      m_Items: []
+  - m_Id: 65755462860165120
+    m_Key: BarrierPointsPercentBuffDescription
+    m_Metadata:
+      m_Items: []
+  - m_Id: 66088145687564288
+    m_Key: InsanityDebuffDescription
+    m_Metadata:
+      m_Items: []
+  - m_Id: 66459815107514368
+    m_Key: UndyingBuffDescription
+    m_Metadata:
+      m_Items: []
+  - m_Id: 66459862876442624
+    m_Key: UndyingPatientBuffDescription
+    m_Metadata:
+      m_Items: []
+  - m_Id: 66764864417320960
+    m_Key: AdvantageDebuffDescription
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

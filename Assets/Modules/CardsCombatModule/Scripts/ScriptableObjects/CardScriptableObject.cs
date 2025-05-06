@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace SDRGames.Whist.CardsCombatModule.ScriptableObjects
 {
-    [CreateAssetMenu(fileName = "CardScriptableObject", menuName = "SDRGames/Combat/Cards/Card")]
+    [CreateAssetMenu(fileName = "Card", menuName = "SDRGames/Combat/Cards/Card")]
     public class CardScriptableObject : AbilityScriptableObject
     {
         [field: SerializeField] public CardModifierScriptableObject[] CardModifiersScriptableObjects { get; private set; }

@@ -1,6 +1,7 @@
-using System;
 using System.Collections.Generic;
 
+using SDRGames.Whist.AbilitiesModule.Models;
+using SDRGames.Whist.AbilitiesModule.ScriptableObjects;
 using SDRGames.Whist.CardsCombatModule.Models;
 using SDRGames.Whist.CharacterModule.Managers;
 
@@ -10,16 +11,15 @@ namespace SDRGames.Whist.CardsCombatModule.ScriptableObjects
 {
     public class PrayOneCardComboModifier : CardModifierScriptableObject
     {
-        [Header("Pray in combo with one card decrease enemy's damage by 10% for 2 turns")][SerializeField] private int _damageReducePercent = 10;
-        [SerializeField] private int _roundsCount = 2;
-        [SerializeField] private Sprite _effectIcon;
+        [Header("With one card restores HP for player and patient in max %")]
+        [SerializeField] private RestorationLogicScriptableObject[] _restorationLogicScriptableObjects;
 
         public override void Apply(CharacterCombatManager casterCombatManager, List<CharacterCombatManager> targetCombatManagers, List<Card> affectedCards)
         {
-            foreach (CharacterCombatManager targetCombatManager in targetCombatManagers)
+            foreach (RestorationLogicScriptableObject restorationLogicScriptableObject in _restorationLogicScriptableObjects)
             {
-                Action<int> action = (int percent) => { targetCombatManager.GetParams().IncreasePhysicalDamage(-(targetCombatManager.GetParams().PhysicalDamageModifier * (percent / 100))); };
-                targetCombatManager.SetDebuff(_damageReducePercent, _roundsCount, _effectIcon, "", action, true);
+                RestorationLogic restorationLogic = new RestorationLogic(restorationLogicScriptableObject);
+                restorationLogic.Apply(casterCombatManager);
             }
         }
     }

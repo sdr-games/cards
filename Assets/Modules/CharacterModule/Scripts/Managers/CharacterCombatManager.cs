@@ -7,6 +7,7 @@ using SDRGames.Whist.CharacterModule.Models;
 using SDRGames.Whist.CharacterModule.Presenters;
 using SDRGames.Whist.CharacterModule.ScriptableObjects;
 using SDRGames.Whist.CharacterModule.Views;
+using SDRGames.Whist.LocalizationModule.Models;
 using SDRGames.Whist.PointsModule.Models;
 using SDRGames.Whist.SoundModule.Controllers;
 using SDRGames.Whist.UserInputModule.Controller;
@@ -23,6 +24,7 @@ namespace SDRGames.Whist.CharacterModule.Managers
         protected Dictionary<PeriodicalEffectPresenter, int> _periodicalBuffs;
         protected Dictionary<PeriodicalEffectPresenter, int> _periodicalDebuffs;
         protected GameObject _model;
+        protected int _debuffBlockPercent;
 
         [field: SerializeField] public AnimationsController AnimationsController { get; protected set; }
         [field: SerializeField] public CharacterSoundController SoundController { get; protected set; }
@@ -35,6 +37,7 @@ namespace SDRGames.Whist.CharacterModule.Managers
             _periodicalEffects = new Dictionary<PeriodicalEffectPresenter, int>();
             _periodicalBuffs = new Dictionary<PeriodicalEffectPresenter, int>();
             _periodicalDebuffs = new Dictionary<PeriodicalEffectPresenter, int>();
+            _debuffBlockPercent = 0;
 
             GetView().Initialize(transform);
 
@@ -64,7 +67,7 @@ namespace SDRGames.Whist.CharacterModule.Managers
             _periodicalEffects.Add(new PeriodicalEffectPresenter(roundsCount, changingAction, effectIcon, periodicalEffectView), valuePerRound);
         }
 
-        public void SetBuff(int value, int roundsCount, Sprite effectIcon, string description, Action<int> buffAction, bool inPercents = false)
+        public void SetBuff(int value, int roundsCount, Sprite effectIcon, string description, Action<int> buffAction)
         {
             PeriodicalEffectView periodicalEffectView = null;
             if (roundsCount > 1)
@@ -77,6 +80,12 @@ namespace SDRGames.Whist.CharacterModule.Managers
 
         public void SetDebuff(int value, int roundsCount, Sprite effectIcon, string description, Action<int> debuffAction, bool inPercents = false)
         {
+            int debuffBlockChance = UnityEngine.Random.Range(0, 100);
+            if(_debuffBlockPercent > debuffBlockChance)
+            {
+                return;
+            }
+
             PeriodicalEffectView periodicalEffectView = null;
             if(roundsCount > 1)
             {
@@ -103,17 +112,45 @@ namespace SDRGames.Whist.CharacterModule.Managers
 
         public void UpdateBonusesEffects()
         {
-            Dictionary<PeriodicalEffectPresenter, int> periodicalBonuses = new Dictionary<PeriodicalEffectPresenter, int>(_periodicalBuffs);
-            _periodicalDebuffs?.ToList().ForEach(item => periodicalBonuses.Add(item.Key, item.Value));
-            foreach (var item in periodicalBonuses)
+            UpdateEffects(_periodicalBuffs);
+            UpdateEffects(_periodicalDebuffs);
+        }
+
+        public void ClearNegativeEffects()
+        {
+            ClearEffects(_periodicalEffects);
+            ClearEffects(_periodicalDebuffs);
+        }
+
+        public void SetDebuffBlock(int percent)
+        {
+            _debuffBlockPercent = percent;
+        }
+
+        private void UpdateEffects(Dictionary<PeriodicalEffectPresenter, int> effects)
+        {
+            Dictionary<PeriodicalEffectPresenter, int> _effects = new Dictionary<PeriodicalEffectPresenter, int>(effects);
+            foreach (var item in _effects)
             {
                 item.Key.DecreaseDuration();
                 if (item.Key.GetDuration() <= 0)
                 {
-                    _periodicalBuffs.Remove(item.Key);
+                    effects.Remove(item.Key);
                     item.Key.CancelEffect(item.Value);
                     item.Key.Delete();
                 }
+            }
+        }
+
+        private void ClearEffects(Dictionary<PeriodicalEffectPresenter, int> effects)
+        {
+            Dictionary<PeriodicalEffectPresenter, int> _effects = new Dictionary<PeriodicalEffectPresenter, int>(effects);
+            foreach (var item in _effects)
+            {
+                item.Key.DecreaseDuration(item.Key.GetDuration());
+                effects.Remove(item.Key);
+                item.Key.CancelEffect(item.Value);
+                item.Key.Delete();
             }
         }
 
@@ -121,6 +158,8 @@ namespace SDRGames.Whist.CharacterModule.Managers
         {
             if(e.Difference == 0)
             {
+                string missedString = LocalizedString.GetLocalizedString("CombatStatusesAndEffects", "Missed");
+                GetView().ShowFloatingText($"<{missedString}>", GetView().HealthPointsBarView.GetColor());
                 return;
             }
 
@@ -138,6 +177,8 @@ namespace SDRGames.Whist.CharacterModule.Managers
         {
             if (e.Difference == 0)
             {
+                string blockedString = LocalizedString.GetLocalizedString("CombatStatusesAndEffects", "Blocked");
+                GetView().ShowFloatingText($"<{blockedString}>", GetView().ArmorPointsBarView.GetColor());
                 return;
             }
 
@@ -155,6 +196,8 @@ namespace SDRGames.Whist.CharacterModule.Managers
         {
             if (e.Difference == 0)
             {
+                string missedString = LocalizedString.GetLocalizedString("CombatStatusesAndEffects", "Missed");
+                GetView().ShowFloatingText($"<{missedString}>", GetView().BarrierPointsBarView.GetColor());
                 return;
             }
 

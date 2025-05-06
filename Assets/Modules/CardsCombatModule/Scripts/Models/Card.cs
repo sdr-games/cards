@@ -15,8 +15,9 @@ namespace SDRGames.Whist.CardsCombatModule.Models
             CardModifiersScriptableObjects = cardScriptableObject.CardModifiersScriptableObjects;
         }
 
-        public void ApplyModifier(int index, CharacterCombatManager casterCombatManager, List<CharacterCombatManager> targetCombatManagers, List<Card> affectedCards)
+        public void ApplyModifier(CharacterCombatManager casterCombatManager, List<CharacterCombatManager> targetCombatManagers, List<Card> affectedCards)
         {
+            int index = affectedCards.Count - 1; 
             CardModifiersScriptableObjects[index].Apply(casterCombatManager, targetCombatManagers, affectedCards);
         }
 

@@ -46,6 +46,168 @@ MonoBehaviour:
     m_Localized: Restores {restore} barrier points
     m_Metadata:
       m_Items: []
+  - m_Id: 65351554086096896
+    m_Localized: Deals {damage} true damage
+    m_Metadata:
+      m_Items: []
+  - m_Id: 65351586206076928
+    m_Localized: Deals {damage}% of max. armor or HP as physical damage
+    m_Metadata:
+      m_Items: []
+  - m_Id: 65351617315229696
+    m_Localized: Deals {damage}% of max. barrier or HP as magical damage
+    m_Metadata:
+      m_Items: []
+  - m_Id: 65351682842841088
+    m_Localized: 'Deals {damage}% of max. HP as true damage '
+    m_Metadata:
+      m_Items: []
+  - m_Id: 65352011181346816
+    m_Localized: Deals {damage}% of current armor or HP as physical damage
+    m_Metadata:
+      m_Items: []
+  - m_Id: 65352034082246656
+    m_Localized: Deals {damage}% of current barrier or HP as magical damage
+    m_Metadata:
+      m_Items: []
+  - m_Id: 65352065510166528
+    m_Localized: 'Deals {damage}% of current HP as true damage '
+    m_Metadata:
+      m_Items: []
+  - m_Id: 65354905733451776
+    m_Localized: Restores {restore}% health points
+    m_Metadata:
+      m_Items: []
+  - m_Id: 65354953179418624
+    m_Localized: Restores {restore}% stamina points
+    m_Metadata:
+      m_Items: []
+  - m_Id: 65354978504626176
+    m_Localized: Restores {restore}% breath points
+    m_Metadata:
+      m_Items: []
+  - m_Id: 65355094397440000
+    m_Localized: Restores {restore}% armor points
+    m_Metadata:
+      m_Items: []
+  - m_Id: 65355155294539776
+    m_Localized: Restores {restore}% barrier points
+    m_Metadata:
+      m_Items: []
+  - m_Id: 65356923617300480
+    m_Localized: Restores {restore} patient's health points
+    m_Metadata:
+      m_Items: []
+  - m_Id: 65357126990712832
+    m_Localized: Restores {restore}% patient's health points
+    m_Metadata:
+      m_Items: []
+  - m_Id: 65357460198805504
+    m_Localized: 'Deals {damage}% to patient of max. patient''s HP as true damage '
+    m_Metadata:
+      m_Items: []
+  - m_Id: 65357593737056256
+    m_Localized: 'Deals {damage}% to patient of current patient''s HP as true damage '
+    m_Metadata:
+      m_Items: []
+  - m_Id: 65357409770688512
+    m_Localized: 'Deals {damage} to patient as true damage '
+    m_Metadata:
+      m_Items: []
+  - m_Id: 65544873915338752
+    m_Localized: Increases Strength by {buff}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 65544962406764544
+    m_Localized: Decreases Strength by {buff}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 65546609073737728
+    m_Localized: Increases Agility by {buff}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 65546637859246080
+    m_Localized: Decreases Agility by {buff}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 65546783732944896
+    m_Localized: Increases Intelligence by {buff}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 65546787218411520
+    m_Localized: Decreases Intelligence by {buff}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 65547211505815552
+    m_Localized: Increases Stamina by {buff}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 65547214144032768
+    m_Localized: Decreases Stamina by {buff}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 65549592654139392
+    m_Localized: Swaps the current Breath Points and Stamina Points values
+    m_Metadata:
+      m_Items: []
+  - m_Id: 65599299392786432
+    m_Localized: Reduces the chance of receiving a negative effect by {buff}%
+    m_Metadata:
+      m_Items: []
+  - m_Id: 65632930144342016
+    m_Localized: Converts {buff}% of damage dealt to a player or patient to the lower
+      of the hero's armor or barrier
+    m_Metadata:
+      m_Items: []
+  - m_Id: 65632978060070912
+    m_Localized: Returns {buff}% of damage dealt to a player or patient to the enemy
+    m_Metadata:
+      m_Items: []
+  - m_Id: 65666994477879296
+    m_Localized: Damage dealt to the patient is split in half. Half of the damage
+      goes to the patient and half goes to the player
+    m_Metadata:
+      m_Items: []
+  - m_Id: 65669075339202560
+    m_Localized: Dispel every negative effect
+    m_Metadata:
+      m_Items: []
+  - m_Id: 65682616817438720
+    m_Localized: Reduces damage to the patient by {buff}%
+    m_Metadata:
+      m_Items: []
+  - m_Id: 65755081434353664
+    m_Localized: Temporarily increases Armor points by {buff}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 65755114707767296
+    m_Localized: Temporarily increases Barrier points by {buff}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 65755429263790080
+    m_Localized: Temporarily increases Armor points by {buff}%
+    m_Metadata:
+      m_Items: []
+  - m_Id: 65755462860165120
+    m_Localized: Temporarily increases Barrier points by {buff}%
+    m_Metadata:
+      m_Items: []
+  - m_Id: 66088145687564288
+    m_Localized: Forces attack on a random enemy
+    m_Metadata:
+      m_Items: []
+  - m_Id: 66459815107514368
+    m_Localized: Temporarily Health points cannot drop below {buff}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 66459862876442624
+    m_Localized: Temporarily Patient Health points cannot drop below {buff}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 66764864417320960
+    m_Localized: Reduces chance to hit by {buff}%
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

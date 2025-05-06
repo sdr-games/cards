@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
 using UnityEngine;
+using UnityEngine.Localization.Settings;
 
 namespace SDRGames.Whist.LocalizationModule.Models
 {
@@ -16,6 +17,20 @@ namespace SDRGames.Whist.LocalizationModule.Models
         public LocalizedString(UnityEngine.Localization.LocalizedString entity)
         {
             Entity = entity;
+        }
+
+        public static string GetLocalizedString(string tableName, string indexName)
+        {
+            string result;
+            try
+            {
+                result = LocalizationSettings.StringDatabase.GetLocalizedString(tableName, indexName);
+            }
+            catch (Exception ex)
+            {
+                result = "";
+            }
+            return result;
         }
 
         public string GetLocalizedText()

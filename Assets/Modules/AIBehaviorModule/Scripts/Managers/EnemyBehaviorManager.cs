@@ -22,25 +22,33 @@ namespace SDRGames.Whist.EnemyBehaviorModule.Managers
         [field: SerializeField] public EnemyCombatManager EnemyCombatManager { get; private set; }
         private CharacterParamsModel _enemyParams;
 
+        private CharacterCombatManager _targetCombatManager;
         private PlayerCombatManager _playerCombatManager;
-        private CharacterParamsModel _playerParams;
+        private CharacterParamsModel _targetParams;
 
         private List<SpecialAbility> _specialAbilities;
         private BehaviorScriptableObject[] _meleeBehaviors;
         private BehaviorScriptableObject[] _magicBehaviors;
 
+        private int _insanityTurns;
+
         public event EventHandler AbilityUsed;
+        public event EventHandler BecameInsane;
 
         public void Initialize(EnemyDataScriptableObject enemyDataScriptableObject, PlayerCombatManager playerCombatManager, UserInputController userInputController)
         {
             EnemyCombatManager.Initialize(enemyDataScriptableObject.EnemyParamsScriptableObject, userInputController);
+            EnemyCombatManager.BecameInsane += OnBecameInsane;
             _enemyParams = EnemyCombatManager.GetParams();
 
             _playerCombatManager = playerCombatManager;
-            _playerParams = _playerCombatManager.GetParams();
+            _targetCombatManager = _playerCombatManager;
+            _targetParams = _targetCombatManager.GetParams();
 
             _meleeBehaviors = enemyDataScriptableObject.MeleeBehaviors;
             _magicBehaviors = enemyDataScriptableObject.MagicBehaviors;
+
+            _insanityTurns = 0;
 
             InitializeSpecialAbilities(enemyDataScriptableObject.SpecialAbilitiesScriptableObjects);
             InitializeBehavior(_meleeBehaviors);
@@ -56,6 +64,15 @@ namespace SDRGames.Whist.EnemyBehaviorModule.Managers
                 return;
             }
 
+            if(_insanityTurns >= 0)
+            {
+                _insanityTurns--;
+            }
+            else
+            {
+                EndInsanity();
+            }
+
             List<AbilityScriptableObject> selectedAbilities;
             int count = 0;
             if (PreferPhysicalDamage())
@@ -63,7 +80,7 @@ namespace SDRGames.Whist.EnemyBehaviorModule.Managers
                 selectedAbilities = SelectAbilities(
                     _meleeBehaviors,
                     EnemyCombatManager.GetParams().StaminaPoints.CurrentValue,
-                    _playerParams.ArmorPoints.CurrentValueInPercents
+                    _targetParams.ArmorPoints.CurrentValueInPercents
                 );
                 if(selectedAbilities != null)
                 {
@@ -77,7 +94,7 @@ namespace SDRGames.Whist.EnemyBehaviorModule.Managers
             selectedAbilities = SelectAbilities(
                 _magicBehaviors,
                 EnemyCombatManager.GetParams().BreathPoints.CurrentValue,
-                _playerParams.BarrierPoints.CurrentValueInPercents
+                _targetParams.BarrierPoints.CurrentValueInPercents
             );
             if (selectedAbilities != null)
             {
@@ -138,6 +155,25 @@ namespace SDRGames.Whist.EnemyBehaviorModule.Managers
             StopAllCoroutines();
         }
 
+        public void OnBecameInsane(object sender, BecameInsaneEventArgs e)
+        {
+            _insanityTurns = e.InsanityTurns;
+            BecameInsane?.Invoke(this, EventArgs.Empty);
+        }
+
+        public void SetNewTarget(CharacterCombatManager targetCombatManager)
+        {
+            _targetCombatManager = targetCombatManager;
+            _targetParams = _targetCombatManager.GetParams();
+        }
+
+        public void EndInsanity()
+        {
+            _insanityTurns = 0;
+            _targetCombatManager = _playerCombatManager;
+            _targetParams = _targetCombatManager.GetParams();
+        }
+
         private void InitializeBehavior(BehaviorScriptableObject[] behaviors)
         {
             foreach(BehaviorScriptableObject behavior in behaviors)
@@ -176,7 +212,7 @@ namespace SDRGames.Whist.EnemyBehaviorModule.Managers
             float maxMeleeRoundsWithoutRestoration = _enemyParams.StaminaPoints.MaxValue / totalMeleeAbilitiesCost / (MAX_MELEE_ABILITIES_COUNT_PER_ROUND - 1);
             float meleeAbilitiesCountWithRestoration = meleeAbilitiesCountWithoutRestoration + (maxMeleeRoundsWithoutRestoration * _enemyParams.StaminaPoints.RestorationPower / totalMeleeAbilitiesCost);
             float totalPhysicalDamage = physicalAverageDamage * meleeAbilitiesCountWithRestoration;
-            float totalPhysicalDifference = _playerParams.ArmorPoints.CurrentValue + _playerParams.HealthPoints.CurrentValue - totalPhysicalDamage;
+            float totalPhysicalDifference = _targetParams.ArmorPoints.CurrentValue + _targetParams.HealthPoints.CurrentValue - totalPhysicalDamage;
 
             List<AbilityScriptableObject> availableMagicAbilities = GetAllAbilties(_magicBehaviors);
             float magicalAverageDamage = availableMagicAbilities.Sum(ability => ability.GetAverageDamage());
@@ -186,13 +222,18 @@ namespace SDRGames.Whist.EnemyBehaviorModule.Managers
             float maxMagicalRoundsWithoutRestoration = _enemyParams.BreathPoints.MaxValue / totalMagicalAbilitiesCost / (MAX_MAGICAL_ABILITIES_COUNT_PER_ROUND - 1);
             float magicalAbilitiesCountWithRestoration = magicalAbilitiesCountWithoutRestoration + (maxMagicalRoundsWithoutRestoration * _enemyParams.BreathPoints.RestorationPower / totalMagicalAbilitiesCost);
             float totalMagicalDamage = magicalAverageDamage * magicalAbilitiesCountWithRestoration;
-            float totalMagicalDifference = _playerParams.BarrierPoints.CurrentValue + _playerParams.HealthPoints.CurrentValue - totalMagicalDamage;
+            float totalMagicalDifference = _targetParams.BarrierPoints.CurrentValue + _targetParams.HealthPoints.CurrentValue - totalMagicalDamage;
 
             return totalPhysicalDifference < totalMagicalDifference;
         }
 
         private bool UseSpecialAbility()
         {
+            if(_insanityTurns > 0)
+            {
+                return false;
+            }
+
             foreach(SpecialAbility specialAbility in _specialAbilities)
             {
                 if (specialAbility.CurrentCooldown > 0)
@@ -220,7 +261,7 @@ namespace SDRGames.Whist.EnemyBehaviorModule.Managers
         private IEnumerator ApplySelectedAbility(Ability ability)
         {
             EnemyCombatManager.SoundController.Play(ability.SoundClip);
-            ability.ApplyLogics(EnemyCombatManager, _playerCombatManager);
+            ability.ApplyLogics(EnemyCombatManager, _targetCombatManager);
             AbilityUsed?.Invoke(this, EventArgs.Empty);
             yield return new WaitForSeconds(ability.SoundClip.AudioClip.length);
         }

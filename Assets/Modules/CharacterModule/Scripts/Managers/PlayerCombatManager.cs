@@ -109,6 +109,15 @@ namespace SDRGames.Whist.CharacterModule.Managers
             _playerCharacterCombatParamsPresenter.RestoreBreath(restoration);
         }
 
+        public void RestorePatientHealthPoints(float restoration = -1)
+        {
+            if (restoration < 0)
+            {
+                restoration = _playerParamsModel.PatientHealthPoints.RestorationPower;
+            }
+            _playerCharacterCombatParamsPresenter.RestorePatientHealth(restoration);
+        }
+
         public bool HasEnoughStaminaPoints(float cost)
         {
             if(_playerParamsModel.StaminaPoints.CurrentValue < _playerParamsModel.StaminaPoints.ReservedValue + cost)
@@ -159,9 +168,24 @@ namespace SDRGames.Whist.CharacterModule.Managers
             _playerCharacterCombatParamsPresenter.ResetBreathReservedPoints(reverseAmount);
         }
 
+        public void Swap()
+        {
+            CharacterParamsModel parameters = GetParams();
+            float currentBreathPoints = parameters.BreathPoints.CurrentValue;
+            float currentStaminaPoints = parameters.StaminaPoints.CurrentValue;
+            float difference = Math.Abs(currentBreathPoints - currentStaminaPoints);
+            if (currentBreathPoints > currentStaminaPoints)
+            {
+                SpendBreathPoints(difference);
+                RestoreStaminaPoints(difference);
+                return;
+            }
+            RestoreBreathPoints(difference);
+            SpendStaminaPoints(difference);
+        }
+
         protected void OnEnable()
         {
-            //this.CheckFieldValueIsNotNull(nameof(_playerParamsModel), _playerParamsModel);
             this.CheckFieldValueIsNotNull(nameof(_playerCharacterCombatUIView), _playerCharacterCombatUIView);
         }
 

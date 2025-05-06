@@ -21,6 +21,7 @@ namespace SDRGames.Whist.CharacterModule.Managers
         private EnemyMeshManager _enemyMeshManager;
 
         public event EventHandler<MeshClickedEventArgs> EnemySelected;
+        public event EventHandler<BecameInsaneEventArgs> BecameInsane;
 
         public override void Initialize(CharacterParamsScriptableObject enemyParamsScriptableObject, UserInputController userInputController)
         {
@@ -111,6 +112,11 @@ namespace SDRGames.Whist.CharacterModule.Managers
                 return false;
             }
             return true;
+        }
+
+        public void BecomeInsane(int insanityTurns)
+        {
+            BecameInsane?.Invoke(this, new BecameInsaneEventArgs(insanityTurns));
         }
 
         private void OnMeshClicked(object sender, MeshClickedEventArgs e)

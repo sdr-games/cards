@@ -4,66 +4,175 @@ using SDRGames.Whist.AbilitiesModule.ScriptableObjects;
 using SDRGames.Whist.CharacterModule.Managers;
 using SDRGames.Whist.CharacterModule.Models;
 
+using UnityEngine;
+
 using static SDRGames.Whist.AbilitiesModule.ScriptableObjects.BuffLogicScriptableObject;
 
 namespace SDRGames.Whist.AbilitiesModule.Models
 {
     public class BuffLogic : AbilityLogic
     {
-        protected BuffTypes _buffType;
-        protected int _buffValue;
-        protected bool _inPercents;
+        private BuffTypes _buffType;
+        private int _buffValue;
 
         public BuffLogic(BuffLogicScriptableObject buffLogicScriptableObject) : base(buffLogicScriptableObject)
         {
             _buffType = buffLogicScriptableObject.BuffType;
             _buffValue = buffLogicScriptableObject.BuffValue;
-            _inPercents = buffLogicScriptableObject.InPercents;
         }
 
-        public override void Apply(CharacterCombatManager characterCombatManager)
+        public override void Apply(CharacterCombatManager targetCharacterCombatManager, CharacterCombatManager casterCharacterCombatManager = null)
         {
-            int randomInt = UnityEngine.Random.Range(0, 100);
-            if (_chance < randomInt)
+            CharacterParamsModel targetParams = targetCharacterCombatManager.GetParams();
+            if (_chance < UnityEngine.Random.Range(0, 100))
             {
                 return;
             }
             Action<int> action = null;
-            CharacterParamsModel characterParams = characterCombatManager.GetParams();
+            string description = GetLocalizedDescription();
 
             switch (_buffType)
             {
                 case BuffTypes.HealthPoints:
-                    action = (int value) => { characterParams.HealthPoints.IncreaseTemporaryBonus(value); };
+                    if (_inMaxPercents || _inCurrentPercents)
+                    {
+                        _buffValue = CalculatePercentageOfParameter(targetParams.HealthPoints, _buffValue);
+                        Debug.Log($"Процентное усиление здоровья {_buffValue}");
+                    }
+
+                    Debug.Log($"Финальное усиление здоровья {_buffValue}");
+                    action = (int value) => { targetParams.HealthPoints.IncreaseTemporaryBonus(value); };
                     break;
                 case BuffTypes.Strength:
-                    action = (int value) => { characterParams.IncreaseStrength(value); };
+                    if (_inMaxPercents || _inCurrentPercents)
+                    {
+                        _buffValue = CalculatePercentageOfParameter(targetParams.Strength, _buffValue);
+                        Debug.Log($"Процентное усиление силы {_buffValue}");
+                    }
+
+                    Debug.Log($"Финальное усиление силы {_buffValue}");
+                    action = (int value) => { targetParams.ChangeStrength(value); };
                     break;
                 case BuffTypes.Agility:
-                    action = (int value) => { characterParams.IncreaseAgility(value); };
+                    if (_inMaxPercents || _inCurrentPercents)
+                    {
+                        _buffValue = CalculatePercentageOfParameter(targetParams.Agility, _buffValue);
+                        Debug.Log($"Процентное усиление ловкости {_buffValue}");
+                    }
+
+                    Debug.Log($"Финальное усиление ловкости {_buffValue}");
+                    action = (int value) => { targetParams.ChangeAgility(value); };
                     break;
                 case BuffTypes.Stamina:
-                    action = (int value) => { characterParams.IncreaseStamina(value); };
+                    if (_inMaxPercents || _inCurrentPercents)
+                    {
+                        _buffValue = CalculatePercentageOfParameter(targetParams.Stamina, _buffValue);
+                        Debug.Log($"Процентное усиление выносливости {_buffValue}");
+                    }
+
+                    Debug.Log($"Финальное усиление выносливости {_buffValue}");
+                    action = (int value) => { targetParams.ChangeStamina(value); };
                     break;
                 case BuffTypes.Intelligence:
-                    action = (int value) => { characterParams.IncreaseIntelligence(value); };
+                    if (_inMaxPercents || _inCurrentPercents)
+                    {
+                        _buffValue = CalculatePercentageOfParameter(targetParams.Intelligence, _buffValue);
+                        Debug.Log($"Процентное усиление интеллекта {_buffValue}");
+                    }
+
+                    Debug.Log($"Финальное усиление интеллекта {_buffValue}");
+                    action = (int value) => { targetParams.ChangeIntelligence(value); };
                     break;
                 case BuffTypes.PhysicalDamage:
-                    action = (int value) => { characterParams.IncreasePhysicalDamage(value); };
+                    if (_inMaxPercents || _inCurrentPercents)
+                    {
+                        _buffValue = CalculatePercentageOfParameter(targetParams.PhysicalDamageModifier, _buffValue);
+                        Debug.Log($"Процентное усиление ПНФУ {_buffValue}");
+                    }
+
+                    Debug.Log($"Финальное усиление ПНФУ {_buffValue}");
+                    action = (int value) => { targetParams.ChangePhysicalDamage(value); };
                     break;
-                case BuffTypes.MagicDamage:
-                    action = (int value) => { characterParams.IncreaseMagicalDamage(value); };
+                case BuffTypes.MagicalDamage:
+                    if (_inMaxPercents || _inCurrentPercents)
+                    {
+                        _buffValue = CalculatePercentageOfParameter(targetParams.MagicalDamageModifier, _buffValue);
+                        Debug.Log($"Процентное усиление ПНМУ {_buffValue}");
+                    }
+
+                    Debug.Log($"Финальное усиление ПНМУ {_buffValue}");
+                    action = (int value) => { targetParams.ChangeMagicalDamage(value); };
+                    break;
+                case BuffTypes.PhysicalDamageBlock:
+                    action = (int value) => { targetParams.SetPhysicalDamageBlockPercent(value); };
+                    break;
+                case BuffTypes.MagicalDamageBlock:
+                    action = (int value) => { targetParams.SetMagicalDamageBlockPercent(value); };
+                    break;
+                case BuffTypes.PatientDamageBlock:
+                    action = (int value) => { ((PlayerParamsModel)targetParams).SetPatientDamageBlockPercent(value); };
+                    break;
+                case BuffTypes.Sacrifice:
+                    action = (int value) => { ((PlayerParamsModel)targetParams).SetSacrificePercent(value); };
+                    break;
+                case BuffTypes.Thorns:
+                    action = (int value) => { targetParams.SetThornsPercent(value); };
+                    break;
+                case BuffTypes.Converting:
+                    action = (int value) => { ((PlayerParamsModel)targetParams).SetConvertingPercent(value); };
+                    break;
+                case BuffTypes.DebuffsBlock:
+                    action = (int value) => { targetParams.SetDebuffBlockPercent(value); };
+                    break;
+                case BuffTypes.ArmorPoints:
+                    if (_inMaxPercents || _inCurrentPercents)
+                    {
+                        _buffValue = CalculatePercentageOfParameter(targetParams.ArmorPoints, _buffValue);
+                        Debug.Log($"Процентное усиление брони {_buffValue}");
+                    }
+
+                    Debug.Log($"Финальное усиление брони {_buffValue}");
+                    action = (int value) => { targetParams.ArmorPoints.IncreaseTemporaryBonus(value); };
+                    break;
+                case BuffTypes.BarrierPoints:
+                    if (_inMaxPercents || _inCurrentPercents)
+                    {
+                        _buffValue = CalculatePercentageOfParameter(targetParams.BarrierPoints, _buffValue);
+                        Debug.Log($"Процентное усиление барьера {_buffValue}");
+                    }
+
+                    Debug.Log($"Финальное усиление барьера {_buffValue}");
+                    action = (int value) => { targetParams.BarrierPoints.IncreaseTemporaryBonus(value); };
+                    break;
+                case BuffTypes.Undying:
+                    if (_inMaxPercents || _inCurrentPercents)
+                    {
+                        _buffValue = CalculatePercentageOfParameter(targetParams.HealthPoints, _buffValue);
+                        Debug.Log($"Процентный порог здоровья бессмертия {_buffValue}");
+                    }
+
+                    Debug.Log($"Финальный порог здоровья бессмертия {_buffValue}");
+                    action = (int value) => { targetParams.HealthPoints.SetMinimalValue(value); };
+                    break;
+                case BuffTypes.UndyingPatient:
+                    if (_inMaxPercents || _inCurrentPercents)
+                    {
+                        _buffValue = CalculatePercentageOfParameter(((PlayerParamsModel)targetParams).PatientHealthPoints, _buffValue);
+                        Debug.Log($"Процентный порог здоровья бессмертия пациента {_buffValue}");
+                    }
+
+                    Debug.Log($"Финальный порог здоровья бессмертия пациента {_buffValue}");
+                    action = (int value) => { ((PlayerParamsModel)targetParams).PatientHealthPoints.SetMinimalValue(value); };
                     break;
                 default:
                     break;
             }
-            characterCombatManager.SetBuff(
+            targetCharacterCombatManager.SetBuff(
                 _buffValue,
                 _roundsCount,
                 _effectIcon,
-                "",
-                action,
-                _inPercents
+                description,
+                action
             );
         }
 
@@ -79,12 +188,8 @@ namespace SDRGames.Whist.AbilitiesModule.Models
 
         public override string GetLocalizedDescription()
         {
-            return "";
-        }
-
-        public override void Apply(CharacterCombatManager casterCombatManager, CharacterCombatManager targetCombatManager)
-        {
-            throw new NotImplementedException();
+            _description.SetParam("buff", _buffValue);
+            return _description.GetLocalizedText();
         }
     }
 }

@@ -29,6 +29,11 @@ namespace SDRGames.Whist.CharacterModule.Models
         public Points BreathPoints { get; protected set; }
         public Points ArmorPoints { get; protected set; }
         public Points BarrierPoints { get; protected set; }
+        public int PhysicalDamageBlockPercent { get; protected set; }
+        public int MagicalDamageBlockPercent { get; protected set; }
+        public int ThornsPercent { get; protected set; }
+        public int DebuffBlockPercent { get; protected set; }
+        public int AdvantagePercent { get; protected set; }
 
         public CharacterParamsModel(CharacterParamsScriptableObject characterParamsScriptableObject)
         {
@@ -59,20 +64,20 @@ namespace SDRGames.Whist.CharacterModule.Models
             BarrierPoints = new Points(characterParamsScriptableObject.BarrierPoints);
         }
 
-        public virtual void IncreaseStrength(int strength)
+        public virtual void ChangeStrength(int strength)
         {
             Strength += strength;
             int physicalDamageLevelScaling = Level / CharacterParametersScaling.Instance.LevelsCountForMultiplier * CharacterParametersScaling.Instance.LevelsToPhysicalDamageMultiplier;
 
             PhysicalDamageModifier = Strength * CharacterParametersScaling.Instance.StrengthToPhysicalDamage;
             PhysicalDamageModifier *= physicalDamageLevelScaling > 0 ? physicalDamageLevelScaling : 1;
-            PhysicalHitChance = Strength * CharacterParametersScaling.Instance.StrengthToPhysicalHitChance;
+            PhysicalHitChance = Strength * CharacterParametersScaling.Instance.StrengthToPhysicalHitChance + AdvantagePercent;
             BlockChance = Strength * CharacterParametersScaling.Instance.StrengthToBlockChance;
             CriticalStrikeChance = (Strength + Agility) / 2 * CharacterParametersScaling.Instance.StrengthAndAgilityToCriticalStrikeChance;
             HealthPoints.SetPermanentBonus(Strength * CharacterParametersScaling.Instance.StrengthToHealthPoints + Stamina * CharacterParametersScaling.Instance.StaminaToHealthPoints);
         }
 
-        public virtual void IncreaseAgility(int agility)
+        public virtual void ChangeAgility(int agility)
         {
             Agility += agility;
 
@@ -83,7 +88,7 @@ namespace SDRGames.Whist.CharacterModule.Models
 
         }
 
-        public virtual void IncreaseStamina(int stamina)
+        public virtual void ChangeStamina(int stamina)
         {
             Stamina += stamina;
 
@@ -93,23 +98,23 @@ namespace SDRGames.Whist.CharacterModule.Models
             ResilienceChance = Stamina * CharacterParametersScaling.Instance.StaminaToResilience;
         }
 
-        public virtual void IncreaseIntelligence(int intelligence)
+        public virtual void ChangeIntelligence(int intelligence)
         {
             Intelligence += intelligence;
             int magicalDamageLevelScaling = Level / CharacterParametersScaling.Instance.LevelsCountForMultiplier * CharacterParametersScaling.Instance.LevelsToMagicalDamageMultiplier;
 
             MagicalDamageModifier = Intelligence * CharacterParametersScaling.Instance.IntelligenceToMagicalDamage;
             MagicalDamageModifier *= magicalDamageLevelScaling > 0 ? magicalDamageLevelScaling : 1;
-            MagicalHitChance = Intelligence * CharacterParametersScaling.Instance.IntelligenceToMagicalHitChance;
+            MagicalHitChance = Intelligence * CharacterParametersScaling.Instance.IntelligenceToMagicalHitChance + AdvantagePercent;
             BreathPoints.SetPermanentBonus(Intelligence * CharacterParametersScaling.Instance.IntelligenceToBreathPoints);
         }
 
-        public void IncreasePhysicalDamage(int physicalDamage)
+        public void ChangePhysicalDamage(int physicalDamage)
         {
             PhysicalDamageModifier += physicalDamage;
         }
 
-        public void IncreaseMagicalDamage(int magicalDamage)
+        public void ChangeMagicalDamage(int magicalDamage)
         {
             MagicalDamageModifier += magicalDamage;
         }
@@ -121,7 +126,7 @@ namespace SDRGames.Whist.CharacterModule.Models
             {
                 ArmorPoints.DecreaseCurrentValue(damage, isCritical);
             }
-            if (trueDamage <= 0)
+            if (trueDamage <= 0 || ArmorPoints.MinimalValue > 0)
             {
                 return;
             }
@@ -135,7 +140,7 @@ namespace SDRGames.Whist.CharacterModule.Models
             {
                 BarrierPoints.DecreaseCurrentValue(damage, isCritical);
             }
-            if (trueDamage <= 0)
+            if (trueDamage <= 0 || BarrierPoints.MinimalValue > 0)
             {
                 return;
             }
@@ -170,6 +175,31 @@ namespace SDRGames.Whist.CharacterModule.Models
         public void RestoreBreath(float restoration)
         {
             BreathPoints.IncreaseCurrentValue(restoration);
+        }
+
+        public void SetPhysicalDamageBlockPercent(int percent)
+        {
+            PhysicalDamageBlockPercent = percent;
+        }
+
+        public void SetMagicalDamageBlockPercent(int percent)
+        {
+            MagicalDamageBlockPercent = percent;
+        }
+
+        public void SetThornsPercent(int percent)
+        {
+            ThornsPercent = percent;
+        }
+
+        public void SetDebuffBlockPercent(int percent)
+        {
+            DebuffBlockPercent = percent;
+        }
+
+        public void SetAdvantagePercent(int percent)
+        {
+            AdvantagePercent = percent;
         }
     }
 }

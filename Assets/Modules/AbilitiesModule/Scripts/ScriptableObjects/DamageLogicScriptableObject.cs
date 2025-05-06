@@ -7,8 +7,7 @@ namespace SDRGames.Whist.AbilitiesModule.ScriptableObjects
     {
         public enum DamageTypes { Physical, Magical, True, TruePatient };
         [field: SerializeField] public DamageTypes DamageType { get; private set; }
-        [field: SerializeField] public int DamageValue { get; private set; }  
-        [field: SerializeField] public bool InPercents { get; private set; }
+        [field: SerializeField] public int DamageValue { get; private set; }
 
         private void OnEnable()
         {

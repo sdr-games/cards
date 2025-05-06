@@ -21,6 +21,11 @@ namespace SDRGames.Whist.CharacterModule.Presenters
             ((PlayerParamsModel)_characterParamsModel).TakePatientDamage(damage);
         }
 
+        public void RestorePatientHealth(float restoration)
+        {
+            ((PlayerParamsModel)_characterParamsModel).RestorePatientHealth(restoration);
+        }
+
         public void ReserveStaminaPoints(float cost)
         {
             _staminaPointsBarPresenter.ReservePoints(cost);

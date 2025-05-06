@@ -10,11 +10,8 @@ using SDRGames.Whist.MeleeCombatModule.Managers;
 using SDRGames.Whist.TurnSwitchModule.Managers;
 using SDRGames.Whist.AbilitiesModule.Models;
 using SDRGames.Whist.CardsCombatModule.Models;
-using SDRGames.Whist.MusicModule.Managers;
 
 using UnityEngine;
-using SDRGames.Whist.MusicModule.ScriptableObjects;
-using SDRGames.Whist.CharacterModule.ScriptableObjects;
 using SDRGames.Whist.CharacterModule.Models;
 
 namespace SDRGames.Whist.DomainModule.Managers
@@ -40,6 +37,7 @@ namespace SDRGames.Whist.DomainModule.Managers
             foreach (EnemyBehaviorManager enemyBehaviorManager in _enemyBehaviorManagers)
             {
                 enemyBehaviorManager.AbilityUsed += OnEnemyAbilityUsed;
+                enemyBehaviorManager.BecameInsane += OnEnemyBecameInsane;
                 enemyBehaviorManager.EnemyCombatManager.EnemySelected += OnEnemySelected;   
             }
             _enemyCombatManagers = enemyCombatManagers;
@@ -185,11 +183,14 @@ namespace SDRGames.Whist.DomainModule.Managers
                     continue;
                 }
 
-                if(i < e.SelectedCards.Count && card.CardModifiersScriptableObjects.Length > 0)
+                if(i < e.SelectedCards.Count - i && card.CardModifiersScriptableObjects.Length > 0)
                 {
                     List<Card> affectedCards = new List<Card>(e.SelectedCards);
-                    affectedCards.Remove(card);
-                    card.ApplyModifier(affectedCards.Count - 1, _playerCombatManager, _selectedEnemyCombatManagers, affectedCards);
+                    for (int j = 0; j <= i; j++)
+                    {
+                        affectedCards.Remove(e.SelectedCards[j]);
+                    }
+                    card.ApplyModifier(_playerCombatManager, _selectedEnemyCombatManagers, affectedCards);
                     continue;
                 }
 
@@ -275,6 +276,11 @@ namespace SDRGames.Whist.DomainModule.Managers
                 ((EnemyBehaviorManager)sender).Stop();
                 EndBattle(false);
             }
+        }
+
+        private void OnEnemyBecameInsane(object sender, EventArgs e)
+        {
+            ((EnemyBehaviorManager)sender).SetNewTarget(_enemyCombatManagers[UnityEngine.Random.Range(0, _enemyBehaviorManagers.Count - 1)]);
         }
 
         private void StartPlayerTurn()
