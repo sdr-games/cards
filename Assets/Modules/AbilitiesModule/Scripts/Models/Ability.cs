@@ -79,12 +79,12 @@ namespace SDRGames.Whist.AbilitiesModule.Models
 
         public string GetLocalizedDescription()
         {
-            string localizedDescription = "";
+            List<string> localizedDescription = new List<string>();
             foreach (AbilityLogic abilityLogic in AbilityLogics)
             {
-                localizedDescription += abilityLogic.GetLocalizedDescription();
+                localizedDescription.Add(abilityLogic.GetLocalizedDescription());
             }
-            return localizedDescription;
+            return string.Join("\n", localizedDescription);
         }
     }
 }

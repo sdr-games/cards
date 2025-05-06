@@ -54,17 +54,12 @@ namespace SDRGames.Whist.CardsCombatModule.Managers
             } 
 
             int count = _deck.Cards.Count + _cards.Count > _maxCardsOnHandsCount ? _maxCardsOnHandsCount : _deck.Cards.Count + _cards.Count;
-            for(int i = 0; i < _cards.Count; i++)
-            {
-                _deckOnHandView.RedrawCard(_cards[i], count, count - i - 1);
-            }
-
             int existedCount = _cards.Count;
             for (int i = existedCount; i < count; i++)
             {
                 int index = UnityEngine.Random.Range(0, _deck.Cards.Count - 1);
-                CardManager cardManager = _deckOnHandView.DrawCard(count, count - i - 1);
-                cardManager.Initialize(_userInputController, _deck.Cards[index], _deck.Cards.Count - count - i - 1);
+                CardManager cardManager = _deckOnHandView.DrawCard();
+                cardManager.Initialize(_userInputController, _deck.Cards[index]);
                 cardManager.CardPicked += OnCardPicked;
                 cardManager.CardMarked += OnCardMarked;
                 _deck.RemoveCard(cardManager.Card);

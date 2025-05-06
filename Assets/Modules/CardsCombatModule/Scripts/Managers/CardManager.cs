@@ -24,7 +24,7 @@ namespace SDRGames.Whist.CardsCombatModule.Managers
         public event EventHandler<CardSelectClickedEventArgs> CardPicked;
         public event EventHandler<CardMarkClickedEventArgs> CardMarked;
 
-        public void Initialize(UserInputController userInputController, Card card, int siblingIndex)
+        public void Initialize(UserInputController userInputController, Card card)
         {
             Card = card;
 
@@ -32,13 +32,7 @@ namespace SDRGames.Whist.CardsCombatModule.Managers
             _userInputController.LeftMouseButtonClickedOnUI += OnLeftMouseButtonClickedOnUI;
             _userInputController.RightMouseButtonClickedOnUI += OnRightMouseButtonClickedOnUI;
 
-            new CardPresenter(Card, _cardView, siblingIndex);
-        }
-
-        public void UpdateView(Vector2 position, int siblingIndex)
-        {
-            _cardView.transform.localPosition = position;
-            _cardView.UpdatePositionAndRotation(siblingIndex);
+            new CardPresenter(Card, _cardView);
         }
 
         public void OnPointerEnter(PointerEventData eventData)

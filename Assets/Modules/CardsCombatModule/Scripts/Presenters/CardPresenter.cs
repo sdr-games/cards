@@ -5,9 +5,9 @@ namespace SDRGames.Whist.CardsCombatModule.Presenters
 {
     public class CardPresenter
     {
-        public CardPresenter(Card card, CardView cardView, int siblingIndex)
+        public CardPresenter(Card card, CardView cardView)
         {
-            cardView.Initialize(siblingIndex, card.Name, card.GetLocalizedDescription(), card.Icon, card.Cost.ToString());
+            cardView.Initialize(card.Name, card.GetLocalizedDescription(), card.Icon, card.Cost.ToString());
         }
     }
 }
