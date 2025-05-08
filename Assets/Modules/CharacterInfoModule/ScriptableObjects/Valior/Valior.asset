@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 141392fbfdcda1b49afad80bad05c805, type: 3}
+  m_Name: Valior
+  m_EditorClassIdentifier: 
+  <CharacterInfo>k__BackingField: {fileID: 11400000, guid: 2138c702e452a7846b480e13bc6087ab,
+    type: 2}
+  <CharacterParams>k__BackingField: {fileID: 11400000, guid: 1755d9fb95f659b4d9614cf02827ef19,
+    type: 2}
+  <MeleeAttacks>k__BackingField:
+  - {fileID: 11400000, guid: 0084636326e86804386c7d737f95eeb6, type: 2}
+  - {fileID: 11400000, guid: 7cd3bde1947bb21449b134e3d7167474, type: 2}
+  - {fileID: 11400000, guid: 3bf55dae7e21b734884fd6055adcc966, type: 2}
+  <Decks>k__BackingField:
+  - {fileID: 11400000, guid: b53221eca4f4a244eaeb72ca64e7dbe5, type: 2}
+  - {fileID: 11400000, guid: 7d525ae9a7e3e4b4eb260e10af19770b, type: 2}

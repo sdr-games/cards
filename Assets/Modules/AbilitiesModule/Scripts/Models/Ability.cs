@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using SDRGames.Whist.AbilitiesModule.ScriptableObjects;
-using SDRGames.Whist.CharacterModule.Managers;
+using SDRGames.Whist.CharacterCombatModule.Managers;
 using SDRGames.Whist.LocalizationModule.Models;
 using SDRGames.Whist.SoundModule.ScriptableObjects;
 
@@ -77,7 +77,7 @@ namespace SDRGames.Whist.AbilitiesModule.Models
             }
         }
 
-        public string GetLocalizedDescription()
+        public virtual string GetLocalizedDescription()
         {
             List<string> localizedDescription = new List<string>();
             foreach (AbilityLogic abilityLogic in AbilityLogics)

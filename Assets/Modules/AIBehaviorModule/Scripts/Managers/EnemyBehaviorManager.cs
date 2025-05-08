@@ -6,12 +6,12 @@ using System.Linq;
 using SDRGames.Whist.AbilitiesModule.Models;
 using SDRGames.Whist.AbilitiesModule.ScriptableObjects;
 using SDRGames.Whist.EnemyBehaviorModule.ScriptableObjects;
-using SDRGames.Whist.CharacterModule.Managers;
-using SDRGames.Whist.AIBehaviorModule.ScriptableObjects;
+using SDRGames.Whist.CharacterCombatModule.Managers;
 using SDRGames.Whist.UserInputModule.Controller;
-using SDRGames.Whist.CharacterModule.Models;
+using SDRGames.Whist.CharacterCombatModule.Models;
 
 using UnityEngine;
+using SDRGames.Whist.CharacterCombatModule.ScriptableObjects;
 
 namespace SDRGames.Whist.EnemyBehaviorModule.Managers
 {
@@ -35,9 +35,9 @@ namespace SDRGames.Whist.EnemyBehaviorModule.Managers
         public event EventHandler AbilityUsed;
         public event EventHandler BecameInsane;
 
-        public void Initialize(EnemyDataScriptableObject enemyDataScriptableObject, PlayerCombatManager playerCombatManager, UserInputController userInputController)
+        public void Initialize(CharacterParamsScriptableObject enemyParamsScriptableObject, BehaviorScriptableObject[] meleeBehaviors, BehaviorScriptableObject[] magicBehaviors, SpecialAbilityScriptableObject[] specialAbilitiesScriptableObjects, GameObject modelPrefab, PlayerCombatManager playerCombatManager, UserInputController userInputController)
         {
-            EnemyCombatManager.Initialize(enemyDataScriptableObject.EnemyParamsScriptableObject, userInputController);
+            EnemyCombatManager.Initialize(enemyParamsScriptableObject, modelPrefab, userInputController);
             EnemyCombatManager.BecameInsane += OnBecameInsane;
             _enemyParams = EnemyCombatManager.GetParams();
 
@@ -45,12 +45,12 @@ namespace SDRGames.Whist.EnemyBehaviorModule.Managers
             _targetCombatManager = _playerCombatManager;
             _targetParams = _targetCombatManager.GetParams();
 
-            _meleeBehaviors = enemyDataScriptableObject.MeleeBehaviors;
-            _magicBehaviors = enemyDataScriptableObject.MagicBehaviors;
+            _meleeBehaviors = meleeBehaviors;
+            _magicBehaviors = magicBehaviors;
 
             _insanityTurns = 0;
 
-            InitializeSpecialAbilities(enemyDataScriptableObject.SpecialAbilitiesScriptableObjects);
+            InitializeSpecialAbilities(specialAbilitiesScriptableObjects);
             InitializeBehavior(_meleeBehaviors);
             InitializeBehavior(_magicBehaviors);
 

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 
+using SDRGames.Whist.AbilitiesModule.ScriptableObjects;
 using SDRGames.Whist.CardsCombatModule.ScriptableObjects;
 
 using UnityEngine;
@@ -15,7 +16,7 @@ namespace SDRGames.Whist.CardsCombatModule.Models
         {
             Backside = deckScriptableObject.Backside;
             Cards = new List<Card>();
-            foreach(CardScriptableObject cardSO in deckScriptableObject.Cards)
+            foreach(AbilityWithComboScriptableObject cardSO in deckScriptableObject.Cards)
             {
                 Card card = new Card(cardSO);
                 Cards.Add(card);

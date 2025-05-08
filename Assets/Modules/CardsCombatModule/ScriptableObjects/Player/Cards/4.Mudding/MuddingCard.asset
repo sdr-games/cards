@@ -17,7 +17,7 @@ MonoBehaviour:
       m_TableReference:
         m_TableCollectionName: GUID:4d392767c40aa5a4c99bdd73200f276b
       m_TableEntryReference:
-        m_KeyId: 65604876529455104
+        m_KeyId: 950557601792
         m_Key: 
       m_FallbackState: 0
       m_WaitForCompletion: 0
@@ -29,7 +29,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 4722d133f459cee49aa80e470ca2afa3, type: 2}
   <AnimationClip>k__BackingField: {fileID: 0}
   <SoundClip>k__BackingField: {fileID: 0}
-  <CardModifiersScriptableObjects>k__BackingField:
+  <AbilityComboScriptableObjects>k__BackingField:
   - {fileID: 11400000, guid: 93b04cfc065747e40983028bde4ce9c8, type: 2}
   - {fileID: 11400000, guid: 10202fce682d1674e8105d228adcbef6, type: 2}
   references:

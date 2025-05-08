@@ -1,4 +1,4 @@
-using SDRGames.Whist.CharacterModule.ScriptableObjects;
+using SDRGames.Whist.CharacterInfoModule.ScriptableObjects;
 using SDRGames.Whist.HelpersModule;
 using SDRGames.Whist.LocalizationModule.Models;
 

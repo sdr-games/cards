@@ -1,0 +1,21 @@
+{
+    "name": "CharacterInfoModule",
+    "rootNamespace": "SDRGames.Whist.CharacterInfoModule",
+    "references": [
+        "GUID:93e0ad40b1227c94bbc216fd4643284f",
+        "GUID:eec0964c48f6f4e40bc3ec2257ccf8c5",
+        "GUID:223c2987a31aaca438363288600cf6b5",
+        "GUID:60ae3907329d60b4d9a1b9be34188eb0",
+        "GUID:5252737d457b9c644b7ea9cbb6c578d7",
+        "GUID:10c1ce22187bb9d4ca61c7b45b6b3504"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

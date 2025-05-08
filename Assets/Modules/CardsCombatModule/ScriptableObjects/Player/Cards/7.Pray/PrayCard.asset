@@ -29,7 +29,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 771efa437d0b5df44959627df0bbfb94, type: 2}
   <AnimationClip>k__BackingField: {fileID: 0}
   <SoundClip>k__BackingField: {fileID: 0}
-  <CardModifiersScriptableObjects>k__BackingField:
+  <AbilityComboScriptableObjects>k__BackingField:
   - {fileID: 11400000, guid: e191f4ed7cfcb864cbea1db14671674b, type: 2}
   - {fileID: 11400000, guid: d9ee3711af4f6394494cbe27d5186868, type: 2}
   references:

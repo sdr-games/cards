@@ -5,14 +5,14 @@ using System.Collections;
 using SDRGames.Whist.AbilitiesQueueModule.Managers;
 using SDRGames.Whist.EnemyBehaviorModule.Managers;
 using SDRGames.Whist.CardsCombatModule.Managers;
-using SDRGames.Whist.CharacterModule.Managers;
+using SDRGames.Whist.CharacterCombatModule.Managers;
 using SDRGames.Whist.MeleeCombatModule.Managers;
 using SDRGames.Whist.TurnSwitchModule.Managers;
 using SDRGames.Whist.AbilitiesModule.Models;
 using SDRGames.Whist.CardsCombatModule.Models;
 
 using UnityEngine;
-using SDRGames.Whist.CharacterModule.Models;
+using SDRGames.Whist.CharacterCombatModule.Models;
 
 namespace SDRGames.Whist.DomainModule.Managers
 {
@@ -183,14 +183,14 @@ namespace SDRGames.Whist.DomainModule.Managers
                     continue;
                 }
 
-                if(i < e.SelectedCards.Count - i && card.CardModifiersScriptableObjects.Length > 0)
+                if(i < e.SelectedCards.Count - i && card.AbilityComboScriptableObjects.Length > 0)
                 {
-                    List<Card> affectedCards = new List<Card>(e.SelectedCards);
+                    List<Ability> affectedCards = new List<Ability>(e.SelectedCards);
                     for (int j = 0; j <= i; j++)
                     {
                         affectedCards.Remove(e.SelectedCards[j]);
                     }
-                    card.ApplyModifier(_playerCombatManager, _selectedEnemyCombatManagers, affectedCards);
+                    card.ApplyCombo(_playerCombatManager, _selectedEnemyCombatManagers, affectedCards);
                     continue;
                 }
 

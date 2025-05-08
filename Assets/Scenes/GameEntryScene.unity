@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.17980959, g: 0.17980959, b: 0.17980959, a: 1}
+  m_IndirectSpecularColor: {r: 5892.0005, g: 5892.0005, b: 5892.0005, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -340,8 +340,8 @@ MonoBehaviour:
           list: []
         <ReferenceParameters>k__BackingField:
           list:
-          - Key: playerParams
-            Value: {fileID: 11400000, guid: 1755d9fb95f659b4d9614cf02827ef19, type: 2}
+          - Key: playerInfo
+            Value: {fileID: 11400000, guid: bac6334e78448334aa3f298963ea1b62, type: 2}
           - Key: enemiesList
             Value: {fileID: 11400000, guid: 74a05a7c2c6b9da4e8fda21ea6c070b0, type: 2}
     - Key: 3

@@ -1,6 +1,6 @@
 using System;
 
-using SDRGames.Whist.CharacterModule.ScriptableObjects;
+using SDRGames.Whist.CharacterInfoModule.ScriptableObjects;
 using SDRGames.Whist.LocalizationModule.Models;
 using SDRGames.Whist.DialogueModule.ScriptableObjects;
 

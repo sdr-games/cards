@@ -12,7 +12,12 @@ namespace SDRGames.Whist.HelpersModule.Views
 
         public virtual void Show()
         {
-            if(_appearingSpeed > 0)
+            if (_canvasGroup.alpha == 1)
+            {
+                return;
+            }
+
+            if (_appearingSpeed > 0)
             {
                 StartCoroutine(ShowSmoothly());
                 return;
@@ -24,6 +29,11 @@ namespace SDRGames.Whist.HelpersModule.Views
 
         public virtual void Hide()
         {
+            if(_canvasGroup.alpha == 0)
+            {
+                return;
+            } 
+
             if (_appearingSpeed > 0)
             {
                 StartCoroutine(HideSmoothly());
