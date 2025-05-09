@@ -23,9 +23,9 @@ namespace SDRGames.Whist.CharacterCombatModule.Presenters
                 _playerCharacterParams.Agility.ToString(),
                 _playerCharacterParams.Stamina.ToString(),
                 _playerCharacterParams.Intelligence.ToString(),
-                _playerCharacterParams.PhysicalDamage.ToString(),
+                _playerCharacterParams.PhysicalDamageModifier.ToString(),
                 _playerCharacterParams.PhysicalHitChance.ToString(),
-                _playerCharacterParams.MagicalDamage.ToString(),
+                _playerCharacterParams.MagicalDamageModifier.ToString(),
                 _playerCharacterParams.MagicalHitChance.ToString(),
                 _playerCharacterParams.StaminaRestorationPower.ToString(),
                 _playerCharacterParams.Piercing.ToString()

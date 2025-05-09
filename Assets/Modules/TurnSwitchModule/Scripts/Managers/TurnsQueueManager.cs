@@ -104,6 +104,13 @@ namespace SDRGames.Whist.TurnSwitchModule.Managers
             }
         }
 
+        public void Stop()
+        {
+            _timerManager.TimeOver -= OnTimeOver;
+            _turnsQueueView.ShiftDone -= OnShiftDone;
+            _timerManager.StopTimer();
+        }
+
         private List<CharacterInfoScriptableObject> OrderByInitiative(List<CharacterScriptableObject> characters)
         {
             List<CharacterInfoScriptableObject> result = new List<CharacterInfoScriptableObject>();

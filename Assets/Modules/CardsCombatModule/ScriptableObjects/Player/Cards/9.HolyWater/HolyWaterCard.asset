@@ -22,6 +22,16 @@ MonoBehaviour:
       m_FallbackState: 0
       m_WaitForCompletion: 0
       m_LocalVariables: []
+  <ShortDescription>k__BackingField:
+    <Entity>k__BackingField:
+      m_TableReference:
+        m_TableCollectionName: GUID:6b734cc8dd908754fbacb4f74314e02c
+      m_TableEntryReference:
+        m_KeyId: 454938628096
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
   <Icon>k__BackingField: {fileID: 21300000, guid: a2665dd557372d146bb01666e4390c88,
     type: 3}
   <Cost>k__BackingField: 10
@@ -31,7 +41,7 @@ MonoBehaviour:
   <AnimationClip>k__BackingField: {fileID: 0}
   <SoundClip>k__BackingField: {fileID: 11400000, guid: 948570fba4db18f49acf764eb347739e,
     type: 2}
-  <CardModifiersScriptableObjects>k__BackingField: []
+  <AbilityComboScriptableObjects>k__BackingField: []
   references:
     version: 2
     RefIds: []

@@ -43,8 +43,8 @@ namespace SDRGames.Whist.CharacterCombatModule.Models
             Stamina = characterParamsScriptableObject.Stamina;
             Intelligence = characterParamsScriptableObject.Intelligence;
 
-            PhysicalDamageModifier = characterParamsScriptableObject.PhysicalDamage;
-            MagicalDamageModifier = characterParamsScriptableObject.MagicalDamage;
+            PhysicalDamageModifier = characterParamsScriptableObject.PhysicalDamageModifier;
+            MagicalDamageModifier = characterParamsScriptableObject.MagicalDamageModifier;
             PhysicalHitChance = characterParamsScriptableObject.PhysicalHitChance;
             MagicalHitChance = characterParamsScriptableObject.MagicalHitChance;
             Piercing = characterParamsScriptableObject.Piercing;
@@ -69,7 +69,7 @@ namespace SDRGames.Whist.CharacterCombatModule.Models
             Strength += strength;
             int physicalDamageLevelScaling = Level / CharacterParametersScaling.Instance.LevelsCountForMultiplier * CharacterParametersScaling.Instance.LevelsToPhysicalDamageMultiplier;
 
-            PhysicalDamageModifier = Strength * CharacterParametersScaling.Instance.StrengthToPhysicalDamage;
+            PhysicalDamageModifier = Strength * CharacterParametersScaling.Instance.StrengthToPhysicalDamagePercent;
             PhysicalDamageModifier *= physicalDamageLevelScaling > 0 ? physicalDamageLevelScaling : 1;
             PhysicalHitChance = Strength * CharacterParametersScaling.Instance.StrengthToPhysicalHitChance + AdvantagePercent;
             BlockChance = Strength * CharacterParametersScaling.Instance.StrengthToBlockChance;
@@ -95,7 +95,7 @@ namespace SDRGames.Whist.CharacterCombatModule.Models
             HealthPoints.SetPermanentBonus(Strength * CharacterParametersScaling.Instance.StrengthToHealthPoints + Stamina * CharacterParametersScaling.Instance.StaminaToHealthPoints);
             StaminaPoints.SetPermanentBonus(Stamina * CharacterParametersScaling.Instance.StaminaToStaminaPoints);
             OnslaughtChance = Stamina * CharacterParametersScaling.Instance.StaminaToOnslaughtChance;
-            ResilienceChance = Stamina * CharacterParametersScaling.Instance.StaminaToResilience;
+            ResilienceChance = Stamina * CharacterParametersScaling.Instance.StaminaToResilienceChance;
         }
 
         public virtual void ChangeIntelligence(int intelligence)
@@ -103,7 +103,7 @@ namespace SDRGames.Whist.CharacterCombatModule.Models
             Intelligence += intelligence;
             int magicalDamageLevelScaling = Level / CharacterParametersScaling.Instance.LevelsCountForMultiplier * CharacterParametersScaling.Instance.LevelsToMagicalDamageMultiplier;
 
-            MagicalDamageModifier = Intelligence * CharacterParametersScaling.Instance.IntelligenceToMagicalDamage;
+            MagicalDamageModifier = Intelligence * CharacterParametersScaling.Instance.IntelligenceToMagicalDamagePercent;
             MagicalDamageModifier *= magicalDamageLevelScaling > 0 ? magicalDamageLevelScaling : 1;
             MagicalHitChance = Intelligence * CharacterParametersScaling.Instance.IntelligenceToMagicalHitChance + AdvantagePercent;
             BreathPoints.SetPermanentBonus(Intelligence * CharacterParametersScaling.Instance.IntelligenceToBreathPoints);

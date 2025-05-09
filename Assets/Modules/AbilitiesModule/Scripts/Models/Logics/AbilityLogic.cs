@@ -36,7 +36,11 @@ namespace SDRGames.Whist.AbilitiesModule.Models
 
         public abstract void AddEffect(AbilityModifier cardModifier);
 
-        public abstract string GetLocalizedDescription();
+        public abstract string GetLocalizedDescription(CharacterParamsModel targetParams);
+
+        protected abstract string GetLocalizedDescription(int value);
+
+        protected abstract int CalculateValue(CharacterParamsModel targetParams);
 
         protected int CalculatePercentageOfParameter(Points parameter, float percent)
         {

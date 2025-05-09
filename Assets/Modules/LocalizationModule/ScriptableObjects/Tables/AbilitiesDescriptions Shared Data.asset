@@ -203,6 +203,22 @@ MonoBehaviour:
     m_Key: AdvantageDebuffDescription
     m_Metadata:
       m_Items: []
+  - m_Id: 67694779853590528
+    m_Key: PhysicalFlatPeriodicalDamageDescription
+    m_Metadata:
+      m_Items: []
+  - m_Id: 67694856387055616
+    m_Key: MagicalFlatPeriodicalDamageDescription
+    m_Metadata:
+      m_Items: []
+  - m_Id: 67694967154429952
+    m_Key: TrueFlatPeriodicalDamageDescription
+    m_Metadata:
+      m_Items: []
+  - m_Id: 67695052248469504
+    m_Key: PatientFlatPeriodicalDamageDescription
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

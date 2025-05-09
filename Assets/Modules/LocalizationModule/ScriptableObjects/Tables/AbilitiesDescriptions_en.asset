@@ -208,6 +208,22 @@ MonoBehaviour:
     m_Localized: Reduces chance to hit by {buff}%
     m_Metadata:
       m_Items: []
+  - m_Id: 67694779853590528
+    m_Localized: Deals {damage} physical damage over {turns} turns
+    m_Metadata:
+      m_Items: []
+  - m_Id: 67694856387055616
+    m_Localized: Deals {damage} magical damage over {turns} turns
+    m_Metadata:
+      m_Items: []
+  - m_Id: 67694967154429952
+    m_Localized: Deals {damage} true damage over {turns} turns
+    m_Metadata:
+      m_Items: []
+  - m_Id: 67695052248469504
+    m_Localized: Deals {damage} to patient as true damage over {turns} turns
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

@@ -38,10 +38,12 @@ namespace SDRGames.Whist.LocalizationModule.Models
             string result = Entity.GetLocalizedString();
             if(_params != null && _params.Count > 0)
             {
-                Match match = Regex.Match(result, @"\{(.*?)\}");
-                if(_params.ContainsKey(match.Groups[1].Value))
+                foreach (Match match in Regex.Matches(result, @"\{(.*?)\}"))
                 {
-                    result = result.Replace(match.Groups[0].Value, _params[match.Groups[1].Value].ToString());
+                    if (_params.ContainsKey(match.Groups[1].Value))
+                    {
+                        result = result.Replace(match.Groups[0].Value, _params[match.Groups[1].Value].ToString());
+                    }
                 }
             }
             return result;

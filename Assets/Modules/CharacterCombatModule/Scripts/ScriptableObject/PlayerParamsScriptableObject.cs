@@ -35,15 +35,15 @@ namespace SDRGames.Whist.CharacterCombatModule.ScriptableObjects
             base.IncreaseLevel(level);
             IncreaseTalentPoints(CharacterParametersScaling.Instance.TalentPointsPerLevel);
             LevelChanged?.Invoke(this, new LevelChangedEventArgs(Level));
-            PhysicalDamageChanged?.Invoke(this, new ParameterChangedEventArgs(PhysicalDamage));
-            MagicalDamageChanged?.Invoke(this, new ParameterChangedEventArgs(MagicalDamage));
+            PhysicalDamageChanged?.Invoke(this, new ParameterChangedEventArgs(PhysicalDamageModifier));
+            MagicalDamageChanged?.Invoke(this, new ParameterChangedEventArgs(MagicalDamageModifier));
         }
 
         public override void IncreaseStrength(int strength)
         {
             base.IncreaseStrength(strength);
             StrengthChanged?.Invoke(this, new CharactersticChangedEventArgs(Strength));
-            PhysicalDamageChanged?.Invoke(this, new ParameterChangedEventArgs(PhysicalDamage));
+            PhysicalDamageChanged?.Invoke(this, new ParameterChangedEventArgs(PhysicalDamageModifier));
             PhysicalHitChanceChanged?.Invoke(this, new ParameterChangedEventArgs(PhysicalHitChance));
         }
 
@@ -65,7 +65,7 @@ namespace SDRGames.Whist.CharacterCombatModule.ScriptableObjects
         {
             base.IncreaseIntelligence(intelligence);
             IntelligenceChanged?.Invoke(this, new CharactersticChangedEventArgs(Intelligence));
-            MagicalDamageChanged?.Invoke(this, new ParameterChangedEventArgs(MagicalDamage));
+            MagicalDamageChanged?.Invoke(this, new ParameterChangedEventArgs(MagicalDamageModifier));
             MagicalHitChanceChanged?.Invoke(this, new ParameterChangedEventArgs(MagicalHitChance));
         }
 
@@ -109,10 +109,10 @@ namespace SDRGames.Whist.CharacterCombatModule.ScriptableObjects
             int physicalDamageLevelScaling = Level / CharacterParametersScaling.Instance.LevelsCountForMultiplier * CharacterParametersScaling.Instance.LevelsToPhysicalDamageMultiplier;
             int magicalDamageLevelScaling = Level / CharacterParametersScaling.Instance.LevelsCountForMultiplier * CharacterParametersScaling.Instance.LevelsToMagicalDamageMultiplier;
 
-            PhysicalDamage = Strength * CharacterParametersScaling.Instance.StrengthToPhysicalDamage;
-            PhysicalDamage *= physicalDamageLevelScaling > 0 ? physicalDamageLevelScaling : 1;
-            MagicalDamage = Intelligence * CharacterParametersScaling.Instance.IntelligenceToMagicalDamage;
-            MagicalDamage *= magicalDamageLevelScaling > 0 ? magicalDamageLevelScaling : 1;
+            PhysicalDamageModifier = Strength * CharacterParametersScaling.Instance.StrengthToPhysicalDamagePercent;
+            PhysicalDamageModifier *= physicalDamageLevelScaling > 0 ? physicalDamageLevelScaling : 1;
+            MagicalDamageModifier = Intelligence * CharacterParametersScaling.Instance.IntelligenceToMagicalDamagePercent;
+            MagicalDamageModifier *= magicalDamageLevelScaling > 0 ? magicalDamageLevelScaling : 1;
             PhysicalHitChance = Strength * CharacterParametersScaling.Instance.StrengthToPhysicalHitChance;
             MagicalHitChance = Intelligence * CharacterParametersScaling.Instance.IntelligenceToMagicalHitChance;
             Piercing = Agility * CharacterParametersScaling.Instance.AgilityToPiercing;
@@ -121,7 +121,7 @@ namespace SDRGames.Whist.CharacterCombatModule.ScriptableObjects
             BlockChance = Strength * CharacterParametersScaling.Instance.StrengthToBlockChance;
             OnslaughtChance = Stamina * CharacterParametersScaling.Instance.StaminaToOnslaughtChance;
             CriticalStrikeChance = (Strength + Agility) / 2 * CharacterParametersScaling.Instance.StrengthAndAgilityToCriticalStrikeChance;
-            Resilience = Stamina * CharacterParametersScaling.Instance.StaminaToResilience;
+            Resilience = Stamina * CharacterParametersScaling.Instance.StaminaToResilienceChance;
             Weakening = 0;
             Amplification = 0;
             Initiative = new Dice("Initiative", 1, 21 - Agility * CharacterParametersScaling.Instance.AgilityToInitiative);

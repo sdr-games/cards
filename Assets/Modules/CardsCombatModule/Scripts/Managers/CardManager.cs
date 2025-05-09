@@ -8,6 +8,7 @@ using SDRGames.Whist.HelpersModule;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using SDRGames.Whist.CardsCombatModule.Models;
+using SDRGames.Whist.CharacterCombatModule.Models;
 
 namespace SDRGames.Whist.CardsCombatModule.Managers
 {
@@ -24,7 +25,7 @@ namespace SDRGames.Whist.CardsCombatModule.Managers
         public event EventHandler<CardSelectClickedEventArgs> CardPicked;
         public event EventHandler<CardMarkClickedEventArgs> CardMarked;
 
-        public void Initialize(UserInputController userInputController, Card card)
+        public void Initialize(UserInputController userInputController, Card card, PlayerParamsModel playerParamsModel)
         {
             Card = card;
 
@@ -32,7 +33,7 @@ namespace SDRGames.Whist.CardsCombatModule.Managers
             _userInputController.LeftMouseButtonClickedOnUI += OnLeftMouseButtonClickedOnUI;
             _userInputController.RightMouseButtonClickedOnUI += OnRightMouseButtonClickedOnUI;
 
-            new CardPresenter(Card, _cardView);
+            new CardPresenter(Card, _cardView, playerParamsModel);
         }
 
         public void OnPointerEnter(PointerEventData eventData)

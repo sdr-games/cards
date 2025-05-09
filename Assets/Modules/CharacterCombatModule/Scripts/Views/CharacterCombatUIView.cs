@@ -16,12 +16,19 @@ namespace SDRGames.Whist.CharacterCombatModule.Views
         [field: SerializeField] public GridLayoutGroup EffectsBar { get; protected set; }
 
         [SerializeField] private VerticalLayoutGroup _floatingTextPanel;
-        [SerializeField] private Vector2 _positionOffset;
+        [SerializeField] private float _positionOffsetY;
 
         public void Initialize(Transform owner)
-{
-            Vector2 screenPosition = Camera.main.WorldToScreenPoint(owner.position);
-            _floatingTextPanel.transform.position = screenPosition + _positionOffset;
+        {
+            if(transform.parent == null)
+            {
+                return;
+            } 
+            Vector3 positionWithOffset = new Vector3(owner.position.x, owner.position.y + _positionOffsetY, owner.position.z);
+            Vector2 screenPosition = Camera.main.WorldToScreenPoint(positionWithOffset);
+            Vector2 canvasPosition;
+            RectTransformUtility.ScreenPointToLocalPointInRectangle((RectTransform)transform.parent.transform, screenPosition, null, out canvasPosition);
+            ((RectTransform)_floatingTextPanel.transform).localPosition = canvasPosition;
         }
 
         public void ShowFloatingText(string text, Color textColor)

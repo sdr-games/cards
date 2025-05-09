@@ -26,9 +26,9 @@ namespace SDRGames.Whist.EnemyBehaviorModule.Managers
         private PlayerCombatManager _playerCombatManager;
         private CharacterParamsModel _targetParams;
 
-        private List<SpecialAbility> _specialAbilities;
         private BehaviorScriptableObject[] _meleeBehaviors;
         private BehaviorScriptableObject[] _magicBehaviors;
+        private List<SpecialAbility> _specialAbilities;
 
         private int _insanityTurns;
 

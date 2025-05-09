@@ -14,7 +14,7 @@ namespace SDRGames.Whist.CharacterCombatModule.Models
 
         public PlayerParamsModel(PlayerParamsScriptableObject playerParamsScriptableObject) : base(playerParamsScriptableObject)
         {
-            PatientHealthPoints = playerParamsScriptableObject.PatientHealthPoints;
+            PatientHealthPoints = new Points(playerParamsScriptableObject.PatientHealthPoints);
             Experience = playerParamsScriptableObject.Experience;
             TalentPoints = playerParamsScriptableObject.TalentPoints;
             PatientDamageBlockPercent = 0;

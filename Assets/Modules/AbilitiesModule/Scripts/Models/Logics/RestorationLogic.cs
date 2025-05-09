@@ -29,68 +29,27 @@ namespace SDRGames.Whist.AbilitiesModule.Models
                 return;
             }
             Action<int> action = null;
-            string description = GetLocalizedDescription();
+            int restorationValue = CalculateValue(targetParams);
+            string description = GetLocalizedDescription(restorationValue);
 
             switch (_restorationType)
             {
                 case RestorationTypes.Armor:
-                    if (_inMaxPercents || _inCurrentPercents)
-                    {
-                        _restorationValue = CalculatePercentageOfParameter(targetParams.ArmorPoints, _restorationValue);
-                        Debug.Log($"Процентное восстановление брони {_restorationValue}");
-                    }
-
-                    Debug.Log($"Финальное восстановление брони {_restorationValue}");
                     action = (int value) => targetCharacterCombatManager.RestoreArmorPoints(value);
                     break;
                 case RestorationTypes.Barrier:
-                    if (_inMaxPercents || _inCurrentPercents)
-                    {
-                        _restorationValue = CalculatePercentageOfParameter(targetParams.ArmorPoints, _restorationValue);
-                        Debug.Log($"Процентное восстановление барьера {_restorationValue}");
-                    }
-
-                    Debug.Log($"Финальное восстановление барьера {_restorationValue}");
                     action = (int value) => targetCharacterCombatManager.RestoreBarrierPoints(value);
                     break;
                 case RestorationTypes.Health:
-                    if (_inMaxPercents || _inCurrentPercents)
-                    {
-                        _restorationValue = CalculatePercentageOfParameter(targetParams.HealthPoints, _restorationValue);
-                        Debug.Log($"Процентное исцеление {_restorationValue}");
-                    }
-
-                    Debug.Log($"Финальное исцеление {_restorationValue}");
                     action = (int value) => targetCharacterCombatManager.RestoreHealthPoints(value);
                     break;
                 case RestorationTypes.Stamina:
-                    if (_inMaxPercents || _inCurrentPercents)
-                    {
-                        _restorationValue = CalculatePercentageOfParameter(targetParams.ArmorPoints, _restorationValue);
-                        Debug.Log($"Процентное восстановление выносливости {_restorationValue}");
-                    }
-
-                    Debug.Log($"Финальное восстановление выносливости {_restorationValue}");
                     action = (int value) => targetCharacterCombatManager.RestoreStaminaPoints(value);
                     break;
                 case RestorationTypes.Breath:
-                    if (_inMaxPercents || _inCurrentPercents)
-                    {
-                        _restorationValue = CalculatePercentageOfParameter(targetParams.BarrierPoints, _restorationValue);
-                        Debug.Log($"Процентное восстановление дыхания {_restorationValue}");
-                    }
-
-                    Debug.Log($"Финальное восстановление дыхания {_restorationValue}");
                     action = (int value) => targetCharacterCombatManager.RestoreBreathPoints(value);
                     break;
                 case RestorationTypes.PatientHealth:
-                    if (_inMaxPercents || _inCurrentPercents)
-                    {
-                        _restorationValue = CalculatePercentageOfParameter(((PlayerParamsModel)targetParams).PatientHealthPoints, _restorationValue);
-                        Debug.Log($"Процентное исцеление здоровья пациента {_restorationValue}");
-                    }
-
-                    Debug.Log($"Финальное исцеление здоровья пациента {_restorationValue}");
                     action = (int value) => ((PlayerCombatManager)targetCharacterCombatManager).RestorePatientHealthPoints(value);
                     break;
                 case RestorationTypes.Dispel:
@@ -104,10 +63,10 @@ namespace SDRGames.Whist.AbilitiesModule.Models
             }
             if (_roundsCount > 1)
             {
-                targetCharacterCombatManager.SetPeriodicalChanges(_restorationValue, _roundsCount, description, _effectIcon, action);
+                targetCharacterCombatManager.SetPeriodicalChanges(restorationValue, _roundsCount, description, _effectIcon, action);
                 return;
             }
-            action(_restorationValue);
+            action(restorationValue);
         }
 
         public override void AddEffect(AbilityModifier cardModifier)
@@ -120,10 +79,59 @@ namespace SDRGames.Whist.AbilitiesModule.Models
             _restorationValue += cardModifier.Value;
         }
 
-        public override string GetLocalizedDescription()
+        public override string GetLocalizedDescription(CharacterParamsModel targetParams)
         {
-            _description.SetParam("restore", _restorationValue);
+            int restorationValue = CalculateValue(targetParams);
+            return GetLocalizedDescription(restorationValue);
+        }
+
+        protected override string GetLocalizedDescription(int restorationValue)
+        {
+            if (_inMaxPercents || _inCurrentPercents)
+            {
+                restorationValue = _restorationValue;
+            }
+            _description.SetParam("restore", restorationValue);
+            _description.SetParam("turns", _roundsCount);
             return _description.GetLocalizedText();
+        }
+
+        protected override int CalculateValue(CharacterParamsModel targetParams)
+        {
+            int result = _restorationValue;
+            if (_inMaxPercents || _inCurrentPercents)
+            {
+                switch (_restorationType)
+                {
+                    case RestorationTypes.Armor:
+                        result = CalculatePercentageOfParameter(targetParams.ArmorPoints, result);
+                        Debug.Log($"Процентное восстановление брони {result}");
+                        break;
+                    case RestorationTypes.Barrier:
+                        result = CalculatePercentageOfParameter(targetParams.ArmorPoints, result);
+                        Debug.Log($"Процентное восстановление барьера {result}");
+                        break;
+                    case RestorationTypes.Health:
+                        result = CalculatePercentageOfParameter(targetParams.HealthPoints, result);
+                        Debug.Log($"Процентное исцеление {result}");
+                        break;
+                    case RestorationTypes.Stamina:
+                        result = CalculatePercentageOfParameter(targetParams.ArmorPoints, result);
+                        Debug.Log($"Процентное восстановление выносливости {result}");
+                        break;
+                    case RestorationTypes.Breath:
+                        result = CalculatePercentageOfParameter(targetParams.BarrierPoints, result);
+                        Debug.Log($"Процентное восстановление дыхания {result}");
+                        break;
+                    case RestorationTypes.PatientHealth:
+                        result = CalculatePercentageOfParameter(((PlayerParamsModel)targetParams).PatientHealthPoints, result);
+                        Debug.Log($"Процентное исцеление здоровья пациента {result}");
+                        break;
+                    default:
+                        break;
+                }
+            }
+            return result;
         }
     }
 }

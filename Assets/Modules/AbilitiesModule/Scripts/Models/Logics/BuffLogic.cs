@@ -29,78 +29,30 @@ namespace SDRGames.Whist.AbilitiesModule.Models
                 return;
             }
             Action<int> action = null;
-            string description = GetLocalizedDescription();
+            int buffValue = CalculateValue(targetParams);
+            string description = GetLocalizedDescription(buffValue);
 
             switch (_buffType)
             {
                 case BuffTypes.HealthPoints:
-                    if (_inMaxPercents || _inCurrentPercents)
-                    {
-                        _buffValue = CalculatePercentageOfParameter(targetParams.HealthPoints, _buffValue);
-                        Debug.Log($"Процентное усиление здоровья {_buffValue}");
-                    }
-
-                    Debug.Log($"Финальное усиление здоровья {_buffValue}");
                     action = (int value) => { targetParams.HealthPoints.IncreaseTemporaryBonus(value); };
                     break;
                 case BuffTypes.Strength:
-                    if (_inMaxPercents || _inCurrentPercents)
-                    {
-                        _buffValue = CalculatePercentageOfParameter(targetParams.Strength, _buffValue);
-                        Debug.Log($"Процентное усиление силы {_buffValue}");
-                    }
-
-                    Debug.Log($"Финальное усиление силы {_buffValue}");
                     action = (int value) => { targetParams.ChangeStrength(value); };
                     break;
                 case BuffTypes.Agility:
-                    if (_inMaxPercents || _inCurrentPercents)
-                    {
-                        _buffValue = CalculatePercentageOfParameter(targetParams.Agility, _buffValue);
-                        Debug.Log($"Процентное усиление ловкости {_buffValue}");
-                    }
-
-                    Debug.Log($"Финальное усиление ловкости {_buffValue}");
                     action = (int value) => { targetParams.ChangeAgility(value); };
                     break;
                 case BuffTypes.Stamina:
-                    if (_inMaxPercents || _inCurrentPercents)
-                    {
-                        _buffValue = CalculatePercentageOfParameter(targetParams.Stamina, _buffValue);
-                        Debug.Log($"Процентное усиление выносливости {_buffValue}");
-                    }
-
-                    Debug.Log($"Финальное усиление выносливости {_buffValue}");
                     action = (int value) => { targetParams.ChangeStamina(value); };
                     break;
                 case BuffTypes.Intelligence:
-                    if (_inMaxPercents || _inCurrentPercents)
-                    {
-                        _buffValue = CalculatePercentageOfParameter(targetParams.Intelligence, _buffValue);
-                        Debug.Log($"Процентное усиление интеллекта {_buffValue}");
-                    }
-
-                    Debug.Log($"Финальное усиление интеллекта {_buffValue}");
                     action = (int value) => { targetParams.ChangeIntelligence(value); };
                     break;
                 case BuffTypes.PhysicalDamage:
-                    if (_inMaxPercents || _inCurrentPercents)
-                    {
-                        _buffValue = CalculatePercentageOfParameter(targetParams.PhysicalDamageModifier, _buffValue);
-                        Debug.Log($"Процентное усиление ПНФУ {_buffValue}");
-                    }
-
-                    Debug.Log($"Финальное усиление ПНФУ {_buffValue}");
                     action = (int value) => { targetParams.ChangePhysicalDamage(value); };
                     break;
                 case BuffTypes.MagicalDamage:
-                    if (_inMaxPercents || _inCurrentPercents)
-                    {
-                        _buffValue = CalculatePercentageOfParameter(targetParams.MagicalDamageModifier, _buffValue);
-                        Debug.Log($"Процентное усиление ПНМУ {_buffValue}");
-                    }
-
-                    Debug.Log($"Финальное усиление ПНМУ {_buffValue}");
                     action = (int value) => { targetParams.ChangeMagicalDamage(value); };
                     break;
                 case BuffTypes.PhysicalDamageBlock:
@@ -125,43 +77,15 @@ namespace SDRGames.Whist.AbilitiesModule.Models
                     action = (int value) => { targetParams.SetDebuffBlockPercent(value); };
                     break;
                 case BuffTypes.ArmorPoints:
-                    if (_inMaxPercents || _inCurrentPercents)
-                    {
-                        _buffValue = CalculatePercentageOfParameter(targetParams.ArmorPoints, _buffValue);
-                        Debug.Log($"Процентное усиление брони {_buffValue}");
-                    }
-
-                    Debug.Log($"Финальное усиление брони {_buffValue}");
                     action = (int value) => { targetParams.ArmorPoints.IncreaseTemporaryBonus(value); };
                     break;
                 case BuffTypes.BarrierPoints:
-                    if (_inMaxPercents || _inCurrentPercents)
-                    {
-                        _buffValue = CalculatePercentageOfParameter(targetParams.BarrierPoints, _buffValue);
-                        Debug.Log($"Процентное усиление барьера {_buffValue}");
-                    }
-
-                    Debug.Log($"Финальное усиление барьера {_buffValue}");
                     action = (int value) => { targetParams.BarrierPoints.IncreaseTemporaryBonus(value); };
                     break;
                 case BuffTypes.Undying:
-                    if (_inMaxPercents || _inCurrentPercents)
-                    {
-                        _buffValue = CalculatePercentageOfParameter(targetParams.HealthPoints, _buffValue);
-                        Debug.Log($"Процентный порог здоровья бессмертия {_buffValue}");
-                    }
-
-                    Debug.Log($"Финальный порог здоровья бессмертия {_buffValue}");
                     action = (int value) => { targetParams.HealthPoints.SetMinimalValue(value); };
                     break;
                 case BuffTypes.UndyingPatient:
-                    if (_inMaxPercents || _inCurrentPercents)
-                    {
-                        _buffValue = CalculatePercentageOfParameter(((PlayerParamsModel)targetParams).PatientHealthPoints, _buffValue);
-                        Debug.Log($"Процентный порог здоровья бессмертия пациента {_buffValue}");
-                    }
-
-                    Debug.Log($"Финальный порог здоровья бессмертия пациента {_buffValue}");
                     action = (int value) => { ((PlayerParamsModel)targetParams).PatientHealthPoints.SetMinimalValue(value); };
                     break;
                 default:
@@ -186,10 +110,76 @@ namespace SDRGames.Whist.AbilitiesModule.Models
             _buffValue += cardModifier.Value;
         }
 
-        public override string GetLocalizedDescription()
+        public override string GetLocalizedDescription(CharacterParamsModel targetParams)
         {
-            _description.SetParam("buff", _buffValue);
+            int buffValue = CalculateValue(targetParams);
+            return GetLocalizedDescription(buffValue);
+        }
+
+        protected override string GetLocalizedDescription(int buffValue)
+        {
+            if(_inMaxPercents || _inCurrentPercents)
+            {
+                buffValue = _buffValue;
+            }
+            _description.SetParam("buff", buffValue);
+            _description.SetParam("turns", _roundsCount);
             return _description.GetLocalizedText();
+        }
+
+        protected override int CalculateValue(CharacterParamsModel targetParams)
+        {
+            int result = _buffValue;
+            if (_inMaxPercents || _inCurrentPercents)
+            {
+                switch (_buffType)
+                {
+                    case BuffTypes.HealthPoints:
+                    case BuffTypes.Undying:
+                        result = CalculatePercentageOfParameter(targetParams.HealthPoints, result);
+                        Debug.Log($"Процентное усиление здоровья или порог бессмертия {result}");
+                        break;
+                    case BuffTypes.Strength:
+                        result = CalculatePercentageOfParameter(targetParams.Strength, result);
+                        Debug.Log($"Процентное усиление силы {result}");
+                        break;
+                    case BuffTypes.Agility:
+                        result = CalculatePercentageOfParameter(targetParams.Agility, result);
+                        Debug.Log($"Процентное усиление ловкости {result}");
+                        break;
+                    case BuffTypes.Stamina:
+                        result = CalculatePercentageOfParameter(targetParams.Stamina, result);
+                        Debug.Log($"Процентное усиление выносливости {result}");
+                        break;
+                    case BuffTypes.Intelligence:
+                        result = CalculatePercentageOfParameter(targetParams.Intelligence, result);
+                        Debug.Log($"Процентное усиление интеллекта {result}");
+                        break;
+                    case BuffTypes.PhysicalDamage:
+                        result = CalculatePercentageOfParameter(targetParams.PhysicalDamageModifier, result);
+                        Debug.Log($"Процентное усиление ПНФУ {result}");
+                        break;
+                    case BuffTypes.MagicalDamage:
+                        result = CalculatePercentageOfParameter(targetParams.MagicalDamageModifier, result);
+                        Debug.Log($"Процентное усиление ПНМУ {result}");
+                        break;
+                    case BuffTypes.ArmorPoints:
+                        result = CalculatePercentageOfParameter(targetParams.ArmorPoints, result);
+                        Debug.Log($"Процентное усиление брони {result}");
+                        break;
+                    case BuffTypes.BarrierPoints:
+                        result = CalculatePercentageOfParameter(targetParams.BarrierPoints, result);
+                        Debug.Log($"Процентное усиление барьера {result}");
+                        break;
+                    case BuffTypes.UndyingPatient:
+                        result = CalculatePercentageOfParameter(((PlayerParamsModel)targetParams).PatientHealthPoints, result);
+                        Debug.Log($"Процентный порог здоровья бессмертия пациента {result}");
+                        break;
+                    default:
+                        break;
+                }
+            }
+            return result;
         }
     }
 }

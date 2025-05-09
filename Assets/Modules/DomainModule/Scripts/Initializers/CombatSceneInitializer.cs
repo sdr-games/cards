@@ -16,6 +16,7 @@ using SDRGames.Whist.SceneManagementModule.Initializers;
 using SDRGames.Whist.CharacterInfoModule.ScriptableObjects;
 
 using UnityEngine;
+using SDRGames.Whist.CharacterCombatModule.Models;
 
 namespace SDRGames.Whist.DomainModule
 {
@@ -38,6 +39,7 @@ namespace SDRGames.Whist.DomainModule
 
         public override IEnumerator InitializeCoroutine()
         {
+            yield return null;
             PlayerScriptableObject playerScriptableObject = (PlayerScriptableObject)_sceneInitializationReferenceParameters["playerInfo"];
             EnemiesListScriptableObject enemiesListScriptableObject = (EnemiesListScriptableObject)_sceneInitializationReferenceParameters["enemiesList"];
 
@@ -59,7 +61,7 @@ namespace SDRGames.Whist.DomainModule
             {
                 yield return InitializePart(() => CreateAndInitializeEnemy(enemiesListScriptableObject.EnemiesData[i], enemyCombatManagers, characterScriptableObjects), 1f);
             }
-            yield return InitializePart(() => _combatUIManager.Initialize(UserInputController.Instance), 1f);
+            yield return InitializePart(() => _combatUIManager.Initialize(UserInputController.Instance, playerScriptableObject, (PlayerParamsModel)_playerCombatManager.GetParams()), 1f);
             yield return InitializePart(() => _turnsQueueManager.Initialize(characterScriptableObjects), 1f);
 
             yield return InitializePart(() => _combatSceneManager.Initialize(_turnsQueueManager, _combatUIManager, _playerCombatManager, _enemyBehaviorManagers, enemyCombatManagers), 6.5f);

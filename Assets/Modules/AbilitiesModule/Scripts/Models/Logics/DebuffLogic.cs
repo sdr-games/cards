@@ -29,68 +29,27 @@ namespace SDRGames.Whist.AbilitiesModule.Models
                 return;
             }
             Action<int> action = null;
-            string description = GetLocalizedDescription();
+            int debuffValue = CalculateValue(targetParams);
+            string description = GetLocalizedDescription(debuffValue);
 
             switch (_debuffType)
             {
                 case DebuffTypes.Strength:
-                    if (_inMaxPercents || _inCurrentPercents)
-                    {
-                        _debuffValue = CalculatePercentageOfParameter(targetParams.Strength, _debuffValue);
-                        Debug.Log($"Процентное ослабление силы {_debuffValue}");
-                    }
-
-                    Debug.Log($"Финальное ослабление силы {_debuffValue}");
                     action = (int value) => { targetParams.ChangeStrength(value); };
                     break;
                 case DebuffTypes.Agility:
-                    if (_inMaxPercents || _inCurrentPercents)
-                    {
-                        _debuffValue = CalculatePercentageOfParameter(targetParams.Agility, _debuffValue);
-                        Debug.Log($"Процентное ослабление ловкости {_debuffValue}");
-                    }
-
-                    Debug.Log($"Финальное ослабление ловкости {_debuffValue}");
                     action = (int value) => { targetParams.ChangeAgility(value); };
                     break;
                 case DebuffTypes.Stamina:
-                    if (_inMaxPercents || _inCurrentPercents)
-                    {
-                        _debuffValue = CalculatePercentageOfParameter(targetParams.Stamina, _debuffValue);
-                        Debug.Log($"Процентное ослабление выносливости {_debuffValue}");
-                    }
-
-                    Debug.Log($"Финальное ослабление выносливости {_debuffValue}");
                     action = (int value) => { targetParams.ChangeStamina(value); };
                     break;
                 case DebuffTypes.Intelligence:
-                    if (_inMaxPercents || _inCurrentPercents)
-                    {
-                        _debuffValue = CalculatePercentageOfParameter(targetParams.Intelligence, _debuffValue);
-                        Debug.Log($"Процентное ослабление интеллекта {_debuffValue}");
-                    }
-
-                    Debug.Log($"Финальное ослабление интеллекта {_debuffValue}");
                     action = (int value) => { targetParams.ChangeIntelligence(value); };
                     break;
                 case DebuffTypes.PhysicalDamage:
-                    if (_inMaxPercents || _inCurrentPercents)
-                    {
-                        _debuffValue = CalculatePercentageOfParameter(targetParams.PhysicalDamageModifier, _debuffValue);
-                        Debug.Log($"Процентное ослабление ПНФУ {_debuffValue}");
-                    }
-
-                    Debug.Log($"Финальное ослабление ПНФУ {_debuffValue}");
                     action = (int value) => { targetParams.ChangePhysicalDamage(value); };
                     break;
                 case DebuffTypes.MagicalDamage:
-                    if (_inMaxPercents || _inCurrentPercents)
-                    {
-                        _debuffValue = CalculatePercentageOfParameter(targetParams.MagicalDamageModifier, _debuffValue);
-                        Debug.Log($"Процентное ослабление ПНМУ {_debuffValue}");
-                    }
-
-                    Debug.Log($"Финальное ослабление ПНМУ {_debuffValue}");
                     action = (int value) => { targetParams.ChangeMagicalDamage(value); };
                     break;
                 case DebuffTypes.PhysicalDamageBlock:
@@ -130,9 +89,59 @@ namespace SDRGames.Whist.AbilitiesModule.Models
             _debuffValue += cardModifier.Value;
         }
 
-        public override string GetLocalizedDescription()
+        public override string GetLocalizedDescription(CharacterParamsModel targetParams)
         {
-            return "";
+            int debuffValue = CalculateValue(targetParams);
+            return GetLocalizedDescription(debuffValue);
+        }
+
+        protected override string GetLocalizedDescription(int debuffValue)
+        {
+            if (_inMaxPercents || _inCurrentPercents)
+            {
+                debuffValue = _debuffValue;
+            }
+            _description.SetParam("debuff", debuffValue);
+            _description.SetParam("turns", _roundsCount);
+            return _description.GetLocalizedText();
+        }
+
+        protected override int CalculateValue(CharacterParamsModel targetParams)
+        {
+            int result = _debuffValue;
+            if (_inMaxPercents || _inCurrentPercents)
+            {
+                switch (_debuffType)
+                {
+                    case DebuffTypes.Strength:
+                        result = CalculatePercentageOfParameter(targetParams.Strength, result);
+                        Debug.Log($"Процентное ослабление силы {result}");
+                        break;
+                    case DebuffTypes.Agility:
+                        result = CalculatePercentageOfParameter(targetParams.Agility, result);
+                        Debug.Log($"Процентное ослабление ловкости {result}");
+                        break;
+                    case DebuffTypes.Stamina:
+                        result = CalculatePercentageOfParameter(targetParams.Stamina, result);
+                        Debug.Log($"Процентное ослабление выносливости {result}");
+                        break;
+                    case DebuffTypes.Intelligence:
+                        result = CalculatePercentageOfParameter(targetParams.Intelligence, result);
+                        Debug.Log($"Процентное ослабление интеллекта {result}");
+                        break;
+                    case DebuffTypes.PhysicalDamage:
+                        result = CalculatePercentageOfParameter(targetParams.PhysicalDamageModifier, result);
+                        Debug.Log($"Процентное ослабление ПНФУ {result}");
+                        break;
+                    case DebuffTypes.MagicalDamage:
+                        result = CalculatePercentageOfParameter(targetParams.MagicalDamageModifier, result);
+                        Debug.Log($"Процентное ослабление ПНМУ {result}");
+                        break;
+                    default:
+                        break;
+                }
+            }
+            return result;
         }
     }
 }

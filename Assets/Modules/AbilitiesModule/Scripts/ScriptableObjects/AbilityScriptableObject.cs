@@ -11,6 +11,7 @@ namespace SDRGames.Whist.AbilitiesModule.ScriptableObjects
     public class AbilityScriptableObject : ScriptableObject
     {
         [field: SerializeField] public LocalizedString Name { get; private set; }
+        [field: SerializeField] public LocalizedString ShortDescription { get; private set; }
         [field: SerializeField] public Sprite Icon { get; private set; }
         [field: SerializeField] public int Cost { get; private set; }
         [field: SerializeField] public AbilityLogicScriptableObject[] AbilityLogics { get; private set; }

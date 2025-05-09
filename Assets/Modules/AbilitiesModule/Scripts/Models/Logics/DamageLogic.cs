@@ -28,8 +28,10 @@ namespace SDRGames.Whist.AbilitiesModule.Models
             Action<int> action = null;
             int hitChance = 0;
             int dodgeChance = 0;
+            int damage = _damageValue;
+            int roundsCount = _roundsCount;
             bool isCritical = false;
-            string description = GetLocalizedDescription();
+            string description = GetLocalizedDescription(casterParams);
 
             switch (_damageType)
             {
@@ -39,8 +41,8 @@ namespace SDRGames.Whist.AbilitiesModule.Models
                     Debug.Log($"Шанс попадания: {hitChance} против шанса уклонения и блока: {dodgeChance}");
                     if (hitChance < dodgeChance)
                     {
-                        _damageValue = 0;
-                        _roundsCount = 0;
+                        damage = 0;
+                        roundsCount = 0;
                         break;
                     }
                     isCritical = UnityEngine.Random.Range(0, 100) < casterParams.CriticalStrikeChance;
@@ -49,17 +51,17 @@ namespace SDRGames.Whist.AbilitiesModule.Models
 
                     if (_inMaxPercents || _inCurrentPercents)
                     {
-                        _damageValue = CalculatePercentageOfParameter(targetParams.ArmorPoints, _damageValue);
-                        Debug.Log($"Процентный урон {_damageValue}");
+                        damage = CalculatePercentageOfParameter(targetParams.ArmorPoints, damage);
+                        Debug.Log($"Процентный урон {damage}");
                     }
                     else
                     {
-                        _damageValue += CalculatePhysicalDamage(casterParams);
-                        _damageValue = ApplyModifiers(casterParams, targetParams, _damageValue, isCritical);
+                        damage += CalculatePhysicalDamage(casterParams);
+                        damage = ApplyModifiers(casterParams, targetParams, damage, isCritical);
                     }
 
-                    _damageValue -= CalculatePercentageOfParameter(targetParams.PhysicalDamageBlockPercent, _damageValue);
-                    Debug.Log($"Финальный расчетный физический урон {_damageValue}");
+                    damage -= CalculatePercentageOfParameter(targetParams.PhysicalDamageBlockPercent, damage);
+                    Debug.Log($"Финальный расчетный физический урон {damage}");
                     action = (int value) => { 
                         if(targetParams.ThornsPercent > 0)
                         {
@@ -76,8 +78,8 @@ namespace SDRGames.Whist.AbilitiesModule.Models
                     Debug.Log($"Шанс попадания: {hitChance} против шанса уклонения: {dodgeChance}");
                     if (hitChance < dodgeChance)
                     {
-                        _damageValue = 0;
-                        _roundsCount = 0;
+                        damage = 0;
+                        roundsCount = 0;
                         break;
                     }
                     isCritical = UnityEngine.Random.Range(0, 100) < casterParams.CriticalStrikeChance;
@@ -86,17 +88,17 @@ namespace SDRGames.Whist.AbilitiesModule.Models
 
                     if (_inMaxPercents || _inCurrentPercents)
                     {
-                        _damageValue = CalculatePercentageOfParameter(targetParams.BarrierPoints, _damageValue);
-                        Debug.Log($"Процентный урон {_damageValue}");
+                        damage = CalculatePercentageOfParameter(targetParams.BarrierPoints, damage);
+                        Debug.Log($"Процентный урон {damage}");
                     }
                     else
                     {
-                        _damageValue += CalculateMagicalDamage(casterParams);
-                        _damageValue = ApplyModifiers(casterParams, targetParams, _damageValue, isCritical);
+                        damage += CalculateMagicalDamage(casterParams);
+                        damage = ApplyModifiers(casterParams, targetParams, damage, isCritical);
                     }
 
-                    _damageValue -= CalculatePercentageOfParameter(targetParams.MagicalDamageBlockPercent, _damageValue);
-                    Debug.Log($"Финальный расчетный магический урон {_damageValue}");
+                    damage -= CalculatePercentageOfParameter(targetParams.MagicalDamageBlockPercent, damage);
+                    Debug.Log($"Финальный расчетный магический урон {damage}");
                     action = (int value) =>
                     {
                         if (targetParams.ThornsPercent > 0)
@@ -112,10 +114,10 @@ namespace SDRGames.Whist.AbilitiesModule.Models
                     Debug.Log($"Базовый урон {_damageValue}");
                     if (_inMaxPercents || _inCurrentPercents)
                     {
-                        _damageValue = CalculatePercentageOfParameter(targetParams.HealthPoints, _damageValue);
-                        Debug.Log($"Процентный урон {_damageValue}");
+                        damage = CalculatePercentageOfParameter(targetParams.HealthPoints, damage);
+                        Debug.Log($"Процентный урон {damage}");
                     }
-                    Debug.Log($"Финальный расчетный прямой урон {_damageValue}");
+                    Debug.Log($"Финальный расчетный прямой урон {damage}");
                     action = (int value) =>
                     {
                         if (targetParams.ThornsPercent > 0)
@@ -131,12 +133,12 @@ namespace SDRGames.Whist.AbilitiesModule.Models
                     Debug.Log($"Базовый урон {_damageValue}");
                     if (_inMaxPercents || _inCurrentPercents)
                     {
-                        _damageValue = CalculatePercentageOfParameter(((PlayerParamsModel)targetParams).PatientHealthPoints, _damageValue);
-                        Debug.Log($"Процентный урон {_damageValue}");
+                        damage = CalculatePercentageOfParameter(((PlayerParamsModel)targetParams).PatientHealthPoints, damage);
+                        Debug.Log($"Процентный урон {damage}");
                     }
 
-                    _damageValue -= CalculatePercentageOfParameter(((PlayerParamsModel)targetParams).PatientDamageBlockPercent, _damageValue);
-                    Debug.Log($"Финальный расчетный урон по пациенту {_damageValue}");
+                    damage -= CalculatePercentageOfParameter(((PlayerParamsModel)targetParams).PatientDamageBlockPercent, damage);
+                    Debug.Log($"Финальный расчетный урон по пациенту {damage}");
                     action = (int value) =>
                     {
                         if (targetParams.ThornsPercent > 0)
@@ -153,10 +155,10 @@ namespace SDRGames.Whist.AbilitiesModule.Models
             }
             if (_roundsCount > 1)
             {
-                targetCharacterCombatManager.SetPeriodicalChanges(_damageValue, _roundsCount, description, _effectIcon, action);
+                targetCharacterCombatManager.SetPeriodicalChanges(damage, roundsCount, description, _effectIcon, action);
                 return;
             }
-            action(_damageValue);
+            action(damage);
         }
 
         public override void AddEffect(AbilityModifier cardModifier)
@@ -169,150 +171,54 @@ namespace SDRGames.Whist.AbilitiesModule.Models
             _damageValue += cardModifier.Value;
         }
 
-        public override string GetLocalizedDescription()
+        public override string GetLocalizedDescription(CharacterParamsModel casterParams)
         {
-            _description.SetParam("damage", _damageValue);
+            int damageValue = CalculateValue(casterParams);
+            return GetLocalizedDescription(damageValue);
+        }
+
+        protected override string GetLocalizedDescription(int damageValue)
+        {
+            if (_inMaxPercents || _inCurrentPercents)
+            {
+                damageValue = _damageValue;
+            }
+            _description.SetParam("damage", damageValue);
+            _description.SetParam("turns", _roundsCount);
             return _description.GetLocalizedText();
         }
 
-        //protected void CalculateValue()
-        //{
-        //    switch (_damageType)
-        //    {
-        //        case DamageTypes.Physical:
-        //            hitChance = UnityEngine.Random.Range(0, _chance + casterParams.PhysicalHitChance + casterParams.OnslaughtChance);
-        //            dodgeChance = UnityEngine.Random.Range(0, targetParams.DodgeChance + targetParams.BlockChance);
-        //            Debug.Log($"Шанс попадания: {hitChance} против шанса уклонения и блока: {dodgeChance}");
-        //            if (hitChance < dodgeChance)
-        //            {
-        //                _damageValue = 0;
-        //                _roundsCount = 0;
-        //                break;
-        //            }
-        //            isCritical = UnityEngine.Random.Range(0, 100) < casterParams.CriticalStrikeChance;
-        //            Debug.Log(isCritical ? $"Критическое попадание!" : $"Попадание");
-        //            Debug.Log($"Базовый урон {_damageValue}");
-
-        //            if (_inMaxPercents || _inCurrentPercents)
-        //            {
-        //                _damageValue = CalculatePercentageOfParameter(targetParams.ArmorPoints, _damageValue);
-        //                Debug.Log($"Процентный урон {_damageValue}");
-        //            }
-        //            else
-        //            {
-        //                _damageValue += CalculatePhysicalDamage(casterParams);
-        //                _damageValue = ApplyModifiers(casterParams, targetParams, _damageValue, isCritical);
-        //            }
-
-        //            _damageValue -= CalculatePercentageOfParameter(targetParams.PhysicalDamageBlockPercent, _damageValue);
-        //            Debug.Log($"Финальный расчетный физический урон {_damageValue}");
-        //            action = (int value) => {
-        //                if (targetParams.ThornsPercent > 0)
-        //                {
-        //                    int thornsDamage = CalculatePercentageOfParameter(targetParams.ThornsPercent, value);
-        //                    value -= thornsDamage;
-        //                    casterCharacterCombatManager.TakePhysicalDamage(thornsDamage, false);
-        //                }
-        //                targetCharacterCombatManager.TakePhysicalDamage(value, isCritical);
-        //            };
-        //            break;
-        //        case DamageTypes.Magical:
-        //            hitChance = UnityEngine.Random.Range(0, _chance + casterParams.MagicalHitChance);
-        //            dodgeChance = UnityEngine.Random.Range(0, targetParams.DodgeChance);
-        //            Debug.Log($"Шанс попадания: {hitChance} против шанса уклонения: {dodgeChance}");
-        //            if (hitChance < dodgeChance)
-        //            {
-        //                _damageValue = 0;
-        //                _roundsCount = 0;
-        //                break;
-        //            }
-        //            isCritical = UnityEngine.Random.Range(0, 100) < casterParams.CriticalStrikeChance;
-        //            Debug.Log(isCritical ? $"Критическое попадание!" : $"Попадание");
-        //            Debug.Log($"Базовый урон {_damageValue}");
-
-        //            if (_inMaxPercents || _inCurrentPercents)
-        //            {
-        //                _damageValue = CalculatePercentageOfParameter(targetParams.BarrierPoints, _damageValue);
-        //                Debug.Log($"Процентный урон {_damageValue}");
-        //            }
-        //            else
-        //            {
-        //                _damageValue += CalculateMagicalDamage(casterParams);
-        //                _damageValue = ApplyModifiers(casterParams, targetParams, _damageValue, isCritical);
-        //            }
-
-        //            _damageValue -= CalculatePercentageOfParameter(targetParams.MagicalDamageBlockPercent, _damageValue);
-        //            Debug.Log($"Финальный расчетный магический урон {_damageValue}");
-        //            action = (int value) =>
-        //            {
-        //                if (targetParams.ThornsPercent > 0)
-        //                {
-        //                    int thornsDamage = CalculatePercentageOfParameter(targetParams.ThornsPercent, value);
-        //                    value -= thornsDamage;
-        //                    casterCharacterCombatManager.TakeMagicalDamage(thornsDamage, false);
-        //                }
-        //                targetCharacterCombatManager.TakeMagicalDamage(value, isCritical);
-        //            };
-        //            break;
-        //        case DamageTypes.True:
-        //            Debug.Log($"Базовый урон {_damageValue}");
-        //            if (_inMaxPercents || _inCurrentPercents)
-        //            {
-        //                _damageValue = CalculatePercentageOfParameter(targetParams.HealthPoints, _damageValue);
-        //                Debug.Log($"Процентный урон {_damageValue}");
-        //            }
-        //            Debug.Log($"Финальный расчетный прямой урон {_damageValue}");
-        //            action = (int value) =>
-        //            {
-        //                if (targetParams.ThornsPercent > 0)
-        //                {
-        //                    int thornsDamage = CalculatePercentageOfParameter(targetParams.ThornsPercent, value);
-        //                    value -= thornsDamage;
-        //                    casterCharacterCombatManager.TakeTrueDamage(thornsDamage, false);
-        //                }
-        //                targetCharacterCombatManager.TakeTrueDamage(value);
-        //            };
-        //            break;
-        //        case DamageTypes.TruePatient:
-        //            Debug.Log($"Базовый урон {_damageValue}");
-        //            if (_inMaxPercents || _inCurrentPercents)
-        //            {
-        //                _damageValue = CalculatePercentageOfParameter(((PlayerParamsModel)targetParams).PatientHealthPoints, _damageValue);
-        //                Debug.Log($"Процентный урон {_damageValue}");
-        //            }
-
-        //            _damageValue -= CalculatePercentageOfParameter(((PlayerParamsModel)targetParams).PatientDamageBlockPercent, _damageValue);
-        //            Debug.Log($"Финальный расчетный урон по пациенту {_damageValue}");
-        //            action = (int value) =>
-        //            {
-        //                if (targetParams.ThornsPercent > 0)
-        //                {
-        //                    int thornsDamage = CalculatePercentageOfParameter(targetParams.ThornsPercent, value);
-        //                    value -= thornsDamage;
-        //                    casterCharacterCombatManager.TakeTrueDamage(thornsDamage, false);
-        //                }
-        //                ((PlayerCombatManager)targetCharacterCombatManager).TakePatientDamage(value);
-        //            };
-        //            break;
-        //        default:
-        //            break;
-        //    }
-        //}
+        protected override int CalculateValue(CharacterParamsModel casterParams)
+        {
+            int result = _damageValue;
+            switch (_damageType)
+            {
+                case DamageTypes.Physical:
+                    result += CalculatePhysicalDamage(casterParams);
+                    break;
+                case DamageTypes.Magical:
+                    result += CalculateMagicalDamage(casterParams);
+                    break;
+                default:
+                    break;
+            }
+            return result;
+        }
 
         private int CalculatePhysicalDamage(CharacterParamsModel casterParams)
         {
-            float calculatedDamage = casterParams.Strength * CharacterParametersScaling.Instance.StrengthToPhysicalDamage;
+            double calculatedDamage = casterParams.Strength * CharacterParametersScaling.Instance.StrengthToPhysicalDamage;
             Debug.Log($"Урон с учетом Силы {calculatedDamage}");
-            calculatedDamage += calculatedDamage * casterParams.PhysicalDamageModifier;
+            calculatedDamage += calculatedDamage + Math.Round(calculatedDamage / 100 * casterParams.PhysicalDamageModifier, MidpointRounding.ToEven);
             Debug.Log($"Урон с учетом Показателя ФизУрона {calculatedDamage}");
             return (int)calculatedDamage;
         }
 
         private int CalculateMagicalDamage(CharacterParamsModel casterParams)
         {
-            float calculatedDamage = casterParams.Intelligence * CharacterParametersScaling.Instance.IntelligenceToMagicalDamage;
+            double calculatedDamage = casterParams.Intelligence * CharacterParametersScaling.Instance.IntelligenceToMagicalDamage;
             Debug.Log($"Урон с учетом Интеллекта {calculatedDamage}");
-            calculatedDamage += calculatedDamage * casterParams.MagicalDamageModifier;
+            calculatedDamage += calculatedDamage + Math.Round(calculatedDamage / 100 * casterParams.MagicalDamageModifier, MidpointRounding.ToEven);
             Debug.Log($"Урон с учетом Показателя МагУрона {calculatedDamage}");
             return (int)calculatedDamage;
         }
@@ -320,7 +226,7 @@ namespace SDRGames.Whist.AbilitiesModule.Models
         private int ApplyModifiers(CharacterParamsModel casterParams, CharacterParamsModel targetParams, float calculatedDamage, bool isCritical)
         {
             bool isResilient = UnityEngine.Random.Range(0, 100) < targetParams.ResilienceChance;
-
+            
             if (isCritical)
             {
                 calculatedDamage *= CharacterParametersScaling.Instance.CriticalStrikeModifier;
@@ -328,7 +234,7 @@ namespace SDRGames.Whist.AbilitiesModule.Models
             }
             if (isResilient)
             {
-                calculatedDamage *= 100 - CharacterParametersScaling.Instance.ResiliencePercent / 100f;
+                calculatedDamage *= (100 - CharacterParametersScaling.Instance.ResiliencePercent) / 100f;
                 Debug.Log($"Урон с учетом устойчивости {calculatedDamage}");
             }
             calculatedDamage *= 1 + targetParams.Weakening / 100f;
@@ -338,7 +244,7 @@ namespace SDRGames.Whist.AbilitiesModule.Models
             calculatedDamage *= 1 + casterParams.Amplification / 100f;
             Debug.Log($"Урон с учетом усиления {calculatedDamage}");
 
-            return (int)Math.Round(calculatedDamage);
+            return (int)Math.Round(calculatedDamage, MidpointRounding.ToEven);
         }
     }
 }

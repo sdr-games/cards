@@ -13,6 +13,7 @@ namespace SDRGames.Whist.CharacterCombatModule.Models
 
         [field: Header("STRENGTH")][field: SerializeField] public int StrengthToHealthPoints { get; private set; }
         [field: SerializeField] public int StrengthToPhysicalDamage { get; private set; }
+        [field: SerializeField] public int StrengthToPhysicalDamagePercent { get; private set; }
         [field: SerializeField][field: Range(0, 100)] public int StrengthToPhysicalHitChance { get; private set; }
         [field: SerializeField][field: Range(0, 100)] public int StrengthToBlockChance { get; private set; }
 
@@ -37,7 +38,7 @@ namespace SDRGames.Whist.CharacterCombatModule.Models
 
         [field: Header("STAMINA")][field: SerializeField] public int StaminaToHealthPoints { get; private set; }
         [field: SerializeField] public int StaminaToStaminaPoints { get; private set; }
-        [field: SerializeField][field: Range(0, 100)] public int StaminaToResilience { get; private set; }
+        [field: SerializeField][field: Range(0, 100)] public int StaminaToResilienceChance { get; private set; }
         [field: SerializeField][field: Range(0, 100)] public int StaminaToOnslaughtChance { get; private set; }
 
         #endregion
@@ -46,6 +47,7 @@ namespace SDRGames.Whist.CharacterCombatModule.Models
 
         [field: Header("INTELLIGENCE")][field: SerializeField] public int IntelligenceToBreathPoints { get; private set; }
         [field: SerializeField] public int IntelligenceToMagicalDamage { get; private set; }
+        [field: SerializeField] public int IntelligenceToMagicalDamagePercent { get; private set; }
         [field: SerializeField][field: Range(0, 100)] public int IntelligenceToMagicalHitChance { get; private set; }
 
         #endregion
@@ -83,6 +85,7 @@ namespace SDRGames.Whist.CharacterCombatModule.Models
 
             Instance.StrengthToHealthPoints = StrengthToHealthPoints;
             Instance.StrengthToPhysicalDamage = StrengthToPhysicalDamage;
+            Instance.StrengthToPhysicalDamagePercent = StrengthToPhysicalDamagePercent;
             Instance.StrengthToPhysicalHitChance = StrengthToPhysicalHitChance;
             Instance.StrengthToBlockChance = StrengthToBlockChance;
 
@@ -95,11 +98,12 @@ namespace SDRGames.Whist.CharacterCombatModule.Models
 
             Instance.StaminaToHealthPoints = StaminaToHealthPoints;
             Instance.StaminaToStaminaPoints = StaminaToStaminaPoints;
-            Instance.StaminaToResilience = StaminaToResilience;
+            Instance.StaminaToResilienceChance = StaminaToResilienceChance;
             Instance.StaminaToOnslaughtChance = StaminaToOnslaughtChance;
 
             Instance.IntelligenceToBreathPoints = IntelligenceToBreathPoints;
             Instance.IntelligenceToMagicalDamage = IntelligenceToMagicalDamage;
+            Instance.IntelligenceToMagicalDamagePercent = IntelligenceToMagicalDamagePercent;
             Instance.IntelligenceToMagicalHitChance = IntelligenceToMagicalHitChance;
 
             Instance.ExperienceRequiredPerLevel = ExperienceRequiredPerLevel;
@@ -112,9 +116,11 @@ namespace SDRGames.Whist.CharacterCombatModule.Models
 
             Instance.WeakeningMaxPercent = WeakeningMaxPercent;
             Instance.AmplificationMaxPercent = AmplificationMaxPercent;
+            Instance.ResiliencePercent = ResiliencePercent;
             Instance.BaseStaminaRestorationPowerPercent = BaseStaminaRestorationPowerPercent;
             Instance.BaseStunResistance = BaseStunResistance;
             Instance.BaseStunResistanceWithoutArmor = BaseStunResistanceWithoutArmor;
+            Instance.CriticalStrikeModifier = CriticalStrikeModifier;
         }
     }
 }

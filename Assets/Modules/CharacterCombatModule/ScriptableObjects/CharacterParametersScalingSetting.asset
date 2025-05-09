@@ -15,6 +15,7 @@ MonoBehaviour:
   _characterParametersScaling:
     <StrengthToHealthPoints>k__BackingField: 5
     <StrengthToPhysicalDamage>k__BackingField: 5
+    <StrengthToPhysicalDamagePercent>k__BackingField: 1
     <StrengthToPhysicalHitChance>k__BackingField: 1
     <StrengthToBlockChance>k__BackingField: 1
     <StrengthAndAgilityToCriticalStrikeChance>k__BackingField: 1
@@ -24,10 +25,11 @@ MonoBehaviour:
     <AgilityToPiercing>k__BackingField: 1
     <StaminaToHealthPoints>k__BackingField: 10
     <StaminaToStaminaPoints>k__BackingField: 10
-    <StaminaToResilience>k__BackingField: 1
+    <StaminaToResilienceChance>k__BackingField: 1
     <StaminaToOnslaughtChance>k__BackingField: 1
     <IntelligenceToBreathPoints>k__BackingField: 10
     <IntelligenceToMagicalDamage>k__BackingField: 10
+    <IntelligenceToMagicalDamagePercent>k__BackingField: 1
     <IntelligenceToMagicalHitChance>k__BackingField: 1
     <ExperienceRequiredPerLevel>k__BackingField: 050000000a0000000f000000
     <TalentPointsPerLevel>k__BackingField: 2

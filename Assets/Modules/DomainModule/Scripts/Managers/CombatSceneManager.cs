@@ -66,7 +66,7 @@ namespace SDRGames.Whist.DomainModule.Managers
 
         public void StartCombat()
         {
-            _combatUIManager.gameObject.SetActive(true);
+            _combatUIManager.Show();
             _turnsQueueManager.Run();
         }
 
@@ -183,7 +183,7 @@ namespace SDRGames.Whist.DomainModule.Managers
                     continue;
                 }
 
-                if(i < e.SelectedCards.Count - i && card.AbilityComboScriptableObjects.Length > 0)
+                if(i < e.SelectedCards.Count - i && card.AbilityComboScriptableObjects.Length > 0 && e.SelectedCards.Count > 1)
                 {
                     List<Ability> affectedCards = new List<Ability>(e.SelectedCards);
                     for (int j = 0; j <= i; j++)
@@ -295,6 +295,7 @@ namespace SDRGames.Whist.DomainModule.Managers
 
         private void StartEnemyTurn(EnemyBehaviorManager enemyBehaviorManager)
         {
+            _combatUIManager.HidePlayerUI();
             _playerCombatManager.UpdateBonusesEffects();
             enemyBehaviorManager.EnemyCombatManager.ApplyPeriodicalEffects();
             enemyBehaviorManager.MakeMove();
@@ -319,6 +320,7 @@ namespace SDRGames.Whist.DomainModule.Managers
 
         private void EndBattle(bool victory)
         {
+            _turnsQueueManager.Stop();
             if(victory)
             {
                 _combatUIManager.ShowVictoryPanel();

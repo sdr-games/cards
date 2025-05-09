@@ -10,6 +10,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using SDRGames.Whist.CharacterCombatModule.Models;
 
 namespace SDRGames.Whist.MeleeCombatModule.Managers
 {
@@ -19,16 +20,17 @@ namespace SDRGames.Whist.MeleeCombatModule.Managers
         [SerializeField] private GridLayoutGroup _buttonsGridLayoutGroup;
         [SerializeField] private TextMeshProUGUI _descriptionText;
         [SerializeField] private TextMeshProUGUI _costText;
-        [SerializeField] private MeleeAttackScriptableObject[] _meleeAttackScriptableObjects;
 
+        private PlayerParamsModel _playerParamsModel;
         private List<MeleeAttackManager> _createdManagers;
 
         public event EventHandler<MeleeAttackClickedEventArgs> MeleeAttackClicked;
 
-        public void Initialize(UserInputController userInputController)
+        public void Initialize(UserInputController userInputController, MeleeAttackScriptableObject[] meleeAttackScriptableObjects, PlayerParamsModel playerParamsModel)
         {
+            _playerParamsModel = playerParamsModel;
             _createdManagers = new List<MeleeAttackManager>();
-            foreach (MeleeAttackScriptableObject meleeAttackScriptableObject in _meleeAttackScriptableObjects)
+            foreach (MeleeAttackScriptableObject meleeAttackScriptableObject in meleeAttackScriptableObjects)
             {
                 MeleeAttackManager meleeAttackManager = Instantiate(_meleeAttackPrefab, _buttonsGridLayoutGroup.transform);
                 meleeAttackManager.Initialize(userInputController, meleeAttackScriptableObject);
@@ -41,7 +43,7 @@ namespace SDRGames.Whist.MeleeCombatModule.Managers
 
         private void OnMeleeAttackPointerEnter(object sender, MeleeAttackClickedEventArgs e)
         {
-            _descriptionText.text = e.MeleeAttack.GetLocalizedDescription();
+            _descriptionText.text = e.MeleeAttack.GetLocalizedDescription(_playerParamsModel);
             _costText.text = e.MeleeAttack.Cost.ToString();
         }
 

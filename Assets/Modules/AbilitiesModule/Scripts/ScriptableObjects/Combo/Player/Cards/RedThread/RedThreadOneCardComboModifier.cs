@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using SDRGames.Whist.AbilitiesModule.Models;
 using SDRGames.Whist.AbilitiesModule.ScriptableObjects;
 using SDRGames.Whist.CharacterCombatModule.Managers;
+using SDRGames.Whist.CharacterCombatModule.Models;
 
 using UnityEngine;
 
@@ -19,9 +20,10 @@ namespace SDRGames.Whist.CardsCombatModule.ScriptableObjects
             restorationLogic.Apply(casterCombatManager);
         }
 
-        public override string GetDescription()
+        public override string GetDescription(CharacterParamsModel characterParamsModel)
         {
-            return "";
+            RestorationLogic restorationLogic = new RestorationLogic(_restorationLogicScriptableObject);
+            return $"\n(1): {restorationLogic.GetLocalizedDescription(characterParamsModel)} ";
         }
     }
 }
