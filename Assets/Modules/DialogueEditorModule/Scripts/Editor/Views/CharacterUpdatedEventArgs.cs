@@ -1,6 +1,6 @@
 ﻿using System;
 
-using SDRGames.Whist.CharacterModule.ScriptableObjects;
+using SDRGames.Whist.CharacterInfoModule.ScriptableObjects;
 
 namespace SDRGames.Whist.DialogueEditorModule.Views
 {

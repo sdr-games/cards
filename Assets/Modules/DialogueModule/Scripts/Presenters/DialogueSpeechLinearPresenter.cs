@@ -1,6 +1,6 @@
 using System;
 
-using SDRGames.Whist.CharacterModule.ScriptableObjects;
+using SDRGames.Whist.CharacterInfoModule.ScriptableObjects;
 using SDRGames.Whist.DialogueModule.ScriptableObjects;
 using SDRGames.Whist.DialogueModule.Views;
 using SDRGames.Whist.UserInputModule.Controller;

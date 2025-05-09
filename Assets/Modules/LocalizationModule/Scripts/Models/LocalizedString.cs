@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
 using UnityEngine;
+using UnityEngine.Localization.Settings;
 
 namespace SDRGames.Whist.LocalizationModule.Models
 {
@@ -18,15 +19,31 @@ namespace SDRGames.Whist.LocalizationModule.Models
             Entity = entity;
         }
 
+        public static string GetLocalizedString(string tableName, string indexName)
+        {
+            string result;
+            try
+            {
+                result = LocalizationSettings.StringDatabase.GetLocalizedString(tableName, indexName);
+            }
+            catch (Exception ex)
+            {
+                result = "";
+            }
+            return result;
+        }
+
         public string GetLocalizedText()
         {
             string result = Entity.GetLocalizedString();
             if(_params != null && _params.Count > 0)
             {
-                Match match = Regex.Match(result, @"\{(.*?)\}");
-                if(_params.ContainsKey(match.Groups[1].Value))
+                foreach (Match match in Regex.Matches(result, @"\{(.*?)\}"))
                 {
-                    result = result.Replace(match.Groups[0].Value, _params[match.Groups[1].Value].ToString());
+                    if (_params.ContainsKey(match.Groups[1].Value))
+                    {
+                        result = result.Replace(match.Groups[0].Value, _params[match.Groups[1].Value].ToString());
+                    }
                 }
             }
             return result;

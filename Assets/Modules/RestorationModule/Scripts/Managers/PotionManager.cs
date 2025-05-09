@@ -1,5 +1,6 @@
 using System;
 
+using SDRGames.Whist.CharacterCombatModule.Models;
 using SDRGames.Whist.RestorationModule.Models;
 using SDRGames.Whist.RestorationModule.Presenters;
 using SDRGames.Whist.RestorationModule.ScriptableObjects;
@@ -25,11 +26,11 @@ namespace SDRGames.Whist.RestorationModule.Managers
         public event EventHandler<PotionClickedEventArgs> PotionPointerEnter;
         public event EventHandler<PotionClickedEventArgs> PotionPointerExit;
 
-        public void Initialize(UserInputController userInputController, PotionScriptableObject potionScriptableObject)
+        public void Initialize(UserInputController userInputController, PotionScriptableObject potionScriptableObject, CharacterParamsModel characterParamsModel)
         {
             _potion = new Potion(potionScriptableObject);
 
-            new PotionPresenter(_potion, _potionView);
+            new PotionPresenter(_potion, _potionView, characterParamsModel);
 
             _userInputController = userInputController;
             _userInputController.LeftMouseButtonClickedOnUI += OnLeftMouseButtonClickedOnUI;

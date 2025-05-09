@@ -50,6 +50,38 @@ MonoBehaviour:
     m_Localized: Banishing
     m_Metadata:
       m_Items: []
+  - m_Id: 65345024133582848
+    m_Localized: Poultice
+    m_Metadata:
+      m_Items: []
+  - m_Id: 65548875545595904
+    m_Localized: A breath of a gold dust
+    m_Metadata:
+      m_Items: []
+  - m_Id: 65598550726299648
+    m_Localized: Red thread
+    m_Metadata:
+      m_Items: []
+  - m_Id: 65604876529455104
+    m_Localized: Fragmentation
+    m_Metadata:
+      m_Items: []
+  - m_Id: 65670217263632384
+    m_Localized: Philosopher's Stone
+    m_Metadata:
+      m_Items: []
+  - m_Id: 65756963154317312
+    m_Localized: Holy water
+    m_Metadata:
+      m_Items: []
+  - m_Id: 66074270313369600
+    m_Localized: Monarch's touch
+    m_Metadata:
+      m_Items: []
+  - m_Id: 66462574397509632
+    m_Localized: Morphine
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

@@ -5,17 +5,14 @@ using System.Collections;
 using SDRGames.Whist.AbilitiesQueueModule.Managers;
 using SDRGames.Whist.EnemyBehaviorModule.Managers;
 using SDRGames.Whist.CardsCombatModule.Managers;
-using SDRGames.Whist.CharacterModule.Managers;
+using SDRGames.Whist.CharacterCombatModule.Managers;
 using SDRGames.Whist.MeleeCombatModule.Managers;
 using SDRGames.Whist.TurnSwitchModule.Managers;
 using SDRGames.Whist.AbilitiesModule.Models;
 using SDRGames.Whist.CardsCombatModule.Models;
-using SDRGames.Whist.MusicModule.Managers;
 
 using UnityEngine;
-using SDRGames.Whist.MusicModule.ScriptableObjects;
-using SDRGames.Whist.CharacterModule.ScriptableObjects;
-using SDRGames.Whist.CharacterModule.Models;
+using SDRGames.Whist.CharacterCombatModule.Models;
 
 namespace SDRGames.Whist.DomainModule.Managers
 {
@@ -40,6 +37,7 @@ namespace SDRGames.Whist.DomainModule.Managers
             foreach (EnemyBehaviorManager enemyBehaviorManager in _enemyBehaviorManagers)
             {
                 enemyBehaviorManager.AbilityUsed += OnEnemyAbilityUsed;
+                enemyBehaviorManager.BecameInsane += OnEnemyBecameInsane;
                 enemyBehaviorManager.EnemyCombatManager.EnemySelected += OnEnemySelected;   
             }
             _enemyCombatManagers = enemyCombatManagers;
@@ -68,7 +66,7 @@ namespace SDRGames.Whist.DomainModule.Managers
 
         public void StartCombat()
         {
-            _combatUIManager.gameObject.SetActive(true);
+            _combatUIManager.Show();
             _turnsQueueManager.Run();
         }
 
@@ -185,11 +183,14 @@ namespace SDRGames.Whist.DomainModule.Managers
                     continue;
                 }
 
-                if(i < e.SelectedCards.Count && card.CardModifiersScriptableObjects.Length > 0)
+                if(i < e.SelectedCards.Count - i && card.AbilityComboScriptableObjects.Length > 0 && e.SelectedCards.Count > 1)
                 {
-                    List<Card> affectedCards = new List<Card>(e.SelectedCards);
-                    affectedCards.Remove(card);
-                    card.ApplyModifier(affectedCards.Count - 1, _playerCombatManager, _selectedEnemyCombatManagers, affectedCards);
+                    List<Ability> affectedCards = new List<Ability>(e.SelectedCards);
+                    for (int j = 0; j <= i; j++)
+                    {
+                        affectedCards.Remove(e.SelectedCards[j]);
+                    }
+                    card.ApplyCombo(_playerCombatManager, _selectedEnemyCombatManagers, affectedCards);
                     continue;
                 }
 
@@ -277,6 +278,11 @@ namespace SDRGames.Whist.DomainModule.Managers
             }
         }
 
+        private void OnEnemyBecameInsane(object sender, EventArgs e)
+        {
+            ((EnemyBehaviorManager)sender).SetNewTarget(_enemyCombatManagers[UnityEngine.Random.Range(0, _enemyBehaviorManagers.Count - 1)]);
+        }
+
         private void StartPlayerTurn()
         {
             _playerCombatManager.ApplyPeriodicalEffects();
@@ -289,6 +295,7 @@ namespace SDRGames.Whist.DomainModule.Managers
 
         private void StartEnemyTurn(EnemyBehaviorManager enemyBehaviorManager)
         {
+            _combatUIManager.HidePlayerUI();
             _playerCombatManager.UpdateBonusesEffects();
             enemyBehaviorManager.EnemyCombatManager.ApplyPeriodicalEffects();
             enemyBehaviorManager.MakeMove();
@@ -313,6 +320,7 @@ namespace SDRGames.Whist.DomainModule.Managers
 
         private void EndBattle(bool victory)
         {
+            _turnsQueueManager.Stop();
             if(victory)
             {
                 _combatUIManager.ShowVictoryPanel();

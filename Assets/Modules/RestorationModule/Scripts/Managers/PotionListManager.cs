@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 
+using SDRGames.Whist.CharacterCombatModule.Models;
 using SDRGames.Whist.HelpersModule.Views;
 using SDRGames.Whist.RestorationModule.ScriptableObjects;
 using SDRGames.Whist.UserInputModule.Controller;
@@ -21,17 +22,19 @@ namespace SDRGames.Whist.RestorationModule.Managers
         [SerializeField] private TextMeshProUGUI _descriptionText;
         [SerializeField] private PotionScriptableObject[] _potionScriptableObjects;
 
+        private PlayerParamsModel _playerParamsModel;
         private List<PotionManager> _createdManagers;
 
         public event EventHandler<PotionClickedEventArgs> PotionClicked;
 
-        public void Initialize(UserInputController userInputController)
+        public void Initialize(UserInputController userInputController, PlayerParamsModel playerParamsModel)
         {
+            _playerParamsModel = playerParamsModel;
             _createdManagers = new List<PotionManager>();
             foreach (PotionScriptableObject potionScriptableObject in _potionScriptableObjects)
             {
                 PotionManager potionManager = Instantiate(_potionPrefab, _buttonsGridLayoutGroup.transform);
-                potionManager.Initialize(userInputController, potionScriptableObject);
+                potionManager.Initialize(userInputController, potionScriptableObject, _playerParamsModel);
                 potionManager.PotionPointerEnter += OnPotionPointerEnter;
                 potionManager.PotionPointerExit += OnPotionPointerExit;
                 potionManager.PotionClicked += OnPotionClicked;
@@ -41,7 +44,7 @@ namespace SDRGames.Whist.RestorationModule.Managers
 
         private void OnPotionPointerEnter(object sender, PotionClickedEventArgs e)
         {
-            _descriptionText.text = e.Potion.GetLocalizedDescription();
+            _descriptionText.text = e.Potion.GetLocalizedDescription(_playerParamsModel);
         }
 
         private void OnPotionPointerExit(object sender, PotionClickedEventArgs e)

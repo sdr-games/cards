@@ -3,8 +3,8 @@ using System.Collections.Generic;
 
 using SDRGames.Whist.EnemyBehaviorModule.Managers;
 using SDRGames.Whist.CardsCombatModule.ScriptableObjects;
-using SDRGames.Whist.CharacterModule.Managers;
-using SDRGames.Whist.CharacterModule.ScriptableObjects;
+using SDRGames.Whist.CharacterCombatModule.Managers;
+using SDRGames.Whist.CharacterCombatModule.ScriptableObjects;
 using SDRGames.Whist.DomainModule.Managers;
 using SDRGames.Whist.FloatingTextModule.Managers;
 using SDRGames.Whist.HelpersModule;
@@ -13,9 +13,10 @@ using SDRGames.Whist.TurnSwitchModule.Managers;
 using SDRGames.Whist.UserInputModule.Controller;
 using SDRGames.Whist.NotificationsModule;
 using SDRGames.Whist.SceneManagementModule.Initializers;
-using SDRGames.Whist.AIBehaviorModule.ScriptableObjects;
+using SDRGames.Whist.CharacterInfoModule.ScriptableObjects;
 
 using UnityEngine;
+using SDRGames.Whist.CharacterCombatModule.Models;
 
 namespace SDRGames.Whist.DomainModule
 {
@@ -38,7 +39,8 @@ namespace SDRGames.Whist.DomainModule
 
         public override IEnumerator InitializeCoroutine()
         {
-            PlayerParamsScriptableObject playerParamsScriptableObject = (PlayerParamsScriptableObject)_sceneInitializationReferenceParameters["playerParams"];
+            yield return null;
+            PlayerScriptableObject playerScriptableObject = (PlayerScriptableObject)_sceneInitializationReferenceParameters["playerInfo"];
             EnemiesListScriptableObject enemiesListScriptableObject = (EnemiesListScriptableObject)_sceneInitializationReferenceParameters["enemiesList"];
 
             _totalWeight = 13.5f + enemiesListScriptableObject.EnemiesData.Length;
@@ -48,19 +50,19 @@ namespace SDRGames.Whist.DomainModule
             yield return InitializePart(() => _cardsScalingScriptableObject.Initialize(), 1f);
             yield return InitializePart(() => _meleeAttacksScalingScriptableObject.Initialize(), 1f);
             yield return InitializePart(() => _floatingTextManager.Initialize(), 1f);
-            yield return InitializePart(() => _playerCombatManager.Initialize(playerParamsScriptableObject), 1f);
+            yield return InitializePart(() => _playerCombatManager.Initialize(playerScriptableObject.CharacterParams, playerScriptableObject.CharacterInfo.Character3DModelData.ModelPrefab), 1f);
 
-            List<CharacterParamsScriptableObject> characterParamsScriptableObjects = new List<CharacterParamsScriptableObject>();
-            characterParamsScriptableObjects.Add(playerParamsScriptableObject);
+            List<CharacterScriptableObject> characterScriptableObjects = new List<CharacterScriptableObject>();
+            characterScriptableObjects.Add(playerScriptableObject);
 
             _enemyBehaviorManagers = new List<EnemyBehaviorManager>();
             List<EnemyCombatManager> enemyCombatManagers = new List<EnemyCombatManager>();
             for(int i = 0; i < enemiesListScriptableObject.EnemiesData.Length; i++)
             {
-                yield return InitializePart(() => CreateAndInitializeEnemy(enemiesListScriptableObject.EnemiesData[i], enemyCombatManagers, characterParamsScriptableObjects), 1f);
+                yield return InitializePart(() => CreateAndInitializeEnemy(enemiesListScriptableObject.EnemiesData[i], enemyCombatManagers, characterScriptableObjects), 1f);
             }
-            yield return InitializePart(() => _combatUIManager.Initialize(UserInputController.Instance), 1f);
-            yield return InitializePart(() => _turnsQueueManager.Initialize(characterParamsScriptableObjects), 1f);
+            yield return InitializePart(() => _combatUIManager.Initialize(UserInputController.Instance, playerScriptableObject, (PlayerParamsModel)_playerCombatManager.GetParams()), 1f);
+            yield return InitializePart(() => _turnsQueueManager.Initialize(characterScriptableObjects), 1f);
 
             yield return InitializePart(() => _combatSceneManager.Initialize(_turnsQueueManager, _combatUIManager, _playerCombatManager, _enemyBehaviorManagers, enemyCombatManagers), 6.5f);
         }
@@ -70,13 +72,19 @@ namespace SDRGames.Whist.DomainModule
             _combatSceneManager.StartCombat();
         }
 
-        private void CreateAndInitializeEnemy(EnemyDataScriptableObject enemyDataScriptableObject, List<EnemyCombatManager> enemyCombatManagers, List<CharacterParamsScriptableObject> characterParamsScriptableObjects)
+        private void CreateAndInitializeEnemy(EnemyScriptableObject enemyScriptableObject, List<EnemyCombatManager> enemyCombatManagers, List<CharacterScriptableObject> characterScriptableObjects)
         {
             EnemyBehaviorManager enemyBehaviorManager = Instantiate(_enemyBehaviorManagerPrefab);
-            enemyBehaviorManager.Initialize(enemyDataScriptableObject, _playerCombatManager, UserInputController.Instance);
+            enemyBehaviorManager.Initialize(
+                enemyScriptableObject.CharacterParams, 
+                enemyScriptableObject.MeleeBehaviors, 
+                enemyScriptableObject.MagicBehaviors, 
+                enemyScriptableObject.SpecialAbilitiesScriptableObjects, 
+                enemyScriptableObject.CharacterInfo.Character3DModelData.ModelPrefab,
+                _playerCombatManager, UserInputController.Instance);
             _enemyBehaviorManagers.Add(enemyBehaviorManager);
             enemyCombatManagers.Add(enemyBehaviorManager.EnemyCombatManager);
-            characterParamsScriptableObjects.Add(enemyDataScriptableObject.EnemyParamsScriptableObject);
+            characterScriptableObjects.Add(enemyScriptableObject);
             _combatUIManager.AddEnemyBars(enemyBehaviorManager.EnemyCombatManager.GetView().gameObject);
         }
 

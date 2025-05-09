@@ -1,5 +1,5 @@
 using System;
-using SDRGames.Whist.CharacterModule.ScriptableObjects;
+using SDRGames.Whist.CharacterInfoModule.ScriptableObjects;
 using SDRGames.Whist.ChronotopMapModule.Views;
 using SDRGames.Whist.UserInputModule.Controller;
 
@@ -13,13 +13,13 @@ namespace SDRGames.Whist.ChronotopMapModule.Presenters
         public event EventHandler FightButtonClicked;
         public event EventHandler Disposed;
 
-        public ChronotopMapPinModalPresenter(CharacterParamsScriptableObject enemyParams, ChronotopMapPinModalView modalView, UserInputController userInputController)
+        public ChronotopMapPinModalPresenter(CharacterInfoScriptableObject enemyParams, ChronotopMapPinModalView modalView, UserInputController userInputController)
         {
             _modalView = modalView;
             _modalView.Initialize(
-                enemyParams.CharacterInfo.CharacterPortrait,
-                enemyParams.CharacterInfo.CharacterNameLocalization.GetLocalizedString(),
-                enemyParams.CharacterInfo.CharacterDescriptionLocalization.GetLocalizedString(),
+                enemyParams.CharacterPortrait,
+                enemyParams.CharacterNameLocalization.GetLocalizedString(),
+                enemyParams.CharacterDescriptionLocalization.GetLocalizedString(),
                 userInputController
             );
         }

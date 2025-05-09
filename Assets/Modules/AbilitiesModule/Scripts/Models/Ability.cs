@@ -1,7 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using SDRGames.Whist.AbilitiesModule.ScriptableObjects;
-using SDRGames.Whist.CharacterModule.Managers;
+using SDRGames.Whist.CharacterCombatModule.Managers;
+using SDRGames.Whist.CharacterCombatModule.Models;
 using SDRGames.Whist.LocalizationModule.Models;
 using SDRGames.Whist.SoundModule.ScriptableObjects;
 
@@ -12,6 +13,7 @@ namespace SDRGames.Whist.AbilitiesModule.Models
     public class Ability
     {
         public LocalizedString Name { get; private set; }
+        public LocalizedString ShortDescription { get; private set; }
         public Sprite Icon { get; private set; }
         public int Cost { get; private set; }
         public AnimationClip AnimationClip { get; private set; }
@@ -21,6 +23,7 @@ namespace SDRGames.Whist.AbilitiesModule.Models
         public Ability(AbilityScriptableObject abilityScriptableObject)
         {
             Name = abilityScriptableObject.Name;
+            ShortDescription = abilityScriptableObject.ShortDescription;
             Icon = abilityScriptableObject.Icon;
             Cost = abilityScriptableObject.Cost;
             AnimationClip = abilityScriptableObject.AnimationClip;
@@ -77,14 +80,19 @@ namespace SDRGames.Whist.AbilitiesModule.Models
             }
         }
 
-        public string GetLocalizedDescription()
+        public string GetShortDescription()
         {
-            string localizedDescription = "";
+            return ShortDescription.GetLocalizedText();
+        }
+
+        public virtual string GetLocalizedDescription(CharacterParamsModel characterParamsModel)
+        {
+            List<string> localizedDescription = new List<string>();
             foreach (AbilityLogic abilityLogic in AbilityLogics)
             {
-                localizedDescription += abilityLogic.GetLocalizedDescription();
+                localizedDescription.Add(abilityLogic.GetLocalizedDescription(characterParamsModel));
             }
-            return localizedDescription;
+            return string.Join(". ", localizedDescription);
         }
     }
 }

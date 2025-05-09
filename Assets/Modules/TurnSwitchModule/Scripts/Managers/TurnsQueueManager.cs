@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-using SDRGames.Whist.CharacterModule.ScriptableObjects;
+using SDRGames.Whist.CharacterInfoModule.ScriptableObjects;
 using SDRGames.Whist.LocalizationModule.Models;
 using SDRGames.Whist.NotificationsModule;
 using SDRGames.Whist.PointsModule.Models;
@@ -31,12 +31,12 @@ namespace SDRGames.Whist.TurnSwitchModule.Managers
 
         public event EventHandler<TurnSwitchedEventArgs> TurnSwitched;
 
-        public void Initialize(List<CharacterParamsScriptableObject> characterParamsModels)
+        public void Initialize(List<CharacterScriptableObject> characters)
         {
             _isCombatTurn = true;
 
-            _charactersInfos = OrderByInitiative(characterParamsModels);
-            _charactersPoints = GetPointsFromParams(characterParamsModels);
+            _charactersInfos = OrderByInitiative(characters);
+            _charactersPoints = GetPointsFromParams(characters);
             _playerTurnIndex = _charactersInfos.FindIndex(info => info.IsPlayer);
 
             _turnsQueueView.Initialize(_charactersInfos);
@@ -104,25 +104,32 @@ namespace SDRGames.Whist.TurnSwitchModule.Managers
             }
         }
 
-        private List<CharacterInfoScriptableObject> OrderByInitiative(List<CharacterParamsScriptableObject> characterParamsModels)
+        public void Stop()
+        {
+            _timerManager.TimeOver -= OnTimeOver;
+            _turnsQueueView.ShiftDone -= OnShiftDone;
+            _timerManager.StopTimer();
+        }
+
+        private List<CharacterInfoScriptableObject> OrderByInitiative(List<CharacterScriptableObject> characters)
         {
             List<CharacterInfoScriptableObject> result = new List<CharacterInfoScriptableObject>();
-            List<CharacterParamsScriptableObject> sortedParams = characterParamsModels.OrderByDescending(x => x.Initiative.CheckRoll()).ToList();
-            foreach (CharacterParamsScriptableObject characterParamsModel in sortedParams)
+            List<CharacterScriptableObject> sortedParams = characters.OrderByDescending(x => x.CharacterParams.Initiative.CheckRoll()).ToList();
+            foreach (CharacterScriptableObject characterParamsModel in sortedParams)
             {
                 result.Add(characterParamsModel.CharacterInfo);
             }
             return result;
         }
 
-        private List<Points> GetPointsFromParams(List<CharacterParamsScriptableObject> characterParamsModels)
+        private List<Points> GetPointsFromParams(List<CharacterScriptableObject> characters)
         {
             List<Points> result = new List<Points>();
-            foreach (CharacterParamsScriptableObject characterParamsModel in characterParamsModels)
+            foreach (CharacterScriptableObject characterParamsModel in characters)
             {
-                result.Add(characterParamsModel.ArmorPoints);
-                result.Add(characterParamsModel.BarrierPoints);
-                result.Add(characterParamsModel.HealthPoints);
+                result.Add(characterParamsModel.CharacterParams.ArmorPoints);
+                result.Add(characterParamsModel.CharacterParams.BarrierPoints);
+                result.Add(characterParamsModel.CharacterParams.HealthPoints);
             }
             return result;
         }

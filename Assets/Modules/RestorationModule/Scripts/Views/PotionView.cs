@@ -1,3 +1,4 @@
+using SDRGames.Whist.CharacterCombatModule.Models;
 using SDRGames.Whist.RestorationModule.Models;
 
 using TMPro;
@@ -15,10 +16,10 @@ namespace SDRGames.Whist.RestorationModule.Views
         [SerializeField] private TextMeshProUGUI _effectText;
         [SerializeField] private Image _iconImage;
 
-        public void Initialize(Potion potion)
+        public void Initialize(Potion potion, CharacterParamsModel characterParamsModel)
         {
             _nameText.text = potion.Name.GetLocalizedText();
-            _effectText.text = potion.GetLocalizedDescription();
+            _effectText.text = potion.GetLocalizedDescription(characterParamsModel);
             _iconImage.sprite = potion.Icon;
         }
 

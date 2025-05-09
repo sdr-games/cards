@@ -18,7 +18,7 @@ namespace SDRGames.Whist.CardsCombatModule.Managers
             for (int i = 0; i < cards.Count; i++)
             {
                 Card card = cards[i];
-                _cardPreviewViews[i].Initialize(card.Name, card.GetLocalizedDescription(), card.Icon);
+                _cardPreviewViews[i].Initialize(card.Name, card.GetShortDescription(), card.Icon);
             }
         }
 

@@ -1,3 +1,4 @@
+using SDRGames.Whist.AbilitiesModule.ScriptableObjects;
 using SDRGames.Whist.HelpersModule;
 
 using UnityEditor;
@@ -10,7 +11,7 @@ namespace SDRGames.Whist.CardsCombatModule.ScriptableObjects
     public class DeckScriptableObject : ScriptableObject
     {
         [field: SerializeField] public Sprite Backside { get; private set; }
-        [field: SerializeField] public CardScriptableObject[] Cards { get; private set; }
+        [field: SerializeField] public AbilityWithComboScriptableObject[] Cards { get; private set; }
 
         private void OnEnable()
         {

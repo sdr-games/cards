@@ -24,7 +24,7 @@ RenderSettings:
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
   m_AmbientIntensity: 1
-  m_AmbientMode: 0
+  m_AmbientMode: 4
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
   m_SkyboxMaterial: {fileID: 0}
   m_HaloStrength: 0.5
@@ -340,8 +340,8 @@ MonoBehaviour:
           list: []
         <ReferenceParameters>k__BackingField:
           list:
-          - Key: playerParams
-            Value: {fileID: 11400000, guid: 1755d9fb95f659b4d9614cf02827ef19, type: 2}
+          - Key: playerInfo
+            Value: {fileID: 11400000, guid: bac6334e78448334aa3f298963ea1b62, type: 2}
           - Key: enemiesList
             Value: {fileID: 11400000, guid: 74a05a7c2c6b9da4e8fda21ea6c070b0, type: 2}
     - Key: 3
@@ -436,7 +436,7 @@ GameObject:
   - component: {fileID: 867559380}
   - component: {fileID: 867559378}
   m_Layer: 0
-  m_Name: Camera
+  m_Name: GameEntryCamera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

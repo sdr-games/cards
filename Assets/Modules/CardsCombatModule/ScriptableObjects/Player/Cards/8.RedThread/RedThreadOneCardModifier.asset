@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6dd4172e991f5b245bd8814db4374002, type: 3}
+  m_Name: RedThreadOneCardModifier
+  m_EditorClassIdentifier: 
+  _restorationLogicScriptableObject: {fileID: 11400000, guid: f3e2ceef431bd1747a23b3fa6fcfd24a,
+    type: 2}

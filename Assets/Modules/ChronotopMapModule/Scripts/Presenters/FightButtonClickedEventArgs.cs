@@ -1,12 +1,12 @@
-﻿using SDRGames.Whist.CharacterModule.ScriptableObjects;
+﻿using SDRGames.Whist.CharacterInfoModule.ScriptableObjects;
 
 namespace SDRGames.Whist.ChronotopMapModule.Presenters
 {
     public class FightButtonClickedEventArgs
     {
-        public CharacterParamsScriptableObject EnemyParams { get; private set; }
+        public CharacterInfoScriptableObject EnemyParams { get; private set; }
 
-        public FightButtonClickedEventArgs(CharacterParamsScriptableObject enemyParams)
+        public FightButtonClickedEventArgs(CharacterInfoScriptableObject enemyParams)
         {
             EnemyParams = enemyParams;
         }

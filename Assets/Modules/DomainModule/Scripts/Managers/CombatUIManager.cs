@@ -14,10 +14,12 @@ using SDRGames.Whist.CardsCombatModule.Models;
 using SDRGames.Whist.AbilitiesModule.Models;
 
 using UnityEngine;
+using SDRGames.Whist.CharacterInfoModule.ScriptableObjects;
+using SDRGames.Whist.CharacterCombatModule.Models;
 
 namespace SDRGames.Whist.DomainModule.Managers
 {
-    public class CombatUIManager : MonoBehaviour
+    public class CombatUIManager : HideableUIView
     {
         private UserInputController _userInputController;
 
@@ -43,7 +45,7 @@ namespace SDRGames.Whist.DomainModule.Managers
         public event EventHandler<CardsSelectionClearedEventArgs> CardsSelectionCleared;
         public event EventHandler ClearButtonClicked;
 
-        public void Initialize(UserInputController userInputController)
+        public void Initialize(UserInputController userInputController, PlayerScriptableObject playerScriptableObject, PlayerParamsModel playerParamsModel)
         {
             _userInputController = userInputController;
 
@@ -51,20 +53,20 @@ namespace SDRGames.Whist.DomainModule.Managers
             _abilitiesQueueManager.AbilityQueueCleared += OnAbilityQueueCleared;
             _abilitiesQueueManager.AbilityQueueCountChanged += _combatUIView.OnAbilityQueueCountChanged;
 
-            _meleeAttackListManager.Initialize(_userInputController);
+            _meleeAttackListManager.Initialize(_userInputController, playerScriptableObject.MeleeAttacks, playerParamsModel);
             _meleeAttackListManager.MeleeAttackClicked += OnMeleeAttackClicked;
             
-            _potionListManager.Initialize(_userInputController);
+            _potionListManager.Initialize(_userInputController, playerParamsModel);
             _potionListManager.PotionClicked += OnPotionClicked;
 
             _selectedDeckManager.Initialize(_userInputController);
             _selectedDeckManager.EmptyDeckClicked += OnEmptyDeckClicked;
             _selectedDeckManager.SelectedDeckClicked += OnSelectedDeckClicked;
 
-            _decksPreviewWindowManager.Initialize(_userInputController);
+            _decksPreviewWindowManager.Initialize(_userInputController, playerScriptableObject.Decks);
             _decksPreviewWindowManager.DeckSelected += OnDeckSelected;
 
-            _deckOnHandsManager.Initialize(_userInputController);
+            _deckOnHandsManager.Initialize(_userInputController, playerParamsModel);
             _deckOnHandsManager.DeckUnsetted += OnDeckUnsetted;
             _deckOnHandsManager.CardSelectClicked += OnCardSelectClicked;
             _deckOnHandsManager.CardMarkClicked += OnCardMarkClicked;

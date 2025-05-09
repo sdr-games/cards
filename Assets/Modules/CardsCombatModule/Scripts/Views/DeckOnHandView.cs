@@ -11,23 +11,10 @@ namespace SDRGames.Whist.CardsCombatModule.Views
         [SerializeField] private RectTransform _rectTransform;
         [SerializeField] private CardManager _cardManagerPrefab;
 
-        public CardManager DrawCard(int maxCount, int index)
+        public CardManager DrawCard()
         {
-            CardManager cardManager = Instantiate(_cardManagerPrefab, transform, false);
-            RedrawCard(cardManager, maxCount, index);
+            CardManager cardManager = Instantiate(_cardManagerPrefab, _rectTransform, false);
             return cardManager;
-        }
-
-        public void RedrawCard(CardManager cardManager, int maxCount, int index)
-        {
-            Vector2 position = CalculatePosition(maxCount, index);
-            cardManager.UpdateView(position, index);
-        }
-
-        private Vector2 CalculatePosition(int maxCount, int currentIndex)
-        {
-            float radiansOfSeparation = Mathf.PI / 2 / maxCount * (currentIndex + 0.5f);
-            return new Vector2(Mathf.Cos(radiansOfSeparation) * _rectTransform.sizeDelta.x, Mathf.Sin(radiansOfSeparation) * _rectTransform.sizeDelta.x);
         }
 
         private void OnEnable()

@@ -132,8 +132,8 @@ GameObject:
   - component: {fileID: 1437229938}
   - component: {fileID: 1437229940}
   m_Layer: 0
-  m_Name: Main Camera
-  m_TagString: MainCamera
+  m_Name: LoadingScreenCamera
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -198,7 +198,7 @@ Transform:
   m_GameObject: {fileID: 1437229936}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -10}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1268,6 +1268,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _canvasGroup: {fileID: 8200779770757097519}
+  _appearingSpeed: 0
   _backgroundImage: {fileID: 1919720599586934602}
   _progressBar: {fileID: 8985072313589861131}
   _headerTMP: {fileID: 5453323893998491835}
@@ -1526,6 +1527,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _canvasGroup: {fileID: 265293366193121405}
+  _appearingSpeed: 0
   _fillerImage: {fileID: 4756295302693293675}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

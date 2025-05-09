@@ -20,6 +20,7 @@ namespace SDRGames.Whist.PointsModule.Models
         public float CurrentValue { get; private set; }
         public float CurrentValueInPercents { get; private set; }
         public float ReservedValue { get; private set; }
+        public float MinimalValue { get; private set; }
 
         public event EventHandler PermanentBonusChanged;
         public event EventHandler TemporaryBonusChanged;
@@ -36,6 +37,7 @@ namespace SDRGames.Whist.PointsModule.Models
             TemporaryBonus = points.TemporaryBonus;
             RestorationPower = points.RestorationPower;
             MaxValue = points.MaxValue;
+            MinimalValue = 0;
             Reset();
         }
 
@@ -127,9 +129,9 @@ namespace SDRGames.Whist.PointsModule.Models
         public void DecreaseCurrentValue(float value, bool isCritical = false)
         {
             float originalValue = CurrentValue;
-            if (value > CurrentValue)
+            if (value > CurrentValue - MinimalValue)
             {
-                value = CurrentValue;
+                value = CurrentValue - MinimalValue;
             }
             CurrentValue -= value;
             ResetReservedValue(ReservedValue);
@@ -173,6 +175,11 @@ namespace SDRGames.Whist.PointsModule.Models
         {
             BaseValue = baseValue;
             CalculateValues();
+        }
+
+        public void SetMinimalValue(float minimalValue)
+        {
+            MinimalValue = minimalValue;
         }
 
         private float GetValueInPercents(float value)
