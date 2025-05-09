@@ -59,13 +59,13 @@ namespace SDRGames.Whist.CardsCombatModule.Managers
             this.CheckFieldValueIsNotNull(nameof(_decksListManager), _decksListManager);
             this.CheckFieldValueIsNotNull(nameof(_selectButton), _selectButton);
 
-            if (_deckScriptableObjects.Length == 0)
-            {
-                Debug.LogError("Decks не были назначены");
-                #if UNITY_EDITOR
-                    EditorApplication.isPlaying = false;
-                #endif
-            }
+            //if (_deckScriptableObjects.Length == 0)
+            //{
+            //    Debug.LogError("Decks не были назначены");
+            //    #if UNITY_EDITOR
+            //        EditorApplication.isPlaying = false;
+            //    #endif
+            //}
         }
 
         private void OnDisable()
