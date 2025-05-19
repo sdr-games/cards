@@ -13,28 +13,28 @@ MonoBehaviour:
   m_Name: GlassBlowerCoughInfo
   m_EditorClassIdentifier: 
   <IsPlayer>k__BackingField: 0
+  <CharacterName>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: GUID:3b397188346b9fe4d87595afe2d9bae6
+    m_TableEntryReference:
+      m_KeyId: 7982112633864192
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  <CharacterDescription>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: GUID:3b397188346b9fe4d87595afe2d9bae6
+    m_TableEntryReference:
+      m_KeyId: 7982112633864192
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   <CharacterPortrait>k__BackingField: {fileID: 21300000, guid: 8fb7d9ccdfae0b5438098f7990b0ace3,
     type: 3}
   <Character3DModelData>k__BackingField: {fileID: 11400000, guid: 9d342691e9ed9034691a79f40018ed16,
     type: 2}
-  <CharacterNameLocalization>k__BackingField:
-    m_TableReference:
-      m_TableCollectionName: GUID:179cb9af71b3dc749946d07fca3d67d4
-    m_TableEntryReference:
-      m_KeyId: 6741295845498880
-      m_Key: 
-    m_FallbackState: 0
-    m_WaitForCompletion: 0
-    m_LocalVariables: []
-  <CharacterDescriptionLocalization>k__BackingField:
-    m_TableReference:
-      m_TableCollectionName: GUID:9001e27a929312d4287b19b4f3688071
-    m_TableEntryReference:
-      m_KeyId: 53329682432
-      m_Key: 
-    m_FallbackState: 0
-    m_WaitForCompletion: 0
-    m_LocalVariables: []
   references:
     version: 2
     RefIds: []

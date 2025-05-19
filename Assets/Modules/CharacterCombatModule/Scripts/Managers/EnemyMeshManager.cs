@@ -8,7 +8,7 @@ namespace SDRGames.Whist.CharacterCombatModule.Managers
 {
     public class EnemyMeshManager : MonoBehaviour
     {
-        [SerializeField] private MeshRenderer _meshRenderer;
+        //[SerializeField] private MeshRenderer _meshRenderer;
         [SerializeField] private Color32 _highlightColor;
         
         [SerializeField] private UserInputController _userInputController;
@@ -19,7 +19,7 @@ namespace SDRGames.Whist.CharacterCombatModule.Managers
 
         public void Initialize(UserInputController userInputController)
         {
-            _baseColor = _meshRenderer.material.color;
+            //_baseColor = _meshRenderer.material.color;
 
             _userInputController = userInputController;
             _userInputController.LeftMouseButtonClickedOnScene += OnLeftMouseButtonClickedOnScene;
@@ -30,7 +30,7 @@ namespace SDRGames.Whist.CharacterCombatModule.Managers
             _isSelected = !_isSelected;
             if (_isSelected)
             {
-                _meshRenderer.material.color = _highlightColor;
+                //_meshRenderer.material.color = _highlightColor;
             }
             MeshClicked?.Invoke(this, new MeshClickedEventArgs(_isSelected));
         }
@@ -41,7 +41,7 @@ namespace SDRGames.Whist.CharacterCombatModule.Managers
             {
                 return;
             }
-            _meshRenderer.material.color = _highlightColor;
+            //_meshRenderer.material.color = _highlightColor;
         }
 
         public void OnMouseExit()
@@ -50,7 +50,7 @@ namespace SDRGames.Whist.CharacterCombatModule.Managers
             {
                 return;
             }
-            _meshRenderer.material.color = _baseColor;
+            //_meshRenderer.material.color = _baseColor;
         }
 
         private void OnDisable()

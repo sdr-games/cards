@@ -8,6 +8,7 @@ using SDRGames.Whist.UserInputModule.Controller;
 using SDRGames.Whist.CharacterCombatModule.Models;
 
 using UnityEngine;
+using SDRGames.Whist.AnimationsModule.Models;
 
 namespace SDRGames.Whist.CharacterCombatModule.Managers
 {
@@ -23,13 +24,13 @@ namespace SDRGames.Whist.CharacterCombatModule.Managers
         public event EventHandler<MeshClickedEventArgs> EnemySelected;
         public event EventHandler<BecameInsaneEventArgs> BecameInsane;
 
-        public override void Initialize(CharacterParamsScriptableObject enemyParamsScriptableObject, GameObject modelPrefab, UserInputController userInputController)
+        public override void Initialize(CharacterParamsScriptableObject enemyParamsScriptableObject, GameObject modelPrefab, CharacterAnimationsModel animations, UserInputController userInputController)
         {
             _characterParamsModel = new CharacterParamsModel(enemyParamsScriptableObject);
             _characterCombatParamsView = Instantiate(_characterCombatParamsViewPrefab);
             _characterCombatParamsPresenter = new CharacterCombatParamsPresenter(_characterParamsModel, _characterCombatParamsView);
 
-            base.Initialize(enemyParamsScriptableObject, modelPrefab);
+            base.Initialize(enemyParamsScriptableObject, modelPrefab, animations);
 
             _enemyMeshManager = _model.GetComponent<EnemyMeshManager>();
             _enemyMeshManager.Initialize(userInputController);

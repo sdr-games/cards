@@ -18,8 +18,8 @@ namespace SDRGames.Whist.ChronotopMapModule.Presenters
             _modalView = modalView;
             _modalView.Initialize(
                 enemyParams.CharacterPortrait,
-                enemyParams.CharacterNameLocalization.GetLocalizedString(),
-                enemyParams.CharacterDescriptionLocalization.GetLocalizedString(),
+                enemyParams.CharacterName.GetLocalizedString(),
+                enemyParams.CharacterDescription.GetLocalizedString(),
                 userInputController
             );
         }

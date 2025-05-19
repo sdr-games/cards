@@ -1,0 +1,46 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: add078c342cddfe4a8daef02da00334c, type: 3}
+  m_Name: SepticemiaSpecialAbility
+  m_EditorClassIdentifier: 
+  <Name>k__BackingField:
+    <Entity>k__BackingField:
+      m_TableReference:
+        m_TableCollectionName: GUID:3b397188346b9fe4d87595afe2d9bae6
+      m_TableEntryReference:
+        m_KeyId: 7982112633864192
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+  <ShortDescription>k__BackingField:
+    <Entity>k__BackingField:
+      m_TableReference:
+        m_TableCollectionName: GUID:3b397188346b9fe4d87595afe2d9bae6
+      m_TableEntryReference:
+        m_KeyId: 7982112633864192
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+  <Icon>k__BackingField: {fileID: 0}
+  <Cost>k__BackingField: 0
+  <AbilityLogics>k__BackingField:
+  - {fileID: 11400000, guid: 98dce9a3c4754e64e840596a6d62847d, type: 2}
+  <AnimationClip>k__BackingField: {fileID: -203655887218126122, guid: 3d2383a3e495647448050598e2b6927f,
+    type: 3}
+  <SoundClip>k__BackingField: {fileID: 11400000, guid: 7e2826c579ac3424caf8e8208a708bba,
+    type: 2}
+  <Cooldown>k__BackingField: 5
+  references:
+    version: 2
+    RefIds: []

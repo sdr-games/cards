@@ -13,11 +13,7 @@ MonoBehaviour:
   m_Name: ValiorInfo
   m_EditorClassIdentifier: 
   <IsPlayer>k__BackingField: 1
-  <CharacterPortrait>k__BackingField: {fileID: 21300000, guid: 7c200815f2078b14292b8620ce8b2620,
-    type: 3}
-  <Character3DModelData>k__BackingField: {fileID: 11400000, guid: 5cd7c0082999d364ba977d28b3d4d5d7,
-    type: 2}
-  <CharacterNameLocalization>k__BackingField:
+  <CharacterName>k__BackingField:
     m_TableReference:
       m_TableCollectionName: GUID:179cb9af71b3dc749946d07fca3d67d4
     m_TableEntryReference:
@@ -26,15 +22,19 @@ MonoBehaviour:
     m_FallbackState: 0
     m_WaitForCompletion: 0
     m_LocalVariables: []
-  <CharacterDescriptionLocalization>k__BackingField:
+  <CharacterDescription>k__BackingField:
     m_TableReference:
-      m_TableCollectionName: 
+      m_TableCollectionName: GUID:3b397188346b9fe4d87595afe2d9bae6
     m_TableEntryReference:
-      m_KeyId: 0
+      m_KeyId: 7982112633864192
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 0
     m_LocalVariables: []
+  <CharacterPortrait>k__BackingField: {fileID: 21300000, guid: 7c200815f2078b14292b8620ce8b2620,
+    type: 3}
+  <Character3DModelData>k__BackingField: {fileID: 11400000, guid: 5cd7c0082999d364ba977d28b3d4d5d7,
+    type: 2}
   references:
     version: 2
     RefIds: []

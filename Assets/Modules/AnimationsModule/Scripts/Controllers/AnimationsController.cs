@@ -1,16 +1,22 @@
+using SDRGames.Whist.AnimationsModule.Models;
+
 using UnityEngine;
 
 namespace SDRGames.Whist.AnimationsModule
 {
     public class AnimationsController : MonoBehaviour
     {
-        [SerializeField] private Animator _animator;
+        private Animator _animator;
+        private AnimationClip _deathAnimationClip;
+        private AnimationClip _impactAnimationClip;
 
-        public bool IsReady => _animator.GetCurrentAnimatorStateInfo(0).IsName("PlayerIdle");
+        public bool IsReady => _animator.GetCurrentAnimatorStateInfo(0).IsName("Idle");
 
-        public void Initialize(Animator animator)
+        public void Initialize(Animator animator, CharacterAnimationsModel animations)
         {
             _animator = animator;
+            _deathAnimationClip = animations.DeathAnimationClip;
+            _impactAnimationClip = animations.ImpactAnimationClip;
         }
 
         public void PlayAnimation(AnimationClip animationClip)
@@ -19,7 +25,17 @@ namespace SDRGames.Whist.AnimationsModule
             {
                 return;
             }
-            _animator.Play(animationClip.name);
+            _animator.CrossFade(animationClip.name, 0.1f);
+        }
+
+        public void PlayImpactAnimation()
+        {
+            PlayAnimation(_impactAnimationClip);
+        }
+
+        public void PlayDeathAnimation()
+        {
+            PlayAnimation(_deathAnimationClip);
         }
     }
 }

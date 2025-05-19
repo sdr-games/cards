@@ -50,7 +50,7 @@ namespace SDRGames.Whist.DomainModule
             yield return InitializePart(() => _cardsScalingScriptableObject.Initialize(), 1f);
             yield return InitializePart(() => _meleeAttacksScalingScriptableObject.Initialize(), 1f);
             yield return InitializePart(() => _floatingTextManager.Initialize(), 1f);
-            yield return InitializePart(() => _playerCombatManager.Initialize(playerScriptableObject.CharacterParams, playerScriptableObject.CharacterInfo.Character3DModelData.ModelPrefab), 1f);
+            yield return InitializePart(() => _playerCombatManager.Initialize(playerScriptableObject.CharacterParams, playerScriptableObject.CharacterInfo.Character3DModelData.ModelPrefab, playerScriptableObject.CharacterInfo.Character3DModelData.Animations), 1f);
 
             List<CharacterScriptableObject> characterScriptableObjects = new List<CharacterScriptableObject>();
             characterScriptableObjects.Add(playerScriptableObject);
@@ -74,14 +74,16 @@ namespace SDRGames.Whist.DomainModule
 
         private void CreateAndInitializeEnemy(EnemyScriptableObject enemyScriptableObject, List<EnemyCombatManager> enemyCombatManagers, List<CharacterScriptableObject> characterScriptableObjects)
         {
-            EnemyBehaviorManager enemyBehaviorManager = Instantiate(_enemyBehaviorManagerPrefab);
+            EnemyBehaviorManager enemyBehaviorManager = Instantiate(_enemyBehaviorManagerPrefab, enemyScriptableObject.SpawnPosition, enemyScriptableObject.SpawnRotation);
             enemyBehaviorManager.Initialize(
                 enemyScriptableObject.CharacterParams, 
                 enemyScriptableObject.MeleeBehaviors, 
                 enemyScriptableObject.MagicBehaviors, 
                 enemyScriptableObject.SpecialAbilitiesScriptableObjects, 
                 enemyScriptableObject.CharacterInfo.Character3DModelData.ModelPrefab,
-                _playerCombatManager, UserInputController.Instance);
+                enemyScriptableObject.CharacterInfo.Character3DModelData.Animations,
+                _playerCombatManager, 
+                UserInputController.Instance);
             _enemyBehaviorManagers.Add(enemyBehaviorManager);
             enemyCombatManagers.Add(enemyBehaviorManager.EnemyCombatManager);
             characterScriptableObjects.Add(enemyScriptableObject);

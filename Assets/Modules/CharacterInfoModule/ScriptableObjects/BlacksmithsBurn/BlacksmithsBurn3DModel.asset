@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4964ebb812b806347b3a36b82164ddec, type: 3}
+  m_Name: BlacksmithsBurn3DModel
+  m_EditorClassIdentifier: 
+  <ModelPrefab>k__BackingField: {fileID: 6821961254008039724, guid: 05c2e906634435347b711d94da61c198,
+    type: 3}
+  <Animations>k__BackingField:
+    <DeathAnimationClip>k__BackingField: {fileID: -203655887218126122, guid: 2761362630145924faad1834638310a8,
+      type: 3}
+    <ImpactAnimationClip>k__BackingField: {fileID: -203655887218126122, guid: 693b5df33905b2842a3c34ec3f41d944,
+      type: 3}

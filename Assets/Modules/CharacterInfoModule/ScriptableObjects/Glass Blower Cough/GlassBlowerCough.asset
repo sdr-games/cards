@@ -16,6 +16,7 @@ MonoBehaviour:
     type: 2}
   <CharacterParams>k__BackingField: {fileID: 11400000, guid: ce7a9ca9dcc0d7e4bb8c0dec638ef1d8,
     type: 2}
+  <SpawnPosition>k__BackingField: {x: 15.36, y: 0.07, z: 5.39}
   <MeleeBehaviors>k__BackingField:
   - {fileID: 11400000, guid: cf49bb78856c9e447948cc3377b43853, type: 2}
   - {fileID: 11400000, guid: bf0ee52aecfddd645a48bf334b67a9df, type: 2}

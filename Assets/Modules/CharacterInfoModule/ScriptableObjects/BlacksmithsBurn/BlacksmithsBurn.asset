@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64c1a72ec4240c74f8a4e339d4a6dfce, type: 3}
+  m_Name: BlacksmithsBurn
+  m_EditorClassIdentifier: 
+  <CharacterInfo>k__BackingField: {fileID: 11400000, guid: b75b8446c00e0064fbe1556e8dfd64fb,
+    type: 2}
+  <CharacterParams>k__BackingField: {fileID: 11400000, guid: b5d50c07875856b4eb3e403c23e3cc60,
+    type: 2}
+  <SpawnPosition>k__BackingField: {x: 15.36, y: 0.07, z: 5.39}
+  <SpawnRotation>k__BackingField: {x: 0, y: 0, z: 0, w: 0}
+  <MeleeBehaviors>k__BackingField:
+  - {fileID: 11400000, guid: 910fe538bd6b0d6418c2ee41e73011c7, type: 2}
+  - {fileID: 11400000, guid: 094b0b36fce42b746905d9aa1ea1ed4c, type: 2}
+  - {fileID: 11400000, guid: feb125d7f49c4fd4d89db845c77bef5d, type: 2}
+  <MagicBehaviors>k__BackingField: []
+  <SpecialAbilitiesScriptableObjects>k__BackingField:
+  - {fileID: 11400000, guid: a22d560495d35b648ab4135532f47341, type: 2}
+  - {fileID: 11400000, guid: 235709376762bd94b84820af6475e8ee, type: 2}

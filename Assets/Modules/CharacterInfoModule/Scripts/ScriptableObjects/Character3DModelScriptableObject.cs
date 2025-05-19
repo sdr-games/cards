@@ -1,3 +1,5 @@
+using SDRGames.Whist.AnimationsModule.Models;
+
 using UnityEngine;
 
 namespace SDRGames.Whist.CharacterInfoModule.ScriptableObjects
@@ -6,5 +8,6 @@ namespace SDRGames.Whist.CharacterInfoModule.ScriptableObjects
     public class Character3DModelScriptableObject : ScriptableObject
     {
         [field: SerializeField] public GameObject ModelPrefab { get; private set; }
+        [field: SerializeField] public CharacterAnimationsModel Animations { get; private set; }
     }
 }

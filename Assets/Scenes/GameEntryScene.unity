@@ -24,7 +24,7 @@ RenderSettings:
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
   m_AmbientIntensity: 1
-  m_AmbientMode: 4
+  m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
   m_SkyboxMaterial: {fileID: 0}
   m_HaloStrength: 0.5
@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.17980959, g: 0.17980959, b: 0.17980959, a: 1}
+  m_IndirectSpecularColor: {r: 5892.0005, g: 5892.0005, b: 5892.0005, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -343,7 +343,7 @@ MonoBehaviour:
           - Key: playerInfo
             Value: {fileID: 11400000, guid: bac6334e78448334aa3f298963ea1b62, type: 2}
           - Key: enemiesList
-            Value: {fileID: 11400000, guid: 74a05a7c2c6b9da4e8fda21ea6c070b0, type: 2}
+            Value: {fileID: 11400000, guid: 66e64fcde2d52bd4fb9085d1a0a68f5f, type: 2}
     - Key: 3
       Value:
         <LoadingScreenBackgroundSprite>k__BackingField: {fileID: 21300000, guid: d5d9caf237f56554588334c07d19f342,

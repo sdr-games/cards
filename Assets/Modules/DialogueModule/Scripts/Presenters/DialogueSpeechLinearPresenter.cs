@@ -21,7 +21,7 @@ namespace SDRGames.Whist.DialogueModule.Presenters
             CharacterInfoScriptableObject character = Dialogue.Character;
 
             _linearView = linearView;
-            _linearView.Initialize(character.CharacterPortrait, character.CharacterNameLocalization.GetLocalizedString(), Dialogue.TextLocalization.GetLocalizedText(), userInputController, fadeSpeed, rolloverSpeed);
+            _linearView.Initialize(character.CharacterPortrait, character.CharacterName.GetLocalizedString(), Dialogue.TextLocalization.GetLocalizedText(), userInputController, fadeSpeed, rolloverSpeed);
             _linearView.Destroyed += OnViewDestroyed;
         }
 
