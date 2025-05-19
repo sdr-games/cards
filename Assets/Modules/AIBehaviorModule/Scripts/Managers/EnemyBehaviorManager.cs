@@ -12,6 +12,7 @@ using SDRGames.Whist.CharacterCombatModule.Models;
 
 using UnityEngine;
 using SDRGames.Whist.CharacterCombatModule.ScriptableObjects;
+using SDRGames.Whist.AnimationsModule.Models;
 
 namespace SDRGames.Whist.EnemyBehaviorModule.Managers
 {
@@ -35,9 +36,9 @@ namespace SDRGames.Whist.EnemyBehaviorModule.Managers
         public event EventHandler AbilityUsed;
         public event EventHandler BecameInsane;
 
-        public void Initialize(CharacterParamsScriptableObject enemyParamsScriptableObject, BehaviorScriptableObject[] meleeBehaviors, BehaviorScriptableObject[] magicBehaviors, SpecialAbilityScriptableObject[] specialAbilitiesScriptableObjects, GameObject modelPrefab, PlayerCombatManager playerCombatManager, UserInputController userInputController)
+        public void Initialize(CharacterParamsScriptableObject enemyParamsScriptableObject, BehaviorScriptableObject[] meleeBehaviors, BehaviorScriptableObject[] magicBehaviors, SpecialAbilityScriptableObject[] specialAbilitiesScriptableObjects, GameObject modelPrefab, CharacterAnimationsModel animations, PlayerCombatManager playerCombatManager, UserInputController userInputController)
         {
-            EnemyCombatManager.Initialize(enemyParamsScriptableObject, modelPrefab, userInputController);
+            EnemyCombatManager.Initialize(enemyParamsScriptableObject, modelPrefab, animations, userInputController);
             EnemyCombatManager.BecameInsane += OnBecameInsane;
             _enemyParams = EnemyCombatManager.GetParams();
 
@@ -48,23 +49,25 @@ namespace SDRGames.Whist.EnemyBehaviorModule.Managers
             _meleeBehaviors = meleeBehaviors;
             _magicBehaviors = magicBehaviors;
 
-            _insanityTurns = 0;
+            _insanityTurns = -1;
 
             InitializeSpecialAbilities(specialAbilitiesScriptableObjects);
             InitializeBehavior(_meleeBehaviors);
             InitializeBehavior(_magicBehaviors);
 
+            transform.LookAt(_playerCombatManager.transform.position);
             gameObject.SetActive(true);
         }
 
-        public virtual void MakeMove()
+        public IEnumerator MakeMove()
         {
-            if(UseSpecialAbility())
+            if (_insanityTurns <= 0 && _specialAbilities.Count > 0 && !AreSpecialAbilitiesOnCooldown())
             {
-                return;
+                yield return UseSpecialAbility();
+                yield break;
             }
 
-            if(_insanityTurns >= 0)
+            if(_insanityTurns > 0)
             {
                 _insanityTurns--;
             }
@@ -84,12 +87,12 @@ namespace SDRGames.Whist.EnemyBehaviorModule.Managers
                 );
                 if(selectedAbilities != null)
                 {
-                    StartCoroutine(ApplySelectedAbilities(selectedAbilities));
+                    yield return ApplySelectedAbilities(selectedAbilities);
                     EnemyCombatManager.SpendStaminaPoints(selectedAbilities.Sum(ability => ability.Cost));
                     count = selectedAbilities.Count;
                 }
                 EnemyCombatManager.RestoreStaminaPoints((MAX_MELEE_ABILITIES_COUNT_PER_ROUND - count) * _enemyParams.StaminaPoints.RestorationPower);
-                return;
+                yield break;
             }
             selectedAbilities = SelectAbilities(
                 _magicBehaviors,
@@ -98,7 +101,7 @@ namespace SDRGames.Whist.EnemyBehaviorModule.Managers
             );
             if (selectedAbilities != null)
             {
-                StartCoroutine(ApplySelectedAbilities(selectedAbilities));
+                yield return ApplySelectedAbilities(selectedAbilities);
                 EnemyCombatManager.SpendBreathPoints(selectedAbilities.Sum(ability => ability.Cost));
                 count = selectedAbilities.Count;
             }
@@ -227,13 +230,13 @@ namespace SDRGames.Whist.EnemyBehaviorModule.Managers
             return totalPhysicalDifference < totalMagicalDifference;
         }
 
-        private bool UseSpecialAbility()
+        private bool AreSpecialAbilitiesOnCooldown()
         {
-            if(_insanityTurns > 0)
-            {
-                return false;
-            }
+            return _specialAbilities.All(ability => ability.CurrentCooldown > 0);
+        }
 
+        private IEnumerator UseSpecialAbility()
+        {
             foreach(SpecialAbility specialAbility in _specialAbilities)
             {
                 if (specialAbility.CurrentCooldown > 0)
@@ -241,11 +244,10 @@ namespace SDRGames.Whist.EnemyBehaviorModule.Managers
                     specialAbility.DecreaseCooldown();
                     continue;
                 }
-                StartCoroutine(ApplySelectedAbility(specialAbility));
+                yield return ApplySelectedAbility(specialAbility);
                 specialAbility.SetCooldown();
-                return true;
+                yield break;
             }
-            return false;
         }
 
         private IEnumerator ApplySelectedAbilities(List<AbilityScriptableObject> selectedAbilities)
@@ -260,10 +262,22 @@ namespace SDRGames.Whist.EnemyBehaviorModule.Managers
 
         private IEnumerator ApplySelectedAbility(Ability ability)
         {
-            EnemyCombatManager.SoundController.Play(ability.SoundClip);
+            while (!EnemyCombatManager.AnimationsController.IsReady)
+            {
+                yield return null;
+            }
+
+            if (ability.SoundClip != null)
+            {
+                EnemyCombatManager.SoundController.Play(ability.SoundClip);
+            }
+            EnemyCombatManager.AnimationsController.PlayAnimation(ability.AnimationClip);
+            if (ability.AnimationClip != null)
+            {
+                yield return new WaitForSeconds(ability.AnimationClip.averageDuration / 3);
+            }
             ability.ApplyLogics(EnemyCombatManager, _targetCombatManager);
             AbilityUsed?.Invoke(this, EventArgs.Empty);
-            yield return new WaitForSeconds(ability.SoundClip.AudioClip.length);
         }
     }
 }

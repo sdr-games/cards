@@ -14,3 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <ModelPrefab>k__BackingField: {fileID: 3397876910502677875, guid: e9d69c7cd41bd07438662f648c09b041,
     type: 3}
+  <Animations>k__BackingField:
+    <DeathAnimationClip>k__BackingField: {fileID: 7400000, guid: 0d5c7dd237834e84da8732079dce0a24,
+      type: 2}
+    <ImpactAnimationClip>k__BackingField: {fileID: 7400000, guid: 297f9dfcbb7d97e46baa8a299359ee69,
+      type: 2}

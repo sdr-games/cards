@@ -31,6 +31,10 @@ MonoBehaviour:
     m_Key: Slime
     m_Metadata:
       m_Items: []
+  - m_Id: 156378336479973376
+    m_Key: BlacksmithsBurn
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

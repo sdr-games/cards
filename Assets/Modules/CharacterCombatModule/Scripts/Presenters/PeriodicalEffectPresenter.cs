@@ -40,6 +40,11 @@ namespace SDRGames.Whist.CharacterCombatModule.Presenters
             return _periodicalEffect.Duration;
         }
 
+        public Action<int> GetEffect()
+        {
+            return _periodicalEffect.Action;
+        }
+
         public void ApplyEffect(int value)
         {
             _periodicalEffect.Action(value);

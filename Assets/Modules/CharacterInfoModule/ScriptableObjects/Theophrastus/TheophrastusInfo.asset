@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a33062fd4de85c42b79ad801a237c36, type: 3}
   m_Name: TheophrastusInfo
   m_EditorClassIdentifier: 
-  <CharacterPortrait>k__BackingField: {fileID: 0}
-  <CharacterNameLocalization>k__BackingField:
+  <IsPlayer>k__BackingField: 0
+  <CharacterName>k__BackingField:
     m_TableReference:
       m_TableCollectionName: GUID:179cb9af71b3dc749946d07fca3d67d4
     m_TableEntryReference:
@@ -22,6 +22,17 @@ MonoBehaviour:
     m_FallbackState: 0
     m_WaitForCompletion: 0
     m_LocalVariables: []
+  <CharacterDescription>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: GUID:3b397188346b9fe4d87595afe2d9bae6
+    m_TableEntryReference:
+      m_KeyId: 7982112633864192
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  <CharacterPortrait>k__BackingField: {fileID: 0}
+  <Character3DModelData>k__BackingField: {fileID: 0}
   references:
     version: 2
     RefIds: []

@@ -10,6 +10,7 @@ using SDRGames.Whist.CharacterCombatModule.Models;
 using SDRGames.Whist.CharacterCombatModule.ScriptableObjects;
 
 using UnityEngine;
+using SDRGames.Whist.AnimationsModule.Models;
 
 namespace SDRGames.Whist.CharacterCombatModule.Managers
 {
@@ -22,7 +23,7 @@ namespace SDRGames.Whist.CharacterCombatModule.Managers
 
         public event EventHandler<PatientHealthChangedEventArgs> PatientHealthChanged;
 
-        public override void Initialize(CharacterParamsScriptableObject playerParamsScriptableObject, GameObject modelPrefab, UserInputController userInputController = null)
+        public override void Initialize(CharacterParamsScriptableObject playerParamsScriptableObject, GameObject modelPrefab, CharacterAnimationsModel animations, UserInputController userInputController = null)
         {
             _playerParamsModel = new PlayerParamsModel((PlayerParamsScriptableObject)playerParamsScriptableObject);
             _playerCharacterCombatParamsPresenter = new PlayerCombatParamsPresenter(_playerParamsModel, _playerCharacterCombatUIView);
@@ -31,7 +32,7 @@ namespace SDRGames.Whist.CharacterCombatModule.Managers
             _playerParamsModel.BreathPoints.CurrentValueChanged += OnBreathPointsCurrentValueChanged;
             _playerParamsModel.PatientHealthPoints.CurrentValueChanged += OnPatientHealthPointsChanged;
 
-            base.Initialize(playerParamsScriptableObject, modelPrefab);
+            base.Initialize(playerParamsScriptableObject, modelPrefab, animations);
         }
 
         public override CharacterParamsModel GetParams()

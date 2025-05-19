@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 using SDRGames.Whist.AnimationsModule;
+using SDRGames.Whist.AnimationsModule.Models;
 using SDRGames.Whist.CharacterCombatModule.Models;
 using SDRGames.Whist.CharacterCombatModule.Presenters;
 using SDRGames.Whist.CharacterCombatModule.ScriptableObjects;
@@ -28,10 +30,10 @@ namespace SDRGames.Whist.CharacterCombatModule.Managers
         [field: SerializeField] public AnimationsController AnimationsController { get; protected set; }
         [field: SerializeField] public CharacterSoundController SoundController { get; protected set; }
 
-        public virtual void Initialize(CharacterParamsScriptableObject characterParamsScriptableObject, GameObject modelPrefab, UserInputController userInputController = null)
+        public virtual void Initialize(CharacterParamsScriptableObject characterParamsScriptableObject, GameObject modelPrefab, CharacterAnimationsModel animations, UserInputController userInputController = null)
         {
             _model = Instantiate(modelPrefab, transform, false);
-            AnimationsController.Initialize(_model.GetComponent<Animator>());
+            AnimationsController.Initialize(_model.GetComponent<Animator>(), animations);
 
             _periodicalEffects = new Dictionary<PeriodicalEffectPresenter, int>();
             _periodicalBuffs = new Dictionary<PeriodicalEffectPresenter, int>();
@@ -58,6 +60,12 @@ namespace SDRGames.Whist.CharacterCombatModule.Managers
 
         public void SetPeriodicalChanges(int valuePerRound, int roundsCount, string description, Sprite effectIcon, Action<int> changingAction)
         {
+            if(GetExistedEffect(changingAction, _periodicalEffects, out PeriodicalEffectPresenter periodicalEffectPresenter))
+            {
+                periodicalEffectPresenter.IncreaseDuration(roundsCount - 1);
+                return;
+            }
+
             PeriodicalEffectView periodicalEffectView = null;
             if (roundsCount > 1)
             {
@@ -68,6 +76,12 @@ namespace SDRGames.Whist.CharacterCombatModule.Managers
 
         public void SetBuff(int value, int roundsCount, Sprite effectIcon, string description, Action<int> buffAction)
         {
+            if (GetExistedEffect(buffAction, _periodicalBuffs, out PeriodicalEffectPresenter periodicalEffectPresenter))
+            {
+                periodicalEffectPresenter.IncreaseDuration(roundsCount - 1);
+                return;
+            }
+
             PeriodicalEffectView periodicalEffectView = null;
             if (roundsCount > 1)
             {
@@ -82,6 +96,12 @@ namespace SDRGames.Whist.CharacterCombatModule.Managers
             int debuffBlockChance = UnityEngine.Random.Range(0, 100);
             if(_debuffBlockPercent > debuffBlockChance)
             {
+                return;
+            }
+
+            if (GetExistedEffect(debuffAction, _periodicalDebuffs, out PeriodicalEffectPresenter periodicalEffectPresenter))
+            {
+                periodicalEffectPresenter.IncreaseDuration(roundsCount - 1);
                 return;
             }
 
@@ -126,6 +146,17 @@ namespace SDRGames.Whist.CharacterCombatModule.Managers
             _debuffBlockPercent = percent;
         }
 
+        private bool GetExistedEffect(Action<int> action, Dictionary<PeriodicalEffectPresenter, int> periodicalEffects, out PeriodicalEffectPresenter periodicalEffectPresenter)
+        {
+            periodicalEffectPresenter = null;
+            if(periodicalEffects.Count == 0)
+            {
+                return false;
+            }
+            periodicalEffectPresenter = periodicalEffects.Keys.Where(effect => effect.GetEffect().Method == action.Method).First();
+            return periodicalEffectPresenter != null;
+        }
+
         private void UpdateEffects(Dictionary<PeriodicalEffectPresenter, int> effects)
         {
             Dictionary<PeriodicalEffectPresenter, int> _effects = new Dictionary<PeriodicalEffectPresenter, int>(effects);
@@ -168,8 +199,15 @@ namespace SDRGames.Whist.CharacterCombatModule.Managers
                 GetView().ShowFloatingText($"+{e.Difference}{criticalChar}", GetView().HealthPointsBarView.GetColor());
                 return;
             }
-            SoundController.PlayImpact();
+
             GetView().ShowFloatingText($"{e.Difference}{criticalChar}", GetView().HealthPointsBarView.GetColor());
+            if(e.NewValue <= 0)
+            {
+                AnimationsController.PlayDeathAnimation();
+                return;
+            }
+            AnimationsController.PlayImpactAnimation();
+            SoundController.PlayImpact();
         }
 
         private void OnArmorPointsCurrentValueChanged(object sender, ValueChangedEventArgs e)

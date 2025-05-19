@@ -1,7 +1,6 @@
 using UnityEngine.Localization;
 
 using UnityEngine;
-using System;
 
 namespace SDRGames.Whist.CharacterInfoModule.ScriptableObjects
 {
@@ -9,9 +8,9 @@ namespace SDRGames.Whist.CharacterInfoModule.ScriptableObjects
     public class CharacterInfoScriptableObject : ScriptableObject
     {
         [field: SerializeField] public bool IsPlayer { get; private set; }
+        [field: SerializeField] public LocalizedString CharacterName { get; private set; }
+        [field: SerializeField] public LocalizedString CharacterDescription { get; private set; }
         [field: SerializeField] public Sprite CharacterPortrait { get; private set; }
         [field: SerializeField] public Character3DModelScriptableObject Character3DModelData { get; private set; }
-        [field: SerializeField] public LocalizedString CharacterNameLocalization { get; private set; }
-        [field: SerializeField] public LocalizedString CharacterDescriptionLocalization { get; private set; }
     }
 }

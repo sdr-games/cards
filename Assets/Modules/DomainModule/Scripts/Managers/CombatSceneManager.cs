@@ -246,7 +246,7 @@ namespace SDRGames.Whist.DomainModule.Managers
                 StartPlayerTurn();
                 return;
             }
-            StartEnemyTurn(_enemyBehaviorManagers[e.EnemyIndex]);
+            StartCoroutine(StartEnemyTurn(_enemyBehaviorManagers[e.EnemyIndex]));
         }
 
         private void OnClearButtonClicked(object sender, EventArgs e)
@@ -293,12 +293,12 @@ namespace SDRGames.Whist.DomainModule.Managers
             _combatUIManager.ShowPlayerUI(true);
         }
 
-        private void StartEnemyTurn(EnemyBehaviorManager enemyBehaviorManager)
+        private IEnumerator StartEnemyTurn(EnemyBehaviorManager enemyBehaviorManager)
         {
             _combatUIManager.HidePlayerUI();
             _playerCombatManager.UpdateBonusesEffects();
             enemyBehaviorManager.EnemyCombatManager.ApplyPeriodicalEffects();
-            enemyBehaviorManager.MakeMove();
+            yield return enemyBehaviorManager.MakeMove();
             _turnsQueueManager.SwitchTurn();
         }
 
