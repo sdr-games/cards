@@ -60,7 +60,6 @@ namespace SDRGames.Whist.SceneManagementModule.Managers
             _loadingScreenInitializer.AddInitializationParameter("backgroundSprite", sceneData.LoadingScreenBackgroundSprite);
             _loadingScreenInitializer.AddInitializationParameter("backgroundMusic", sceneData.LoadingScreenMusic);
             yield return _loadingScreenInitializer.InitializeCoroutine();
-            _loadingScreenInitializer.Run();
             _loadingScreenUIView = _loadingScreenInitializer.GetLoadingScreenUIView();
             Destroy(_loadingScreenInitializer.gameObject);
 

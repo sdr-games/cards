@@ -44,9 +44,9 @@ namespace SDRGames.Whist.DomainModule
 
         private IEnumerator Start()
         {
-            yield return null;
             SceneData entrySceneData = GetSceneData(_entrySceneName);
             ScenesManager.Instance.LoadScene(entrySceneData);
+            yield return null;
         }
     }
 }

@@ -25,6 +25,7 @@ namespace SDRGames.Whist.SceneManagementModule.Initializers
             _loadingScreenUIView.SetHeaderText(_sceneInitializationStringParameters["headerText"].GetLocalizedText());
             _loadingScreenUIView.SetTooltipText(GetTooltipString());
             _loadingScreenUIView.SetBackgroundSprite((Sprite)_sceneInitializationReferenceParameters["backgroundSprite"]);
+            _loadingScreenUIView.Show();
         }
 
         public LoadingScreenUIView GetLoadingScreenUIView()
