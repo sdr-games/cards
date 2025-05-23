@@ -571,3 +571,4 @@ MonoBehaviour:
   _fillerImage: {fileID: 7281984809690705724}
   _roundsText: {fileID: 4473533401622303628}
   _tooltipCanvasGroup: {fileID: 6186128258372953831}
+  _tooltipText: {fileID: 4342482931536507325}

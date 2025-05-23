@@ -71,7 +71,7 @@ namespace SDRGames.Whist.CharacterCombatModule.Managers
             {
                 periodicalEffectView = Instantiate(_periodicalEffectViewPrefab, GetView().EffectsBar.transform, false);
             }
-            _periodicalEffects.Add(new PeriodicalEffectPresenter(roundsCount, changingAction, effectIcon, periodicalEffectView), valuePerRound);
+            _periodicalEffects.Add(new PeriodicalEffectPresenter(roundsCount, changingAction, description, effectIcon, periodicalEffectView), valuePerRound);
         }
 
         public void SetBuff(int value, int roundsCount, Sprite effectIcon, string description, Action<int> buffAction)
@@ -87,7 +87,7 @@ namespace SDRGames.Whist.CharacterCombatModule.Managers
             {
                 periodicalEffectView = Instantiate(_periodicalEffectViewPrefab, GetView().EffectsBar.transform, false);
             }
-            _periodicalBuffs.Add(new PeriodicalEffectPresenter(roundsCount, buffAction, effectIcon, periodicalEffectView), value);
+            _periodicalBuffs.Add(new PeriodicalEffectPresenter(roundsCount, buffAction, description, effectIcon, periodicalEffectView), value);
             buffAction(value);
         }
 
@@ -110,7 +110,7 @@ namespace SDRGames.Whist.CharacterCombatModule.Managers
             {
                 periodicalEffectView = Instantiate(_periodicalEffectViewPrefab, GetView().EffectsBar.transform, false);
             } 
-            _periodicalDebuffs.Add(new PeriodicalEffectPresenter(roundsCount, debuffAction, effectIcon, periodicalEffectView), value);
+            _periodicalDebuffs.Add(new PeriodicalEffectPresenter(roundsCount, debuffAction, description, effectIcon, periodicalEffectView), value);
             debuffAction(value);
         }
 
