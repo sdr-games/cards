@@ -1,4 +1,5 @@
 using SDRGames.Whist.LocalizationModule.Models;
+using SDRGames.Whist.HelpersModule;
 
 using TMPro;
 
@@ -50,7 +51,7 @@ namespace SDRGames.Whist.PointsModule.Views
 
         public void SetPointsText(float currentPointsValue, float maxPointsValue)
         {
-            _pointsValueText.text = $"{currentPointsValue} / {maxPointsValue}";
+            _pointsValueText.text = $"{(int)currentPointsValue} / {(int)maxPointsValue}";
         }
 
         public Color GetColor()
@@ -61,29 +62,9 @@ namespace SDRGames.Whist.PointsModule.Views
         #region MonoBehaviour methods
         private void OnEnable()
         {
-            if(_background == null)
-            {
-                Debug.LogError("Background image не был назначен");
-                #if UNITY_EDITOR
-                    EditorApplication.isPlaying = false;
-                #endif
-            }
-
-            if (_spentFiller == null)
-            {
-                Debug.LogError("Filler image не был назначен");
-                #if UNITY_EDITOR
-                    EditorApplication.isPlaying = false;
-                #endif
-            }
-
-            if (_pointsValueText == null)
-            {
-                Debug.LogError("Points Value TextMeshPro не был назначен");
-                #if UNITY_EDITOR
-                    EditorApplication.isPlaying = false;
-                #endif
-            }
+            this.CheckFieldValueIsNotNull(nameof(_background), _background);
+            this.CheckFieldValueIsNotNull(nameof(_spentFiller), _spentFiller);
+            this.CheckFieldValueIsNotNull(nameof(_pointsValueText), _pointsValueText);
         }
         #endregion
     }

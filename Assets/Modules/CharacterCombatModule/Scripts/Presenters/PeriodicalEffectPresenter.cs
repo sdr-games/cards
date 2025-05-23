@@ -12,7 +12,7 @@ namespace SDRGames.Whist.CharacterCombatModule.Presenters
         private PeriodicalEffect _periodicalEffect;
         private PeriodicalEffectView _periodicalEffectView;
 
-        public PeriodicalEffectPresenter(int duration, Action<int> action, Sprite effectIcon, PeriodicalEffectView periodicalEffectView)
+        public PeriodicalEffectPresenter(int duration, Action<int> action, string description, Sprite effectIcon, PeriodicalEffectView periodicalEffectView)
         {
             _periodicalEffect = new PeriodicalEffect(duration, action);
             _periodicalEffect.DurationChanged += OnDurationChanged;
@@ -22,7 +22,7 @@ namespace SDRGames.Whist.CharacterCombatModule.Presenters
                 return;
             }
             _periodicalEffectView = periodicalEffectView;
-            _periodicalEffectView.Initialize(effectIcon, duration);
+            _periodicalEffectView.Initialize(effectIcon, duration, description);
         }
 
         public void IncreaseDuration(int additionalDuration)
