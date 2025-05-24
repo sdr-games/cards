@@ -16,6 +16,7 @@ using SDRGames.Whist.AbilitiesModule.Models;
 using UnityEngine;
 using SDRGames.Whist.CharacterInfoModule.ScriptableObjects;
 using SDRGames.Whist.CharacterCombatModule.Models;
+using SDRGames.Whist.CharacterCombatModule.Managers;
 
 namespace SDRGames.Whist.DomainModule.Managers
 {
@@ -112,9 +113,10 @@ namespace SDRGames.Whist.DomainModule.Managers
             _decksPreviewWindowManager.Hide();
         }
 
-        public void AddEnemyBars(GameObject enemyBars)
+        public void AddEnemyBars(EnemyCombatManager enemyCombatManager)
         {
-            _combatUIView.SetAsParent(enemyBars.transform);
+            _combatUIView.SetAsParent(enemyCombatManager.GetView().transform);
+            enemyCombatManager.GetView().Initialize(enemyCombatManager.transform);
         }
 
         public bool TrySelectCard(CardManager cardManager)
