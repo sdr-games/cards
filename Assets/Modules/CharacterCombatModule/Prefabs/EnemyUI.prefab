@@ -55,7 +55,7 @@ MonoBehaviour:
   <HealthPointsBarView>k__BackingField: {fileID: 4873614467552918402}
   <EffectsBar>k__BackingField: {fileID: 5926241618782751770}
   _floatingTextPanel: {fileID: 5250250252841975821}
-  _positionOffsetY: 0
+  _positionOffsetY: 3
 --- !u!1001 &359585707772770131
 PrefabInstance:
   m_ObjectHideFlags: 0

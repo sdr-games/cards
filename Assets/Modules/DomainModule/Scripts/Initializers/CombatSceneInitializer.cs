@@ -87,7 +87,7 @@ namespace SDRGames.Whist.DomainModule
             _enemyBehaviorManagers.Add(enemyBehaviorManager);
             enemyCombatManagers.Add(enemyBehaviorManager.EnemyCombatManager);
             characterScriptableObjects.Add(enemyScriptableObject);
-            _combatUIManager.AddEnemyBars(enemyBehaviorManager.EnemyCombatManager.GetView().gameObject);
+            _combatUIManager.AddEnemyBars(enemyBehaviorManager.EnemyCombatManager);
         }
 
         private void OnEnable()
