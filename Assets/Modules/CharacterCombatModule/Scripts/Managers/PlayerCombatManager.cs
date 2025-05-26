@@ -169,7 +169,7 @@ namespace SDRGames.Whist.CharacterCombatModule.Managers
             _playerCharacterCombatParamsPresenter.ResetBreathReservedPoints(reverseAmount);
         }
 
-        public void Swap()
+        public void SwapResources()
         {
             CharacterParamsModel parameters = GetParams();
             float currentBreathPoints = parameters.BreathPoints.CurrentValue;

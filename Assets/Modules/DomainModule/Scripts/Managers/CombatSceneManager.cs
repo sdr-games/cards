@@ -13,6 +13,7 @@ using SDRGames.Whist.CardsCombatModule.Models;
 
 using UnityEngine;
 using SDRGames.Whist.CharacterCombatModule.Models;
+using SDRGames.Whist.ActiveBlockModule.Views;
 
 namespace SDRGames.Whist.DomainModule.Managers
 {
@@ -26,6 +27,8 @@ namespace SDRGames.Whist.DomainModule.Managers
 
         private List<EnemyCombatManager> _enemyCombatManagers;
         private List<CharacterCombatManager> _selectedEnemyCombatManagers;
+
+        private int _currentEnemyIndex;
         private bool _targetCheckRequired;
 
         public void Initialize(TurnsQueueManager turnsQueueManager, CombatUIManager combatUIManager, PlayerCombatManager playerCombatManager, List<EnemyBehaviorManager> enemyBehaviorManagers, List<EnemyCombatManager> enemyCombatManagers)
@@ -36,6 +39,7 @@ namespace SDRGames.Whist.DomainModule.Managers
             _enemyBehaviorManagers = enemyBehaviorManagers;
             foreach (EnemyBehaviorManager enemyBehaviorManager in _enemyBehaviorManagers)
             {
+                enemyBehaviorManager.AbilitiesSelected += OnEnemyAbiltiesSelected;
                 enemyBehaviorManager.AbilityUsed += OnEnemyAbilityUsed;
                 enemyBehaviorManager.BecameInsane += OnEnemyBecameInsane;
                 enemyBehaviorManager.EnemyCombatManager.EnemySelected += OnEnemySelected;   
@@ -55,6 +59,7 @@ namespace SDRGames.Whist.DomainModule.Managers
             _combatUIManager.CardSelectClicked += OnCardSelectClicked;
             _combatUIManager.CardMarkClicked += OnCardMarkClicked;
             _combatUIManager.MeleeAttackClicked += OnMeleeAttackClicked;
+            _combatUIManager.EnemyAttacksNotBlocked += OnEnemyAttacksNotBlocked;
             _combatUIManager.CardsTurnEnd += OnCardsTurnEnd;
             _combatUIManager.MeleeTurnEnd += OnMeleeTurnEnd;
             _combatUIManager.ClearButtonClicked += OnClearButtonClicked;
@@ -115,6 +120,11 @@ namespace SDRGames.Whist.DomainModule.Managers
             {
                 _playerCombatManager.ReserveStaminaPoints(e.MeleeAttack.Cost);
             }            
+        }
+
+        private void OnEnemyAttacksNotBlocked(object sender, BlockKeyPressedEventArgs e)
+        {
+            StartCoroutine(FinishEnemyTurn(e.Correct));
         }
 
         private void OnMeleeTurnEnd(object sender, MeleeEndTurnEventArgs e)
@@ -246,7 +256,8 @@ namespace SDRGames.Whist.DomainModule.Managers
                 StartPlayerTurn();
                 return;
             }
-            StartCoroutine(StartEnemyTurn(_enemyBehaviorManagers[e.EnemyIndex]));
+            _currentEnemyIndex = e.EnemyIndex;
+            StartCoroutine(StartEnemyTurn(_enemyBehaviorManagers[_currentEnemyIndex]));
         }
 
         private void OnClearButtonClicked(object sender, EventArgs e)
@@ -267,6 +278,16 @@ namespace SDRGames.Whist.DomainModule.Managers
                 return;
             }
             _combatUIManager.ShowComaStopNotification();
+        }
+
+        private void OnEnemyAbiltiesSelected(object sender, AbilitiesSelectedEventArgs e)
+        {
+            if (e.ActiveBlockPossible)
+            {
+                _combatUIManager.ShowActiveBlockingPanel(3, 0.5f);
+                return;
+            }
+            StartCoroutine(FinishEnemyTurn(false));
         }
 
         private void OnEnemyAbilityUsed(object sender, EventArgs e)
@@ -299,6 +320,11 @@ namespace SDRGames.Whist.DomainModule.Managers
             _playerCombatManager.UpdateBonusesEffects();
             enemyBehaviorManager.EnemyCombatManager.ApplyPeriodicalEffects();
             yield return enemyBehaviorManager.MakeMove();
+        }
+
+        private IEnumerator FinishEnemyTurn(bool blocked)
+        {
+            yield return _enemyBehaviorManagers[_currentEnemyIndex].ApplySelectedAbilities(blocked);
             _turnsQueueManager.SwitchTurn();
         }
 
