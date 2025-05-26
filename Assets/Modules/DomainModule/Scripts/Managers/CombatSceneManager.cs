@@ -284,7 +284,7 @@ namespace SDRGames.Whist.DomainModule.Managers
         {
             if (e.ActiveBlockPossible)
             {
-                _combatUIManager.ShowActiveBlockingPanel(3, 0.5f);
+                _combatUIManager.ShowActiveBlockingPanel(3, 1f);
                 return;
             }
             StartCoroutine(FinishEnemyTurn(false));

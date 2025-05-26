@@ -18,6 +18,7 @@ namespace SDRGames.Whist.ActiveBlockModule.Managers
 
         public void Initialize()
         {
+            _activeBlockUIView.Initialize();
             _activeBlockUIView.BlockKeyPressed += OnBlockKeyPressed;
         }
 

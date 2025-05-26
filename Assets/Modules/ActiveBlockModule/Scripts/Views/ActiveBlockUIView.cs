@@ -12,6 +12,9 @@ namespace SDRGames.Whist.ActiveBlockModule.Views
     public class ActiveBlockUIView : HideableUIView
     {
         [SerializeField] private float _maxSize;
+        [SerializeField] private RectTransform _viewportRectTransform;
+        [SerializeField] private RectTransform _wrapperRectTransform;
+        [SerializeField] private HideableUIView _wrapperUIView;
         [SerializeField] private RectTransform _indicatorRectTransform;
         [SerializeField] private CanvasGroup _indicatorCanvasGroup;
         [SerializeField] private Image _indicatorImage;
@@ -41,6 +44,7 @@ namespace SDRGames.Whist.ActiveBlockModule.Views
 
         private IEnumerator IndicatorPingsCoroutine(int pingsCount, float duration)
         {
+            _wrapperUIView.Hide();
             _indicatorRectTransform.sizeDelta = _defaultSize;
             _indicatorCanvasGroup.alpha = 1;
 
@@ -52,9 +56,15 @@ namespace SDRGames.Whist.ActiveBlockModule.Views
             {
                 yield return null;
             }
+            yield return null;
             int correctIndex = UnityEngine.Random.Range(0, pingsCount - 1);
             for (int i = 0; i < pingsCount; i++)
             {
+                float xPos = UnityEngine.Random.Range(_viewportRectTransform.rect.min.x, _viewportRectTransform.rect.max.x);
+                float yPos = UnityEngine.Random.Range(_viewportRectTransform.rect.min.y, _viewportRectTransform.rect.max.y);
+                _wrapperRectTransform.localPosition = new Vector2(xPos, yPos);
+                _wrapperUIView.Show();
+
                 _indicatorRectTransform.sizeDelta = _defaultSize;
                 _indicatorCanvasGroup.alpha = 1;
                 _indicatorImage.color = i == correctIndex ? _correctIndicatorColor : _wrongIndicatorColor;
