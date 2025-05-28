@@ -31,12 +31,12 @@ namespace SDRGames.Whist.TurnSwitchModule.Managers
 
         public event EventHandler<TurnSwitchedEventArgs> TurnSwitched;
 
-        public void Initialize(List<CharacterScriptableObject> characters)
+        public void Initialize(List<CharacterScriptableObject> characters, List<Points> charactersPoints)
         {
             _isCombatTurn = true;
 
             _charactersInfos = OrderByInitiative(characters);
-            _charactersPoints = GetPointsFromParams(characters);
+            _charactersPoints = charactersPoints;
             _playerTurnIndex = _charactersInfos.FindIndex(info => info.IsPlayer);
 
             _turnsQueueView.Initialize(_charactersInfos);
@@ -79,8 +79,8 @@ namespace SDRGames.Whist.TurnSwitchModule.Managers
             {
                 switch (points.Name)
                 {
-                    case "Armor":
-                    case "Barrier":
+                    case "ArmorPoints":
+                    case "BarrierPoints":
                         if (points.CurrentValue == 0 && points.MaxValue > 0)
                         {
                             _currentRestorationTurnChance += 12.5f;
@@ -93,15 +93,7 @@ namespace SDRGames.Whist.TurnSwitchModule.Managers
                         break;
                 }
             }
-            if(_currentRestorationTurnChance < 0)
-            {
-                _currentRestorationTurnChance = 0;
-                return;
-            }
-            if(_currentRestorationTurnChance > 50)
-            {
-                _currentRestorationTurnChance = 50;
-            }
+            _currentRestorationTurnChance = Math.Clamp(_currentRestorationTurnChance, 0, 50);
         }
 
         public void Stop()
@@ -118,18 +110,6 @@ namespace SDRGames.Whist.TurnSwitchModule.Managers
             foreach (CharacterScriptableObject characterParamsModel in sortedParams)
             {
                 result.Add(characterParamsModel.CharacterInfo);
-            }
-            return result;
-        }
-
-        private List<Points> GetPointsFromParams(List<CharacterScriptableObject> characters)
-        {
-            List<Points> result = new List<Points>();
-            foreach (CharacterScriptableObject characterParamsModel in characters)
-            {
-                result.Add(characterParamsModel.CharacterParams.ArmorPoints);
-                result.Add(characterParamsModel.CharacterParams.BarrierPoints);
-                result.Add(characterParamsModel.CharacterParams.HealthPoints);
             }
             return result;
         }
