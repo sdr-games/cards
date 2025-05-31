@@ -122,9 +122,9 @@ namespace SDRGames.Whist.DomainModule.Managers
             }            
         }
 
-        private void OnEnemyAttacksNotBlocked(object sender, BlockKeyPressedEventArgs e)
+        private void OnEnemyAttacksNotBlocked(object sender, BlockKeyPressedCEventArgs e)
         {
-            StartCoroutine(FinishEnemyTurn(e.Correct));
+            StartCoroutine(FinishEnemyTurn(e.DamageMultiplier));
         }
 
         private void OnMeleeTurnEnd(object sender, MeleeEndTurnEventArgs e)
@@ -284,10 +284,10 @@ namespace SDRGames.Whist.DomainModule.Managers
         {
             if (e.ActiveBlockPossible)
             {
-                _combatUIManager.ShowActiveBlockingPanel(3, 1f);
+                _combatUIManager.ShowActiveBlockingPanel(3, 0.35f);
                 return;
             }
-            StartCoroutine(FinishEnemyTurn(false));
+            StartCoroutine(FinishEnemyTurn(1));
         }
 
         private void OnEnemyAbilityUsed(object sender, EventArgs e)
@@ -322,9 +322,9 @@ namespace SDRGames.Whist.DomainModule.Managers
             yield return enemyBehaviorManager.MakeMove();
         }
 
-        private IEnumerator FinishEnemyTurn(bool blocked)
+        private IEnumerator FinishEnemyTurn(float damageMultiplier = 1)
         {
-            yield return _enemyBehaviorManagers[_currentEnemyIndex].ApplySelectedAbilities(blocked);
+            yield return _enemyBehaviorManagers[_currentEnemyIndex].ApplySelectedAbilities(damageMultiplier);
             _turnsQueueManager.SwitchTurn();
         }
 

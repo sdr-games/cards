@@ -160,13 +160,13 @@ namespace SDRGames.Whist.EnemyBehaviorModule.Managers
             return abilities;
         }
 
-        public IEnumerator ApplySelectedAbilities(bool blocked)
+        public IEnumerator ApplySelectedAbilities(float damageMultiplier)
         {
             yield return null;
             foreach (AbilityScriptableObject abilitySO in _selectedAbilities)
             {
                 Ability ability = new Ability(abilitySO);
-                yield return ApplySelectedAbility(ability, blocked);
+                yield return ApplySelectedAbility(ability, damageMultiplier);
             }
         }
 
@@ -262,14 +262,14 @@ namespace SDRGames.Whist.EnemyBehaviorModule.Managers
                     specialAbility.DecreaseCooldown();
                     continue;
                 }
-                yield return ApplySelectedAbility(specialAbility, false);
+                yield return ApplySelectedAbility(specialAbility);
                 specialAbility.SetCooldown();
                 AbilitiesSelected?.Invoke(this, new AbilitiesSelectedEventArgs(false));
                 yield break;
             }
         }
 
-        private IEnumerator ApplySelectedAbility(Ability ability, bool blocked)
+        private IEnumerator ApplySelectedAbility(Ability ability, float damageMultiplier = 1)
         {
             while (!EnemyCombatManager.AnimationsController.IsReady)
             {
@@ -285,11 +285,18 @@ namespace SDRGames.Whist.EnemyBehaviorModule.Managers
             {
                 yield return new WaitForSeconds(ability.AnimationClip.averageDuration / 3);
             }
-            if(blocked)
+            if(damageMultiplier <= 0)
             {
                 _targetCombatManager.Block();
                 yield break;
             }
+            Action<int> action = (int value) => { _targetParams.SetPhysicalDamageBlockPercent(value); };
+            _targetCombatManager.SetBuff(
+                (int)Math.Abs(100 - damageMultiplier * 100),
+                0,
+                null,
+                "",
+                action);
             ability.ApplyLogics(EnemyCombatManager, _targetCombatManager);
             AbilityUsed?.Invoke(this, EventArgs.Empty);
         }

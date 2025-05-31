@@ -43,7 +43,7 @@ namespace SDRGames.Whist.DomainModule.Managers
         public event EventHandler<CardSelectClickedEventArgs> CardSelectClicked;
         public event EventHandler<CardMarkClickedEventArgs> CardMarkClicked;
         public event EventHandler<MeleeAttackClickedEventArgs> MeleeAttackClicked;
-        public event EventHandler<BlockKeyPressedEventArgs> EnemyAttacksNotBlocked;
+        public event EventHandler<BlockKeyPressedCEventArgs> EnemyAttacksNotBlocked;
         public event EventHandler<AbilityQueueClearedEventArgs> AbilityQueueCleared;
         public event EventHandler<CardsEndTurnEventArgs> CardsTurnEnd;
         public event EventHandler<MeleeEndTurnEventArgs> MeleeTurnEnd;
@@ -88,7 +88,7 @@ namespace SDRGames.Whist.DomainModule.Managers
             HidePlayerUI();
         }
 
-        private void OnBlockKeyPressed(object sender, BlockKeyPressedEventArgs e)
+        private void OnBlockKeyPressed(object sender, BlockKeyPressedCEventArgs e)
         {
             _activeBlockManager.StopBlocking();
             EnemyAttacksNotBlocked?.Invoke(this, e);

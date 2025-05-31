@@ -9,19 +9,22 @@ namespace SDRGames.Whist.ActiveBlockModule.Managers
 {
     public class ActiveBlockManager : MonoBehaviour
     {
-        [SerializeField] private ActiveBlockUIView _activeBlockUIView;
-        [SerializeField] private ActiveBlockVariantBUIView _activeBlockVariantBUIView;
+        //[SerializeField] private ActiveBlockUIView _activeBlockUIView;
+        //[SerializeField] private ActiveBlockVariantBUIView _activeBlockVariantBUIView;
+        [SerializeField] private ActiveBlockVariantCUIView _activeBlockVariantCUIView;
 
         private Coroutine _blockingCoroutine;
 
-        public event EventHandler<BlockKeyPressedEventArgs> BlockKeyPressed;
+        public event EventHandler<BlockKeyPressedCEventArgs> BlockKeyPressed;
 
         public void Initialize()
         {
             //_activeBlockUIView.Initialize();
             //_activeBlockUIView.BlockKeyPressed += OnBlockKeyPressed;
-            _activeBlockVariantBUIView.Initialize();
-            _activeBlockVariantBUIView.BlockKeyPressed += OnBlockKeyPressed;
+            //_activeBlockVariantBUIView.Initialize();
+            //_activeBlockVariantBUIView.BlockKeyPressed += OnBlockKeyPressed;
+            _activeBlockVariantCUIView.Initialize();
+            _activeBlockVariantCUIView.BlockKeyPressed += OnBlockKeyPressed;
         }
 
         //public void StartBlocking(int chancesCount, float durationPerChance)
@@ -56,17 +59,26 @@ namespace SDRGames.Whist.ActiveBlockModule.Managers
             {
                 StopCoroutine(_blockingCoroutine);
             }
-            _activeBlockVariantBUIView.Hide();
+            //_activeBlockVariantBUIView.Hide();
+            _activeBlockVariantCUIView.Hide();
         }
 
         private IEnumerator StartBlockingCoroutine(float duration)
         {
             yield return null;
-            _activeBlockVariantBUIView.Show();
-            _activeBlockVariantBUIView.RunIndicator(duration);
+            //_activeBlockVariantBUIView.Show();
+            //_activeBlockVariantBUIView.RunIndicator(duration);
+            _activeBlockVariantCUIView.Show();
+            _activeBlockVariantCUIView.RunIndicator(duration);
         }
 
-        private void OnBlockKeyPressed(object sender, BlockKeyPressedEventArgs e)
+        //private void OnBlockKeyPressed(object sender, BlockKeyPressedEventArgs e)
+        //{
+        //    StopCoroutine(_blockingCoroutine);
+        //    BlockKeyPressed?.Invoke(sender, e);
+        //}
+
+        private void OnBlockKeyPressed(object sender, BlockKeyPressedCEventArgs e)
         {
             StopCoroutine(_blockingCoroutine);
             BlockKeyPressed?.Invoke(sender, e);
