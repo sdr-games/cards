@@ -17,6 +17,7 @@ using SDRGames.Whist.CharacterInfoModule.ScriptableObjects;
 
 using UnityEngine;
 using SDRGames.Whist.CharacterCombatModule.Models;
+using SDRGames.Whist.PointsModule.Models;
 
 namespace SDRGames.Whist.DomainModule
 {
@@ -53,17 +54,21 @@ namespace SDRGames.Whist.DomainModule
             yield return InitializePart(() => _playerCombatManager.Initialize(playerScriptableObject.CharacterParams, playerScriptableObject.CharacterInfo.Character3DModelData.ModelPrefab, playerScriptableObject.CharacterInfo.Character3DModelData.Animations), 1f);
 
             List<CharacterScriptableObject> characterScriptableObjects = new List<CharacterScriptableObject>();
+            List<Points> charactersPoints = new List<Points>();
+
             characterScriptableObjects.Add(playerScriptableObject);
+            charactersPoints.Add(_playerCombatManager.GetParams().ArmorPoints);
+            charactersPoints.Add(_playerCombatManager.GetParams().BarrierPoints);
+            charactersPoints.Add(_playerCombatManager.GetParams().HealthPoints);
 
             _enemyBehaviorManagers = new List<EnemyBehaviorManager>();
             List<EnemyCombatManager> enemyCombatManagers = new List<EnemyCombatManager>();
             for(int i = 0; i < enemiesListScriptableObject.EnemiesData.Length; i++)
             {
-                yield return InitializePart(() => CreateAndInitializeEnemy(enemiesListScriptableObject.EnemiesData[i], enemyCombatManagers, characterScriptableObjects), 1f);
+                yield return InitializePart(() => CreateAndInitializeEnemy(enemiesListScriptableObject.EnemiesData[i], enemyCombatManagers, characterScriptableObjects, charactersPoints), 1f);
             }
-            yield return InitializePart(() => _combatUIManager.Initialize(UserInputController.Instance, playerScriptableObject, (PlayerParamsModel)_playerCombatManager.GetParams()), 3f);
-            yield return InitializePart(() => _turnsQueueManager.Initialize(characterScriptableObjects), 1f);
-
+            yield return InitializePart(() => _combatUIManager.Initialize(UserInputController.Instance, playerScriptableObject, (PlayerParamsModel)_playerCombatManager.GetParams()), 1f);
+            yield return InitializePart(() => _turnsQueueManager.Initialize(characterScriptableObjects, charactersPoints), 1f);
             yield return InitializePart(() => _combatSceneManager.Initialize(_turnsQueueManager, _combatUIManager, _playerCombatManager, _enemyBehaviorManagers, enemyCombatManagers), 6.5f);
         }
 
@@ -72,7 +77,7 @@ namespace SDRGames.Whist.DomainModule
             _combatSceneManager.StartCombat();
         }
 
-        private void CreateAndInitializeEnemy(EnemyScriptableObject enemyScriptableObject, List<EnemyCombatManager> enemyCombatManagers, List<CharacterScriptableObject> characterScriptableObjects)
+        private void CreateAndInitializeEnemy(EnemyScriptableObject enemyScriptableObject, List<EnemyCombatManager> enemyCombatManagers, List<CharacterScriptableObject> characterScriptableObjects, List<Points> charactersPoints)
         {
             EnemyBehaviorManager enemyBehaviorManager = Instantiate(_enemyBehaviorManagerPrefab, enemyScriptableObject.SpawnPosition, enemyScriptableObject.SpawnRotation);
             enemyBehaviorManager.Initialize(
@@ -87,6 +92,9 @@ namespace SDRGames.Whist.DomainModule
             _enemyBehaviorManagers.Add(enemyBehaviorManager);
             enemyCombatManagers.Add(enemyBehaviorManager.EnemyCombatManager);
             characterScriptableObjects.Add(enemyScriptableObject);
+            charactersPoints.Add(enemyBehaviorManager.EnemyCombatManager.GetParams().ArmorPoints);
+            charactersPoints.Add(enemyBehaviorManager.EnemyCombatManager.GetParams().BarrierPoints);
+            charactersPoints.Add(enemyBehaviorManager.EnemyCombatManager.GetParams().HealthPoints);
             _combatUIManager.AddEnemyBars(enemyBehaviorManager.EnemyCombatManager);
         }
 
