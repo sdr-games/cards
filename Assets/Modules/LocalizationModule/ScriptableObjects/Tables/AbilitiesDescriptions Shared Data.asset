@@ -219,6 +219,14 @@ MonoBehaviour:
     m_Key: PatientFlatPeriodicalDamageDescription
     m_Metadata:
       m_Items: []
+  - m_Id: 75877161675206656
+    m_Key: ActivatedDefensiveStanceDescription
+    m_Metadata:
+      m_Items: []
+  - m_Id: 75877697929555968
+    m_Key: DeactivatedDefensiveStanceDescription
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

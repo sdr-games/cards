@@ -59,7 +59,8 @@ namespace SDRGames.Whist.DomainModule.Managers
             _combatUIManager.CardSelectClicked += OnCardSelectClicked;
             _combatUIManager.CardMarkClicked += OnCardMarkClicked;
             _combatUIManager.MeleeAttackClicked += OnMeleeAttackClicked;
-            _combatUIManager.EnemyAttacksNotBlocked += OnEnemyAttacksNotBlocked;
+            _combatUIManager.StanceSwitched += OnStanceSwitched;
+            _combatUIManager.EnemyAttacksBlockFinished += OnEnemyAttacksBlockFinished;
             _combatUIManager.CardsTurnEnd += OnCardsTurnEnd;
             _combatUIManager.MeleeTurnEnd += OnMeleeTurnEnd;
             _combatUIManager.ClearButtonClicked += OnClearButtonClicked;
@@ -119,10 +120,16 @@ namespace SDRGames.Whist.DomainModule.Managers
             if (_combatUIManager.TryAddAbilityToQueue(e.MeleeAttack))
             {
                 _playerCombatManager.ReserveStaminaPoints(e.MeleeAttack.Cost);
-            }            
+            }
         }
 
-        private void OnEnemyAttacksNotBlocked(object sender, BlockKeyPressedCEventArgs e)
+        private void OnStanceSwitched(object sender, StanceSwitchedEventArgs e)
+        {
+            int modifier = e.DefensiveStanceActive ? 25 : -25;
+            _playerCombatManager.SwitchStance(modifier);
+        }
+
+        private void OnEnemyAttacksBlockFinished(object sender, BlockKeyPressedEventArgs e)
         {
             StartCoroutine(FinishEnemyTurn(e.DamageMultiplier));
         }
@@ -284,7 +291,7 @@ namespace SDRGames.Whist.DomainModule.Managers
         {
             if (e.ActiveBlockPossible)
             {
-                _combatUIManager.ShowActiveBlockingPanel(3, 0.35f);
+                _combatUIManager.ShowActiveBlockingPanel(0.5f);
                 return;
             }
             StartCoroutine(FinishEnemyTurn(1));

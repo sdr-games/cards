@@ -224,6 +224,16 @@ MonoBehaviour:
     m_Localized: Deals {damage} to patient as true damage over {turns} turns
     m_Metadata:
       m_Items: []
+  - m_Id: 75877161675206656
+    m_Localized: Take a combat stance. In this stance, 100% of damage is dealt to
+      the enemy, but their attacks cannot be blocked.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 75877697929555968
+    m_Localized: Take a defensive stance. This stance allows you to block up to 100%
+      of incoming damage but reduces outgoing damage by 25%.
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

@@ -51,5 +51,10 @@ namespace SDRGames.Whist.AnimationsModule
         {
             PlayAnimation(_deathAnimationClip);
         }
+
+        public void SwitchStance(bool activate)
+        {
+            _animator.SetBool("DefensiveStance", activate);
+        }
     }
 }

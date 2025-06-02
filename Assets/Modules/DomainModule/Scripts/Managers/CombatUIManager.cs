@@ -43,7 +43,8 @@ namespace SDRGames.Whist.DomainModule.Managers
         public event EventHandler<CardSelectClickedEventArgs> CardSelectClicked;
         public event EventHandler<CardMarkClickedEventArgs> CardMarkClicked;
         public event EventHandler<MeleeAttackClickedEventArgs> MeleeAttackClicked;
-        public event EventHandler<BlockKeyPressedCEventArgs> EnemyAttacksNotBlocked;
+        public event EventHandler<StanceSwitchedEventArgs> StanceSwitched;
+        public event EventHandler<BlockKeyPressedEventArgs> EnemyAttacksBlockFinished;
         public event EventHandler<AbilityQueueClearedEventArgs> AbilityQueueCleared;
         public event EventHandler<CardsEndTurnEventArgs> CardsTurnEnd;
         public event EventHandler<MeleeEndTurnEventArgs> MeleeTurnEnd;
@@ -61,7 +62,8 @@ namespace SDRGames.Whist.DomainModule.Managers
             _meleeAttackListManager.Initialize(_userInputController, playerScriptableObject.MeleeAttacks, playerParamsModel);
             _meleeAttackListManager.MeleeAttackClicked += OnMeleeAttackClicked;
 
-            _activeBlockManager.Initialize();
+            _activeBlockManager.Initialize(userInputController);
+            _activeBlockManager.StanceSwitched += OnStanceSwitched;
             _activeBlockManager.BlockKeyPressed += OnBlockKeyPressed;
             
             _potionListManager.Initialize(_userInputController, playerParamsModel);
@@ -86,12 +88,6 @@ namespace SDRGames.Whist.DomainModule.Managers
             _combatUIView.ClearButtonClicked += OnClearButtonClicked;
 
             HidePlayerUI();
-        }
-
-        private void OnBlockKeyPressed(object sender, BlockKeyPressedCEventArgs e)
-        {
-            _activeBlockManager.StopBlocking();
-            EnemyAttacksNotBlocked?.Invoke(this, e);
         }
 
         public void ShowPlayerUI(bool isCombatTurn)
@@ -202,9 +198,9 @@ namespace SDRGames.Whist.DomainModule.Managers
             return _deckOnHandsManager.IsEmpty;
         }
 
-        public void ShowActiveBlockingPanel(int chancesCount, float durationPerChance)
+        public void ShowActiveBlockingPanel(float durationPerChance)
         {
-            _activeBlockManager.StartBlocking(chancesCount, durationPerChance);
+            _activeBlockManager.StartBlocking(durationPerChance);
         }
 
         #region Events methods
@@ -227,6 +223,17 @@ namespace SDRGames.Whist.DomainModule.Managers
         private void OnMeleeAttackClicked(object sender, MeleeAttackClickedEventArgs e)
         {
             MeleeAttackClicked?.Invoke(this, e);
+        }
+
+        private void OnStanceSwitched(object sender, StanceSwitchedEventArgs e)
+        {
+            StanceSwitched?.Invoke(this, e);
+        }
+
+        private void OnBlockKeyPressed(object sender, BlockKeyPressedEventArgs e)
+        {
+            _activeBlockManager.StopBlocking();
+            EnemyAttacksBlockFinished?.Invoke(this, e);
         }
 
         private void OnPotionClicked(object sender, PotionClickedEventArgs e)

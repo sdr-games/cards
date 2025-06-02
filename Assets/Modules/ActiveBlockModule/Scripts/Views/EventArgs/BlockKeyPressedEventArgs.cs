@@ -4,11 +4,11 @@ namespace SDRGames.Whist.ActiveBlockModule.Views
 {
     public class BlockKeyPressedEventArgs : EventArgs
     {
-        public bool Correct { get; private set; }
+        public float DamageMultiplier { get; private set; }
 
-        public BlockKeyPressedEventArgs(bool correct)
+        public BlockKeyPressedEventArgs(float damageMultiplier = 1)
         {
-            Correct = correct;
+            DamageMultiplier = damageMultiplier;
         }
     }
 }

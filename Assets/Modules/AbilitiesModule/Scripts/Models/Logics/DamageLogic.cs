@@ -56,6 +56,7 @@ namespace SDRGames.Whist.AbilitiesModule.Models
                         damage = ApplyModifiers(casterParams, targetParams, damage, isCritical);
                     }
 
+                    damage += damage + (int)Math.Round((decimal)damage / 100 * casterParams.PhysicalDamageModifier, MidpointRounding.ToEven);
                     damage -= CalculatePercentageOfParameter(targetParams.PhysicalDamageBlockPercent, damage);
                     action = (int value) => { 
                         if(targetParams.ThornsPercent > 0)
@@ -88,6 +89,7 @@ namespace SDRGames.Whist.AbilitiesModule.Models
                         damage = ApplyModifiers(casterParams, targetParams, damage, isCritical);
                     }
 
+                    damage += damage + (int)Math.Round((decimal)damage / 100 * casterParams.MagicalDamageModifier, MidpointRounding.ToEven);
                     damage -= CalculatePercentageOfParameter(targetParams.MagicalDamageBlockPercent, damage);
                     action = (int value) =>
                     {
@@ -192,14 +194,12 @@ namespace SDRGames.Whist.AbilitiesModule.Models
         private int CalculatePhysicalDamage(CharacterParamsModel casterParams)
         {
             double calculatedDamage = casterParams.Strength * CharacterParametersScaling.Instance.StrengthToPhysicalDamage;
-            calculatedDamage += calculatedDamage + Math.Round(calculatedDamage / 100 * casterParams.PhysicalDamageModifier, MidpointRounding.ToEven);
             return (int)calculatedDamage;
         }
 
         private int CalculateMagicalDamage(CharacterParamsModel casterParams)
         {
             double calculatedDamage = casterParams.Intelligence * CharacterParametersScaling.Instance.IntelligenceToMagicalDamage;
-            calculatedDamage += calculatedDamage + Math.Round(calculatedDamage / 100 * casterParams.MagicalDamageModifier, MidpointRounding.ToEven);
             return (int)calculatedDamage;
         }
 

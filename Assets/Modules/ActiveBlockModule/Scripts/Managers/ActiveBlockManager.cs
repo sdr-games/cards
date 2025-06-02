@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 
 using SDRGames.Whist.ActiveBlockModule.Views;
+using SDRGames.Whist.UserInputModule.Controller;
 
 using UnityEngine;
 
@@ -9,48 +10,34 @@ namespace SDRGames.Whist.ActiveBlockModule.Managers
 {
     public class ActiveBlockManager : MonoBehaviour
     {
-        //[SerializeField] private ActiveBlockUIView _activeBlockUIView;
-        //[SerializeField] private ActiveBlockVariantBUIView _activeBlockVariantBUIView;
-        [SerializeField] private ActiveBlockVariantCUIView _activeBlockVariantCUIView;
+        [SerializeField] private StanceSwitcherUIView _stanceSwitcherUIView;
+        [SerializeField] private ActiveBlockUIView _activeBlockUIView;
 
+        private bool _defensiveStanceActivated;
         private Coroutine _blockingCoroutine;
 
-        public event EventHandler<BlockKeyPressedCEventArgs> BlockKeyPressed;
+        public event EventHandler<BlockKeyPressedEventArgs> BlockKeyPressed;
+        public event EventHandler<StanceSwitchedEventArgs> StanceSwitched;
 
-        public void Initialize()
+        public void Initialize(UserInputController userInputController)
         {
-            //_activeBlockUIView.Initialize();
-            //_activeBlockUIView.BlockKeyPressed += OnBlockKeyPressed;
-            //_activeBlockVariantBUIView.Initialize();
-            //_activeBlockVariantBUIView.BlockKeyPressed += OnBlockKeyPressed;
-            _activeBlockVariantCUIView.Initialize();
-            _activeBlockVariantCUIView.BlockKeyPressed += OnBlockKeyPressed;
+            _stanceSwitcherUIView.Initialize(userInputController);
+            _stanceSwitcherUIView.StanceSwitched += OnStanceSwitched;
+
+            _activeBlockUIView.Initialize();
+            _activeBlockUIView.BlockKeyPressed += OnBlockKeyPressed;
+
+            _defensiveStanceActivated = false;
         }
 
-        //public void StartBlocking(int chancesCount, float durationPerChance)
-        //{
-        //    _blockingCoroutine = StartCoroutine(StartBlockingCoroutine(chancesCount, durationPerChance));
-        //}
-
-        //public void StopBlocking()
-        //{
-        //    if (_blockingCoroutine != null)
-        //    {
-        //        StopCoroutine(_blockingCoroutine);
-        //    } 
-        //    _activeBlockUIView.Hide();
-        //}
-
-        //private IEnumerator StartBlockingCoroutine(int chancesCount, float durationPerChance)
-        //{
-        //    yield return null;
-        //    _activeBlockUIView.Show();
-        //    _activeBlockUIView.StartIndicatorPing(chancesCount, durationPerChance);
-        //}
-
-        public void StartBlocking(int chancesCount, float durationPerChance)
+        public void StartBlocking(float durationPerChance)
         {
-            _blockingCoroutine = StartCoroutine(StartBlockingCoroutine(durationPerChance));
+            if (_defensiveStanceActivated)
+            {
+                _blockingCoroutine = StartCoroutine(StartBlockingCoroutine(durationPerChance));
+                return;
+            }
+            BlockKeyPressed?.Invoke(this, new BlockKeyPressedEventArgs());
         }
 
         public void StopBlocking()
@@ -59,26 +46,23 @@ namespace SDRGames.Whist.ActiveBlockModule.Managers
             {
                 StopCoroutine(_blockingCoroutine);
             }
-            //_activeBlockVariantBUIView.Hide();
-            _activeBlockVariantCUIView.Hide();
+            _activeBlockUIView.Hide();
         }
 
         private IEnumerator StartBlockingCoroutine(float duration)
         {
             yield return null;
-            //_activeBlockVariantBUIView.Show();
-            //_activeBlockVariantBUIView.RunIndicator(duration);
-            _activeBlockVariantCUIView.Show();
-            _activeBlockVariantCUIView.RunIndicator(duration);
+            _activeBlockUIView.Show();
+            _activeBlockUIView.RunIndicator(duration);
         }
 
-        //private void OnBlockKeyPressed(object sender, BlockKeyPressedEventArgs e)
-        //{
-        //    StopCoroutine(_blockingCoroutine);
-        //    BlockKeyPressed?.Invoke(sender, e);
-        //}
+        private void OnStanceSwitched(object sender, StanceSwitchedEventArgs e)
+        {
+            _defensiveStanceActivated = e.DefensiveStanceActive;
+            StanceSwitched?.Invoke(this, e);
+        }
 
-        private void OnBlockKeyPressed(object sender, BlockKeyPressedCEventArgs e)
+        private void OnBlockKeyPressed(object sender, BlockKeyPressedEventArgs e)
         {
             StopCoroutine(_blockingCoroutine);
             BlockKeyPressed?.Invoke(sender, e);
