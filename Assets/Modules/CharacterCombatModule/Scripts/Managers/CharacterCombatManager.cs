@@ -160,10 +160,10 @@ namespace SDRGames.Whist.CharacterCombatModule.Managers
             AnimationsController.PlayBlockAnimation();
         }
 
-        public void SwitchStance(int damageModifier)
+        public void SwitchStance(float damageModifier)
         {
-            GetParams().ChangePhysicalDamage(damageModifier);
-            AnimationsController.SwitchStance(damageModifier > 0);
+            GetParams().ChangeTotalPhysicalDamagePercent(damageModifier);
+            AnimationsController.SwitchStance(damageModifier < 0);
         }
 
         private bool GetExistedEffect(Action<int> action, Dictionary<PeriodicalEffectPresenter, int> periodicalEffects, out PeriodicalEffectPresenter periodicalEffectPresenter)
