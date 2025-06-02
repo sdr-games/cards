@@ -13,6 +13,7 @@ using SDRGames.Whist.CardsCombatModule.Models;
 
 using UnityEngine;
 using SDRGames.Whist.CharacterCombatModule.Models;
+using SDRGames.Whist.ActiveBlockModule.Views;
 
 namespace SDRGames.Whist.DomainModule.Managers
 {
@@ -26,6 +27,8 @@ namespace SDRGames.Whist.DomainModule.Managers
 
         private List<EnemyCombatManager> _enemyCombatManagers;
         private List<CharacterCombatManager> _selectedEnemyCombatManagers;
+
+        private int _currentEnemyIndex;
         private bool _targetCheckRequired;
 
         public void Initialize(TurnsQueueManager turnsQueueManager, CombatUIManager combatUIManager, PlayerCombatManager playerCombatManager, List<EnemyBehaviorManager> enemyBehaviorManagers, List<EnemyCombatManager> enemyCombatManagers)
@@ -36,6 +39,7 @@ namespace SDRGames.Whist.DomainModule.Managers
             _enemyBehaviorManagers = enemyBehaviorManagers;
             foreach (EnemyBehaviorManager enemyBehaviorManager in _enemyBehaviorManagers)
             {
+                enemyBehaviorManager.AbilitiesSelected += OnEnemyAbiltiesSelected;
                 enemyBehaviorManager.AbilityUsed += OnEnemyAbilityUsed;
                 enemyBehaviorManager.BecameInsane += OnEnemyBecameInsane;
                 enemyBehaviorManager.EnemyCombatManager.EnemySelected += OnEnemySelected;   
@@ -55,6 +59,8 @@ namespace SDRGames.Whist.DomainModule.Managers
             _combatUIManager.CardSelectClicked += OnCardSelectClicked;
             _combatUIManager.CardMarkClicked += OnCardMarkClicked;
             _combatUIManager.MeleeAttackClicked += OnMeleeAttackClicked;
+            _combatUIManager.StanceSwitched += OnStanceSwitched;
+            _combatUIManager.EnemyAttacksBlockFinished += OnEnemyAttacksBlockFinished;
             _combatUIManager.CardsTurnEnd += OnCardsTurnEnd;
             _combatUIManager.MeleeTurnEnd += OnMeleeTurnEnd;
             _combatUIManager.ClearButtonClicked += OnClearButtonClicked;
@@ -114,7 +120,18 @@ namespace SDRGames.Whist.DomainModule.Managers
             if (_combatUIManager.TryAddAbilityToQueue(e.MeleeAttack))
             {
                 _playerCombatManager.ReserveStaminaPoints(e.MeleeAttack.Cost);
-            }            
+            }
+        }
+
+        private void OnStanceSwitched(object sender, StanceSwitchedEventArgs e)
+        {
+            int modifier = e.DefensiveStanceActive ? 25 : -25;
+            _playerCombatManager.SwitchStance(modifier);
+        }
+
+        private void OnEnemyAttacksBlockFinished(object sender, BlockKeyPressedEventArgs e)
+        {
+            StartCoroutine(FinishEnemyTurn(e.DamageMultiplier));
         }
 
         private void OnMeleeTurnEnd(object sender, MeleeEndTurnEventArgs e)
@@ -246,7 +263,8 @@ namespace SDRGames.Whist.DomainModule.Managers
                 StartPlayerTurn();
                 return;
             }
-            StartCoroutine(StartEnemyTurn(_enemyBehaviorManagers[e.EnemyIndex]));
+            _currentEnemyIndex = e.EnemyIndex;
+            StartCoroutine(StartEnemyTurn(_enemyBehaviorManagers[_currentEnemyIndex]));
         }
 
         private void OnClearButtonClicked(object sender, EventArgs e)
@@ -267,6 +285,16 @@ namespace SDRGames.Whist.DomainModule.Managers
                 return;
             }
             _combatUIManager.ShowComaStopNotification();
+        }
+
+        private void OnEnemyAbiltiesSelected(object sender, AbilitiesSelectedEventArgs e)
+        {
+            if (e.ActiveBlockPossible)
+            {
+                _combatUIManager.ShowActiveBlockingPanel(0.5f);
+                return;
+            }
+            StartCoroutine(FinishEnemyTurn(1));
         }
 
         private void OnEnemyAbilityUsed(object sender, EventArgs e)
@@ -299,6 +327,11 @@ namespace SDRGames.Whist.DomainModule.Managers
             _playerCombatManager.UpdateBonusesEffects();
             enemyBehaviorManager.EnemyCombatManager.ApplyPeriodicalEffects();
             yield return enemyBehaviorManager.MakeMove();
+        }
+
+        private IEnumerator FinishEnemyTurn(float damageMultiplier = 1)
+        {
+            yield return _enemyBehaviorManagers[_currentEnemyIndex].ApplySelectedAbilities(damageMultiplier);
             _turnsQueueManager.SwitchTurn();
         }
 

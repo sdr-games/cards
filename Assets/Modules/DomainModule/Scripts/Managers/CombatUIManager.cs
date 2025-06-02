@@ -1,6 +1,6 @@
-using System.Collections.Generic;
-using System.Linq;
 using System;
+using System.Linq;
+using System.Collections.Generic;
 
 using SDRGames.Whist.AbilitiesQueueModule.Managers;
 using SDRGames.Whist.CardsCombatModule.Managers;
@@ -12,11 +12,13 @@ using SDRGames.Whist.RestorationModule.Managers;
 using SDRGames.Whist.UserInputModule.Controller;
 using SDRGames.Whist.CardsCombatModule.Models;
 using SDRGames.Whist.AbilitiesModule.Models;
-
-using UnityEngine;
 using SDRGames.Whist.CharacterInfoModule.ScriptableObjects;
 using SDRGames.Whist.CharacterCombatModule.Models;
 using SDRGames.Whist.CharacterCombatModule.Managers;
+
+using UnityEngine;
+using SDRGames.Whist.ActiveBlockModule.Managers;
+using SDRGames.Whist.ActiveBlockModule.Views;
 
 namespace SDRGames.Whist.DomainModule.Managers
 {
@@ -28,6 +30,7 @@ namespace SDRGames.Whist.DomainModule.Managers
 
         [Header("MELEE ABILITIES")][SerializeField] private AbilitiesQueueManager _abilitiesQueueManager;
         [SerializeField] private MeleeAttackListManager _meleeAttackListManager;
+        [SerializeField] private ActiveBlockManager _activeBlockManager;
 
         [Header("CARDS")][SerializeField] private SelectedDeckManager _selectedDeckManager;
         [SerializeField] private DecksPreviewWindowManager _decksPreviewWindowManager;
@@ -40,6 +43,8 @@ namespace SDRGames.Whist.DomainModule.Managers
         public event EventHandler<CardSelectClickedEventArgs> CardSelectClicked;
         public event EventHandler<CardMarkClickedEventArgs> CardMarkClicked;
         public event EventHandler<MeleeAttackClickedEventArgs> MeleeAttackClicked;
+        public event EventHandler<StanceSwitchedEventArgs> StanceSwitched;
+        public event EventHandler<BlockKeyPressedEventArgs> EnemyAttacksBlockFinished;
         public event EventHandler<AbilityQueueClearedEventArgs> AbilityQueueCleared;
         public event EventHandler<CardsEndTurnEventArgs> CardsTurnEnd;
         public event EventHandler<MeleeEndTurnEventArgs> MeleeTurnEnd;
@@ -56,6 +61,10 @@ namespace SDRGames.Whist.DomainModule.Managers
 
             _meleeAttackListManager.Initialize(_userInputController, playerScriptableObject.MeleeAttacks, playerParamsModel);
             _meleeAttackListManager.MeleeAttackClicked += OnMeleeAttackClicked;
+
+            _activeBlockManager.Initialize(userInputController);
+            _activeBlockManager.StanceSwitched += OnStanceSwitched;
+            _activeBlockManager.BlockKeyPressed += OnBlockKeyPressed;
             
             _potionListManager.Initialize(_userInputController, playerParamsModel);
             _potionListManager.PotionClicked += OnPotionClicked;
@@ -189,6 +198,11 @@ namespace SDRGames.Whist.DomainModule.Managers
             return _deckOnHandsManager.IsEmpty;
         }
 
+        public void ShowActiveBlockingPanel(float durationPerChance)
+        {
+            _activeBlockManager.StartBlocking(durationPerChance);
+        }
+
         #region Events methods
 
         private void OnCardSelectClicked(object sender, CardSelectClickedEventArgs e)
@@ -209,6 +223,17 @@ namespace SDRGames.Whist.DomainModule.Managers
         private void OnMeleeAttackClicked(object sender, MeleeAttackClickedEventArgs e)
         {
             MeleeAttackClicked?.Invoke(this, e);
+        }
+
+        private void OnStanceSwitched(object sender, StanceSwitchedEventArgs e)
+        {
+            StanceSwitched?.Invoke(this, e);
+        }
+
+        private void OnBlockKeyPressed(object sender, BlockKeyPressedEventArgs e)
+        {
+            _activeBlockManager.StopBlocking();
+            EnemyAttacksBlockFinished?.Invoke(this, e);
         }
 
         private void OnPotionClicked(object sender, PotionClickedEventArgs e)
@@ -297,6 +322,7 @@ namespace SDRGames.Whist.DomainModule.Managers
             this.CheckFieldValueIsNotNull(nameof(_combatUIView), _combatUIView);
             this.CheckFieldValueIsNotNull(nameof(_abilitiesQueueManager), _abilitiesQueueManager);
             this.CheckFieldValueIsNotNull(nameof(_meleeAttackListManager), _meleeAttackListManager);
+            this.CheckFieldValueIsNotNull(nameof(_activeBlockManager), _activeBlockManager);
             this.CheckFieldValueIsNotNull(nameof(_selectedDeckManager), _selectedDeckManager);
             this.CheckFieldValueIsNotNull(nameof(_decksPreviewWindowManager), _decksPreviewWindowManager);
             this.CheckFieldValueIsNotNull(nameof(_deckOnHandsManager), _deckOnHandsManager);

@@ -56,7 +56,7 @@ namespace SDRGames.Whist.AbilitiesModule.Models
                     action = (int value) => { targetCharacterCombatManager.ClearNegativeEffects(); };
                     break;
                 case RestorationTypes.Swap:
-                    action = (int value) => { ((PlayerCombatManager)targetCharacterCombatManager).Swap(); };
+                    action = (int value) => { ((PlayerCombatManager)targetCharacterCombatManager).SwapResources(); };
                     break;
                 default:
                     break;

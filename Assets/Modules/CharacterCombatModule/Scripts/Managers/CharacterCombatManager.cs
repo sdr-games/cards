@@ -146,6 +146,26 @@ namespace SDRGames.Whist.CharacterCombatModule.Managers
             _debuffBlockPercent = percent;
         }
 
+        public void Block()
+        {
+            string blockedString = LocalizedString.GetLocalizedString("CombatStatusesAndEffects", "Blocked");
+            GetView().ShowFloatingText($"<{blockedString}>", GetView().ArmorPointsBarView.GetColor());
+            AnimationsController.PlayBlockAnimation();
+        }
+
+        public void Dodge()
+        {
+            string missedString = LocalizedString.GetLocalizedString("CombatStatusesAndEffects", "Missed");
+            GetView().ShowFloatingText($"<{missedString}>", GetView().HealthPointsBarView.GetColor());
+            AnimationsController.PlayBlockAnimation();
+        }
+
+        public void SwitchStance(int damageModifier)
+        {
+            GetParams().ChangePhysicalDamage(damageModifier);
+            AnimationsController.SwitchStance(damageModifier > 0);
+        }
+
         private bool GetExistedEffect(Action<int> action, Dictionary<PeriodicalEffectPresenter, int> periodicalEffects, out PeriodicalEffectPresenter periodicalEffectPresenter)
         {
             periodicalEffectPresenter = null;
@@ -188,8 +208,7 @@ namespace SDRGames.Whist.CharacterCombatModule.Managers
         {
             if(e.Difference == 0)
             {
-                string missedString = LocalizedString.GetLocalizedString("CombatStatusesAndEffects", "Missed");
-                GetView().ShowFloatingText($"<{missedString}>", GetView().HealthPointsBarView.GetColor());
+                Dodge();
                 return;
             }
 
@@ -214,8 +233,7 @@ namespace SDRGames.Whist.CharacterCombatModule.Managers
         {
             if (e.Difference == 0)
             {
-                string blockedString = LocalizedString.GetLocalizedString("CombatStatusesAndEffects", "Blocked");
-                GetView().ShowFloatingText($"<{blockedString}>", GetView().ArmorPointsBarView.GetColor());
+                Block();
                 return;
             }
 
@@ -233,8 +251,7 @@ namespace SDRGames.Whist.CharacterCombatModule.Managers
         {
             if (e.Difference == 0)
             {
-                string missedString = LocalizedString.GetLocalizedString("CombatStatusesAndEffects", "Missed");
-                GetView().ShowFloatingText($"<{missedString}>", GetView().BarrierPointsBarView.GetColor());
+                Dodge();
                 return;
             }
 

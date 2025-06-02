@@ -54,19 +54,25 @@ namespace SDRGames.Whist.UserInputModule.Controller
             DontDestroyOnLoad(this);
         }
 
-        public static bool KeyIsPressed(string keyCode)
+        public static bool KeyIsPressed(string keyCode = "")
         {
             return FindKey(keyCode).isPressed;
         }
 
-        public static bool KeyWasPressedThisFrame(string keyCode)
+        public static bool KeyWasPressedThisFrame(string keyCode = "")
         {
             return FindKey(keyCode).wasPressedThisFrame;
         }
 
-        public static bool KeyWasReleasedThisFrame(string keyCode)
+        public static bool KeyWasReleasedThisFrame(string keyCode = "")
         {
             return FindKey(keyCode).wasReleasedThisFrame;
+        }
+
+        public static bool AnyKeyWasPressed()
+        {
+            AnyKeyControl anyKeyControl = Keyboard.current.anyKey;
+            return anyKeyControl.isPressed || anyKeyControl.wasPressedThisFrame || anyKeyControl.wasReleasedThisFrame;
         }
 
         public static void AddLastKeyPressedListener()
@@ -293,7 +299,7 @@ namespace SDRGames.Whist.UserInputModule.Controller
         }
         #endregion
 
-        private static KeyControl FindKey(string keyCode)
+        private static KeyControl FindKey(string keyCode = "")
         {
             ReadOnlyArray<KeyControl> allKeys = Keyboard.current.allKeys;
             for (int i = 0; i < allKeys.Count; i++)

@@ -7,8 +7,8 @@ namespace SDRGames.Whist.HelpersModule.Views
     [RequireComponent(typeof(CanvasGroup))]
     public class HideableUIView : MonoBehaviour
     {
-        [SerializeField] private CanvasGroup _canvasGroup;
-        [SerializeField] private float _appearingSpeed = 0;
+        [SerializeField] protected CanvasGroup _canvasGroup;
+        [SerializeField] protected float _appearingSpeed = 0;
 
         public virtual void Show()
         {

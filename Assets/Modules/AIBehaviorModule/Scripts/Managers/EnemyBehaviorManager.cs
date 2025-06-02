@@ -30,9 +30,11 @@ namespace SDRGames.Whist.EnemyBehaviorModule.Managers
         private BehaviorScriptableObject[] _meleeBehaviors;
         private BehaviorScriptableObject[] _magicBehaviors;
         private List<SpecialAbility> _specialAbilities;
+        private List<AbilityScriptableObject> _selectedAbilities;
 
         private int _insanityTurns;
 
+        public event EventHandler<AbilitiesSelectedEventArgs> AbilitiesSelected;
         public event EventHandler AbilityUsed;
         public event EventHandler BecameInsane;
 
@@ -61,6 +63,7 @@ namespace SDRGames.Whist.EnemyBehaviorModule.Managers
 
         public IEnumerator MakeMove()
         {
+            _selectedAbilities = null;
             if (_insanityTurns <= 0 && _specialAbilities.Count > 0 && !AreSpecialAbilitiesOnCooldown())
             {
                 yield return UseSpecialAbility();
@@ -87,9 +90,11 @@ namespace SDRGames.Whist.EnemyBehaviorModule.Managers
                 );
                 if(selectedAbilities != null)
                 {
-                    yield return ApplySelectedAbilities(selectedAbilities);
                     EnemyCombatManager.SpendStaminaPoints(selectedAbilities.Sum(ability => ability.Cost));
                     count = selectedAbilities.Count;
+                    _selectedAbilities = selectedAbilities;
+                    AbilitiesSelected?.Invoke(this, new AbilitiesSelectedEventArgs(true));
+                    //yield return ApplySelectedAbilities(selectedAbilities);
                 }
                 EnemyCombatManager.RestoreStaminaPoints((MAX_MELEE_ABILITIES_COUNT_PER_ROUND - count) * _enemyParams.StaminaPoints.RestorationPower);
                 yield break;
@@ -101,9 +106,11 @@ namespace SDRGames.Whist.EnemyBehaviorModule.Managers
             );
             if (selectedAbilities != null)
             {
-                yield return ApplySelectedAbilities(selectedAbilities);
+                //yield return ApplySelectedAbilities(selectedAbilities);
                 EnemyCombatManager.SpendBreathPoints(selectedAbilities.Sum(ability => ability.Cost));
                 count = selectedAbilities.Count;
+                _selectedAbilities = selectedAbilities;
+                AbilitiesSelected?.Invoke(this, new AbilitiesSelectedEventArgs(false));
             }
             EnemyCombatManager.RestoreBreathPoints((MAX_MAGICAL_ABILITIES_COUNT_PER_ROUND + 1 - count) * _enemyParams.BreathPoints.RestorationPower);
         }
@@ -151,6 +158,16 @@ namespace SDRGames.Whist.EnemyBehaviorModule.Managers
                 }
             }
             return abilities;
+        }
+
+        public IEnumerator ApplySelectedAbilities(float damageMultiplier)
+        {
+            yield return null;
+            foreach (AbilityScriptableObject abilitySO in _selectedAbilities)
+            {
+                Ability ability = new Ability(abilitySO);
+                yield return ApplySelectedAbility(ability, damageMultiplier);
+            }
         }
 
         public void Stop()
@@ -237,6 +254,7 @@ namespace SDRGames.Whist.EnemyBehaviorModule.Managers
 
         private IEnumerator UseSpecialAbility()
         {
+            _selectedAbilities = new List<AbilityScriptableObject>();
             foreach(SpecialAbility specialAbility in _specialAbilities)
             {
                 if (specialAbility.CurrentCooldown > 0)
@@ -246,21 +264,12 @@ namespace SDRGames.Whist.EnemyBehaviorModule.Managers
                 }
                 yield return ApplySelectedAbility(specialAbility);
                 specialAbility.SetCooldown();
+                AbilitiesSelected?.Invoke(this, new AbilitiesSelectedEventArgs(false));
                 yield break;
             }
         }
 
-        private IEnumerator ApplySelectedAbilities(List<AbilityScriptableObject> selectedAbilities)
-        {
-            yield return null;
-            foreach (AbilityScriptableObject abilitySO in selectedAbilities)
-            {
-                Ability ability = new Ability(abilitySO);
-                yield return ApplySelectedAbility(ability);
-            }
-        }
-
-        private IEnumerator ApplySelectedAbility(Ability ability)
+        private IEnumerator ApplySelectedAbility(Ability ability, float damageMultiplier = 1)
         {
             while (!EnemyCombatManager.AnimationsController.IsReady)
             {
@@ -276,6 +285,18 @@ namespace SDRGames.Whist.EnemyBehaviorModule.Managers
             {
                 yield return new WaitForSeconds(ability.AnimationClip.averageDuration / 3);
             }
+            if(damageMultiplier <= 0)
+            {
+                _targetCombatManager.Block();
+                yield break;
+            }
+            Action<int> action = (int value) => { _targetParams.SetPhysicalDamageBlockPercent(value); };
+            _targetCombatManager.SetBuff(
+                (int)Math.Abs(100 - damageMultiplier * 100),
+                0,
+                null,
+                "",
+                action);
             ability.ApplyLogics(EnemyCombatManager, _targetCombatManager);
             AbilityUsed?.Invoke(this, EventArgs.Empty);
         }
