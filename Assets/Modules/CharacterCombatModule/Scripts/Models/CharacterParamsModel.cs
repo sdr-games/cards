@@ -11,7 +11,9 @@ namespace SDRGames.Whist.CharacterCombatModule.Models
         public int Stamina { get; protected set; }
         public int Intelligence { get; protected set; }
         public int PhysicalDamageModifier { get; protected set; }
+        public float TotalPhysicalDamagePercent { get; protected set; }
         public int MagicalDamageModifier { get; protected set; }
+        public float TotalMagicalDamagePercent { get; protected set; }
         public int PhysicalHitChance { get; protected set; }
         public int MagicalHitChance { get; protected set; }
         public float StaminaRestorationPower { get => StaminaPoints.RestorationPower; }
@@ -44,7 +46,9 @@ namespace SDRGames.Whist.CharacterCombatModule.Models
             Intelligence = characterParamsScriptableObject.Intelligence;
 
             PhysicalDamageModifier = characterParamsScriptableObject.PhysicalDamageModifier;
+            TotalPhysicalDamagePercent = 1;
             MagicalDamageModifier = characterParamsScriptableObject.MagicalDamageModifier;
+            TotalMagicalDamagePercent = 1;
             PhysicalHitChance = characterParamsScriptableObject.PhysicalHitChance;
             MagicalHitChance = characterParamsScriptableObject.MagicalHitChance;
             Piercing = characterParamsScriptableObject.Piercing;
@@ -112,6 +116,11 @@ namespace SDRGames.Whist.CharacterCombatModule.Models
         public void ChangePhysicalDamage(int physicalDamage)
         {
             PhysicalDamageModifier += physicalDamage;
+        }
+
+        public void ChangeTotalPhysicalDamagePercent(float modifier)
+        {
+            TotalPhysicalDamagePercent += modifier;
         }
 
         public void ChangeMagicalDamage(int magicalDamage)

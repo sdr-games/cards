@@ -12,7 +12,7 @@ namespace SDRGames.Whist.AnimationsModule
         private AnimationClip _dodgeAnimationClip;
         private AnimationClip _deathAnimationClip;
 
-        public bool IsReady => _animator.GetCurrentAnimatorStateInfo(0).IsName("Idle");
+        public bool IsReady => _animator.GetCurrentAnimatorStateInfo(0).IsName("Idle") || _animator.GetCurrentAnimatorStateInfo(0).IsName("DefensiveStanceIdle");
 
         public void Initialize(Animator animator, CharacterAnimationsModel animations)
         {

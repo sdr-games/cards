@@ -125,7 +125,7 @@ namespace SDRGames.Whist.DomainModule.Managers
 
         private void OnStanceSwitched(object sender, StanceSwitchedEventArgs e)
         {
-            int modifier = e.DefensiveStanceActive ? 25 : -25;
+            float modifier = e.DefensiveStanceActive ? -0.25f : 0.25f;
             _playerCombatManager.SwitchStance(modifier);
         }
 
