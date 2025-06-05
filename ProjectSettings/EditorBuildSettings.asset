@@ -27,7 +27,7 @@ EditorBuildSettings:
     path: Assets/Scenes/TalentsScene.unity
     guid: 7c2657fb24a927848a91a67ba8c67475
   m_configObjects:
-    com.unity.addressableassets: {fileID: 11400000, guid: d8fafe1af9f3db74290b433aa0391a54,
+    com.unity.addressableassets: {fileID: 11400000, guid: 1fd02ce706e02ee449193afe3b60d688,
       type: 2}
     com.unity.input.settings: {fileID: 11400000, guid: 2af5833e9062805478fd78852da6d53f,
       type: 2}
