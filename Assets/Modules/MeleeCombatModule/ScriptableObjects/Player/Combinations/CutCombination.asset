@@ -1,0 +1,53 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a41877b5f4f908843bbdc54a819ec473, type: 3}
+  m_Name: CutCombination
+  m_EditorClassIdentifier: 
+  <Name>k__BackingField:
+    <Entity>k__BackingField:
+      m_TableReference:
+        m_TableCollectionName: GUID:3b397188346b9fe4d87595afe2d9bae6
+      m_TableEntryReference:
+        m_KeyId: 43552729168871424
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+  <ShortDescription>k__BackingField:
+    <Entity>k__BackingField:
+      m_TableReference:
+        m_TableCollectionName: GUID:3b397188346b9fe4d87595afe2d9bae6
+      m_TableEntryReference:
+        m_KeyId: 7982112633864192
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+  <Icon>k__BackingField: {fileID: 21300000, guid: 172500fcb2aa46a419add85cb758c8cf,
+    type: 3}
+  <Cost>k__BackingField: 0
+  <AbilityLogics>k__BackingField:
+  - {fileID: 11400000, guid: 65695bcd1c174bd40945d827bfa0def6, type: 2}
+  <AnimationClip>k__BackingField: {fileID: 7400000, guid: 144158469cca17c4e827c5fc899498de,
+    type: 2}
+  <SoundClip>k__BackingField: {fileID: 0}
+  <AttackSequence>k__BackingField:
+  - <Abilities>k__BackingField:
+    - {fileID: 11400000, guid: 0084636326e86804386c7d737f95eeb6, type: 2}
+    - {fileID: 11400000, guid: 7cd3bde1947bb21449b134e3d7167474, type: 2}
+  - <Abilities>k__BackingField:
+    - {fileID: 11400000, guid: 7cd3bde1947bb21449b134e3d7167474, type: 2}
+    - {fileID: 11400000, guid: 0084636326e86804386c7d737f95eeb6, type: 2}
+  <EuristicPoints>k__BackingField: 10
+  references:
+    version: 2
+    RefIds: []

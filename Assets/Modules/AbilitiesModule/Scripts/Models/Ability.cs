@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using SDRGames.Whist.AbilitiesModule.ScriptableObjects;
 using SDRGames.Whist.CharacterCombatModule.Managers;
@@ -11,6 +12,7 @@ namespace SDRGames.Whist.AbilitiesModule.Models
 {
     public class Ability
     {
+        public Guid Guid { get; private set; }
         public LocalizedString Name { get; private set; }
         public LocalizedString ShortDescription { get; private set; }
         public Sprite Icon { get; private set; }
@@ -21,6 +23,7 @@ namespace SDRGames.Whist.AbilitiesModule.Models
 
         public Ability(AbilityScriptableObject abilityScriptableObject)
         {
+            Guid = abilityScriptableObject.Guid;
             Name = abilityScriptableObject.Name;
             ShortDescription = abilityScriptableObject.ShortDescription;
             Icon = abilityScriptableObject.Icon;

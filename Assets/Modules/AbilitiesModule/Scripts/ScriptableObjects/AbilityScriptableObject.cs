@@ -1,3 +1,5 @@
+using System;
+
 using SDRGames.Whist.HelpersModule;
 using SDRGames.Whist.LocalizationModule.Models;
 using SDRGames.Whist.SoundModule.ScriptableObjects;
@@ -10,13 +12,14 @@ namespace SDRGames.Whist.AbilitiesModule.ScriptableObjects
 {
     public class AbilityScriptableObject : ScriptableObject
     {
-        [field: SerializeField] public LocalizedString Name { get; private set; }
-        [field: SerializeField] public LocalizedString ShortDescription { get; private set; }
-        [field: SerializeField] public Sprite Icon { get; private set; }
-        [field: SerializeField] public int Cost { get; private set; }
-        [field: SerializeField] public AbilityLogicScriptableObject[] AbilityLogics { get; private set; }
-        [field: SerializeField] public AnimationClip AnimationClip { get; private set; }
-        [field: SerializeField] public SoundClipScriptableObject SoundClip { get; private set; }
+        public Guid Guid { get; private set; }
+        [field: SerializeField] public LocalizedString Name { get; protected set; }
+        [field: SerializeField] public LocalizedString ShortDescription { get; protected set; }
+        [field: SerializeField] public Sprite Icon { get; protected set; }
+        [field: SerializeField] public int Cost { get; protected set; }
+        [field: SerializeField] public AbilityLogicScriptableObject[] AbilityLogics { get; protected set; }
+        [field: SerializeField] public AnimationClip AnimationClip { get; protected set; }
+        [field: SerializeField] public SoundClipScriptableObject SoundClip { get; protected set; }
 
         public float GetAverageDamage()
         {
@@ -30,6 +33,11 @@ namespace SDRGames.Whist.AbilitiesModule.ScriptableObjects
 
         protected virtual void OnEnable()
         {
+            if(Guid == null || Guid == Guid.Empty)
+            {
+                Guid = Guid.NewGuid();
+            }
+
             this.CheckFieldValueIsNotNull(nameof(Name), Name);
             //this.CheckFieldValueIsNotNull(nameof(Icon), Icon);
             //this.CheckFieldValueIsNotNull(nameof(AnimationClip), AnimationClip);

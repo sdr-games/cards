@@ -9,6 +9,7 @@ namespace SDRGames.Whist.CharacterInfoModule.ScriptableObjects
     public class PlayerScriptableObject : CharacterScriptableObject
     {
         [field: SerializeField] public MeleeAttackScriptableObject[] MeleeAttacks { get; private set; }
+        [field: SerializeField] public MeleeCombinationScriptableObject[] MeleeCombinations { get; private set; }
         [field: SerializeField] public DeckScriptableObject[] Decks { get; private set; }
     }
 }

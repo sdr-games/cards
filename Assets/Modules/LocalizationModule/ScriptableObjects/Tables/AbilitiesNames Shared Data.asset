@@ -31,6 +31,10 @@ MonoBehaviour:
     m_Key: _
     m_Metadata:
       m_Items: []
+  - m_Id: 43552729168871424
+    m_Key: Cut
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

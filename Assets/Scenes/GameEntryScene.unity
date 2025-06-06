@@ -13,7 +13,7 @@ OcclusionCullingSettings:
 --- !u!104 &2
 RenderSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 9
+  serializedVersion: 10
   m_Fog: 0
   m_FogColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   m_FogMode: 3
@@ -38,13 +38,12 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 5892.0005, g: 5892.0005, b: 5892.0005, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 12
-  m_GIWorkflowMode: 1
+  serializedVersion: 13
+  m_BakeOnSceneLoad: 0
   m_GISettings:
     serializedVersion: 2
     m_BounceScale: 1
@@ -153,7 +152,7 @@ MonoBehaviour:
   _musicGlobalManager: {fileID: 1273604894}
   _soundGlobalManager: {fileID: 440636722}
   _userInputController: {fileID: 1847108587}
-  _entrySceneName: 2
+  _entrySceneName: 5
 --- !u!4 &74645335
 Transform:
   m_ObjectHideFlags: 0
@@ -406,6 +405,42 @@ MonoBehaviour:
           list: []
         <ReferenceParameters>k__BackingField:
           list: []
+    - Key: 5
+      Value:
+        <LoadingScreenBackgroundSprite>k__BackingField: {fileID: 21300000, guid: 1eeeca145a3dc6e42b2cac5a33213124,
+          type: 3}
+        <LoadingScreenMusic>k__BackingField: {fileID: 11400000, guid: a7996119519dde242849f001c088af9a,
+          type: 2}
+        <LoadingScreenBackgroundHeader>k__BackingField:
+          <Entity>k__BackingField:
+            m_TableReference:
+              m_TableCollectionName: GUID:179cb9af71b3dc749946d07fca3d67d4
+            m_TableEntryReference:
+              m_KeyId: 156378336479973376
+              m_Key: 
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+        <LoadingScreenBackgroundTooltip>k__BackingField:
+          <Entity>k__BackingField:
+            m_TableReference:
+              m_TableCollectionName: 
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: 
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+        <StringParameters>k__BackingField:
+          list: []
+        <NumericParameters>k__BackingField:
+          list: []
+        <ReferenceParameters>k__BackingField:
+          list:
+          - Key: playerInfo
+            Value: {fileID: 11400000, guid: bac6334e78448334aa3f298963ea1b62, type: 2}
+          - Key: enemiesList
+            Value: {fileID: 11400000, guid: 66e64fcde2d52bd4fb9085d1a0a68f5f, type: 2}
   references:
     version: 2
     RefIds: []
@@ -502,6 +537,13 @@ MonoBehaviour:
   deepLearningSuperSamplingUseCustomAttributes: 0
   deepLearningSuperSamplingUseOptimalSettings: 1
   deepLearningSuperSamplingSharpening: 0
+  allowFidelityFX2SuperResolution: 1
+  fidelityFX2SuperResolutionUseCustomQualitySettings: 0
+  fidelityFX2SuperResolutionQuality: 0
+  fidelityFX2SuperResolutionUseCustomAttributes: 0
+  fidelityFX2SuperResolutionUseOptimalSettings: 1
+  fidelityFX2SuperResolutionEnableSharpening: 0
+  fidelityFX2SuperResolutionSharpening: 0
   fsrOverrideSharpness: 0
   fsrSharpness: 0.92
   exposureTarget: {fileID: 0}
@@ -698,6 +740,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1

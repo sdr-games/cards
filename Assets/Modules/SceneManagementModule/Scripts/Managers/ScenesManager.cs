@@ -18,7 +18,7 @@ namespace SDRGames.Whist.SceneManagementModule.Managers
         private LoadingScreenUIView _loadingScreenUIView;
         private SceneData _currentSceneData;
 
-        public enum ScenesNames { MainMenu, LocationMap, Combat, Talents, PlayerParameters }
+        public enum ScenesNames { MainMenu, LocationMap, Combat, Talents, PlayerParameters, PrototypeCombat }
 
         public static ScenesManager Instance { get; private set; }
 
